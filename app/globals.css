@@ -64,3 +64,9 @@ footer{height:110px;background:#102719;color:#e9efcf;display:flex;align-items:ce
 .float-icon{width:80px;height:80px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:30px;margin-bottom:24px}.float-card h3{font-size:15px;line-height:.9;margin:0 0 24px}.float-card p{font-size:11px;line-height:1.22;margin:0}
 .fc1{left:1.5%;top:16vh}.fc2{right:3.5%;top:48vh}.fc3{right:23%;top:92vh}
 @media(max-width:700px){.float-scene{height:160vh}.float-hero{left:9%;width:82%;height:82vh}.float-card{width:170px;min-height:220px;padding:25px 16px}.float-icon{width:58px;height:58px;margin-bottom:15px}.float-card h3{font-size:12px}.float-card p{font-size:9px}.fc1{left:2%;top:12vh}.fc2{right:2%;top:55vh}.fc3{right:16%;top:100vh}}
+
+/* make scroll motion visually unmistakable */
+.float-scene{height:240vh!important;overflow:visible!important}
+.float-hero{position:sticky!important;top:8vh!important;margin-top:18vh;transform:translateZ(0)}
+.float-card{position:absolute!important;transform:translateZ(0);z-index:8}
+.fc1{top:38vh!important}.fc2{top:105vh!important}.fc3{top:165vh!important}
