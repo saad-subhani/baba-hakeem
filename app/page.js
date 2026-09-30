@@ -25,10 +25,21 @@ export default function Home(){
   document.querySelectorAll('.orbit').forEach(scene=>{
    const main=scene.querySelector('.orbit-main');
    const cards=[...scene.querySelectorAll('.orbit-card')];
-   gsap.set(main,{y:0});
-   gsap.set(cards,{y:0,rotation:0});
-   gsap.to(main,{y:-105,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
-   cards.forEach((el,i)=>gsap.fromTo(el,{y:0,rotation:0},{y:-(300+i*145),rotation:(i-1)*3,ease:'none',immediateRender:false,scrollTrigger:{trigger:scene,start:'top top',end:'bottom top',scrub:true,invalidateOnRefresh:true}}));
+   const mainBase=Number(main?.dataset.base||0);
+   gsap.set(main,{y:mainBase});
+   cards.forEach(el=>gsap.set(el,{y:Number(el.dataset.base||0),rotation:0}));
+   ScrollTrigger.create({
+    trigger:scene,start:'top 85%',end:'bottom top',invalidateOnRefresh:true,
+    onUpdate:self=>{
+     const p=self.progress;
+     if(main) gsap.set(main,{y:mainBase-(p*120)});
+     cards.forEach((el,i)=>{
+      const base=Number(el.dataset.base||0);
+      const travel=[330,500,650][i]||400;
+      gsap.set(el,{y:base-(p*travel),rotation:(p*(i-1)*3)});
+     });
+    }
+   });
   });
   document.querySelectorAll('.drift').forEach((el,i)=>gsap.fromTo(el,{y:90+i*20},{y:-100-i*25,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
   document.querySelectorAll('.reveal').forEach(el=>gsap.from(el,{y:70,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 86%'}}));
@@ -47,10 +58,10 @@ export default function Home(){
 
  <section className="orbit">
   <div className="orbit-heading"><small>01 / OUR STANDARD</small><h2>CLEAN, CONSCIOUS,<br/><i>PERFORMANCE.</i></h2></div>
-  <div className="orbit-main swap-img"><img className="swap-a" src={IMG.face}/><img className="swap-b" src={IMG.hoverFace}/></div>
-  <article className="orbit-card hover-lift oc1"><span>✧</span><h3>Clean, Beyond<br/>Reproach</h3><p>Clear botanical storytelling with thoughtful formulas and no visual noise.</p></article>
-  <article className="orbit-card hover-lift oc2"><span>♡</span><h3>Conscious &<br/>Responsible</h3><p>Designed around intentional choices, useful rituals and considered presentation.</p></article>
-  <article className="orbit-card hover-lift oc3"><span>♧</span><h3>Potent & Multi<br/>Tasking</h3><p>Focused products made to earn their place in a simple daily ritual.</p></article>
+  <div className="orbit-main swap-img" data-base="150"><img className="swap-a" src={IMG.face}/><img className="swap-b" src={IMG.hoverFace}/></div>
+  <article className="orbit-card hover-lift oc1" data-base="170"><span>✧</span><h3>Clean, Beyond<br/>Reproach</h3><p>Clear botanical storytelling with thoughtful formulas and no visual noise.</p></article>
+  <article className="orbit-card hover-lift oc2" data-base="260"><span>♡</span><h3>Conscious &<br/>Responsible</h3><p>Designed around intentional choices, useful rituals and considered presentation.</p></article>
+  <article className="orbit-card hover-lift oc3" data-base="330"><span>♧</span><h3>Potent & Multi<br/>Tasking</h3><p>Focused products made to earn their place in a simple daily ritual.</p></article>
  </section>
 
  <section className="explore" id="shop"><div className="section-title reveal"><small>02 / EXPLORE</small><h2>PURE <i>POTENCY.</i></h2></div>
