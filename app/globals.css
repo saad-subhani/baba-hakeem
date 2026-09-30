@@ -32,3 +32,13 @@ footer{height:110px;background:#102719;color:#e9efcf;display:flex;align-items:ce
 .ethos{min-height:125vh;background:#f3f0e6;padding:14vh 5vw 10vh;position:relative;overflow:hidden}.ethos>small{font:9px DM Mono;letter-spacing:.2em}.ethos-word{font-weight:700;font-size:clamp(110px,20vw,340px);line-height:.62;letter-spacing:-.095em;margin-top:14vh;will-change:clip-path}.ethos-word i{font-family:Playfair Display;color:#78904c}.ethos-copy{margin:14vh 0 0 auto;width:min(520px,90%);border-top:1px solid #9da695;padding-top:22px}.ethos-copy span{font:9px DM Mono;letter-spacing:.15em}.ethos-copy p{font-size:20px;line-height:1.55}
 .reveal-img{will-change:clip-path,transform}
 @media(max-width:700px){.principle{width:92vw}.principle.intro-panel{width:95vw}.principle h2{font-size:15vw}.principle h3{font-size:14vw}.ethos{min-height:100vh}.ethos-word{font-size:25vw}}
+
+/* reversible scroll-crop sequences */
+.crop-story{height:150vh;background:#efefec;position:relative;padding:10vh 0}
+.crop-frame{position:sticky;top:0;height:100vh;width:100%;display:grid;grid-template-columns:43% 57%;background:#f7f6f1;overflow:hidden;will-change:clip-path}
+.crop-frame.reverse{grid-template-columns:57% 43%}.crop-frame.reverse .crop-copy{order:2}.crop-frame.reverse .crop-media{order:1}
+.crop-copy{padding:9vw 5vw;display:flex;flex-direction:column;justify-content:center;will-change:transform,opacity}
+.crop-copy small{font:9px DM Mono;letter-spacing:.18em}.crop-copy h2{font-size:clamp(54px,6.7vw,112px);line-height:.8;letter-spacing:-.075em;margin:24px 0}.crop-copy h2 i{font-family:Playfair Display;color:#78904c}.crop-copy p{max-width:420px;line-height:1.65;color:#536057}
+.crop-media{height:100%;overflow:hidden}.crop-media img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform;transform-origin:center center}
+.crop-b{background:#173724}.crop-b .crop-frame{background:#173724;color:#f3f0e6}.crop-b .crop-copy p{color:rgba(255,255,255,.65)}
+@media(max-width:700px){.crop-story{height:125vh}.crop-frame,.crop-frame.reverse{grid-template-columns:1fr;grid-template-rows:42% 58%}.crop-frame.reverse .crop-copy{order:1}.crop-frame.reverse .crop-media{order:2}.crop-copy{padding:70px 24px 30px}.crop-copy h2{font-size:14vw}.crop-media{min-height:0}}
