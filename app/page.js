@@ -42,7 +42,7 @@ export default function Home(){
   gsap.to('.trans-word',{xPercent:-8,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
   gsap.to('.paint.one',{y:-170,rotate:12,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
   gsap.to('.paint.two',{y:-260,rotate:-9,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
-  document.querySelectorAll('.hover-lift').forEach(el=>{el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();gsap.to(el,{rotationY:(e.clientX-r.left-r.width/2)/r.width*7,rotationX:-(e.clientY-r.top-r.height/2)/r.height*7,y:-8,duration:.35,transformPerspective:900});});el.addEventListener('mouseleave',()=>gsap.to(el,{rotationX:0,rotationY:0,y:0,duration:.55,ease:'power3.out'}));});
+  document.querySelectorAll('.hover-lift:not(.orbit-card)').forEach(el=>{el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();gsap.to(el,{rotationY:(e.clientX-r.left-r.width/2)/r.width*7,rotationX:-(e.clientY-r.top-r.height/2)/r.height*7,y:-8,duration:.35,transformPerspective:900});});el.addEventListener('mouseleave',()=>gsap.to(el,{rotationX:0,rotationY:0,y:0,duration:.55,ease:'power3.out'}));});
   document.querySelectorAll('.swap-img').forEach(w=>{const a=w.querySelector('.swap-a'),b=w.querySelector('.swap-b');w.addEventListener('mouseenter',()=>{gsap.to(a,{opacity:0,scale:1.07,duration:.45});gsap.to(b,{opacity:1,scale:1,duration:.45});});w.addEventListener('mouseleave',()=>{gsap.to(a,{opacity:1,scale:1,duration:.45});gsap.to(b,{opacity:0,scale:1.07,duration:.45});});});
  },root);ScrollTrigger.refresh()})();return()=>{dead=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[loading]);
  return <main ref={root}>
@@ -54,9 +54,9 @@ export default function Home(){
  <section className="orbit">
   <div className="orbit-heading"><small>01 / OUR STANDARD</small><h2>CLEAN, CONSCIOUS,<br/><i>PERFORMANCE.</i></h2></div>
   <div className="orbit-main swap-img" data-base="150"><img className="swap-a" src={IMG.face}/><img className="swap-b" src={IMG.hoverFace}/></div>
-  <article className="orbit-card hover-lift oc1" data-base="170"><span>✧</span><h3>Clean, Beyond<br/>Reproach</h3><p>Clear botanical storytelling with thoughtful formulas and no visual noise.</p></article>
-  <article className="orbit-card hover-lift oc2" data-base="260"><span>♡</span><h3>Conscious &<br/>Responsible</h3><p>Designed around intentional choices, useful rituals and considered presentation.</p></article>
-  <article className="orbit-card hover-lift oc3" data-base="330"><span>♧</span><h3>Potent & Multi<br/>Tasking</h3><p>Focused products made to earn their place in a simple daily ritual.</p></article>
+  <article className="orbit-card oc1" data-base="170"><span>✧</span><h3>Clean, Beyond<br/>Reproach</h3><p>Clear botanical storytelling with thoughtful formulas and no visual noise.</p></article>
+  <article className="orbit-card oc2" data-base="260"><span>♡</span><h3>Conscious &<br/>Responsible</h3><p>Designed around intentional choices, useful rituals and considered presentation.</p></article>
+  <article className="orbit-card oc3" data-base="330"><span>♧</span><h3>Potent & Multi<br/>Tasking</h3><p>Focused products made to earn their place in a simple daily ritual.</p></article>
   <div className="orbit-leaf" aria-hidden="true"><i/><i/></div>
   <div className="orbit-petal petal-a" data-base="560" data-rot="-22" aria-hidden="true"/>
   <div className="orbit-petal petal-b" data-base="850" data-rot="32" aria-hidden="true"/>
