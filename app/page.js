@@ -34,6 +34,13 @@ export default function Home(){
    gsap.to('.principles-track',{x:()=>-(document.querySelector('.principles-track').scrollWidth-window.innerWidth+80),ease:'none',scrollTrigger:{trigger:'.principles-wrap',start:'top top',end:'+=2600',scrub:1,pin:true,invalidateOnRefresh:true}});
    gsap.fromTo('.ethos-word',{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'none',scrollTrigger:{trigger:'.ethos',start:'top 75%',end:'top 25%',scrub:1}});
    gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
+   gsap.utils.toArray('.tk-window').forEach(section=>{
+    const media=section.querySelector('.tk-window-media'),img=section.querySelector('.tk-window-media img');
+    const tl=gsap.timeline({scrollTrigger:{trigger:section,start:'top bottom',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
+    tl.fromTo(media,{clipPath:'inset(12% 26% 12% 26%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1,ease:'none'})
+      .to(media,{clipPath:'inset(15% 20% 15% 20%)',duration:1,ease:'none'});
+    tl.fromTo(img,{scale:1.32,yPercent:-7},{scale:1.02,yPercent:7,duration:2,ease:'none'},0);
+   });
    gsap.utils.toArray('.crop-story').forEach(section=>{
     const frame=section.querySelector('.crop-frame'),img=section.querySelector('.crop-media img'),copy=section.querySelector('.crop-copy');
     const tl=gsap.timeline({scrollTrigger:{trigger:section,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
@@ -54,6 +61,7 @@ export default function Home(){
    <div className="scroll">SCROLL TO EXPLORE ↓</div>
   </section>
   <section className="ticker"><div className="ticker-inner">NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦ NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦</div></section>
+  <section className="tk-window"><div className="tk-window-copy"><small>SKIN / BOTANY / RITUAL</small><h2>HEALTHY SKIN<br/><i>WITHOUT THE NOISE.</i></h2><p>Botanical care presented with clarity, movement and intention.</p></div><div className="tk-window-media"><img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=2000&q=90"/></div></section>
   <section className="statement" id="story"><p className="kicker fadeup">01 / OUR WORLD</p><h2 className="fadeup">PLANTS HAVE<br/><i>PERSONALITIES.</i></h2><div className="statement-grid fadeup"><p>We built Verdura as an immersive herbal commerce concept: expressive typography, tactile movement, oversized products and a story that changes as you scroll.</p><div><b>ROOTED</b><span>in botanical ritual</span></div><div><b>PLAYFUL</b><span>in digital form</span></div></div></section>
   <section className="principles-wrap">
    <div className="principles-track">
