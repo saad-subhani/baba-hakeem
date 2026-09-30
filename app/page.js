@@ -31,6 +31,9 @@ export default function Home(){
    gsap.utils.toArray('.card,.tile,.split-img').forEach(el=>{gsap.to(el,{y:-28,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1.2}})});
    gsap.to('.round-word',{rotate:28,scale:1.12,ease:'none',scrollTrigger:{trigger:'.collage',start:'top bottom',end:'bottom top',scrub:1}});
    gsap.to('.ticker-inner',{xPercent:-35,ease:'none',scrollTrigger:{trigger:'.ticker',start:'top bottom',end:'bottom top',scrub:1}});
+   gsap.to('.principles-track',{x:()=>-(document.querySelector('.principles-track').scrollWidth-window.innerWidth+80),ease:'none',scrollTrigger:{trigger:'.principles-wrap',start:'top top',end:'+=2600',scrub:1,pin:true,invalidateOnRefresh:true}});
+   gsap.fromTo('.ethos-word',{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'none',scrollTrigger:{trigger:'.ethos',start:'top 75%',end:'top 25%',scrub:1}});
+   gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
   },root); ScrollTrigger.refresh();
  })();return()=>{cancel=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[loading]);
  return <main ref={root}>
@@ -44,17 +47,27 @@ export default function Home(){
   </section>
   <section className="ticker"><div className="ticker-inner">NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦ NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦</div></section>
   <section className="statement" id="story"><p className="kicker fadeup">01 / OUR WORLD</p><h2 className="fadeup">PLANTS HAVE<br/><i>PERSONALITIES.</i></h2><div className="statement-grid fadeup"><p>We built Verdura as an immersive herbal commerce concept: expressive typography, tactile movement, oversized products and a story that changes as you scroll.</p><div><b>ROOTED</b><span>in botanical ritual</span></div><div><b>PLAYFUL</b><span>in digital form</span></div></div></section>
+  <section className="principles-wrap">
+   <div className="principles-track">
+    <article className="principle intro-panel"><small>02 / OUR PRINCIPLES</small><h2>CLEAN.<br/><i>CONSCIOUS.</i><br/>EXPRESSIVE.</h2><p>Four ideas shape every Verdura ritual.</p></article>
+    <article className="principle p-photo"><img className="reveal-img" src="https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=1400&q=88"/><span>01</span><h3>BOTANICAL<br/>CLARITY</h3><p>Focused rituals with ingredients placed front and center.</p></article>
+    <article className="principle lime"><span>02</span><div className="symbol">✤</div><h3>RADICAL<br/><i>SIMPLICITY</i></h3><p>Nothing hidden behind noise. A clear story from plant to ritual.</p></article>
+    <article className="principle p-photo"><img className="reveal-img" src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1400&q=88"/><span>03</span><h3>RITUAL<br/>FIRST</h3><p>Products designed as sensory moments, not just objects.</p></article>
+    <article className="principle cream"><span>04</span><div className="symbol">◎</div><h3>LOWER<br/><i>IMPACT</i></h3><p>A concept built around thoughtful, responsible presentation.</p></article>
+   </div>
+  </section>
   <section className="collage">
    <div className="tile t1 fadeup"><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1300&q=88"/><span>BOTANICAL OBJECTS / 01</span></div>
    <div className="round-word">HERBAL<br/><i>RITUAL</i></div>
    <div className="tile t2 fadeup"><img src="https://images.unsplash.com/photo-1601049676869-702ea24cfd58?auto=format&fit=crop&w=1200&q=88"/><span>TEXTURE / 02</span></div>
   </section>
-  <section className="shop" id="shop"><div className="shop-head fadeup"><small>02 / SHOP THE RITUAL</small><h2>GOOD SKIN.<br/><i>GOOD MOOD.</i></h2></div><div className="cards">{products.map((p,i)=><article className="card fadeup" key={p.name}><div className="pic"><img src={p.image}/><span>0{i+1}</span><button onClick={()=>setCart(x=>[...x,p])}>ADD +</button></div><div className="meta"><div><small>{p.tag}</small><h3>{p.name}</h3></div><b>PKR {p.price.toLocaleString()}</b></div></article>)}</div></section>
+  <section className="ethos"><small>OUR ETHOS / 03</small><div className="ethos-word">HIDE<br/><i>NOTHING.</i></div><div className="ethos-copy"><span>TRANSPARENCY AS A DESIGN LANGUAGE</span><p>Big type, visible ingredients, honest hierarchy and tactile motion. Scroll becomes part of the product story.</p></div></section>
+  <section className="shop" id="shop"><div className="shop-head fadeup"><small>04 / SHOP THE RITUAL</small><h2>GOOD SKIN.<br/><i>GOOD MOOD.</i></h2></div><div className="cards">{products.map((p,i)=><article className="card fadeup" key={p.name}><div className="pic"><img src={p.image}/><span>0{i+1}</span><button onClick={()=>setCart(x=>[...x,p])}>ADD +</button></div><div className="meta"><div><small>{p.tag}</small><h3>{p.name}</h3></div><b>PKR {p.price.toLocaleString()}</b></div></article>)}</div></section>
   <section className="journey" id="ritual" ref={journey} style={{'--scene':scenes[active][3]}}>
-   <div className="journey-sticky"><div className="journey-title"><small>03 / INGREDIENT JOURNEY</small><h2>MEET YOUR<br/><i>BOTANICALS.</i></h2></div><div className="journey-stage"><div className="sun"/><div className="journey-pack"><div className="cap"/><div className="pack-label"><small>VERDURA</small><b>{scenes[active][0]}</b><span>{scenes[active][1]} RITUAL</span></div></div><div className="giant">{scenes[active][0]}</div></div></div>
+   <div className="journey-sticky"><div className="journey-title"><small>05 / INGREDIENT JOURNEY</small><h2>MEET YOUR<br/><i>BOTANICALS.</i></h2></div><div className="journey-stage"><div className="sun"/><div className="journey-pack"><div className="cap"/><div className="pack-label"><small>VERDURA</small><b>{scenes[active][0]}</b><span>{scenes[active][1]} RITUAL</span></div></div><div className="giant">{scenes[active][0]}</div></div></div>
    <div className="scenes">{scenes.map((s,i)=><article className="scene" key={s[0]}><span>0{i+1}</span><div><small>{s[1]}</small><h3>{s[0]}</h3><p>{s[2]}</p></div></article>)}</div>
   </section>
-  <section className="split"><div className="split-img"/><div className="split-copy fadeup"><small>04 / FROM ROOT TO RITUAL</small><h2>LESS NOISE.<br/><i>MORE NATURE.</i></h2><p>A visual demo for a future herbal e-commerce brand — combining product discovery with cinematic scrolling and playful interaction.</p><a href="#shop">SHOP BOTANICALS ↗</a></div></section>
+  <section className="split"><div className="split-img"/><div className="split-copy fadeup"><small>06 / FROM ROOT TO RITUAL</small><h2>LESS NOISE.<br/><i>MORE NATURE.</i></h2><p>A visual demo for a future herbal e-commerce brand — combining product discovery with cinematic scrolling and playful interaction.</p><a href="#shop">SHOP BOTANICALS ↗</a></div></section>
   <section className="final"><div className="flower f1">✤</div><div className="flower f2">✤</div><small>VERDURA BOTANICS</small><h2 className="fadeup">FEEL GOOD<br/><i>IN YOUR SKIN.</i></h2><a href="#top">BACK TO TOP ↑</a></section>
   <footer><b>VERDURA°</b><span>IMMERSIVE HERBAL E-COMMERCE DEMO</span><span>© 2026</span></footer>
  </main>
