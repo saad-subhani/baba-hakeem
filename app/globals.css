@@ -55,3 +55,12 @@ footer{height:110px;background:#102719;color:#e9efcf;display:flex;align-items:ce
 .tk-window-media{position:sticky;top:0;margin:-100vh 0 0 43%;width:57%;height:100vh;overflow:hidden;clip-path:inset(12% 26% 12% 26%);will-change:clip-path}
 .tk-window-media img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform;transform:translateZ(0)}
 @media(max-width:700px){.tk-window{height:150vh}.tk-window-copy{width:100%;height:48vh;padding:70px 22px 20px}.tk-window-media{top:48vh;margin:-102vh 0 0;width:100%;height:52vh}.tk-window-copy h2{font-size:13vw}}
+
+/* differential-speed floating composition */
+.float-scene{height:180vh;position:relative;background:#fff;overflow:hidden}
+.float-hero{position:absolute;left:16%;top:20vh;width:68%;height:105vh;border-radius:48% 52% 46% 54%/34% 42% 58% 66%;overflow:hidden;will-change:transform}
+.float-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.float-card{position:absolute;z-index:3;width:226px;min-height:285px;border-radius:0 0 15px 15px;background:#f1f1f1;padding:44px 28px 28px;text-align:center;display:flex;flex-direction:column;align-items:center;will-change:transform;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.float-icon{width:80px;height:80px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:30px;margin-bottom:24px}.float-card h3{font-size:15px;line-height:.9;margin:0 0 24px}.float-card p{font-size:11px;line-height:1.22;margin:0}
+.fc1{left:1.5%;top:16vh}.fc2{right:3.5%;top:48vh}.fc3{right:23%;top:92vh}
+@media(max-width:700px){.float-scene{height:160vh}.float-hero{left:9%;width:82%;height:82vh}.float-card{width:170px;min-height:220px;padding:25px 16px}.float-icon{width:58px;height:58px;margin-bottom:15px}.float-card h3{font-size:12px}.float-card p{font-size:9px}.fc1{left:2%;top:12vh}.fc2{right:2%;top:55vh}.fc3{right:16%;top:100vh}}
