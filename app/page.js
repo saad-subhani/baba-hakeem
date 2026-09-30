@@ -15,8 +15,9 @@ const scenes=[
 ['AMLA','NOURISH','A rich herbal ritual inspired by South Asian hair traditions.','#b7c58c']
 ];
 export default function Home(){
- const root=useRef(null),journey=useRef(null); const [active,setActive]=useState(0),[cart,setCart]=useState([]);
- useEffect(()=>{let ctx,lenis,tick,cancel=false;(async()=>{
+ const root=useRef(null),journey=useRef(null); const [active,setActive]=useState(0),[cart,setCart]=useState([]),[loading,setLoading]=useState(true),[count,setCount]=useState(0);
+ useEffect(()=>{let raf;const started=performance.now(),duration=2300;const run=t=>{const p=Math.min(1,(t-started)/duration);const eased=1-Math.pow(1-p,3);setCount(Math.round(eased*100));if(p<1)raf=requestAnimationFrame(run);else setTimeout(()=>setLoading(false),180)};raf=requestAnimationFrame(run);return()=>cancelAnimationFrame(raf)},[]);
+ useEffect(()=>{if(loading)return;let ctx,lenis,tick,cancel=false;(async()=>{
   const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(cancel)return; gsap.registerPlugin(ScrollTrigger);
   lenis=new Lenis({duration:1.05,smoothWheel:true}); lenis.on('scroll',ScrollTrigger.update); tick=t=>lenis.raf(t*1000); gsap.ticker.add(tick);gsap.ticker.lagSmoothing(0);
   ctx=gsap.context(()=>{
@@ -26,10 +27,15 @@ export default function Home(){
    gsap.utils.toArray('.fadeup').forEach(el=>gsap.from(el,{opacity:0,y:80,duration:1,scrollTrigger:{trigger:el,start:'top 85%'}}));
    gsap.utils.toArray('.scene').forEach((el,i)=>ScrollTrigger.create({trigger:el,start:'top center',end:'bottom center',onEnter:()=>setActive(i),onEnterBack:()=>setActive(i)}));
    gsap.to('.journey-pack',{rotate:18,y:80,ease:'none',scrollTrigger:{trigger:journey.current,start:'top top',end:'bottom bottom',scrub:1}});
+   const dot=document.querySelector('.cursor-dot'),ring=document.querySelector('.cursor-ring');const move=e=>{gsap.to(dot,{x:e.clientX,y:e.clientY,duration:.08});gsap.to(ring,{x:e.clientX,y:e.clientY,duration:.38,ease:'power3.out'})};window.addEventListener('mousemove',move);ctx.add(()=>window.removeEventListener('mousemove',move));
+   gsap.utils.toArray('.card,.tile,.split-img').forEach(el=>{gsap.to(el,{y:-28,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1.2}})});
+   gsap.to('.round-word',{rotate:28,scale:1.12,ease:'none',scrollTrigger:{trigger:'.collage',start:'top bottom',end:'bottom top',scrub:1}});
    gsap.to('.ticker-inner',{xPercent:-35,ease:'none',scrollTrigger:{trigger:'.ticker',start:'top bottom',end:'bottom top',scrub:1}});
   },root); ScrollTrigger.refresh();
- })();return()=>{cancel=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[]);
+ })();return()=>{cancel=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[loading]);
  return <main ref={root}>
+  <div className={`loader ${loading?'show':'hide'}`} aria-hidden={!loading}><div className="loader-top"><b>VERDURA°</b><span>BOTANICAL / DIGITAL</span></div><div className="loader-center"><span className="loader-leaf">✤</span><small>ROOTED IN RITUAL</small></div><div className="loader-count">{String(count).padStart(3,'0')}<sup>%</sup></div><div className="loader-line"><i style={{width:count+'%'}}/></div></div>
+  <div className="cursor-dot"/><div className="cursor-ring"/>
   <header><a href="#top" className="logo">VERDURA°</a><nav><a href="#shop">SHOP</a><a href="#story">STORY</a><a href="#ritual">RITUAL</a></nav><button onClick={()=>alert(cart.length?cart.length+' demo item(s) in bag':'Your demo bag is empty')}>BAG {cart.length}</button></header>
   <section className="hero" id="top"><div className="hero-art"/><div className="orb o1"/><div className="orb o2"/>
    <div className="hero-copy"><small>HERBAL SKIN + HAIR RITUALS / 2026</small><h1><span className="intro-line"><span>NATURE,</span></span><span className="intro-line italic"><span>REIMAGINED.</span></span></h1><p>Herbal traditions translated into a playful, modern ritual — designed to move with you.</p><a href="#shop">DISCOVER THE COLLECTION ↘</a></div>
