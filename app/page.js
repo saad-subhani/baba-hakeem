@@ -35,6 +35,19 @@ export default function Home(){
    gsap.fromTo('.ethos-word',{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'none',scrollTrigger:{trigger:'.ethos',start:'top 75%',end:'top 25%',scrub:1}});
    gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
    gsap.utils.toArray('.float-scene').forEach(scene=>{
+    ScrollTrigger.create({trigger:scene,start:'top bottom',end:'bottom top',onUpdate:self=>{
+      const p=self.progress;
+      const hero=scene.querySelector('.float-hero');
+      if(hero) gsap.set(hero,{y:(.5-p)*150,rotation:(p-.5)*2});
+      scene.querySelectorAll('.float-card').forEach((card,i)=>{
+        const speed=[430,600,760][i]||500;
+        gsap.set(card,{y:(.5-p)*speed,rotation:(p-.5)*(i%2?5:-4)});
+      });
+    }});
+   });
+   gsap.utils.toArray('.motion-band').forEach((el,i)=>gsap.fromTo(el,{xPercent:i%2?-10:10},{xPercent:i%2?12:-12,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}}));
+   /* legacy float tweens disabled in favor of explicit progress mapping */
+   gsap.utils.toArray('.float-scene-disabled').forEach(scene=>{
     const hero=scene.querySelector('.float-hero');
     gsap.to(hero,{y:-90,ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}});
     scene.querySelectorAll('.float-card').forEach((card,i)=>{
