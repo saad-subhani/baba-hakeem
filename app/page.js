@@ -25,16 +25,24 @@ export default function Home(){
    const scene=document.querySelector('.principles');
    if(scene){
     const portrait=scene.querySelector('.principle-portrait'),heading=scene.querySelector('.principle-heading');
-    gsap.to(portrait,{y:-150,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}});
-    gsap.to(heading,{y:-210,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}});
-    const moves=[520,690,850,1010];
-    scene.querySelectorAll('.principle-card').forEach((el,i)=>gsap.to(el,{y:-moves[i],ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}}));
-    gsap.to('.principle-leaf',{y:-610,x:-100,rotation:100,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}});
-    gsap.to('.principle-ribbon',{y:-760,x:80,rotation:160,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}});
+    const cards=[...scene.querySelectorAll('.principle-card')];
+    gsap.set([portrait,heading,...cards],{clearProps:'transform'});
+    const speeds=[1.45,1.85,2.15,2.5];
+    ScrollTrigger.create({trigger:scene,start:'top bottom',end:'bottom top',scrub:true,onUpdate:self=>{
+      const travel=self.progress*window.innerHeight*1.7;
+      gsap.set(portrait,{y:-travel*.42});
+      gsap.set(heading,{y:-travel*.72});
+      cards.forEach((el,i)=>gsap.set(el,{y:-travel*speeds[i]}));
+      gsap.set('.principle-leaf',{y:-travel*1.5,x:-self.progress*90,rotation:self.progress*95});
+      gsap.set('.principle-ribbon',{y:-travel*1.9,x:self.progress*70,rotation:70+self.progress*120});
+    }});
    }
    gsap.utils.toArray('.drift').forEach((el,i)=>gsap.fromTo(el,{y:80+i*12},{y:-90-i*18,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
    gsap.to('.trans-copy',{xPercent:-7,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
-   document.querySelectorAll('.swap').forEach(w=>{const a=w.querySelector('.a'),b=w.querySelector('.b');w.addEventListener('mouseenter',()=>{gsap.to(a,{opacity:0,scale:1.05,duration:.35});gsap.to(b,{opacity:1,scale:1,duration:.35})});w.addEventListener('mouseleave',()=>{gsap.to(a,{opacity:1,scale:1,duration:.35});gsap.to(b,{opacity:0,scale:1.05,duration:.35})})});
+   document.querySelectorAll('.principle-card,.product-grid article,.journal-cards article,.offer-small,.offer-big').forEach(el=>{
+      el.addEventListener('mouseenter',()=>gsap.to(el,{y:'-=10',scale:1.025,duration:.25,ease:'power2.out'}));
+      el.addEventListener('mouseleave',()=>gsap.to(el,{y:'+=10',scale:1,duration:.3,ease:'power2.out'}));
+    });
  },root);ScrollTrigger.refresh();setTimeout(()=>ScrollTrigger.refresh(),300)})();return()=>{dead=true;if(ctx)ctx.revert();if(raf)gsap.ticker.remove(raf);if(lenis)lenis.destroy()}},[loading]);
  return <main ref={root}>
   <div className={'loader '+(loading?'':'gone')}><b>VERDURA°</b><div>{String(n).padStart(3,'0')}<sup>%</sup></div><i style={{width:n+'%'}}/></div>
