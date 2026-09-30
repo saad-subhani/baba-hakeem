@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   {id:1,name:'Neem Purifying Cleanser',type:'Clarifying Ritual',price:3200,tone:'#6c7f47',image:'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=85',copy:'Neem, tulsi and aloe in a gentle daily cleanse for clearer-looking skin.'},
@@ -26,14 +23,19 @@ export default function Home() {
   const [cart,setCart]=useState([]),[cartOpen,setCartOpen]=useState(false),[activeIngredient,setActiveIngredient]=useState(0);
 
   useEffect(()=>{
-    const lenis=new Lenis({duration:1.15,smoothWheel:true,wheelMultiplier:.9});
-    const raf=(time)=>{lenis.raf(time);requestAnimationFrame(raf)};
-    requestAnimationFrame(raf);
-    lenis.on('scroll',ScrollTrigger.update);
-    const tick=(time)=>lenis.raf(time*1000);
-    gsap.ticker.add(tick);gsap.ticker.lagSmoothing(0);
-
-    const ctx=gsap.context(()=>{
+    let ctx, lenis, tick, cancelled=false;
+    const start=async()=>{
+      const { ScrollTrigger }=await import('gsap/ScrollTrigger');
+      if(cancelled)return;
+      gsap.registerPlugin(ScrollTrigger);
+      const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!reduceMotion){
+        lenis=new Lenis({duration:1.15,smoothWheel:true,wheelMultiplier:.9});
+        lenis.on('scroll',ScrollTrigger.update);
+        tick=(time)=>lenis.raf(time*1000);
+        gsap.ticker.add(tick);
+      }
+      ctx=gsap.context(()=>{
       gsap.from('.hero-word span',{yPercent:115,duration:1.1,stagger:.08,ease:'power4.out'});
       gsap.from('.hero-copy, .hero-actions, .hero-badge',{opacity:0,y:28,duration:.9,stagger:.12,delay:.4});
       gsap.to('.hero-product',{y:150,rotate:7,scale:.92,ease:'none',scrollTrigger:{trigger:hero.current,start:'top top',end:'bottom top',scrub:1.2}});
@@ -44,9 +46,11 @@ export default function Home() {
       gsap.utils.toArray('.ingredient-panel').forEach((panel,i)=>ScrollTrigger.create({trigger:panel,start:'top center',end:'bottom center',onEnter:()=>setActiveIngredient(i),onEnterBack:()=>setActiveIngredient(i)}));
       gsap.to('.ritual-bottle',{rotate:8,y:20,scale:1.06,ease:'none',scrollTrigger:{trigger:ritual.current,start:'top top',end:'bottom bottom',scrub:1}});
       gsap.to('.marquee-track',{xPercent:-50,ease:'none',scrollTrigger:{trigger:'.marquee',start:'top bottom',end:'bottom top',scrub:1.5}});
-    },root);
-
-    return()=>{ctx.revert();lenis.destroy();gsap.ticker.remove(tick)};
+      },root);
+      ScrollTrigger.refresh();
+    };
+    start().catch(error=>console.error('Verdura motion initialization:',error));
+    return()=>{cancelled=true;if(ctx)ctx.revert();if(lenis)lenis.destroy();if(tick)gsap.ticker.remove(tick)};
   },[]);
 
   const add=(p)=>{setCart(prev=>[...prev,p]);setCartOpen(true)};
