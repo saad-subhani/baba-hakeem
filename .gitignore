@@ -1,0 +1,11 @@
+node_modules
+.next
+.open-next
+.wrangler
+.dev.vars
+.env
+.env.local
+.env.*.local
+cloudflare-env.d.ts
+.DS_Store
+npm-debug.log*
