@@ -3,144 +3,58 @@ import {useEffect,useRef,useState} from 'react';
 import {gsap} from 'gsap';
 import Lenis from '@studio-freight/lenis';
 
-const products=[
-{name:'Neem Cloud Cleanser',price:3200,tag:'PURIFY',image:'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=88'},
-{name:'Turmeric Glow Oil',price:4700,tag:'ILLUMINATE',image:'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1200&q=88'},
-{name:'Aloe Water Gel',price:2800,tag:'SOOTHE',image:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=88'}
-];
-const scenes=[
-['NEEM','PURIFY','A botanical cleansing ritual for a fresh, balanced skin feel.','#d9e6bf'],
-['TURMERIC','GLOW','A warm golden ritual inspired by traditional botanical care.','#e4b650'],
-['ALOE','HYDRATE','Cooling hydration with a soft, weightless finish.','#b9ddd0'],
-['AMLA','NOURISH','A rich herbal ritual inspired by South Asian hair traditions.','#b7c58c']
-];
+const IMG={
+ face:'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=1600&q=90',
+ face2:'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=1400&q=90',
+ serum:'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1200&q=90',
+ flat:'https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=1400&q=90',
+ amber:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=90',
+ ritual:'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1400&q=90'
+};
+const products=[['NEEM CLOUD','Cleanser',3200,IMG.flat],['TURMERIC GLOW','Face Oil',4700,IMG.serum],['ALOE WATER','Gel',2800,IMG.amber]];
 export default function Home(){
- const root=useRef(null),journey=useRef(null); const [active,setActive]=useState(0),[cart,setCart]=useState([]),[loading,setLoading]=useState(true),[count,setCount]=useState(0);
- useEffect(()=>{let raf;const started=performance.now(),duration=2300;const run=t=>{const p=Math.min(1,(t-started)/duration);const eased=1-Math.pow(1-p,3);setCount(Math.round(eased*100));if(p<1)raf=requestAnimationFrame(run);else setTimeout(()=>setLoading(false),180)};raf=requestAnimationFrame(run);return()=>cancelAnimationFrame(raf)},[]);
- useEffect(()=>{if(loading)return;
-  let raf=0;
-  const update=()=>{
-    raf=0;
-    document.querySelectorAll('.float-scene').forEach(scene=>{
-      const r=scene.getBoundingClientRect();
-      const range=r.height+innerHeight;
-      const p=Math.max(0,Math.min(1,(innerHeight-r.top)/range));
-      const hero=scene.querySelector('.float-hero');
-      if(hero) hero.style.transform=`translate3d(0,${(0.5-p)*180}px,0) scale(${1.03+(1-p)*.035})`;
-      scene.querySelectorAll('.float-card').forEach((card,i)=>{
-        const travel=[520,760,980][i]||650;
-        const rot=[-2.5,2,-1.5][i]||0;
-        card.style.transform=`translate3d(0,${(0.5-p)*travel}px,0) rotate(${(p-.5)*rot}deg)`;
-      });
-    });
-    document.querySelectorAll('[data-native-parallax]').forEach(el=>{
-      const r=el.getBoundingClientRect();
-      const p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));
-      const travel=Number(el.dataset.nativeParallax||120);
-      el.style.transform=`translate3d(0,${(0.5-p)*travel}px,0)`;
-    });
-  };
-  const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
-  update(); addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll);
-  return()=>{removeEventListener('scroll',onScroll);removeEventListener('resize',onScroll);if(raf)cancelAnimationFrame(raf)}
- },[loading]);
- useEffect(()=>{if(loading)return;let ctx,lenis,tick,cancel=false;(async()=>{
-  const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(cancel)return; gsap.registerPlugin(ScrollTrigger);
-  lenis=new Lenis({duration:1.05,smoothWheel:true}); lenis.on('scroll',ScrollTrigger.update); tick=t=>lenis.raf(t*1000); gsap.ticker.add(tick);gsap.ticker.lagSmoothing(0);
-  ctx=gsap.context(()=>{
-   gsap.from('.intro-line span',{yPercent:110,stagger:.08,duration:1.1,ease:'power4.out'});
-   gsap.to('.hero-pack',{yPercent:45,rotate:10,scale:.82,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}});
-   gsap.to('.hero-art',{scale:1.18,yPercent:10,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}});
-   gsap.utils.toArray('.fadeup').forEach(el=>gsap.from(el,{opacity:0,y:80,duration:1,scrollTrigger:{trigger:el,start:'top 85%'}}));
-   gsap.utils.toArray('.scene').forEach((el,i)=>ScrollTrigger.create({trigger:el,start:'top center',end:'bottom center',onEnter:()=>setActive(i),onEnterBack:()=>setActive(i)}));
-   gsap.to('.journey-pack',{rotate:18,y:80,ease:'none',scrollTrigger:{trigger:journey.current,start:'top top',end:'bottom bottom',scrub:1}});
-   const dot=document.querySelector('.cursor-dot'),ring=document.querySelector('.cursor-ring');const move=e=>{gsap.to(dot,{x:e.clientX,y:e.clientY,duration:.08});gsap.to(ring,{x:e.clientX,y:e.clientY,duration:.38,ease:'power3.out'})};window.addEventListener('mousemove',move);ctx.add(()=>window.removeEventListener('mousemove',move));
-   gsap.utils.toArray('.card,.tile,.split-img').forEach(el=>{gsap.to(el,{y:-28,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1.2}})});
-   gsap.to('.round-word',{rotate:28,scale:1.12,ease:'none',scrollTrigger:{trigger:'.collage',start:'top bottom',end:'bottom top',scrub:1}});
-   gsap.to('.ticker-inner',{xPercent:-35,ease:'none',scrollTrigger:{trigger:'.ticker',start:'top bottom',end:'bottom top',scrub:1}});
-   gsap.to('.principles-track',{x:()=>-(document.querySelector('.principles-track').scrollWidth-window.innerWidth+80),ease:'none',scrollTrigger:{trigger:'.principles-wrap',start:'top top',end:'+=2600',scrub:1,pin:true,invalidateOnRefresh:true}});
-   gsap.fromTo('.ethos-word',{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'none',scrollTrigger:{trigger:'.ethos',start:'top 75%',end:'top 25%',scrub:1}});
-   gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
-   gsap.utils.toArray('.motion-band').forEach((el,i)=>gsap.fromTo(el,{xPercent:i%2?-10:10},{xPercent:i%2?12:-12,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}}));
-   /* legacy float tweens disabled in favor of explicit progress mapping */
-   gsap.utils.toArray('.float-scene-disabled').forEach(scene=>{
-    const hero=scene.querySelector('.float-hero');
-    gsap.to(hero,{y:-90,ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}});
-    scene.querySelectorAll('.float-card').forEach((card,i)=>{
-      const speed=Number(card.dataset.speed||1);
-      gsap.to(card,{y:-(260*speed),ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}});
-    });
-   });
-   gsap.utils.toArray('.tk-window').forEach(section=>{
-    const media=section.querySelector('.tk-window-media'),img=section.querySelector('.tk-window-media img');
-    const tl=gsap.timeline({scrollTrigger:{trigger:section,start:'top bottom',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
-    tl.fromTo(media,{clipPath:'inset(12% 26% 12% 26%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1,ease:'none'})
-      .to(media,{clipPath:'inset(15% 20% 15% 20%)',duration:1,ease:'none'});
-    tl.fromTo(img,{scale:1.32,yPercent:-7},{scale:1.02,yPercent:7,duration:2,ease:'none'},0);
-   });
-   gsap.utils.toArray('.crop-story').forEach(section=>{
-    const frame=section.querySelector('.crop-frame'),img=section.querySelector('.crop-media img'),copy=section.querySelector('.crop-copy');
-    const tl=gsap.timeline({scrollTrigger:{trigger:section,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
-    tl.fromTo(frame,{clipPath:'inset(18% 12% 18% 12%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1,ease:'none'})
-      .to(frame,{clipPath:'inset(28% 18% 28% 18%)',duration:1,ease:'none'});
-    tl.fromTo(img,{scale:1.38,yPercent:-8},{scale:1.02,yPercent:8,duration:2,ease:'none'},0);
-    tl.fromTo(copy,{y:110,opacity:.25},{y:-70,opacity:1,duration:2,ease:'none'},0);
-   });
-  },root); ScrollTrigger.refresh();
- })();return()=>{cancel=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[loading]);
+ const root=useRef(null);const [loading,setLoading]=useState(true),[n,setN]=useState(0),[bag,setBag]=useState(0);
+ useEffect(()=>{let r;const a=performance.now();const go=t=>{const p=Math.min(1,(t-a)/1800);setN(Math.round((1-Math.pow(1-p,3))*100));p<1?r=requestAnimationFrame(go):setTimeout(()=>setLoading(false),120)};r=requestAnimationFrame(go);return()=>cancelAnimationFrame(r)},[]);
+ useEffect(()=>{if(loading)return;let ctx,lenis,tick,dead=false;(async()=>{const {ScrollTrigger}=await import('gsap/ScrollTrigger');if(dead)return;gsap.registerPlugin(ScrollTrigger);lenis=new Lenis({duration:1.15,smoothWheel:true});lenis.on('scroll',ScrollTrigger.update);tick=t=>lenis.raf(t*1000);gsap.ticker.add(tick);gsap.ticker.lagSmoothing(0);
+ ctx=gsap.context(()=>{
+  gsap.from('.hero-title span',{yPercent:120,stagger:.08,duration:1.15,ease:'power4.out'});
+  gsap.to('.hero-bg',{scale:1.14,yPercent:9,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  document.querySelectorAll('.orbit').forEach(scene=>{const main=scene.querySelector('.orbit-main');gsap.to(main,{y:-120,ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}});scene.querySelectorAll('.orbit-card').forEach((el,i)=>gsap.to(el,{y:-(360+i*170),rotation:(i-1)*4,ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}}));});
+  document.querySelectorAll('.drift').forEach((el,i)=>gsap.fromTo(el,{y:90+i*20},{y:-100-i*25,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
+  document.querySelectorAll('.reveal').forEach(el=>gsap.from(el,{y:70,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 86%'}}));
+  gsap.to('.marquee-inner',{xPercent:-35,ease:'none',scrollTrigger:{trigger:'.marquee',start:'top bottom',end:'bottom top',scrub:true}});
+  gsap.to('.trans-word',{xPercent:-8,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
+  gsap.to('.paint.one',{y:-170,rotate:12,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
+  gsap.to('.paint.two',{y:-260,rotate:-9,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
+ },root);ScrollTrigger.refresh()})();return()=>{dead=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[loading]);
  return <main ref={root}>
-  <div className={`loader ${loading?'show':'hide'}`} aria-hidden={!loading}><div className="loader-top"><b>VERDURA°</b><span>BOTANICAL / DIGITAL</span></div><div className="loader-center"><span className="loader-leaf">✤</span><small>ROOTED IN RITUAL</small></div><div className="loader-count">{String(count).padStart(3,'0')}<sup>%</sup></div><div className="loader-line"><i style={{width:count+'%'}}/></div></div>
-  <div className="cursor-dot"/><div className="cursor-ring"/>
-  <header><a href="#top" className="logo">VERDURA°</a><nav><a href="#shop">SHOP</a><a href="#story">STORY</a><a href="#ritual">RITUAL</a></nav><button onClick={()=>alert(cart.length?cart.length+' demo item(s) in bag':'Your demo bag is empty')}>BAG {cart.length}</button></header>
-  <section className="hero" id="top"><div className="hero-art"/><div className="orb o1"/><div className="orb o2"/>
-   <div className="hero-copy"><small>HERBAL SKIN + HAIR RITUALS / 2026</small><h1><span className="intro-line"><span>NATURE,</span></span><span className="intro-line italic"><span>REIMAGINED.</span></span></h1><p>Herbal traditions translated into a playful, modern ritual — designed to move with you.</p><a href="#shop">DISCOVER THE COLLECTION ↘</a></div>
-   <div className="hero-pack"><div className="cap"/><div className="pack-label"><small>VERDURA</small><b>TURMERIC<br/>GLOW</b><span>BOTANICAL FACE OIL · 30ML</span></div></div>
-   <div className="scroll">SCROLL TO EXPLORE ↓</div>
-  </section>
-  <section className="ticker"><div className="ticker-inner">NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦ NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦</div></section>
-  <section className="float-scene">
-   <div className="float-hero"><img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=1700&q=90"/></div>
-   <article className="float-card fc1" data-speed="1.35"><div className="float-icon">♧</div><h3>Clean, Beyond<br/>Reproach</h3><p>Focused botanical rituals with a clear and considered ingredient story.</p></article>
-   <article className="float-card fc2" data-speed="1.7"><div className="float-icon">♡</div><h3>Conscious &<br/>Responsible</h3><p>Thoughtful presentation inspired by lower-impact, responsible choices.</p></article>
-   <article className="float-card fc3" data-speed="2.05"><div className="float-icon">♙</div><h3>Potent & Multi<br/>Tasking</h3><p>Simple rituals designed to feel useful, tactile and easy to understand.</p></article>
-  </section>
-  <section className="tk-window"><div className="tk-window-copy"><small>SKIN / BOTANY / RITUAL</small><h2>HEALTHY SKIN<br/><i>WITHOUT THE NOISE.</i></h2><p>Botanical care presented with clarity, movement and intention.</p></div><div className="tk-window-media"><img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=2000&q=90"/></div></section>
-  <section className="statement" id="story"><p className="kicker fadeup">01 / OUR WORLD</p><h2 className="fadeup">PLANTS HAVE<br/><i>PERSONALITIES.</i></h2><div className="statement-grid fadeup"><p>We built Verdura as an immersive herbal commerce concept: expressive typography, tactile movement, oversized products and a story that changes as you scroll.</p><div><b>ROOTED</b><span>in botanical ritual</span></div><div><b>PLAYFUL</b><span>in digital form</span></div></div></section>
-  <section className="principles-wrap">
-   <div className="principles-track">
-    <article className="principle intro-panel"><small>02 / OUR PRINCIPLES</small><h2>CLEAN.<br/><i>CONSCIOUS.</i><br/>EXPRESSIVE.</h2><p>Four ideas shape every Verdura ritual.</p></article>
-    <article className="principle p-photo"><img className="reveal-img" src="https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=1400&q=88"/><span>01</span><h3>BOTANICAL<br/>CLARITY</h3><p>Focused rituals with ingredients placed front and center.</p></article>
-    <article className="principle lime"><span>02</span><div className="symbol">✤</div><h3>RADICAL<br/><i>SIMPLICITY</i></h3><p>Nothing hidden behind noise. A clear story from plant to ritual.</p></article>
-    <article className="principle p-photo"><img className="reveal-img" src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1400&q=88"/><span>03</span><h3>RITUAL<br/>FIRST</h3><p>Products designed as sensory moments, not just objects.</p></article>
-    <article className="principle cream"><span>04</span><div className="symbol">◎</div><h3>LOWER<br/><i>IMPACT</i></h3><p>A concept built around thoughtful, responsible presentation.</p></article>
-   </div>
-  </section>
-  <section className="collage">
-   <div className="tile t1 fadeup"><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1300&q=88"/><span>BOTANICAL OBJECTS / 01</span></div>
-   <div className="round-word">HERBAL<br/><i>RITUAL</i></div>
-   <div className="tile t2 fadeup"><img src="https://images.unsplash.com/photo-1601049676869-702ea24cfd58?auto=format&fit=crop&w=1200&q=88"/><span>TEXTURE / 02</span></div>
-  </section>
-  <section className="crop-story crop-a"><div className="crop-frame"><div className="crop-copy"><small>SKIN / BOTANY / RITUAL</small><h2>HEALTHY SKIN<br/><i>WITHOUT THE NOISE.</i></h2><p>Scroll slowly. The frame itself opens, breathes and crops around the image.</p></div><div className="crop-media"><img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=1800&q=90"/></div></div></section>
-  <section className="crop-story crop-b"><div className="crop-frame reverse"><div className="crop-copy"><small>PLANT / FORMULA / FEEL</small><h2>WHAT'S INSIDE<br/><i>STAYS VISIBLE.</i></h2><p>A scroll-linked mask transforms the composition in both directions.</p></div><div className="crop-media"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1800&q=90"/></div></div></section>
-  <section className="ethos"><small>OUR ETHOS / 03</small><div className="ethos-word">HIDE<br/><i>NOTHING.</i></div><div className="ethos-copy"><span>TRANSPARENCY AS A DESIGN LANGUAGE</span><p>Big type, visible ingredients, honest hierarchy and tactile motion. Scroll becomes part of the product story.</p></div></section>
-  <section className="shop" id="shop"><div className="shop-head fadeup"><small>04 / SHOP THE RITUAL</small><h2>GOOD SKIN.<br/><i>GOOD MOOD.</i></h2></div><div className="cards">{products.map((p,i)=><article className="card fadeup" key={p.name}><div className="pic"><img src={p.image}/><span>0{i+1}</span><button onClick={()=>setCart(x=>[...x,p])}>ADD +</button></div><div className="meta"><div><small>{p.tag}</small><h3>{p.name}</h3></div><b>PKR {p.price.toLocaleString()}</b></div></article>)}</div></section>
-  <section className="journey" id="ritual" ref={journey} style={{'--scene':scenes[active][3]}}>
-   <div className="journey-sticky"><div className="journey-title"><small>05 / INGREDIENT JOURNEY</small><h2>MEET YOUR<br/><i>BOTANICALS.</i></h2></div><div className="journey-stage"><div className="sun"/><div className="journey-pack"><div className="cap"/><div className="pack-label"><small>VERDURA</small><b>{scenes[active][0]}</b><span>{scenes[active][1]} RITUAL</span></div></div><div className="giant">{scenes[active][0]}</div></div></div>
-   <div className="scenes">{scenes.map((s,i)=><article className="scene" key={s[0]}><span>0{i+1}</span><div><small>{s[1]}</small><h3>{s[0]}</h3><p>{s[2]}</p></div></article>)}</div>
-  </section>
-  <section className="split"><div className="split-img"/><div className="split-copy fadeup"><small>06 / FROM ROOT TO RITUAL</small><h2>LESS NOISE.<br/><i>MORE NATURE.</i></h2><p>A visual demo for a future herbal e-commerce brand — combining product discovery with cinematic scrolling and playful interaction.</p><a href="#shop">SHOP BOTANICALS ↗</a></div></section>
-  <section className="journal">
-   <div className="journal-head"><small>07 / THE VERDURA JOURNAL</small><h2>CLEAN<br/><i>JOURNAL.</i></h2><p>Notes on botanical rituals, ingredient stories and slower everyday care.</p></div>
-   <div className="journal-grid"><article><img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1000&q=88"/><small>BOTANICAL NOTES</small><h3>How to build a simple herbal ritual</h3></article><article><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1000&q=88"/><small>INGREDIENT GUIDE</small><h3>Meet the plants behind Verdura</h3></article><article><img src="https://images.unsplash.com/photo-1601049676869-702ea24cfd58?auto=format&fit=crop&w=1000&q=88"/><small>RITUAL</small><h3>Making room for slower care</h3></article></div>
-  </section>
-  <section className="social">
-   <div className="social-copy"><small>08 / CONNECT WITH US</small><h2>CONNECT<br/>WITH US <i>daily.</i></h2><p>Follow the Verdura world — botanical textures, rituals and new drops.</p><a href="#top">EXPLORE VERDURA ↗</a></div>
-   <div className="social-main"><img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=1400&q=88"/></div>
-   <div className="social-mini sm1"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=88"/></div>
-   <div className="social-mini sm2"><img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=88"/></div>
-  </section>
-  <section className="newsletter"><div className="newsletter-art"/><div className="newsletter-box"><small>VERDURA LETTERS</small><h2>HEAR MORE<br/>FROM US</h2><p>Botanical stories, ritual notes and collection updates.</p><div className="email-demo"><span>YOUR EMAIL ADDRESS</span><b>→</b></div><button onClick={()=>alert('Demo newsletter signup')}>SUBSCRIBE</button></div></section>
-  <section className="final"><div className="flower f1">✤</div><div className="flower f2">✤</div><small>VERDURA BOTANICS</small><h2 className="fadeup">FEEL GOOD<br/><i>IN YOUR SKIN.</i></h2><a href="#top">BACK TO TOP ↑</a></section>
-  <footer><b>VERDURA°</b><span>IMMERSIVE HERBAL E-COMMERCE DEMO</span><span>© 2026</span></footer>
+ <div className={'loader '+(loading?'':'gone')}><b>VERDURA°</b><div>{String(n).padStart(3,'0')}<sup>%</sup></div><i style={{width:n+'%'}}/></div>
+ <header><b>verdura.</b><nav><a href="#shop">SHOP</a><a href="#ethos">PHILOSOPHY</a><a href="#journal">JOURNAL</a></nav><button onClick={()=>alert('Demo bag: '+bag)}>BAG {bag}</button></header>
+ <section className="hero"><div className="hero-bg"/><div className="hero-title"><small>BOTANICAL CARE / DIGITAL RITUAL</small><h1><span>NATURE</span><span><i>REIMAGINED.</i></span></h1><p>Plant-led rituals, expressive textures and a cleaner way to meet your skin.</p><a href="#shop">EXPLORE PRODUCTS ↘</a></div><div className="hero-bottle"><span>VERDURA</span><b>ALOE<br/>WATER</b><small>HYDRATING GEL</small></div></section>
+ <div className="marquee"><div className="marquee-inner">NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦ NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦</div></div>
+
+ <section className="orbit">
+  <div className="orbit-heading"><small>01 / OUR STANDARD</small><h2>CLEAN, CONSCIOUS,<br/><i>PERFORMANCE.</i></h2></div>
+  <div className="orbit-main"><img src={IMG.face}/></div>
+  <article className="orbit-card oc1"><span>✧</span><h3>Clean, Beyond<br/>Reproach</h3><p>Clear botanical storytelling with thoughtful formulas and no visual noise.</p></article>
+  <article className="orbit-card oc2"><span>♡</span><h3>Conscious &<br/>Responsible</h3><p>Designed around intentional choices, useful rituals and considered presentation.</p></article>
+  <article className="orbit-card oc3"><span>♧</span><h3>Potent & Multi<br/>Tasking</h3><p>Focused products made to earn their place in a simple daily ritual.</p></article>
+ </section>
+
+ <section className="explore" id="shop"><div className="section-title reveal"><small>02 / EXPLORE</small><h2>PURE <i>POTENCY.</i></h2></div>
+  <div className="editorial row1"><div className="big-photo drift"><img src={IMG.face2}/></div><div className="product-side"><h3>Pure<br/><i>Brilliance</i></h3><div className="product-grid">{products.slice(0,2).map((p,i)=><article key={p[0]}><img src={p[3]}/><small>{p[1]}</small><b>{p[0]}</b><button onClick={()=>setBag(x=>x+1)}>ADD +</button></article>)}</div></div></div>
+  <div className="editorial row2"><div className="product-side"><h3>Verdura<br/><i>Blends</i></h3><div className="product-grid">{products.slice(1).map(p=><article key={p[0]}><img src={p[3]}/><small>{p[1]}</small><b>{p[0]}</b><button onClick={()=>setBag(x=>x+1)}>ADD +</button></article>)}</div></div><div className="big-photo drift"><img src={IMG.face}/></div></div>
+ </section>
+
+ <section className="transparency" id="ethos"><small>03 / OUR ETHOS</small><div className="trans-word">RADICAL<br/>TRANSPARENCY.<br/><i>HIDE</i><br/>NOTHING.</div><div className="paint one"/><div className="paint two"/><div className="truth"><b>WHAT'S INSIDE<br/><i>STAYS VISIBLE.</i></b><p>We make the ingredient story part of the experience — clear, direct and easy to explore.</p></div></section>
+
+ <section className="offer"><div className="offer-mini drift"><img src={IMG.serum}/><p>Only proven rituals,<br/>clearly presented.</p></div><div className="offer-main drift"><img src={IMG.amber}/><div><small>VERDURA EDIT</small><h2>EXCITING<br/><i>RITUALS await.</i></h2><a href="#shop">DISCOVER ↗</a></div></div></section>
+
+ <section className="journal" id="journal"><div className="journal-lead drift"><img src={IMG.ritual}/><h3>Plant rituals that turn everyday care into a sensory moment.</h3></div><div className="journal-title"><small>04 / STORIES</small><h2><i>clean</i><br/>JOURNAL</h2><p>BOTANY / SKIN / CULTURE</p></div><div className="journal-cards"><article><img src={IMG.face2}/><b>The art of a slower skincare ritual</b></article><article><img src={IMG.flat}/><b>Why botanical texture matters</b></article></div></section>
+
+ <section className="social"><div className="social-title reveal"><small>CONNECT</small><h2>WITH US<br/><i>on instagram</i></h2></div><div className="social-collage"><img className="s1 drift" src={IMG.face}/><img className="s2 drift" src={IMG.flat}/><img className="s3 drift" src={IMG.serum}/></div></section>
+ <section className="newsletter"><div className="news-image"><img src={IMG.amber}/></div><div className="news-box"><h2>HEAR MORE<br/>FROM US</h2><p>Botanical notes, new rituals and studio stories.</p><input placeholder="YOUR EMAIL"/><button>SUBSCRIBE ↗</button></div></section>
+ <section className="end"><small>VERDURA BOTANICS</small><h2>FEEL GOOD<br/><i>IN YOUR SKIN.</i></h2><a href="#">BACK TO TOP ↑</a></section>
+ <footer><b>verdura.</b><span>IMMERSIVE BOTANICAL COMMERCE CONCEPT</span><span>© 2026</span></footer>
  </main>
 }
