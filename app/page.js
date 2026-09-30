@@ -25,21 +25,15 @@ export default function Home(){
   document.querySelectorAll('.orbit').forEach(scene=>{
    const main=scene.querySelector('.orbit-main');
    const cards=[...scene.querySelectorAll('.orbit-card')];
+   const bases=cards.map(el=>Number(el.dataset.base||0));
    const mainBase=Number(main?.dataset.base||0);
    gsap.set(main,{y:mainBase});
-   cards.forEach(el=>gsap.set(el,{y:Number(el.dataset.base||0),rotation:0}));
-   ScrollTrigger.create({
-    trigger:scene,start:'top 85%',end:'bottom top',invalidateOnRefresh:true,
-    onUpdate:self=>{
-     const p=self.progress;
-     if(main) gsap.set(main,{y:mainBase-(p*120)});
-     cards.forEach((el,i)=>{
-      const base=Number(el.dataset.base||0);
-      const travel=[330,500,650][i]||400;
-      gsap.set(el,{y:base-(p*travel),rotation:(p*(i-1)*3)});
-     });
-    }
-   });
+   cards.forEach((el,i)=>gsap.set(el,{y:bases[i],rotation:0}));
+   gsap.timeline({scrollTrigger:{trigger:scene,start:'top 92%',end:'bottom 8%',scrub:true,invalidateOnRefresh:true}})
+     .to(main,{y:mainBase-190,ease:'none'},0)
+     .to(cards[0],{y:bases[0]-620,rotation:-1.5,ease:'none'},0)
+     .to(cards[1],{y:bases[1]-780,rotation:1.2,ease:'none'},0)
+     .to(cards[2],{y:bases[2]-930,rotation:-.8,ease:'none'},0);
   });
   document.querySelectorAll('.drift').forEach((el,i)=>gsap.fromTo(el,{y:90+i*20},{y:-100-i*25,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
   document.querySelectorAll('.reveal').forEach(el=>gsap.from(el,{y:70,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 86%'}}));
