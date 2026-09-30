@@ -17,3 +17,24 @@ header{position:fixed;z-index:100;top:0;left:0;right:0;height:68px;background:#f
 .product-grid article:hover,.journal-cards article:hover,.offer-small:hover,.offer-big:hover{box-shadow:0 22px 50px rgba(0,0,0,.12)}
 .swap .b{display:none!important}.swap .a{opacity:1!important;transform:none!important}
 @media(max-width:700px){.principles{height:225vh}.principle-portrait{top:62vh}.pc1{top:64vh}.pc2{top:96vh}.pc3{top:124vh}.pc4{top:154vh}}
+
+/* locked TrueKind-style principles choreography: base positions + scroll transforms */
+.principles{height:300vh!important;overflow:hidden!important}
+.principle-heading{top:14vh!important}
+.principle-portrait{top:88vh!important;left:18%!important;width:64%!important;height:112vh!important}
+.pc1{left:23%!important;top:82vh!important}
+.pc2{left:4.5%!important;top:118vh!important}
+.pc3{right:4.5%!important;top:146vh!important}
+.pc4{right:23%!important;top:176vh!important}
+.principle-leaf{top:70vh!important}
+.principle-ribbon{top:140vh!important}
+.principle-card{transform-origin:center center}
+@media(max-width:700px){
+ .principles{height:235vh!important}
+ .principle-heading{top:9vh!important}
+ .principle-portrait{left:10%!important;top:68vh!important;width:80%!important;height:72vh!important}
+ .pc1{left:4%!important;top:62vh!important}
+ .pc2{left:2%!important;top:94vh!important}
+ .pc3{right:2%!important;top:124vh!important}
+ .pc4{right:10%!important;top:154vh!important}
+}
