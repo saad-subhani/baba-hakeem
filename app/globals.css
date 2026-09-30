@@ -70,3 +70,10 @@ footer{height:110px;background:#102719;color:#e9efcf;display:flex;align-items:ce
 .float-hero{position:sticky!important;top:8vh!important;margin-top:18vh;transform:translateZ(0)}
 .float-card{position:absolute!important;transform:translateZ(0);z-index:8}
 .fc1{top:38vh!important}.fc2{top:105vh!important}.fc3{top:165vh!important}
+
+/* native parallax scene: intentionally independent of GSAP */
+.float-scene{height:260vh!important;position:relative!important;overflow:hidden!important}
+.float-hero{position:absolute!important;top:72vh!important;left:16%!important;width:68%!important;height:108vh!important;transition:none!important;will-change:transform!important}
+.float-card{transition:none!important;will-change:transform!important}
+.fc1{top:66vh!important}.fc2{top:128vh!important}.fc3{top:188vh!important}
+@media(max-width:700px){.float-scene{height:230vh!important}.float-hero{left:8%!important;width:84%!important;height:80vh!important}.fc1{top:58vh!important}.fc2{top:118vh!important}.fc3{top:175vh!important}}
