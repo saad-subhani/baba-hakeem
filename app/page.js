@@ -34,6 +34,14 @@ export default function Home(){
    gsap.to('.principles-track',{x:()=>-(document.querySelector('.principles-track').scrollWidth-window.innerWidth+80),ease:'none',scrollTrigger:{trigger:'.principles-wrap',start:'top top',end:'+=2600',scrub:1,pin:true,invalidateOnRefresh:true}});
    gsap.fromTo('.ethos-word',{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'none',scrollTrigger:{trigger:'.ethos',start:'top 75%',end:'top 25%',scrub:1}});
    gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
+   gsap.utils.toArray('.float-scene').forEach(scene=>{
+    const hero=scene.querySelector('.float-hero');
+    gsap.to(hero,{y:-90,ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}});
+    scene.querySelectorAll('.float-card').forEach((card,i)=>{
+      const speed=Number(card.dataset.speed||1);
+      gsap.to(card,{y:-(260*speed),ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}});
+    });
+   });
    gsap.utils.toArray('.tk-window').forEach(section=>{
     const media=section.querySelector('.tk-window-media'),img=section.querySelector('.tk-window-media img');
     const tl=gsap.timeline({scrollTrigger:{trigger:section,start:'top bottom',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
@@ -61,6 +69,12 @@ export default function Home(){
    <div className="scroll">SCROLL TO EXPLORE ↓</div>
   </section>
   <section className="ticker"><div className="ticker-inner">NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦ NEEM ✦ TURMERIC ✦ ALOE ✦ AMLA ✦ TULSI ✦ ROSE ✦</div></section>
+  <section className="float-scene">
+   <div className="float-hero"><img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=1700&q=90"/></div>
+   <article className="float-card fc1" data-speed="1.35"><div className="float-icon">♧</div><h3>Clean, Beyond<br/>Reproach</h3><p>Focused botanical rituals with a clear and considered ingredient story.</p></article>
+   <article className="float-card fc2" data-speed="1.7"><div className="float-icon">♡</div><h3>Conscious &<br/>Responsible</h3><p>Thoughtful presentation inspired by lower-impact, responsible choices.</p></article>
+   <article className="float-card fc3" data-speed="2.05"><div className="float-icon">♙</div><h3>Potent & Multi<br/>Tasking</h3><p>Simple rituals designed to feel useful, tactile and easy to understand.</p></article>
+  </section>
   <section className="tk-window"><div className="tk-window-copy"><small>SKIN / BOTANY / RITUAL</small><h2>HEALTHY SKIN<br/><i>WITHOUT THE NOISE.</i></h2><p>Botanical care presented with clarity, movement and intention.</p></div><div className="tk-window-media"><img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=2000&q=90"/></div></section>
   <section className="statement" id="story"><p className="kicker fadeup">01 / OUR WORLD</p><h2 className="fadeup">PLANTS HAVE<br/><i>PERSONALITIES.</i></h2><div className="statement-grid fadeup"><p>We built Verdura as an immersive herbal commerce concept: expressive typography, tactile movement, oversized products and a story that changes as you scroll.</p><div><b>ROOTED</b><span>in botanical ritual</span></div><div><b>PLAYFUL</b><span>in digital form</span></div></div></section>
   <section className="principles-wrap">
