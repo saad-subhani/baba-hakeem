@@ -17,6 +17,33 @@ const scenes=[
 export default function Home(){
  const root=useRef(null),journey=useRef(null); const [active,setActive]=useState(0),[cart,setCart]=useState([]),[loading,setLoading]=useState(true),[count,setCount]=useState(0);
  useEffect(()=>{let raf;const started=performance.now(),duration=2300;const run=t=>{const p=Math.min(1,(t-started)/duration);const eased=1-Math.pow(1-p,3);setCount(Math.round(eased*100));if(p<1)raf=requestAnimationFrame(run);else setTimeout(()=>setLoading(false),180)};raf=requestAnimationFrame(run);return()=>cancelAnimationFrame(raf)},[]);
+ useEffect(()=>{if(loading)return;
+  let raf=0;
+  const update=()=>{
+    raf=0;
+    document.querySelectorAll('.float-scene').forEach(scene=>{
+      const r=scene.getBoundingClientRect();
+      const range=r.height+innerHeight;
+      const p=Math.max(0,Math.min(1,(innerHeight-r.top)/range));
+      const hero=scene.querySelector('.float-hero');
+      if(hero) hero.style.transform=`translate3d(0,${(0.5-p)*180}px,0) scale(${1.03+(1-p)*.035})`;
+      scene.querySelectorAll('.float-card').forEach((card,i)=>{
+        const travel=[520,760,980][i]||650;
+        const rot=[-2.5,2,-1.5][i]||0;
+        card.style.transform=`translate3d(0,${(0.5-p)*travel}px,0) rotate(${(p-.5)*rot}deg)`;
+      });
+    });
+    document.querySelectorAll('[data-native-parallax]').forEach(el=>{
+      const r=el.getBoundingClientRect();
+      const p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));
+      const travel=Number(el.dataset.nativeParallax||120);
+      el.style.transform=`translate3d(0,${(0.5-p)*travel}px,0)`;
+    });
+  };
+  const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
+  update(); addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll);
+  return()=>{removeEventListener('scroll',onScroll);removeEventListener('resize',onScroll);if(raf)cancelAnimationFrame(raf)}
+ },[loading]);
  useEffect(()=>{if(loading)return;let ctx,lenis,tick,cancel=false;(async()=>{
   const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(cancel)return; gsap.registerPlugin(ScrollTrigger);
   lenis=new Lenis({duration:1.05,smoothWheel:true}); lenis.on('scroll',ScrollTrigger.update); tick=t=>lenis.raf(t*1000); gsap.ticker.add(tick);gsap.ticker.lagSmoothing(0);
@@ -34,17 +61,6 @@ export default function Home(){
    gsap.to('.principles-track',{x:()=>-(document.querySelector('.principles-track').scrollWidth-window.innerWidth+80),ease:'none',scrollTrigger:{trigger:'.principles-wrap',start:'top top',end:'+=2600',scrub:1,pin:true,invalidateOnRefresh:true}});
    gsap.fromTo('.ethos-word',{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'none',scrollTrigger:{trigger:'.ethos',start:'top 75%',end:'top 25%',scrub:1}});
    gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
-   gsap.utils.toArray('.float-scene').forEach(scene=>{
-    ScrollTrigger.create({trigger:scene,start:'top bottom',end:'bottom top',onUpdate:self=>{
-      const p=self.progress;
-      const hero=scene.querySelector('.float-hero');
-      if(hero) gsap.set(hero,{y:(.5-p)*150,rotation:(p-.5)*2});
-      scene.querySelectorAll('.float-card').forEach((card,i)=>{
-        const speed=[430,600,760][i]||500;
-        gsap.set(card,{y:(.5-p)*speed,rotation:(p-.5)*(i%2?5:-4)});
-      });
-    }});
-   });
    gsap.utils.toArray('.motion-band').forEach((el,i)=>gsap.fromTo(el,{xPercent:i%2?-10:10},{xPercent:i%2?12:-12,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}}));
    /* legacy float tweens disabled in favor of explicit progress mapping */
    gsap.utils.toArray('.float-scene-disabled').forEach(scene=>{
