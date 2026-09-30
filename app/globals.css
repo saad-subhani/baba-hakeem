@@ -52,3 +52,14 @@ header{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rg
  .orbit .oc2{top:78vh!important}
  .orbit .oc3{top:103vh!important}
 }
+
+/* botanical layers orbit independently with scroll */
+.orbit-leaf{position:absolute;z-index:5;right:17%;top:28%;width:72px;height:150px;transform-origin:50% 100%;pointer-events:none;filter:drop-shadow(0 12px 16px rgba(23,55,36,.14));will-change:transform}
+.orbit-leaf i{position:absolute;display:block;width:44px;height:105px;background:linear-gradient(115deg,#dfff74 0%,#73a93c 45%,#214d2e 100%);border-radius:100% 0 100% 0;transform:rotate(32deg) skewY(-8deg);box-shadow:inset -7px -3px 12px rgba(18,52,30,.2)}
+.orbit-leaf i:after{content:"";position:absolute;left:48%;top:8%;width:1px;height:86%;background:rgba(255,255,255,.5);transform:rotate(-12deg)}
+.orbit-leaf i+ i{width:32px;height:76px;left:28px;top:65px;transform:rotate(118deg);opacity:.9}
+.orbit-petal{position:absolute;z-index:4;width:48px;height:105px;border-radius:100% 8% 100% 8%;pointer-events:none;will-change:transform;filter:drop-shadow(0 10px 12px rgba(45,49,30,.12))}
+.petal-a{left:25%;top:44%;background:linear-gradient(160deg,#f3a536,#ff6f32 58%,#cf3d29)}
+.petal-b{right:10%;top:70%;width:36px;height:82px;background:linear-gradient(160deg,#dfff7d,#74a83c)}
+.petal-c{left:11%;top:78%;width:42px;height:92px;background:linear-gradient(160deg,#f7d6a2,#dd8f55)}
+@media(max-width:700px){.orbit-leaf{right:8%;width:50px;height:105px}.orbit-petal{transform:scale(.7)}}
