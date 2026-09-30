@@ -150,3 +150,10 @@ header{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rg
   transform:none!important;
   filter:none!important;
 }
+
+/* cursor interaction fix: mouse movement must never reposition editorial layers */
+.cursor-dot,.cursor-ring{display:none!important}
+.float-card,.float-hero,.float-scene img{pointer-events:auto}
+.float-card:hover{filter:none!important;transform:none}
+.float-card{transition:box-shadow .25s ease,background-color .25s ease!important}
+.float-card:hover{box-shadow:0 14px 38px rgba(20,50,34,.10);background:#f4f4f2}
