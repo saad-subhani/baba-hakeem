@@ -27,3 +27,13 @@ header{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rg
 .journal-cards article{transition:transform .45s,background .45s}.journal-cards article:hover{transform:translateY(-10px);background:#292929}
 .social-collage img{transition:filter .45s,box-shadow .45s}.social-collage img:hover{filter:saturate(1.18);box-shadow:0 25px 60px rgba(0,0,0,.16)}
 @media(pointer:coarse){.hover-lift:hover{box-shadow:none}.swap-img>.swap-b,.swap-media>.swap-b{display:none}}
+
+/* floating principles initial-position correction */
+.float-scene .fc1{top:68vh!important}
+.float-scene .fc2{top:92vh!important}
+.float-scene .fc3{top:118vh!important}
+@media(max-width:700px){
+ .float-scene .fc1{top:58vh!important}
+ .float-scene .fc2{top:86vh!important}
+ .float-scene .fc3{top:112vh!important}
+}
