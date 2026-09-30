@@ -36,10 +36,11 @@ export default function Home(){
    gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
    gsap.utils.toArray('.crop-story').forEach(section=>{
     const frame=section.querySelector('.crop-frame'),img=section.querySelector('.crop-media img'),copy=section.querySelector('.crop-copy');
-    gsap.fromTo(frame,{clipPath:'inset(24% 18% 24% 18% round 2px)'},{clipPath:'inset(0% 0% 0% 0% round 0px)',ease:'none',scrollTrigger:{trigger:section,start:'top bottom',end:'center center',scrub:1.1}});
-    gsap.fromTo(frame,{clipPath:'inset(0% 0% 0% 0% round 0px)'},{clipPath:'inset(20% 12% 20% 12% round 2px)',ease:'none',scrollTrigger:{trigger:section,start:'center center',end:'bottom top',scrub:1.1}});
-    gsap.fromTo(img,{scale:1.25,yPercent:-5},{scale:1.02,yPercent:5,ease:'none',scrollTrigger:{trigger:section,start:'top bottom',end:'bottom top',scrub:1.1}});
-    gsap.fromTo(copy,{y:80,opacity:.2},{y:-45,opacity:1,ease:'none',scrollTrigger:{trigger:section,start:'top 85%',end:'center 55%',scrub:1}});
+    const tl=gsap.timeline({scrollTrigger:{trigger:section,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
+    tl.fromTo(frame,{clipPath:'inset(18% 12% 18% 12%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1,ease:'none'})
+      .to(frame,{clipPath:'inset(28% 18% 28% 18%)',duration:1,ease:'none'});
+    tl.fromTo(img,{scale:1.38,yPercent:-8},{scale:1.02,yPercent:8,duration:2,ease:'none'},0);
+    tl.fromTo(copy,{y:110,opacity:.25},{y:-70,opacity:1,duration:2,ease:'none'},0);
    });
   },root); ScrollTrigger.refresh();
  })();return()=>{cancel=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[loading]);
