@@ -10,7 +10,9 @@ const IMG={
  serum:'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1200&q=90',
  flat:'https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=1400&q=90',
  amber:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=90',
- ritual:'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1400&q=90'
+ ritual:'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1400&q=90',
+ hoverProduct:'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=1400&q=90',
+ hoverRitual:'https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1400&q=90'
 };
 const products=[['NEEM CLOUD','Cleanser',IMG.flat],['TURMERIC GLOW','Face Oil',IMG.serum],['ALOE WATER','Gel',IMG.amber]];
 
@@ -39,9 +41,14 @@ export default function Home(){
    }
    gsap.utils.toArray('.drift').forEach((el,i)=>gsap.fromTo(el,{y:80+i*12},{y:-90-i*18,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
    gsap.to('.trans-copy',{xPercent:-7,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
-   document.querySelectorAll('.product-grid article,.journal-cards article,.offer-small,.offer-big').forEach(el=>{
-      el.addEventListener('mouseenter',()=>gsap.to(el,{scale:1.025,duration:.25,ease:'power2.out'}));
-      el.addEventListener('mouseleave',()=>gsap.to(el,{scale:1,duration:.3,ease:'power2.out'}));
+   document.querySelectorAll('.product-grid article,.journal-cards article,.offer-small,.offer-big,.social-grid img,.newsletter>div').forEach(el=>{
+      el.addEventListener('mouseenter',()=>gsap.to(el,{scale:1.035,y:-7,duration:.25,ease:'power2.out'}));
+      el.addEventListener('mouseleave',()=>gsap.to(el,{scale:1,y:0,duration:.3,ease:'power2.out'}));
+    });
+    document.querySelectorAll('.swap').forEach(el=>{
+      const a=el.querySelector('.a'),b=el.querySelector('.b'); if(!a||!b)return;
+      el.addEventListener('mouseenter',()=>{gsap.to(a,{opacity:0,scale:1.06,duration:.4});gsap.to(b,{opacity:1,scale:1,duration:.4})});
+      el.addEventListener('mouseleave',()=>{gsap.to(a,{opacity:1,scale:1,duration:.4});gsap.to(b,{opacity:0,scale:1.06,duration:.4})});
     });
     document.querySelectorAll('.principle-card').forEach(el=>{
       el.addEventListener('mouseenter',()=>gsap.to(el,{scale:1.035,duration:.22,ease:'power2.out'}));
@@ -66,11 +73,11 @@ export default function Home(){
   <section className="explore-intro"><h2>EXPLORE<br/><i>pure potency</i></h2><span>↘</span></section>
   <section className="explore" id="shop">
    <div className="editorial"><div className="big-photo drift swap"><img className="a" src={IMG.face2}/><img className="b" src={IMG.hoverFace}/></div><div className="product-side"><h3>Pure<br/><i>Brilliance</i></h3><div className="product-grid">{products.slice(0,2).map(p=><article key={p[0]}><img src={p[2]}/><small>{p[1]}</small><b>{p[0]}</b><button onClick={()=>setBag(x=>x+1)}>+</button></article>)}</div></div></div>
-   <div className="editorial second"><div className="product-side"><h3>Verdura<br/><i>Blends</i></h3><div className="product-grid">{products.slice(1).map(p=><article key={p[0]}><img src={p[2]}/><small>{p[1]}</small><b>{p[0]}</b><button onClick={()=>setBag(x=>x+1)}>+</button></article>)}</div></div><div className="big-photo drift"><img src={IMG.face}/></div></div>
+   <div className="editorial second"><div className="product-side"><h3>Verdura<br/><i>Blends</i></h3><div className="product-grid">{products.slice(1).map(p=><article key={p[0]}><img src={p[2]}/><small>{p[1]}</small><b>{p[0]}</b><button onClick={()=>setBag(x=>x+1)}>+</button></article>)}</div></div><div className="big-photo drift swap"><img className="a" src={IMG.face}/><img className="b" src={IMG.hoverFace}/></div></div>
   </section>
   <section className="transparency" id="ethos"><div className="trans-copy">RADICAL<br/>TRANSPARENCY.<br/><i>HIDE</i> NOTHING.</div><div className="swatch red"/><div className="swatch tan"/><div className="truth"><b>WHAT'S INSIDE<br/><i>STAYS VISIBLE.</i></b><p>The ingredient story stays visible, direct and easy to explore.</p></div></section>
-  <section className="offer"><div className="offer-small drift"><img src={IMG.serum}/><p>Only proven rituals,<br/>clearly presented.</p></div><div className="offer-big drift"><img src={IMG.amber}/><div><small>VERDURA EDIT</small><h2>EXCITING<br/><i>RITUALS await.</i></h2></div></div></section>
-  <section className="journal" id="journal"><div className="journal-lead drift"><img src={IMG.ritual}/><b>Plant rituals that turn everyday care into a sensory moment.</b></div><div className="journal-title"><small>04 / STORIES</small><h2><i>clean</i><br/>JOURNAL</h2></div><div className="journal-cards"><article><img src={IMG.face2}/><b>The art of a slower ritual</b></article><article><img src={IMG.flat}/><b>Why botanical texture matters</b></article></div></section>
+  <section className="offer"><div className="offer-small drift swap"><img className="a" src={IMG.serum}/><img className="b" src={IMG.hoverProduct}/><p>Only proven rituals,<br/>clearly presented.</p></div><div className="offer-big drift swap"><img className="a" src={IMG.amber}/><img className="b" src={IMG.hoverRitual}/><div><small>VERDURA EDIT</small><h2>EXCITING<br/><i>RITUALS await.</i></h2></div></div></section>
+  <section className="journal" id="journal"><div className="journal-lead drift swap"><img className="a" src={IMG.ritual}/><img className="b" src={IMG.hoverRitual}/><b>Plant rituals that turn everyday care into a sensory moment.</b></div><div className="journal-title"><small>04 / STORIES</small><h2><i>clean</i><br/>JOURNAL</h2></div><div className="journal-cards"><article><img src={IMG.face2}/><b>The art of a slower ritual</b></article><article><img src={IMG.flat}/><b>Why botanical texture matters</b></article></div></section>
   <section className="social"><h2>CONNECT<br/>WITH US <i>on instagram</i></h2><div className="social-grid"><img className="drift" src={IMG.serum}/><img className="drift" src={IMG.face}/><img className="drift" src={IMG.flat}/></div></section>
   <section className="newsletter"><div><img src={IMG.amber}/></div><aside><h2>HEAR MORE<br/>FROM US</h2><p>Botanical notes, new rituals and studio stories.</p><input placeholder="YOUR EMAIL"/><button>SUBSCRIBE ↗</button></aside></section>
   <section className="end"><small>VERDURA BOTANICS</small><h2>FEEL GOOD<br/><i>IN YOUR SKIN.</i></h2></section>
