@@ -34,6 +34,9 @@ export default function Home(){
      .to(cards[0],{y:bases[0]-620,rotation:-1.5,ease:'none'},0)
      .to(cards[1],{y:bases[1]-780,rotation:1.2,ease:'none'},0)
      .to(cards[2],{y:bases[2]-930,rotation:-.8,ease:'none'},0);
+   const petals=[...scene.querySelectorAll('.orbit-petal')];
+   petals.forEach((el,i)=>{const b=Number(el.dataset.base||0);gsap.set(el,{y:b,rotation:Number(el.dataset.rot||0)});gsap.to(el,{y:b-[720,980,1180][i%3],x:[90,-120,150][i%3],rotation:Number(el.dataset.rot||0)+[160,-210,260][i%3],ease:'none',scrollTrigger:{trigger:scene,start:'top 92%',end:'bottom 8%',scrub:true}});});
+   const leaf=scene.querySelector('.orbit-leaf'); if(leaf){gsap.fromTo(leaf,{y:280,x:80,rotation:-25},{y:-720,x:-120,rotation:95,ease:'none',scrollTrigger:{trigger:scene,start:'top 92%',end:'bottom 8%',scrub:true}});}
   });
   document.querySelectorAll('.drift').forEach((el,i)=>gsap.fromTo(el,{y:90+i*20},{y:-100-i*25,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
   document.querySelectorAll('.reveal').forEach(el=>gsap.from(el,{y:70,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 86%'}}));
@@ -56,6 +59,10 @@ export default function Home(){
   <article className="orbit-card hover-lift oc1" data-base="170"><span>✧</span><h3>Clean, Beyond<br/>Reproach</h3><p>Clear botanical storytelling with thoughtful formulas and no visual noise.</p></article>
   <article className="orbit-card hover-lift oc2" data-base="260"><span>♡</span><h3>Conscious &<br/>Responsible</h3><p>Designed around intentional choices, useful rituals and considered presentation.</p></article>
   <article className="orbit-card hover-lift oc3" data-base="330"><span>♧</span><h3>Potent & Multi<br/>Tasking</h3><p>Focused products made to earn their place in a simple daily ritual.</p></article>
+  <div className="orbit-leaf" aria-hidden="true"><i/><i/></div>
+  <div className="orbit-petal petal-a" data-base="560" data-rot="-22" aria-hidden="true"/>
+  <div className="orbit-petal petal-b" data-base="850" data-rot="32" aria-hidden="true"/>
+  <div className="orbit-petal petal-c" data-base="1120" data-rot="-48" aria-hidden="true"/>
  </section>
 
  <section className="explore" id="shop"><div className="section-title reveal"><small>02 / EXPLORE</small><h2>PURE <i>POTENCY.</i></h2></div>
