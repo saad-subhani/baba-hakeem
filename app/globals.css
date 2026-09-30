@@ -114,3 +114,21 @@ header{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rg
  .orbit .oc2{top:82vh!important;right:2%!important}
  .orbit .oc3{top:108vh!important;right:9%!important}
 }
+
+/* principles lock: one source of truth for base geometry */
+.orbit{height:215vh!important;position:relative!important;overflow:hidden!important;padding-top:0!important}
+.orbit-heading{position:absolute!important;top:13vh!important;left:4.5vw!important;margin:0!important;transform:none}
+.orbit-main{position:absolute!important;top:58vh!important;left:18%!important;width:64%!important;height:94vh!important}
+.orbit .orbit-card{position:absolute!important;margin:0!important;transition:box-shadow .4s,background .4s!important}
+.orbit .oc1{top:64vh!important;left:4.5%!important;right:auto!important}
+.orbit .oc2{top:88vh!important;right:4.5%!important;left:auto!important}
+.orbit .oc3{top:116vh!important;right:24%!important;left:auto!important}
+.orbit .orbit-card:hover{background:#fff;box-shadow:0 25px 70px rgba(20,35,25,.14)}
+@media(max-width:700px){
+ .orbit{height:185vh!important}
+ .orbit-heading{top:9vh!important;left:20px!important}
+ .orbit-main{top:52vh!important;left:11%!important;width:78%!important;height:70vh!important}
+ .orbit .oc1{top:58vh!important;left:2%!important}
+ .orbit .oc2{top:82vh!important;right:2%!important}
+ .orbit .oc3{top:108vh!important;right:9%!important}
+}
