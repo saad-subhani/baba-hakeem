@@ -129,6 +129,17 @@ export default function Home(){
    <div className="scenes">{scenes.map((s,i)=><article className="scene" key={s[0]}><span>0{i+1}</span><div><small>{s[1]}</small><h3>{s[0]}</h3><p>{s[2]}</p></div></article>)}</div>
   </section>
   <section className="split"><div className="split-img"/><div className="split-copy fadeup"><small>06 / FROM ROOT TO RITUAL</small><h2>LESS NOISE.<br/><i>MORE NATURE.</i></h2><p>A visual demo for a future herbal e-commerce brand — combining product discovery with cinematic scrolling and playful interaction.</p><a href="#shop">SHOP BOTANICALS ↗</a></div></section>
+  <section className="journal">
+   <div className="journal-head"><small>07 / THE VERDURA JOURNAL</small><h2>CLEAN<br/><i>JOURNAL.</i></h2><p>Notes on botanical rituals, ingredient stories and slower everyday care.</p></div>
+   <div className="journal-grid"><article><img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1000&q=88"/><small>BOTANICAL NOTES</small><h3>How to build a simple herbal ritual</h3></article><article><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1000&q=88"/><small>INGREDIENT GUIDE</small><h3>Meet the plants behind Verdura</h3></article><article><img src="https://images.unsplash.com/photo-1601049676869-702ea24cfd58?auto=format&fit=crop&w=1000&q=88"/><small>RITUAL</small><h3>Making room for slower care</h3></article></div>
+  </section>
+  <section className="social">
+   <div className="social-copy"><small>08 / CONNECT WITH US</small><h2>CONNECT<br/>WITH US <i>daily.</i></h2><p>Follow the Verdura world — botanical textures, rituals and new drops.</p><a href="#top">EXPLORE VERDURA ↗</a></div>
+   <div className="social-main"><img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=1400&q=88"/></div>
+   <div className="social-mini sm1"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=88"/></div>
+   <div className="social-mini sm2"><img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=88"/></div>
+  </section>
+  <section className="newsletter"><div className="newsletter-art"/><div className="newsletter-box"><small>VERDURA LETTERS</small><h2>HEAR MORE<br/>FROM US</h2><p>Botanical stories, ritual notes and collection updates.</p><div className="email-demo"><span>YOUR EMAIL ADDRESS</span><b>→</b></div><button onClick={()=>alert('Demo newsletter signup')}>SUBSCRIBE</button></div></section>
   <section className="final"><div className="flower f1">✤</div><div className="flower f2">✤</div><small>VERDURA BOTANICS</small><h2 className="fadeup">FEEL GOOD<br/><i>IN YOUR SKIN.</i></h2><a href="#top">BACK TO TOP ↑</a></section>
   <footer><b>VERDURA°</b><span>IMMERSIVE HERBAL E-COMMERCE DEMO</span><span>© 2026</span></footer>
  </main>
