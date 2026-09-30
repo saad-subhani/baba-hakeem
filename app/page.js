@@ -27,15 +27,11 @@ export default function Home(){
    const cards=[...scene.querySelectorAll('.orbit-card')];
    const petals=[...scene.querySelectorAll('.orbit-petal')];
    const leaf=scene.querySelector('.orbit-leaf');
-   gsap.set(main,{y:0});
-   cards.forEach(el=>gsap.set(el,{y:0,rotation:0}));
-   const tl=gsap.timeline({scrollTrigger:{trigger:scene,start:'top 65%',end:'bottom 15%',scrub:.65,invalidateOnRefresh:true}});
-   tl.to(main,{y:-170,ease:'none'},0)
-     .to(cards[0],{y:-520,rotation:-1.2,ease:'none'},0)
-     .to(cards[1],{y:-690,rotation:1.1,ease:'none'},0)
-     .to(cards[2],{y:-830,rotation:-.8,ease:'none'},0);
-   petals.forEach((el,i)=>tl.to(el,{y:-[430,610,760][i%3],x:[70,-90,110][i%3],rotation:[130,-170,220][i%3],ease:'none'},0));
-   if(leaf)tl.to(leaf,{y:-610,x:-100,rotation:105,ease:'none'},0);
+   gsap.set([main,...cards,...petals,leaf].filter(Boolean),{clearProps:'transform'});
+   gsap.to(main,{y:-120,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
+   cards.forEach((el,i)=>gsap.to(el,{y:-[460,610,760][i],rotation:[-1,1,-.7][i],ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}}));
+   petals.forEach((el,i)=>gsap.to(el,{y:-[360,520,680][i%3],x:[60,-70,90][i%3],rotation:[120,-150,200][i%3],ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}}));
+   if(leaf)gsap.to(leaf,{y:-520,x:-80,rotation:95,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
   });
   document.querySelectorAll('.drift').forEach((el,i)=>gsap.fromTo(el,{y:90+i*20},{y:-100-i*25,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
   document.querySelectorAll('.reveal').forEach(el=>gsap.from(el,{y:70,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 86%'}}));
