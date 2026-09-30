@@ -37,3 +37,9 @@ header{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rg
  .float-scene .fc2{top:86vh!important}
  .float-scene .fc3{top:112vh!important}
 }
+
+/* final principle-card start-state fix: base layout is correct before scroll/hover */
+.orbit .orbit-card{transform:none!important}
+.orbit .oc1{top:72vh!important}
+.orbit .oc2{top:88vh!important}
+.orbit .oc3{top:116vh!important}
