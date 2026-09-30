@@ -24,24 +24,28 @@ export default function Home(){
    gsap.to('.hero-bg',{scale:1.12,yPercent:8,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
    const scene=document.querySelector('.principles');
    if(scene){
-    const portrait=scene.querySelector('.principle-portrait'),heading=scene.querySelector('.principle-heading');
+    const portrait=scene.querySelector('.principle-portrait');
+    const heading=scene.querySelector('.principle-heading');
     const cards=[...scene.querySelectorAll('.principle-card')];
-    gsap.set([portrait,heading,...cards],{clearProps:'transform'});
-    const speeds=[1.45,1.85,2.15,2.5];
-    ScrollTrigger.create({trigger:scene,start:'top bottom',end:'bottom top',scrub:true,onUpdate:self=>{
-      const travel=self.progress*window.innerHeight*1.7;
-      gsap.set(portrait,{y:-travel*.42});
-      gsap.set(heading,{y:-travel*.72});
-      cards.forEach((el,i)=>gsap.set(el,{y:-travel*speeds[i]}));
-      gsap.set('.principle-leaf',{y:-travel*1.5,x:-self.progress*90,rotation:self.progress*95});
-      gsap.set('.principle-ribbon',{y:-travel*1.9,x:self.progress*70,rotation:70+self.progress*120});
-    }});
+    const leaf=scene.querySelector('.principle-leaf');
+    const ribbon=scene.querySelector('.principle-ribbon');
+    gsap.set([portrait,heading,...cards,leaf,ribbon],{x:0,y:0,rotation:0,scale:1});
+    gsap.to(heading,{y:-260,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'45% top',scrub:true}});
+    gsap.to(portrait,{y:-720,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}});
+    const distances=[980,1180,1380,1580];
+    cards.forEach((card,i)=>gsap.to(card,{y:-distances[i],ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}}));
+    gsap.to(leaf,{y:-1220,x:-110,rotation:95,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}});
+    gsap.to(ribbon,{y:-1460,x:90,rotation:150,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true}});
    }
    gsap.utils.toArray('.drift').forEach((el,i)=>gsap.fromTo(el,{y:80+i*12},{y:-90-i*18,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
    gsap.to('.trans-copy',{xPercent:-7,ease:'none',scrollTrigger:{trigger:'.transparency',start:'top bottom',end:'bottom top',scrub:true}});
-   document.querySelectorAll('.principle-card,.product-grid article,.journal-cards article,.offer-small,.offer-big').forEach(el=>{
-      el.addEventListener('mouseenter',()=>gsap.to(el,{y:'-=10',scale:1.025,duration:.25,ease:'power2.out'}));
-      el.addEventListener('mouseleave',()=>gsap.to(el,{y:'+=10',scale:1,duration:.3,ease:'power2.out'}));
+   document.querySelectorAll('.product-grid article,.journal-cards article,.offer-small,.offer-big').forEach(el=>{
+      el.addEventListener('mouseenter',()=>gsap.to(el,{scale:1.025,duration:.25,ease:'power2.out'}));
+      el.addEventListener('mouseleave',()=>gsap.to(el,{scale:1,duration:.3,ease:'power2.out'}));
+    });
+    document.querySelectorAll('.principle-card').forEach(el=>{
+      el.addEventListener('mouseenter',()=>gsap.to(el,{scale:1.035,duration:.22,ease:'power2.out'}));
+      el.addEventListener('mouseleave',()=>gsap.to(el,{scale:1,duration:.28,ease:'power2.out'}));
     });
  },root);ScrollTrigger.refresh();setTimeout(()=>ScrollTrigger.refresh(),300)})();return()=>{dead=true;if(ctx)ctx.revert();if(raf)gsap.ticker.remove(raf);if(lenis)lenis.destroy()}},[loading]);
  return <main ref={root}>
