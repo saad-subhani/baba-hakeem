@@ -34,6 +34,13 @@ export default function Home(){
    gsap.to('.principles-track',{x:()=>-(document.querySelector('.principles-track').scrollWidth-window.innerWidth+80),ease:'none',scrollTrigger:{trigger:'.principles-wrap',start:'top top',end:'+=2600',scrub:1,pin:true,invalidateOnRefresh:true}});
    gsap.fromTo('.ethos-word',{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'none',scrollTrigger:{trigger:'.ethos',start:'top 75%',end:'top 25%',scrub:1}});
    gsap.utils.toArray('.reveal-img').forEach(el=>gsap.fromTo(el,{clipPath:'inset(100% 0 0 0)',scale:1.12},{clipPath:'inset(0% 0 0 0)',scale:1,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',end:'top 35%',scrub:1}}));
+   gsap.utils.toArray('.crop-story').forEach(section=>{
+    const frame=section.querySelector('.crop-frame'),img=section.querySelector('.crop-media img'),copy=section.querySelector('.crop-copy');
+    gsap.fromTo(frame,{clipPath:'inset(24% 18% 24% 18% round 2px)'},{clipPath:'inset(0% 0% 0% 0% round 0px)',ease:'none',scrollTrigger:{trigger:section,start:'top bottom',end:'center center',scrub:1.1}});
+    gsap.fromTo(frame,{clipPath:'inset(0% 0% 0% 0% round 0px)'},{clipPath:'inset(20% 12% 20% 12% round 2px)',ease:'none',scrollTrigger:{trigger:section,start:'center center',end:'bottom top',scrub:1.1}});
+    gsap.fromTo(img,{scale:1.25,yPercent:-5},{scale:1.02,yPercent:5,ease:'none',scrollTrigger:{trigger:section,start:'top bottom',end:'bottom top',scrub:1.1}});
+    gsap.fromTo(copy,{y:80,opacity:.2},{y:-45,opacity:1,ease:'none',scrollTrigger:{trigger:section,start:'top 85%',end:'center 55%',scrub:1}});
+   });
   },root); ScrollTrigger.refresh();
  })();return()=>{cancel=true;if(ctx)ctx.revert();if(tick)gsap.ticker.remove(tick);if(lenis)lenis.destroy()}},[loading]);
  return <main ref={root}>
@@ -61,6 +68,8 @@ export default function Home(){
    <div className="round-word">HERBAL<br/><i>RITUAL</i></div>
    <div className="tile t2 fadeup"><img src="https://images.unsplash.com/photo-1601049676869-702ea24cfd58?auto=format&fit=crop&w=1200&q=88"/><span>TEXTURE / 02</span></div>
   </section>
+  <section className="crop-story crop-a"><div className="crop-frame"><div className="crop-copy"><small>SKIN / BOTANY / RITUAL</small><h2>HEALTHY SKIN<br/><i>WITHOUT THE NOISE.</i></h2><p>Scroll slowly. The frame itself opens, breathes and crops around the image.</p></div><div className="crop-media"><img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=1800&q=90"/></div></div></section>
+  <section className="crop-story crop-b"><div className="crop-frame reverse"><div className="crop-copy"><small>PLANT / FORMULA / FEEL</small><h2>WHAT'S INSIDE<br/><i>STAYS VISIBLE.</i></h2><p>A scroll-linked mask transforms the composition in both directions.</p></div><div className="crop-media"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1800&q=90"/></div></div></section>
   <section className="ethos"><small>OUR ETHOS / 03</small><div className="ethos-word">HIDE<br/><i>NOTHING.</i></div><div className="ethos-copy"><span>TRANSPARENCY AS A DESIGN LANGUAGE</span><p>Big type, visible ingredients, honest hierarchy and tactile motion. Scroll becomes part of the product story.</p></div></section>
   <section className="shop" id="shop"><div className="shop-head fadeup"><small>04 / SHOP THE RITUAL</small><h2>GOOD SKIN.<br/><i>GOOD MOOD.</i></h2></div><div className="cards">{products.map((p,i)=><article className="card fadeup" key={p.name}><div className="pic"><img src={p.image}/><span>0{i+1}</span><button onClick={()=>setCart(x=>[...x,p])}>ADD +</button></div><div className="meta"><div><small>{p.tag}</small><h3>{p.name}</h3></div><b>PKR {p.price.toLocaleString()}</b></div></article>)}</div></section>
   <section className="journey" id="ritual" ref={journey} style={{'--scene':scenes[active][3]}}>
