@@ -95,3 +95,22 @@ header{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rg
  .orbit .oc2{top:80vh!important;right:2%!important}
  .orbit .oc3{top:105vh!important;right:9%!important}
 }
+
+/* principles final geometry — cards begin below heading and pass the portrait at different speeds */
+.orbit{height:215vh!important;padding-top:14vh!important;overflow:hidden!important}
+.orbit-heading{position:absolute!important;top:13vh!important;left:4.5vw!important;margin:0!important;z-index:2!important}
+.orbit-main{top:58vh!important;left:18%!important;width:64%!important;height:94vh!important}
+.orbit .oc1{top:64vh!important;left:4.5%!important;right:auto!important}
+.orbit .oc2{top:88vh!important;right:4.5%!important;left:auto!important}
+.orbit .oc3{top:116vh!important;right:24%!important;left:auto!important}
+.orbit-leaf{top:45%!important;right:16%!important}
+.petal-a{top:68%!important;left:25%!important}.petal-b{top:82%!important;right:10%!important}.petal-c{top:91%!important;left:11%!important}
+.orbit-card:hover{transform:none!important}
+@media(max-width:700px){
+ .orbit{height:185vh!important;padding-top:10vh!important}
+ .orbit-heading{top:9vh!important;left:20px!important}
+ .orbit-main{top:52vh!important;left:11%!important;width:78%!important;height:70vh!important}
+ .orbit .oc1{top:58vh!important;left:2%!important}
+ .orbit .oc2{top:82vh!important;right:2%!important}
+ .orbit .oc3{top:108vh!important;right:9%!important}
+}
