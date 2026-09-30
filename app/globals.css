@@ -42,3 +42,8 @@ footer{height:110px;background:#102719;color:#e9efcf;display:flex;align-items:ce
 .crop-media{height:100%;overflow:hidden}.crop-media img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform;transform-origin:center center}
 .crop-b{background:#173724}.crop-b .crop-frame{background:#173724;color:#f3f0e6}.crop-b .crop-copy p{color:rgba(255,255,255,.65)}
 @media(max-width:700px){.crop-story{height:125vh}.crop-frame,.crop-frame.reverse{grid-template-columns:1fr;grid-template-rows:42% 58%}.crop-frame.reverse .crop-copy{order:1}.crop-frame.reverse .crop-media{order:2}.crop-copy{padding:70px 24px 30px}.crop-copy h2{font-size:14vw}.crop-media{min-height:0}}
+
+/* crop animation reliability fix */
+.crop-story{height:220vh;padding:0;overflow:visible}
+.crop-frame{top:0;height:100vh;clip-path:inset(18% 12% 18% 12%);transform:translateZ(0);backface-visibility:hidden}
+.crop-media,.crop-media img{transform:translateZ(0)}
