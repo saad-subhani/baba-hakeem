@@ -47,3 +47,11 @@ footer{height:110px;background:#102719;color:#e9efcf;display:flex;align-items:ce
 .crop-story{height:220vh;padding:0;overflow:visible}
 .crop-frame{top:0;height:100vh;clip-path:inset(18% 12% 18% 12%);transform:translateZ(0);backface-visibility:hidden}
 .crop-media,.crop-media img{transform:translateZ(0)}
+
+/* TrueKind-style scroll-linked editorial window */
+.tk-window{height:180vh;position:relative;background:#f4f3ef}
+.tk-window-copy{position:sticky;top:0;height:100vh;width:43%;padding:9vh 4vw;display:flex;flex-direction:column;justify-content:center;z-index:2}
+.tk-window-copy small{font:9px DM Mono;letter-spacing:.18em}.tk-window-copy h2{font-size:clamp(52px,6vw,105px);line-height:.82;letter-spacing:-.07em;margin:20px 0}.tk-window-copy h2 i{font-family:Playfair Display;color:#78904c}.tk-window-copy p{max-width:390px;line-height:1.55}
+.tk-window-media{position:sticky;top:0;margin:-100vh 0 0 43%;width:57%;height:100vh;overflow:hidden;clip-path:inset(12% 26% 12% 26%);will-change:clip-path}
+.tk-window-media img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform;transform:translateZ(0)}
+@media(max-width:700px){.tk-window{height:150vh}.tk-window-copy{width:100%;height:48vh;padding:70px 22px 20px}.tk-window-media{top:48vh;margin:-102vh 0 0;width:100%;height:52vh}.tk-window-copy h2{font-size:13vw}}
