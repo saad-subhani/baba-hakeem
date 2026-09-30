@@ -22,7 +22,14 @@ export default function Home(){
  ctx=gsap.context(()=>{
   gsap.from('.hero-title span',{yPercent:120,stagger:.08,duration:1.15,ease:'power4.out'});
   gsap.to('.hero-bg',{scale:1.14,yPercent:9,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-  document.querySelectorAll('.orbit').forEach(scene=>{const main=scene.querySelector('.orbit-main');gsap.to(main,{y:-120,ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}});scene.querySelectorAll('.orbit-card').forEach((el,i)=>gsap.to(el,{y:-(360+i*170),rotation:(i-1)*4,ease:'none',scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:true}}));});
+  document.querySelectorAll('.orbit').forEach(scene=>{
+   const main=scene.querySelector('.orbit-main');
+   const cards=[...scene.querySelectorAll('.orbit-card')];
+   gsap.set(main,{y:0});
+   gsap.set(cards,{y:0,rotation:0});
+   gsap.to(main,{y:-105,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
+   cards.forEach((el,i)=>gsap.fromTo(el,{y:0,rotation:0},{y:-(300+i*145),rotation:(i-1)*3,ease:'none',immediateRender:false,scrollTrigger:{trigger:scene,start:'top top',end:'bottom top',scrub:true,invalidateOnRefresh:true}}));
+  });
   document.querySelectorAll('.drift').forEach((el,i)=>gsap.fromTo(el,{y:90+i*20},{y:-100-i*25,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
   document.querySelectorAll('.reveal').forEach(el=>gsap.from(el,{y:70,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 86%'}}));
   gsap.to('.marquee-inner',{xPercent:-35,ease:'none',scrollTrigger:{trigger:'.marquee',start:'top bottom',end:'bottom top',scrub:true}});
