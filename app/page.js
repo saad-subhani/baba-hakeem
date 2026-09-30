@@ -28,18 +28,13 @@ export default function Home(){
    const petals=[...scene.querySelectorAll('.orbit-petal')];
    const leaf=scene.querySelector('.orbit-leaf');
    const heading=scene.querySelector('.orbit-heading');
-   gsap.set([main,...cards,...petals,leaf,heading].filter(Boolean),{x:0,y:0,rotation:0});
-   ScrollTrigger.create({
-    trigger:scene,start:'top 82%',end:'bottom 18%',scrub:true,invalidateOnRefresh:true,
-    onUpdate:self=>{
-     const p=self.progress;
-     gsap.set(main,{y:-170*p});
-     gsap.set(heading,{y:-95*p});
-     cards.forEach((el,i)=>gsap.set(el,{y:-[520,690,850][i]*p,rotation:[-1.2,1.1,-.8][i]*p}));
-     petals.forEach((el,i)=>gsap.set(el,{y:-[430,610,760][i%3]*p,x:[70,-85,95][i%3]*p,rotation:[140,-170,220][i%3]*p}));
-     if(leaf)gsap.set(leaf,{y:-590*p,x:-95*p,rotation:105*p});
-    }
-   });
+   gsap.set([main,...cards,...petals,leaf,heading].filter(Boolean),{clearProps:'transform'});
+   gsap.to(main,{y:-155,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
+   gsap.to(heading,{y:-70,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
+   const distances=[460,650,820];
+   cards.forEach((el,i)=>gsap.to(el,{y:-distances[i],rotation:[-1.2,1.1,-.8][i],ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}}));
+   petals.forEach((el,i)=>gsap.to(el,{y:-[360,520,690][i%3],x:[70,-85,95][i%3],rotation:[140,-170,220][i%3],ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}}));
+   if(leaf)gsap.to(leaf,{y:-500,x:-95,rotation:105,ease:'none',scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true}});
   });
   document.querySelectorAll('.drift').forEach((el,i)=>gsap.fromTo(el,{y:90+i*20},{y:-100-i*25,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
   document.querySelectorAll('.reveal').forEach(el=>gsap.from(el,{y:70,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 86%'}}));
