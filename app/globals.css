@@ -3,7 +3,7 @@
 @media(max-width:760px){header{padding:23px 20px}header nav{display:none}.film{height:540vh}.hero-photo{object-position:55% center}.cut-left,.cut-right{width:38vw;height:54vh}.gel-core{width:25vw;height:43vh}.intro-title>small{left:20px;top:18vh}.intro-title h1{left:20px;top:21vh;font-size:20vw}.intro-title aside{right:20px;top:auto;bottom:9vh;width:62vw}.intro-title h2{font-size:14vw;margin:18px 0}.intro-title aside span{margin-left:10%}.hero-bottle{left:58%;top:49%;width:52vw;height:54vh}.verdura-label b{font-size:21px}.product-copy{left:20px;bottom:9vh;width:75vw}.product-copy h2{font-size:14vw}.collection{padding:10vh 20px}.collection h2{font-size:15vw}.ingredient-row{grid-template-columns:1fr}.ingredient-row article+article{border-left:0;border-top:1px solid #17322655;padding-left:0}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
-.neem-card .ingredient-art,.turmeric-card .ingredient-art{mix-blend-mode:multiply;filter:contrast(1.04) saturate(1.05) drop-shadow(0 18px 22px rgba(29,54,34,.12))}.ingredient-visual{background:#eee9dc}.hero-bottle{max-width:360px}.product-copy{pointer-events:none}
+.neem-card .ingredient-art,.turmeric-card .ingredient-art{filter:contrast(1.04) saturate(1.05) drop-shadow(0 18px 22px rgba(29,54,34,.12))}.ingredient-visual{background:#eee9dc}.hero-bottle{max-width:360px}.product-copy{pointer-events:none}
 
 .screen,.hero-photo,.hero-bg-photo,.hero-aloe{backface-visibility:hidden}.hero-photo{background:#06100b}.hero-bg-photo,.hero-aloe{opacity:1}
 
@@ -11,7 +11,7 @@
 .reveal-leaf{position:absolute;z-index:4;left:50%;top:50%;width:min(82vw,1280px);height:88vh;object-fit:contain;transform:translate(-50%,-50%);opacity:0;filter:drop-shadow(0 34px 48px rgba(0,0,0,.55));transform-origin:center center;will-change:transform,opacity}
 .gel-core{z-index:7;left:50%;top:50%;width:min(21vw,300px);height:min(56vh,570px);border-radius:49% 51% 47% 53%/54% 48% 52% 46%;background:linear-gradient(110deg,rgba(246,255,240,.58),rgba(142,193,133,.3) 43%,rgba(255,255,255,.42));box-shadow:inset 24px 0 42px rgba(255,255,255,.34),inset -18px 0 38px rgba(65,118,75,.25),0 0 95px rgba(177,225,151,.2);backdrop-filter:blur(5px)}
 .hero-bottle{z-index:13;left:50%;top:50%;transform:translate(-50%,-50%) scale(.55) rotate(12deg);transform-origin:50% 70%;max-width:360px}
-.hands-stage{position:absolute;z-index:11;left:76%;top:67%;width:min(25vw,350px);height:30vh;object-fit:contain;object-position:center;transform:translate(-50%,-50%);opacity:0;filter:drop-shadow(0 18px 24px rgba(0,0,0,.32));transform-origin:center center;will-change:transform,opacity;mix-blend-mode:multiply}
+.hands-stage{position:absolute;z-index:11;left:76%;top:67%;width:min(25vw,350px);height:30vh;object-fit:contain;object-position:center;transform:translate(-50%,-50%);opacity:0;filter:drop-shadow(0 18px 24px rgba(0,0,0,.32));transform-origin:center center;will-change:transform,opacity}
 .photo-shade{pointer-events:none}
 @media(max-width:760px){
  .reveal-leaf{width:130vw;height:68vh;top:47%}
