@@ -30,16 +30,22 @@ export default function Home(){
       .to('.cut-left',{xPercent:-125,opacity:0,duration:1.2},2)
       .to('.cut-right',{xPercent:125,opacity:0,duration:1.2},2)
       .to('.hero-photo',{opacity:0,scale:1.45,duration:1},2.1)
-      .to('.real-product',{opacity:1,scale:1,y:0,rotation:7,duration:1.35},2.15)
+      .to('.hero-bottle',{opacity:1,scale:1,rotation:7,duration:1.15},2.05)
       .to('.halo',{opacity:1,scale:1,duration:1.2},2.2)
       .to('.product-copy',{opacity:1,y:0,duration:1},2.65)
       .to('.drop',{x:(i)=>(i-6)*70,y:(i)=>-210+(i%5)*75,scale:(i)=>.55+(i%3)*.25,duration:1.3},2.65)
       .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:1.25},3.55)
       .to('.night',{opacity:0,duration:.8},3.55)
       .to('.day',{opacity:1,duration:.9},3.75)
-      .to('.real-product',{xPercent:72,yPercent:3,rotation:7,scale:.86,duration:1.2},3.7)
+      .to('.hero-bottle',{xPercent:68,yPercent:18,rotation:9,scale:.86,duration:1.2},3.7)
       .to('.product-copy',{xPercent:-12,duration:1.2},3.7);
-    gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{gsap.fromTo(card.querySelector('.ingredient-visual'),{y:90,scale:.82,rotation:i===1?-5:5},{y:0,scale:1,rotation:0,ease:'none',scrollTrigger:{trigger:card,start:'top 95%',end:'center 55%',scrub:1}});gsap.from(card.querySelectorAll('b,h3,p'),{opacity:0,y:35,stagger:.08,scrollTrigger:{trigger:card,start:'top 80%',end:'center 60%',scrub:1}})}); ScrollTrigger.refresh();
+    gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
+ const visual=card.querySelector('.ingredient-visual');
+ const art=card.querySelector('.ingredient-art');
+ gsap.fromTo(visual,{y:110,scale:.78,rotation:i===1?-7:7},{y:0,scale:1,rotation:0,ease:'none',scrollTrigger:{trigger:card,start:'top 98%',end:'center 58%',scrub:1}});
+ gsap.fromTo(art,{scale:1.18,yPercent:10},{scale:1,yPercent:-4,ease:'none',scrollTrigger:{trigger:card,start:'top bottom',end:'bottom 35%',scrub:1}});
+ gsap.from(card.querySelectorAll('b,h3,p'),{opacity:0,y:35,stagger:.08,scrollTrigger:{trigger:card,start:'top 82%',end:'center 62%',scrub:1}});
+}); ScrollTrigger.refresh();
    },root);
   })();
   return()=>{dead=true;if(ctx)ctx.revert();if(raf)gsap.ticker.remove(raf);if(lenis)lenis.destroy()};
@@ -55,10 +61,10 @@ export default function Home(){
    <div className="particles night">{Array.from({length:13}).map((_,i)=><i className={'drop p'+i} key={i}/>)}</div>
    <div className="intro-title intro-ui night"><small>PURE BOTANICAL CARE — 01</small><h1>FROM<br/><em>NATURE.</em></h1><aside><span>POTENT PLANTS.<br/>PURER RITUALS.</span><h2>MADE<br/>FOR <em>SKIN.</em></h2></aside></div>
    <div className="halo night"/>
-   <div className="real-product"><img src={BOTTLE} alt="Verdura Aloe Vera bottle" onError={(e)=>{e.currentTarget.src='https://images.unsplash.com/photo-1764656424627-1fa7e5e7c2ed?auto=format&fit=crop&fm=jpg&q=90&w=1600'}}/></div>
+   <div className="hero-bottle" aria-label="Verdura Aloe Vera bottle"><div className="bottle-crop"><img src={BOTTLE} alt=""/></div></div>
    <div className="product-copy"><small>01 / BOTANICAL HYDRATION</small><h2>ALOE,<br/><em>REIMAGINED.</em></h2><p>Plant becomes texture. Texture becomes ritual. A botanical story revealed by your scroll.</p><a href="#collection">DISCOVER THE RITUAL →</a></div>
    <div className="scroll intro-ui night">SCROLL TO TRANSFORM <b>↓</b></div><div className="day chapter">THE PLANT / THE FORMULA / THE RITUAL</div>
   </div></section>
-  <section className="collection" id="collection"><div><small>02 / THE COLLECTION</small><h2>THE STORY BECOMES<br/><em>something you can hold.</em></h2></div><div className="ingredient-row" id="ingredients"><article className="ingredient-card aloe-card"><div className="ingredient-visual"/><b>01</b><h3>ALOE VERA</h3><p>HYDRATE / SOOTHE / RESET</p></article><article className="ingredient-card neem-card"><div className="ingredient-visual"/><b>02</b><h3>NEEM</h3><p>CLARIFY / BALANCE / CARE</p></article><article className="ingredient-card turmeric-card"><div className="ingredient-visual"/><b>03</b><h3>TURMERIC</h3><p>GLOW / REVIVE / RITUAL</p></article></div></section>
+  <section className="collection" id="collection"><div><small>02 / THE COLLECTION</small><h2>THE STORY BECOMES<br/><em>something you can hold.</em></h2></div><div className="ingredient-row" id="ingredients"><article className="ingredient-card aloe-card"><div className="ingredient-visual"><div className="ingredient-art"/></div><b>01</b><h3>ALOE VERA</h3><p>HYDRATE / SOOTHE / RESET</p></article><article className="ingredient-card neem-card"><div className="ingredient-visual"><div className="ingredient-art"/></div><b>02</b><h3>NEEM</h3><p>CLARIFY / BALANCE / CARE</p></article><article className="ingredient-card turmeric-card"><div className="ingredient-visual"><div className="ingredient-art"/></div><b>03</b><h3>TURMERIC</h3><p>GLOW / REVIVE / RITUAL</p></article></div></section>
  </main>
 }
