@@ -10,6 +10,8 @@ const ALOE_ING='/aloe.png.png';
 const NEEM='/neem.png.png';
 const TURMERIC='/turmeric.png.png';
 const DROP='/Drop.png.jpg';
+const REVEAL='/alovera%20reveal.png';
+const HANDS='/hands.png';
 
 export default function Home(){
  const root=useRef(null);
@@ -25,30 +27,38 @@ export default function Home(){
     gsap.set('.hero-photo',{opacity:1});
     gsap.set('.hero-bg-photo',{opacity:1});
     gsap.set('.hero-aloe',{opacity:1});
+    gsap.set('.hands-stage',{opacity:0,yPercent:26,scale:.88});
     gsap.from('.hero-photo',{scale:1.025,duration:1.35,ease:'power3.out'});
-    const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:1,pin:'.screen',anticipatePin:1}});
-    tl.to('.intro-title',{opacity:0,y:-90,duration:.7},0)
-      .to('.hero-bg-photo',{scale:1.3,filter:'brightness(.78) saturate(1.12)',duration:1.75},0).to('.hero-aloe',{scale:1.38,yPercent:2,duration:1.75},0)
-      .to('.cut-left',{xPercent:-55,rotation:-5,duration:1.2},.8)
-      .to('.cut-right',{xPercent:55,rotation:5,duration:1.2},.8)
-      .to('.gel-core',{opacity:1,scale:1,duration:.8},1)
-      .to('.drop',{opacity:1,scale:(i)=>.48+(i%5)*.14,stagger:.028,duration:.48},.62)
-      .to('.drop',{x:(i)=>(i-9)*42,y:(i)=>190+(i%5)*72,rotation:(i)=>(i%2?1:-1)*(8+i*7),scale:(i)=>.42+(i%5)*.13,duration:1.65,ease:'power1.in'},.9)
-      .to('.cut-left',{xPercent:-125,opacity:0,duration:1.2},2)
-      .to('.cut-right',{xPercent:125,opacity:0,duration:1.2},2)
-      .to('.hero-bg-photo',{scale:1.48,filter:'brightness(.62) saturate(1.18)',duration:1.15},1.8).to('.hero-aloe',{scale:1.72,yPercent:5,duration:1.15},1.8)
-      .fromTo('.hero-bottle',{opacity:0,y:115,scale:.64,rotation:10},{opacity:1,y:0,scale:1,rotation:7,duration:1.25,ease:'power2.out'},2.12)
-      .to('.halo',{opacity:1,scale:1,duration:1.2},2.2)
-      .to('.product-copy',{opacity:1,y:0,duration:1},2.65)
-      .to('.drop',{x:(i)=>(i-9)*82,y:(i)=>300+(i%5)*70,opacity:0,scale:(i)=>.35+(i%4)*.12,duration:1.15},2.65)
-      .to('.hero-bottle',{left:'58%',top:'49%',rotation:0,scale:1,duration:1.15,ease:'none'},2.72)
-      .to('.hero-bottle',{rotation:0,duration:.35,ease:'none'},3.55)
-      .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:1.05},3.75)
-      .to('.hero-photo',{opacity:0,duration:.72},3.75)
-      .to('.night',{opacity:0,duration:.72},3.75)
-      .to('.day',{opacity:1,duration:.75},3.9)
-      .to('.hero-bottle',{left:'72%',top:'49%',xPercent:0,yPercent:0,rotation:0,scale:.72,duration:1.05,ease:'none'},3.82)
-      .to('.product-copy',{xPercent:-12,duration:1.2},3.7);
+    const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
+    tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
+      .to('.hero-bg-photo',{scale:1.2,filter:'brightness(.68) saturate(1.12)',duration:1.4},0)
+      .to('.hero-aloe',{scale:1.18,opacity:.18,duration:.75},.12)
+      .fromTo('.reveal-leaf',{opacity:0,scale:.78,yPercent:8},{opacity:1,scale:1.08,yPercent:0,duration:1.25,ease:'power1.out'},.18)
+      .to('.reveal-leaf',{scale:1.28,yPercent:2,duration:1.15,ease:'none'},1.15)
+      .to('.drop',{opacity:(i)=>.34+(i%4)*.13,scale:(i)=>.42+(i%5)*.12,stagger:.018,duration:.42},.45)
+      .to('.drop',{x:(i)=>(i-9.5)*44,y:(i)=>150+(i%5)*68,rotation:(i)=>(i%2?1:-1)*(10+i*5),duration:1.45,ease:'power1.in'},.7)
+      .to('.gel-core',{opacity:1,scale:1,duration:.7},1.15)
+      .to('.reveal-leaf',{opacity:.38,scale:1.42,duration:.8},1.7)
+      .fromTo('.hero-bottle',{opacity:0,left:'50%',top:'50%',xPercent:-50,yPercent:-50,y:85,scale:.55,rotation:12},{opacity:1,left:'50%',top:'50%',xPercent:-50,yPercent:-50,y:0,scale:.82,rotation:9,duration:.85,ease:'power2.out'},1.55)
+      .to('.halo',{opacity:.75,scale:.82,duration:.7},1.55)
+      .to('.hero-bottle',{rotation:5,scale:.88,duration:.65,ease:'none'},2.18)
+      .to('.hero-bottle',{rotation:2,scale:.92,duration:.65,ease:'none'},2.78)
+      .to('.hero-bottle',{rotation:0,scale:.94,duration:.65,ease:'none'},3.38)
+      .to('.drop',{y:(i)=>310+(i%5)*76,opacity:0,duration:.9},2.45)
+      .to('.product-copy',{opacity:1,y:0,duration:.7},2.55)
+      .to('.gel-core',{opacity:.35,scale:1.12,duration:.65},3.35)
+      .to('.product-copy',{opacity:0,y:-30,duration:.45},3.75)
+      .to('.reveal-leaf',{opacity:0,scale:1.5,duration:.65},3.72)
+      .to('.hero-aloe',{opacity:0,duration:.5},3.72)
+      .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
+      .to('.gel-core',{opacity:0,duration:.45},3.82)
+      .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.95,ease:'power2.out'},3.92)
+      .to('.hero-bottle',{left:'50%',top:'58%',xPercent:-50,yPercent:-50,y:0,rotation:0,scale:.72,duration:1.05,ease:'power1.inOut'},4.02)
+      .to('.hands-stage',{scale:1.035,duration:.65,ease:'none'},4.72)
+      .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:.9},5.12)
+      .to('.hero-photo,.photo-shade,.hands-stage,.halo',{opacity:0,duration:.72},5.12)
+      .to('.day',{opacity:1,duration:.65},5.3)
+      .to('.hero-bottle',{top:'54%',left:'68%',xPercent:-50,yPercent:-50,rotation:0,scale:.7,duration:.85,ease:'none'},5.15);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
  const visual=card.querySelector('.ingredient-visual');
  const art=card.querySelector('.ingredient-art');
@@ -64,13 +74,13 @@ export default function Home(){
   <section className="film"><div className="screen">
    <header className="intro-ui"><a href="#" className="logo">VERDURA<span>BOTANICS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
    <div className="night cinematic-bg"/>
-   <div className="hero-photo night"><img className="hero-bg-photo" src={ALOE} alt=""/><img className="hero-aloe" src={ALOE_ING} alt="Fresh aloe vera"/></div>
+   <div className="hero-photo night"><img className="hero-bg-photo" src={ALOE} alt=""/><img className="hero-aloe" src={ALOE_ING} alt="Fresh aloe vera"/><img className="reveal-leaf" src={REVEAL} alt="Aloe vera leaf opening"/></div>
    <div className="photo-shade night"/>
-   <div className="cut-left night"><img src={ALOE_ING} alt=""/></div><div className="cut-right night"><img src={ALOE_ING} alt=""/></div>
    <div className="gel-core night"><span/><span/></div>
    <div className="particles night">{Array.from({length:20}).map((_,i)=><img className={'drop p'+(i%13)} src={DROP} alt="" key={i}/>)}</div>
    <div className="intro-title intro-ui night"><small>PURE BOTANICAL CARE — 01</small><h1>FROM<br/><em>NATURE.</em></h1><aside><span>POTENT PLANTS.<br/>PURER RITUALS.</span><h2>MADE<br/>FOR <em>SKIN.</em></h2></aside></div>
    <div className="halo night"/>
+   <img className="hands-stage night" src={HANDS} alt="Hands receiving Verdura bottle"/>
    <img className="hero-bottle" src={BOTTLE} alt="Verdura Aloe Vera bottle"/>
    <div className="product-copy"><small>01 / BOTANICAL HYDRATION</small><h2>ALOE,<br/><em>REIMAGINED.</em></h2><p>Plant becomes texture. Texture becomes ritual. A botanical story revealed by your scroll.</p><a href="#collection">DISCOVER THE RITUAL →</a></div>
    <div className="scroll intro-ui night">SCROLL TO TRANSFORM <b>↓</b></div><div className="day chapter">THE PLANT / THE FORMULA / THE RITUAL</div>
