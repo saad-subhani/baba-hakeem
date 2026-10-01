@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Verdura Botanics',
+  title: 'Herbal Botanics',
   description: 'Immersive herbal skincare e-commerce demo'
 };
 
