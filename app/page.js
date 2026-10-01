@@ -24,7 +24,7 @@ export default function Home(){
     gsap.from('.hero-photo',{scale:1.06,opacity:0,duration:1.7,ease:'power3.out'});
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:1,pin:'.screen',anticipatePin:1}});
     tl.to('.intro-title',{opacity:0,y:-90,duration:.7},0)
-      .to('.hero-photo',{scale:1.42,yPercent:2,filter:'brightness(.76) saturate(1.12)',duration:1.85},0)
+      .to('.hero-bg-photo',{scale:1.3,filter:'brightness(.78) saturate(1.12)',duration:1.75},0).to('.hero-aloe',{scale:1.38,yPercent:2,duration:1.75},0)
       .to('.cut-left',{xPercent:-55,rotation:-5,duration:1.2},.8)
       .to('.cut-right',{xPercent:55,rotation:5,duration:1.2},.8)
       .to('.gel-core',{opacity:1,scale:1,duration:.8},1)
@@ -32,17 +32,17 @@ export default function Home(){
       .to('.drop',{x:(i)=>(i-6)*38,y:(i)=>170+(i%4)*78,rotation:(i)=>i*31,scale:(i)=>.65+(i%3)*.22,duration:1.65,ease:'power1.in'},.9)
       .to('.cut-left',{xPercent:-125,opacity:0,duration:1.2},2)
       .to('.cut-right',{xPercent:125,opacity:0,duration:1.2},2)
-      .to('.hero-photo',{scale:1.62,filter:'brightness(.62) saturate(1.18)',duration:1.15},1.8)
+      .to('.hero-bg-photo',{scale:1.48,filter:'brightness(.62) saturate(1.18)',duration:1.15},1.8).to('.hero-aloe',{scale:1.72,yPercent:5,duration:1.15},1.8)
       .fromTo('.hero-bottle',{opacity:0,y:115,scale:.64,rotation:10},{opacity:1,y:0,scale:1,rotation:7,duration:1.25,ease:'power2.out'},2.12)
       .to('.halo',{opacity:1,scale:1,duration:1.2},2.2)
       .to('.product-copy',{opacity:1,y:0,duration:1},2.65)
       .to('.drop',{x:(i)=>(i-6)*76,y:(i)=>260+(i%5)*75,opacity:.15,scale:(i)=>.45+(i%3)*.2,duration:1.2},2.65)
-      .to('.hero-bottle',{left:'64%',top:'49%',rotation:0,scale:1.02,duration:1.35,ease:'none'},2.75)
+      .to('.hero-bottle',{left:'61%',top:'49%',rotation:0,scale:1.02,duration:1.35,ease:'none'},2.75)
       .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:1.05},3.65)
       .to('.hero-photo',{opacity:0,duration:.75},3.65)
       .to('.night',{opacity:0,duration:.75},3.65)
       .to('.day',{opacity:1,duration:.8},3.82)
-      .to('.hero-bottle',{left:'79%',top:'48%',xPercent:0,yPercent:0,rotation:0,scale:.78,duration:1.1},3.72)
+      .to('.hero-bottle',{left:'67%',top:'50%',xPercent:0,yPercent:0,rotation:0,scale:.76,duration:1.1},3.72)
       .to('.product-copy',{xPercent:-12,duration:1.2},3.7);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
  const visual=card.querySelector('.ingredient-visual');
@@ -59,7 +59,7 @@ export default function Home(){
   <section className="film"><div className="screen">
    <header className="intro-ui"><a href="#" className="logo">VERDURA<span>BOTANICS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
    <div className="night cinematic-bg"/>
-   <img className="hero-photo night" src={ALOE} alt="Verdura Botanics aloe hero composition" onError={(e)=>{e.currentTarget.src='https://images.unsplash.com/photo-1775204059233-c59e8599ebe3?auto=format&fit=crop&fm=jpg&q=90&w=2400'}}/>
+   <div className="hero-photo night"><img className="hero-bg-photo" src={ALOE} alt=""/><img className="hero-aloe" src={ALOE_ING} alt="Fresh aloe vera"/></div>
    <div className="photo-shade night"/>
    <div className="cut-left night"><img src={ALOE_ING} alt=""/></div><div className="cut-right night"><img src={ALOE_ING} alt=""/></div>
    <div className="gel-core night"><span/><span/></div>
