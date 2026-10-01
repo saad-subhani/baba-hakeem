@@ -97,6 +97,21 @@ export default function Home(){
    </div>
   </section>
   <section className="promise-section" id="story"><small>04 / OUR APPROACH</small><h2>LESS NOISE.<br/>MORE <em>BOTANICAL INTENT.</em></h2><div className="promise-grid"><article><b>01</b><h3>PLANT-LED</h3><p>Familiar botanicals become the visual and sensory heart of every Verdura ritual.</p></article><article><b>02</b><h3>RITUAL-FIRST</h3><p>A calmer, more deliberate approach to the way skincare fits into everyday life.</p></article><article><b>03</b><h3>CONSIDERED</h3><p>Focused presentation, purposeful ingredients and a premium experience without unnecessary clutter.</p></article></div></section>
+  <section className="shop-section" id="shop">
+   <div className="shop-head"><div><small>05 / SHOP VERDURA</small><h2>BUILD YOUR<br/><em>BOTANICAL ROUTINE.</em></h2></div><p>Explore everyday botanical care by ritual, ingredient and skin goal.</p></div>
+   <div className="category-tabs"><button className="active">ALL PRODUCTS</button><button>HYDRATION</button><button>CLARIFY</button><button>GLOW</button><button>ESSENTIALS</button></div>
+   <div className="product-grid">
+    <article className="shop-card featured"><div className="badge">BESTSELLER</div><div className="shop-art aloe-tone"><img src={BOTTLE} alt="Aloe Vera botanical serum"/></div><div className="shop-info"><div><small>HYDRATION / 30 ML</small><h3>ALOE VERA SERUM</h3><p>Daily botanical hydration ritual.</p></div><button aria-label="Add Aloe Vera Serum">ADD <span>＋</span></button></div></article>
+    <article className="shop-card"><div className="badge">BOTANICAL</div><div className="shop-art neem-tone"><img src={BOTTLE} alt="Neem botanical concentrate"/><img className="botanical-accent neem-accent" src={NEEM} alt=""/></div><div className="shop-info"><div><small>CLARIFY / 30 ML</small><h3>NEEM CONCENTRATE</h3><p>A balancing botanical ritual.</p></div><button aria-label="Add Neem Concentrate">ADD <span>＋</span></button></div></article>
+    <article className="shop-card"><div className="badge">GLOW RITUAL</div><div className="shop-art turmeric-tone"><img src={BOTTLE} alt="Turmeric glow elixir"/><img className="botanical-accent turmeric-accent" src={TURMERIC} alt=""/></div><div className="shop-info"><div><small>GLOW / 30 ML</small><h3>TURMERIC ELIXIR</h3><p>A radiance-focused botanical ritual.</p></div><button aria-label="Add Turmeric Elixir">ADD <span>＋</span></button></div></article>
+    <article className="shop-card"><div className="badge">ROUTINE</div><div className="shop-art trio-tone"><img className="trio t1" src={BOTTLE} alt="Verdura botanical routine"/><img className="trio t2" src={BOTTLE} alt=""/><img className="trio t3" src={BOTTLE} alt=""/></div><div className="shop-info"><div><small>COMPLETE RITUAL</small><h3>BOTANICAL TRIO</h3><p>Three-step Verdura discovery set.</p></div><button aria-label="Add Botanical Trio">ADD <span>＋</span></button></div></article>
+   </div>
+  </section>
+  <section className="shop-by">
+   <div className="shop-by-head"><small>06 / FIND YOUR RITUAL</small><h2>SHOP BY<br/><em>what your skin needs.</em></h2></div>
+   <div className="need-grid"><a href="#shop"><span>01</span><h3>HYDRATE</h3><p>ALOE VERA</p><b>↗</b></a><a href="#shop"><span>02</span><h3>BALANCE</h3><p>NEEM</p><b>↗</b></a><a href="#shop"><span>03</span><h3>GLOW</h3><p>TURMERIC</p><b>↗</b></a><a href="#shop"><span>04</span><h3>DISCOVER</h3><p>THE FULL ROUTINE</p><b>↗</b></a></div>
+  </section>
+  <section className="commerce-confidence"><div><b>01</b><h3>BOTANICAL FOCUS</h3><p>Ingredient-led routines with a clear purpose.</p></div><div><b>02</b><h3>CURATED ROUTINES</h3><p>Simple categories make product discovery easier.</p></div><div><b>03</b><h3>PREMIUM EXPERIENCE</h3><p>From first scroll to product selection, every detail feels considered.</p></div></section>
   <section className="final-cta"><small>VERDURA BOTANICS</small><h2>RETURN TO<br/><em>NATURE.</em></h2><a href="#collection">DISCOVER THE COLLECTION <span>→</span></a></section>
  </main>
 }
