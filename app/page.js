@@ -7,11 +7,11 @@ import Lenis from '@studio-freight/lenis';
 const ALOE='/aloe-hero.png.png';
 const BOTTLE='/aloe-bottle.png.png';
 const ALOE_ING='/aloe.png.png';
-const NEEM='/neem.png.png';
-const TURMERIC='/turmeric.png.png';
-const DROP='/Drop.png.jpg';
-const REVEAL='/alovera%20reveal.png';
-const HANDS='/hands.png';
+const NEEM='/neem.png-removebg-preview.png';
+const TURMERIC='/turmeric.png-removebg-preview.png';
+const DROP='/Drop.png-removebg-preview.png';
+const REVEAL='/alovera_reveal-removebg-preview.png';
+const HANDS='/hands-removebg-preview.png';
 
 export default function Home(){
  const root=useRef(null);
