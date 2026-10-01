@@ -27,7 +27,7 @@ export default function Home(){
     gsap.set('.hero-photo',{opacity:1});
     gsap.set('.hero-bg-photo',{opacity:1});
     gsap.set('.hero-aloe',{opacity:1});
-    gsap.set('.hands-stage',{opacity:0,yPercent:26,scale:.88});
+    gsap.set('.hands-stage',{opacity:0,yPercent:18,scale:.86});
     gsap.from('.hero-photo',{scale:1.025,duration:1.35,ease:'power3.out'});
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
     tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
@@ -52,13 +52,13 @@ export default function Home(){
       .to('.hero-aloe',{opacity:0,duration:.5},3.72)
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
-      .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.95,ease:'power2.out'},3.92)
-      .to('.hero-bottle',{left:'50%',top:'58%',xPercent:-50,yPercent:-50,y:0,rotation:0,scale:.72,duration:1.05,ease:'power1.inOut'},4.02)
-      .to('.hands-stage',{scale:1.035,duration:.65,ease:'none'},4.72)
+      .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.18)
+      .to('.hero-bottle',{left:'76%',top:'58%',xPercent:-50,yPercent:-50,y:0,rotation:0,scale:.62,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
       .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:.9},5.12)
       .to('.hero-photo,.photo-shade,.hands-stage,.halo',{opacity:0,duration:.72},5.12)
       .to('.day',{opacity:1,duration:.65},5.3)
-      .to('.hero-bottle',{top:'54%',left:'68%',xPercent:-50,yPercent:-50,rotation:0,scale:.7,duration:.85,ease:'none'},5.15);
+      .to('.hero-bottle',{top:'57%',left:'76%',xPercent:-50,yPercent:-50,rotation:0,scale:.6,duration:.85,ease:'none'},5.15);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
  const visual=card.querySelector('.ingredient-visual');
  const art=card.querySelector('.ingredient-art');
