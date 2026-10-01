@@ -9,6 +9,7 @@ const BOTTLE='/aloe-bottle.png.png';
 const ALOE_ING='/aloe.png.png';
 const NEEM='/neem.png.png';
 const TURMERIC='/turmeric.png.png';
+const DROP='/Drop.png.jpg';
 
 export default function Home(){
  const root=useRef(null);
@@ -21,28 +22,32 @@ export default function Home(){
    raf=t=>lenis.raf(t*1000); gsap.ticker.add(raf); gsap.ticker.lagSmoothing(0);
    ctx=gsap.context(()=>{
     gsap.from('.intro-ui',{opacity:0,y:18,stagger:.08,duration:1,ease:'power3.out'});
-    gsap.from('.hero-photo',{scale:1.06,opacity:0,duration:1.7,ease:'power3.out'});
+    gsap.set('.hero-photo',{opacity:1});
+    gsap.set('.hero-bg-photo',{opacity:1});
+    gsap.set('.hero-aloe',{opacity:1});
+    gsap.from('.hero-photo',{scale:1.025,duration:1.35,ease:'power3.out'});
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:1,pin:'.screen',anticipatePin:1}});
     tl.to('.intro-title',{opacity:0,y:-90,duration:.7},0)
       .to('.hero-bg-photo',{scale:1.3,filter:'brightness(.78) saturate(1.12)',duration:1.75},0).to('.hero-aloe',{scale:1.38,yPercent:2,duration:1.75},0)
       .to('.cut-left',{xPercent:-55,rotation:-5,duration:1.2},.8)
       .to('.cut-right',{xPercent:55,rotation:5,duration:1.2},.8)
       .to('.gel-core',{opacity:1,scale:1,duration:.8},1)
-      .to('.drop',{opacity:1,scale:1,stagger:.035,duration:.55},.65)
-      .to('.drop',{x:(i)=>(i-6)*38,y:(i)=>170+(i%4)*78,rotation:(i)=>i*31,scale:(i)=>.65+(i%3)*.22,duration:1.65,ease:'power1.in'},.9)
+      .to('.drop',{opacity:1,scale:(i)=>.48+(i%5)*.14,stagger:.028,duration:.48},.62)
+      .to('.drop',{x:(i)=>(i-9)*42,y:(i)=>190+(i%5)*72,rotation:(i)=>(i%2?1:-1)*(8+i*7),scale:(i)=>.42+(i%5)*.13,duration:1.65,ease:'power1.in'},.9)
       .to('.cut-left',{xPercent:-125,opacity:0,duration:1.2},2)
       .to('.cut-right',{xPercent:125,opacity:0,duration:1.2},2)
       .to('.hero-bg-photo',{scale:1.48,filter:'brightness(.62) saturate(1.18)',duration:1.15},1.8).to('.hero-aloe',{scale:1.72,yPercent:5,duration:1.15},1.8)
       .fromTo('.hero-bottle',{opacity:0,y:115,scale:.64,rotation:10},{opacity:1,y:0,scale:1,rotation:7,duration:1.25,ease:'power2.out'},2.12)
       .to('.halo',{opacity:1,scale:1,duration:1.2},2.2)
       .to('.product-copy',{opacity:1,y:0,duration:1},2.65)
-      .to('.drop',{x:(i)=>(i-6)*76,y:(i)=>260+(i%5)*75,opacity:.15,scale:(i)=>.45+(i%3)*.2,duration:1.2},2.65)
-      .to('.hero-bottle',{left:'61%',top:'49%',rotation:0,scale:1.02,duration:1.35,ease:'none'},2.75)
-      .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:1.05},3.65)
-      .to('.hero-photo',{opacity:0,duration:.75},3.65)
-      .to('.night',{opacity:0,duration:.75},3.65)
-      .to('.day',{opacity:1,duration:.8},3.82)
-      .to('.hero-bottle',{left:'67%',top:'50%',xPercent:0,yPercent:0,rotation:0,scale:.76,duration:1.1},3.72)
+      .to('.drop',{x:(i)=>(i-9)*82,y:(i)=>300+(i%5)*70,opacity:0,scale:(i)=>.35+(i%4)*.12,duration:1.15},2.65)
+      .to('.hero-bottle',{left:'58%',top:'49%',rotation:0,scale:1,duration:1.15,ease:'none'},2.72)
+      .to('.hero-bottle',{rotation:0,duration:.35,ease:'none'},3.55)
+      .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:1.05},3.75)
+      .to('.hero-photo',{opacity:0,duration:.72},3.75)
+      .to('.night',{opacity:0,duration:.72},3.75)
+      .to('.day',{opacity:1,duration:.75},3.9)
+      .to('.hero-bottle',{left:'72%',top:'49%',xPercent:0,yPercent:0,rotation:0,scale:.72,duration:1.05,ease:'none'},3.82)
       .to('.product-copy',{xPercent:-12,duration:1.2},3.7);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
  const visual=card.querySelector('.ingredient-visual');
@@ -63,7 +68,7 @@ export default function Home(){
    <div className="photo-shade night"/>
    <div className="cut-left night"><img src={ALOE_ING} alt=""/></div><div className="cut-right night"><img src={ALOE_ING} alt=""/></div>
    <div className="gel-core night"><span/><span/></div>
-   <div className="particles night">{Array.from({length:13}).map((_,i)=><i className={'drop p'+i} key={i}/>)}</div>
+   <div className="particles night">{Array.from({length:20}).map((_,i)=><img className={'drop p'+(i%13)} src={DROP} alt="" key={i}/>)}</div>
    <div className="intro-title intro-ui night"><small>PURE BOTANICAL CARE — 01</small><h1>FROM<br/><em>NATURE.</em></h1><aside><span>POTENT PLANTS.<br/>PURER RITUALS.</span><h2>MADE<br/>FOR <em>SKIN.</em></h2></aside></div>
    <div className="halo night"/>
    <img className="hero-bottle" src={BOTTLE} alt="Verdura Aloe Vera bottle"/>
