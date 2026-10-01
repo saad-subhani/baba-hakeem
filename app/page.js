@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import Lenis from '@studio-freight/lenis';
 
-const ALOE='/verdura-reference.webp';
-const BOTTLE='/verdura-reference.webp';
+const ALOE='/verdura-reference.webp.png';
+const BOTTLE='/verdura-reference.webp.png';
 
 export default function Home(){
  const root=useRef(null);
