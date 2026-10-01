@@ -22,3 +22,7 @@
 
 /* Hide light baked-in asset backgrounds against the cream collection. */
 .neem-card .ingredient-visual,.turmeric-card .ingredient-visual{background:#eee9dc;isolation:isolate}.neem-card .ingredient-art,.turmeric-card .ingredient-art{background:transparent}
+
+/* Final product handoff: bottle must read perfectly upright and hands remain with it. */
+.hands-stage{visibility:visible}
+.hero-bottle{transform-origin:50% 50%}
