@@ -112,6 +112,19 @@ export default function Home(){
    <div className="need-grid"><a href="#shop"><span>01</span><h3>HYDRATE</h3><p>ALOE VERA</p><b>↗</b></a><a href="#shop"><span>02</span><h3>BALANCE</h3><p>NEEM</p><b>↗</b></a><a href="#shop"><span>03</span><h3>GLOW</h3><p>TURMERIC</p><b>↗</b></a><a href="#shop"><span>04</span><h3>DISCOVER</h3><p>THE FULL ROUTINE</p><b>↗</b></a></div>
   </section>
   <section className="commerce-confidence"><div><b>01</b><h3>BOTANICAL FOCUS</h3><p>Ingredient-led routines with a clear purpose.</p></div><div><b>02</b><h3>CURATED ROUTINES</h3><p>Simple categories make product discovery easier.</p></div><div><b>03</b><h3>PREMIUM EXPERIENCE</h3><p>From first scroll to product selection, every detail feels considered.</p></div></section>
+  <section className="editorial-break">
+   <div className="editorial-number">07</div><div className="editorial-copy"><small>BOTANICAL INTELLIGENCE / DAILY RITUAL</small><h2>YOUR SKIN.<br/><em>YOUR RITUAL.</em></h2><p>Build a simple routine around the botanical experience that feels right for you.</p><a href="#shop">SHOP THE COLLECTION <span>↗</span></a></div>
+   <div className="editorial-art"><span className="plant-word">ALOE</span><img src={BOTTLE} alt="Herbal Botanics Aloe Vera serum"/><i className="ring r1"/><i className="ring r2"/></div>
+  </section>
+  <section className="routine-builder">
+   <div className="routine-title"><small>08 / THREE STEPS</small><h2>A BETTER ROUTINE,<br/><em>made simple.</em></h2></div>
+   <div className="routine-steps"><article><b>01</b><span>AM / PM</span><h3>PREPARE</h3><p>Begin with clean skin and make space for a focused botanical ritual.</p></article><article><b>02</b><span>2–3 DROPS</span><h3>TREAT</h3><p>Choose your botanical focus and press the formula gently into the skin.</p></article><article><b>03</b><span>DAILY</span><h3>REPEAT</h3><p>Keep the ritual consistent, uncomplicated and easy to return to.</p></article></div>
+  </section>
+  <section className="journal-section">
+   <div className="journal-head"><div><small>09 / BOTANICAL JOURNAL</small><h2>READ THE<br/><em>ingredient story.</em></h2></div><a href="#ingredients">EXPLORE ALL <span>→</span></a></div>
+   <div className="journal-grid"><article><div className="journal-visual j-aloe"><img src={ALOE_ING} alt="Aloe Vera"/></div><small>INGREDIENT 01</small><h3>WHY ALOE BELONGS IN A DAILY RITUAL</h3><a href="#ingredients">DISCOVER ALOE ↗</a></article><article><div className="journal-visual j-neem"><img src={NEEM} alt="Neem"/></div><small>INGREDIENT 02</small><h3>THE BOTANICAL CHARACTER OF NEEM</h3><a href="#ingredients">DISCOVER NEEM ↗</a></article><article><div className="journal-visual j-turmeric"><img src={TURMERIC} alt="Turmeric"/></div><small>INGREDIENT 03</small><h3>TURMERIC, COLOUR AND THE GLOW RITUAL</h3><a href="#ingredients">DISCOVER TURMERIC ↗</a></article></div>
+  </section>
+  <section className="newsletter-section"><small>THE HERBAL LETTER</small><h2>BOTANICAL NOTES,<br/><em>occasionally.</em></h2><p>New rituals, ingredient stories and collection updates.</p><form onSubmit={(e)=>e.preventDefault()}><input type="email" aria-label="Email address" placeholder="YOUR EMAIL ADDRESS" required/><button type="submit">JOIN <span>→</span></button></form><div className="newsletter-meta"><span>HERBAL BOTANICS © 2026</span><span>BOTANICAL SKINCARE / CONSIDERED RITUALS</span></div></section>
   <section className="final-cta"><small>HERBAL BOTANICS</small><h2>RETURN TO<br/><em>NATURE.</em></h2><a href="#collection">DISCOVER THE COLLECTION <span>→</span></a></section>
  </main>
 }
