@@ -4,7 +4,8 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import Lenis from '@studio-freight/lenis';
 
-const ALOE='https://images.squarespace-cdn.com/content/v1/5b1684bd9772aeb3c1aca850/1528203143729-S6WBUGD1X0V80D7VF5K9/1080x1080_aloe.jpg?format=1000w';
+const ALOE='https://images.unsplash.com/photo-1775204059233-c59e8599ebe3?auto=format&fit=crop&fm=jpg&q=90&w=2400';
+const BOTTLE='https://images.unsplash.com/photo-1764656424627-1fa7e5e7c2ed?auto=format&fit=crop&fm=jpg&q=90&w=1600';
 
 export default function Home(){
  const root=useRef(null);
@@ -17,26 +18,26 @@ export default function Home(){
    raf=t=>lenis.raf(t*1000); gsap.ticker.add(raf); gsap.ticker.lagSmoothing(0);
    ctx=gsap.context(()=>{
     gsap.from('.intro-ui',{opacity:0,y:18,stagger:.08,duration:1,ease:'power3.out'});
-    gsap.from('.macro',{scale:1.15,opacity:0,duration:1.7,ease:'power3.out'});
+    gsap.from('.hero-photo',{scale:1.08,opacity:0,duration:1.7,ease:'power3.out'});
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:1,pin:'.screen',anticipatePin:1}});
     tl.to('.intro-title',{opacity:0,y:-90,duration:.7},0)
-      .to('.macro',{scale:1.7,yPercent:7,filter:'brightness(.55)',duration:1.4},0)
-      .to('.cut-left',{xPercent:-47,rotation:-5,duration:1.2},.8)
-      .to('.cut-right',{xPercent:47,rotation:5,duration:1.2},.8)
+      .to('.hero-photo',{scale:1.24,filter:'brightness(.48) saturate(1.12)',duration:1.45},0)
+      .to('.cut-left',{xPercent:-55,rotation:-5,duration:1.2},.8)
+      .to('.cut-right',{xPercent:55,rotation:5,duration:1.2},.8)
       .to('.gel-core',{opacity:1,scale:1,duration:.8},1)
       .to('.drop',{opacity:1,scale:1,stagger:.035,duration:.65},1.15)
       .to('.drop',{x:(i)=>(i%2?1:-1)*(45+i*17),y:(i)=>-90-(i%4)*55,rotation:(i)=>i*31,duration:1.4},1.7)
-      .to('.cut-left',{xPercent:-115,opacity:0,duration:1.2},2)
-      .to('.cut-right',{xPercent:115,opacity:0,duration:1.2},2)
-      .to('.macro',{opacity:0,scale:2.05,duration:1},2.1)
-      .to('.product',{opacity:1,scale:1,y:0,duration:1.35},2.15)
+      .to('.cut-left',{xPercent:-125,opacity:0,duration:1.2},2)
+      .to('.cut-right',{xPercent:125,opacity:0,duration:1.2},2)
+      .to('.hero-photo',{opacity:0,scale:1.45,duration:1},2.1)
+      .to('.real-product',{opacity:1,scale:1,y:0,duration:1.35},2.15)
       .to('.halo',{opacity:1,scale:1,duration:1.2},2.2)
       .to('.product-copy',{opacity:1,y:0,duration:1},2.65)
       .to('.drop',{x:(i)=>(i-6)*70,y:(i)=>-210+(i%5)*75,scale:(i)=>.55+(i%3)*.25,duration:1.3},2.65)
       .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:1.25},3.55)
       .to('.night',{opacity:0,duration:.8},3.55)
       .to('.day',{opacity:1,duration:.9},3.75)
-      .to('.product',{xPercent:95,scale:.78,duration:1.2},3.7)
+      .to('.real-product',{xPercent:78,scale:.82,duration:1.2},3.7)
       .to('.product-copy',{xPercent:-12,duration:1.2},3.7);
     ScrollTrigger.refresh();
    },root);
@@ -47,13 +48,14 @@ export default function Home(){
   <section className="film"><div className="screen">
    <header className="intro-ui"><a href="#" className="logo">VERDURA<span>BOTANICS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
    <div className="night cinematic-bg"/>
-   <img className="macro night" src={ALOE} alt="Fresh aloe vera with water droplets"/>
+   <img className="hero-photo night" src={ALOE} alt="Fresh aloe vera leaves with water droplets"/>
+   <div className="photo-shade night"/>
    <div className="cut-left night"><img src={ALOE} alt=""/></div><div className="cut-right night"><img src={ALOE} alt=""/></div>
    <div className="gel-core night"><span/><span/></div>
    <div className="particles night">{Array.from({length:13}).map((_,i)=><i className={'drop p'+i} key={i}/>)}</div>
    <div className="intro-title intro-ui night"><small>PURE BOTANICAL CARE — 01</small><h1>FROM<br/><em>NATURE.</em></h1><aside><span>POTENT PLANTS.<br/>PURER RITUALS.</span><h2>MADE<br/>FOR <em>SKIN.</em></h2></aside></div>
    <div className="halo night"/>
-   <div className="product"><div className="pipette"/><div className="bottle"><small>VERDURA</small><b>ALOE<br/>VERA</b><span>BOTANICAL CONCENTRATE<br/>30 ML</span></div></div>
+   <div className="real-product"><img src={BOTTLE} alt="Real botanical skincare serum bottle"/><div className="verdura-label"><small>VERDURA</small><b>ALOE</b><span>BOTANICAL SERUM</span></div></div>
    <div className="product-copy"><small>01 / BOTANICAL HYDRATION</small><h2>ALOE,<br/><em>REIMAGINED.</em></h2><p>Plant becomes texture. Texture becomes ritual. A botanical story revealed by your scroll.</p><a href="#collection">DISCOVER THE RITUAL →</a></div>
    <div className="scroll intro-ui night">SCROLL TO TRANSFORM <b>↓</b></div><div className="day chapter">THE PLANT / THE FORMULA / THE RITUAL</div>
   </div></section>
