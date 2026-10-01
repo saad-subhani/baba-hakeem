@@ -25,6 +25,7 @@ export default function Home(){
    ctx=gsap.context(()=>{
     gsap.from('.intro-ui',{opacity:0,y:18,stagger:.08,duration:1,ease:'power3.out'});
     gsap.set('.hero-photo',{opacity:1});
+    gsap.set('.hero-bottle',{xPercent:-50,yPercent:-50,rotation:12,transformOrigin:'50% 50%'});
     gsap.set('.hero-bg-photo',{opacity:1});
     gsap.set('.hero-aloe',{opacity:1});
     gsap.set('.hands-stage',{opacity:0,yPercent:18,scale:.86});
@@ -39,11 +40,11 @@ export default function Home(){
       .to('.drop',{x:(i)=>(i-9.5)*44,y:(i)=>150+(i%5)*68,rotation:(i)=>(i%2?1:-1)*(10+i*5),duration:1.45,ease:'power1.in'},.7)
       .to('.gel-core',{opacity:1,scale:1,duration:.7},1.15)
       .to('.reveal-leaf',{opacity:.38,scale:1.42,duration:.8},1.7)
-      .fromTo('.hero-bottle',{opacity:0,left:'50%',top:'50%',xPercent:-50,yPercent:-50,y:85,scale:.55,rotation:12},{opacity:1,left:'50%',top:'50%',xPercent:-50,yPercent:-50,y:0,scale:.82,rotation:9,duration:.85,ease:'power2.out'},1.55)
+      .fromTo('.hero-bottle',{opacity:0,left:'50%',top:'50%',y:85,scale:.55,rotation:12},{opacity:1,left:'50%',top:'50%',y:0,scale:.82,rotation:9,duration:.85,ease:'power2.out'},1.55)
       .to('.halo',{opacity:.75,scale:.82,duration:.7},1.55)
       .to('.hero-bottle',{rotation:5,scale:.88,duration:.65,ease:'none'},2.18)
       .to('.hero-bottle',{rotation:2,scale:.92,duration:.65,ease:'none'},2.78)
-      .to('.hero-bottle',{rotation:0,rotate:0,scale:.94,duration:.65,ease:'none'},3.38)
+      .to('.hero-bottle',{rotation:0,scale:.94,duration:.8,ease:'none'},3.38)
       .to('.drop',{y:(i)=>310+(i%5)*76,opacity:0,duration:.9},2.45)
       .to('.product-copy',{opacity:1,y:0,duration:.7},2.55)
       .to('.gel-core',{opacity:.35,scale:1.12,duration:.65},3.35)
@@ -53,13 +54,11 @@ export default function Home(){
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:'76%',top:'58%',xPercent:-50,yPercent:-50,y:0,rotation:0,rotate:0,scale:.62,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hero-bottle',{left:'76%',top:'58%',y:0,rotation:0,scale:.62,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.screen',{backgroundColor:'#eee9dc',color:'#173226',duration:.9},5.35)
-      .to('.hero-photo,.photo-shade,.halo',{opacity:0,duration:.72},5.35)
-      .to('.day',{opacity:1,duration:.65},5.48)
-      .to('.hero-bottle',{top:'58%',left:'76%',xPercent:-50,yPercent:-50,y:0,rotation:0,rotate:0,scale:.62,duration:.85,ease:'none'},5.35)
-      .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35);
+      .to('.hero-bottle',{top:'58%',left:'76%',y:0,rotation:0,scale:.62,duration:.85,ease:'none'},5.35)
+      .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
+      .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
  const visual=card.querySelector('.ingredient-visual');
  const art=card.querySelector('.ingredient-art');
