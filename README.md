@@ -1,4 +1,4 @@
-# Verdura Botanics
+# Herbal Botanics
 
 Immersive herbal e-commerce concept built as a senior-review demo.
 
