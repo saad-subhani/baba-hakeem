@@ -4,8 +4,11 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import Lenis from '@studio-freight/lenis';
 
-const ALOE='/verdura-reference.webp.png';
-const BOTTLE='/verdura-reference.webp.png';
+const ALOE='/aloe-hero.png.png';
+const BOTTLE='/aloe-bottle.png.png';
+const ALOE_ING='/aloe.png.png';
+const NEEM='/neem.png.png';
+const TURMERIC='/turmeric.png.png';
 
 export default function Home(){
  const root=useRef(null);
@@ -18,7 +21,7 @@ export default function Home(){
    raf=t=>lenis.raf(t*1000); gsap.ticker.add(raf); gsap.ticker.lagSmoothing(0);
    ctx=gsap.context(()=>{
     gsap.from('.intro-ui',{opacity:0,y:18,stagger:.08,duration:1,ease:'power3.out'});
-    gsap.from('.hero-photo',{scale:1.04,opacity:0,duration:1.7,ease:'power3.out'});
+    gsap.from('.hero-photo',{scale:1.06,opacity:0,duration:1.7,ease:'power3.out'});
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:1,pin:'.screen',anticipatePin:1}});
     tl.to('.intro-title',{opacity:0,y:-90,duration:.7},0)
       .to('.hero-photo',{scale:1.13,filter:'brightness(.58) saturate(1.08)',duration:1.45},0)
@@ -30,7 +33,7 @@ export default function Home(){
       .to('.cut-left',{xPercent:-125,opacity:0,duration:1.2},2)
       .to('.cut-right',{xPercent:125,opacity:0,duration:1.2},2)
       .to('.hero-photo',{opacity:0,scale:1.45,duration:1},2.1)
-      .to('.hero-bottle',{opacity:1,scale:1,rotation:7,duration:1.15},2.05)
+      .fromTo('.hero-bottle',{opacity:0,y:150,scale:.62,rotation:-2},{opacity:1,y:0,scale:1,rotation:8,duration:1.3,ease:'power2.out'},2.05)
       .to('.halo',{opacity:1,scale:1,duration:1.2},2.2)
       .to('.product-copy',{opacity:1,y:0,duration:1},2.65)
       .to('.drop',{x:(i)=>(i-6)*70,y:(i)=>-210+(i%5)*75,scale:(i)=>.55+(i%3)*.25,duration:1.3},2.65)
@@ -56,15 +59,15 @@ export default function Home(){
    <div className="night cinematic-bg"/>
    <img className="hero-photo night" src={ALOE} alt="Verdura Botanics aloe hero composition" onError={(e)=>{e.currentTarget.src='https://images.unsplash.com/photo-1775204059233-c59e8599ebe3?auto=format&fit=crop&fm=jpg&q=90&w=2400'}}/>
    <div className="photo-shade night"/>
-   <div className="cut-left night"><img src={ALOE} alt=""/></div><div className="cut-right night"><img src={ALOE} alt=""/></div>
+   <div className="cut-left night"><img src={ALOE_ING} alt=""/></div><div className="cut-right night"><img src={ALOE_ING} alt=""/></div>
    <div className="gel-core night"><span/><span/></div>
    <div className="particles night">{Array.from({length:13}).map((_,i)=><i className={'drop p'+i} key={i}/>)}</div>
    <div className="intro-title intro-ui night"><small>PURE BOTANICAL CARE — 01</small><h1>FROM<br/><em>NATURE.</em></h1><aside><span>POTENT PLANTS.<br/>PURER RITUALS.</span><h2>MADE<br/>FOR <em>SKIN.</em></h2></aside></div>
    <div className="halo night"/>
-   <div className="hero-bottle" aria-label="Verdura Aloe Vera bottle"><div className="bottle-crop"><img src={BOTTLE} alt=""/></div></div>
+   <img className="hero-bottle" src={BOTTLE} alt="Verdura Aloe Vera bottle"/>
    <div className="product-copy"><small>01 / BOTANICAL HYDRATION</small><h2>ALOE,<br/><em>REIMAGINED.</em></h2><p>Plant becomes texture. Texture becomes ritual. A botanical story revealed by your scroll.</p><a href="#collection">DISCOVER THE RITUAL →</a></div>
    <div className="scroll intro-ui night">SCROLL TO TRANSFORM <b>↓</b></div><div className="day chapter">THE PLANT / THE FORMULA / THE RITUAL</div>
   </div></section>
-  <section className="collection" id="collection"><div><small>02 / THE COLLECTION</small><h2>THE STORY BECOMES<br/><em>something you can hold.</em></h2></div><div className="ingredient-row" id="ingredients"><article className="ingredient-card aloe-card"><div className="ingredient-visual"><div className="ingredient-art"/></div><b>01</b><h3>ALOE VERA</h3><p>HYDRATE / SOOTHE / RESET</p></article><article className="ingredient-card neem-card"><div className="ingredient-visual"><div className="ingredient-art"/></div><b>02</b><h3>NEEM</h3><p>CLARIFY / BALANCE / CARE</p></article><article className="ingredient-card turmeric-card"><div className="ingredient-visual"><div className="ingredient-art"/></div><b>03</b><h3>TURMERIC</h3><p>GLOW / REVIVE / RITUAL</p></article></div></section>
+  <section className="collection" id="collection"><div><small>02 / THE COLLECTION</small><h2>THE STORY BECOMES<br/><em>something you can hold.</em></h2></div><div className="ingredient-row" id="ingredients"><article className="ingredient-card aloe-card"><div className="ingredient-visual"><img className="ingredient-art" src={ALOE_ING} alt="Aloe Vera"/></div><b>01</b><h3>ALOE VERA</h3><p>HYDRATE / SOOTHE / RESET</p></article><article className="ingredient-card neem-card"><div className="ingredient-visual"><img className="ingredient-art" src={NEEM} alt="Neem leaves"/></div><b>02</b><h3>NEEM</h3><p>CLARIFY / BALANCE / CARE</p></article><article className="ingredient-card turmeric-card"><div className="ingredient-visual"><img className="ingredient-art" src={TURMERIC} alt="Turmeric"/></div><b>03</b><h3>TURMERIC</h3><p>GLOW / REVIVE / RITUAL</p></article></div></section>
  </main>
 }
