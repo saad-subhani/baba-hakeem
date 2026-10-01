@@ -46,3 +46,7 @@
 .final-cta{min-height:88vh;background:#08130d;color:#f3f0e5;padding:12vh 6vw;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden}.final-cta small{font:8px DM Mono;letter-spacing:.32em}.final-cta h2{font:400 clamp(90px,13vw,205px)/.68 Georgia,serif;letter-spacing:-.075em;margin:8vh 0}.final-cta em{font-family:Playfair Display,serif;color:#d5df8d;font-weight:500}.final-cta>a{min-width:280px}.final-cta>a:hover{background:#f3f0e5;color:#08130d;transform:translateY(-3px)}
 @media(max-width:760px){.benefit-strip{justify-content:flex-start;gap:18px}.benefit-strip span:nth-of-type(n+3),.benefit-strip i:nth-of-type(n+2){display:none}.collection-actions{align-items:flex-start;flex-direction:column}.ritual-grid{grid-template-columns:1fr;padding-top:9vh}.ritual-visual{height:55vh;min-height:430px}.ritual-visual img{width:55vw;height:43vh}.ritual-kicker span{display:none}.promise-grid{grid-template-columns:1fr}.promise-grid article+article{border-left:0;border-top:1px solid #17322655;padding-left:0}.final-cta{min-height:72vh}.final-cta h2{font-size:22vw}}
 @media(prefers-reduced-motion:reduce){.orbit{animation:none}.ritual-visual img{transition:none}}
+
+/* Final handoff polish — crop wrist endings below the viewport while preserving palm position. */
+.hands-stage{top:76%;width:min(29vw,405px);height:42vh;object-position:center top}
+@media(max-width:760px){.hands-stage{left:73%;top:78%;width:56vw;height:36vh}}
