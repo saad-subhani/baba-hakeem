@@ -81,7 +81,7 @@ export default function Home(){
    <div className="intro-title intro-ui night"><small>PURE BOTANICAL CARE — 01</small><h1>FROM<br/><em>NATURE.</em></h1><aside><span>POTENT PLANTS.<br/>PURER RITUALS.</span><h2>MADE<br/>FOR <em>SKIN.</em></h2></aside></div>
    <div className="halo night"/>
    <img className="hands-stage night" src={HANDS} alt="Hands receiving Verdura bottle"/>
-   <img className="hero-bottle" src={BOTTLE} alt="Verdura Aloe Vera bottle"/>
+   <div className="hero-bottle"><img className="hero-bottle-art" src={BOTTLE} alt="Verdura Aloe Vera bottle"/></div>
    <div className="product-copy"><small>01 / BOTANICAL HYDRATION</small><h2>ALOE,<br/><em>REIMAGINED.</em></h2><p>Plant becomes texture. Texture becomes ritual. A botanical story revealed by your scroll.</p><a href="#collection">DISCOVER THE RITUAL →</a></div>
    <div className="scroll intro-ui night">SCROLL TO TRANSFORM <b>↓</b></div><div className="day chapter">THE PLANT / THE FORMULA / THE RITUAL</div>
   </div></section>
