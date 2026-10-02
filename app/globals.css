@@ -276,3 +276,176 @@
     clip-path:none!important;
   }
 }
+
+
+/* =========================================================
+   PREMIUM EDITORIAL PASS — 2026-10-02
+   Deliberately excludes the cinematic bottle / hands / gel /
+   journey / ritual destination system.
+   ========================================================= */
+
+/* Brand/navigation refinement */
+.intro-ui.logo,.logo{letter-spacing:.22em}
+.logo span{letter-spacing:.34em;opacity:.72}
+.intro-ui nav a{
+  position:relative;
+  transition:opacity .3s ease,letter-spacing .3s ease;
+}
+.intro-ui nav a:after{
+  content:"";position:absolute;left:0;right:100%;bottom:-8px;height:1px;
+  background:currentColor;transition:right .35s cubic-bezier(.2,.7,.2,1);
+}
+.intro-ui nav a:hover{opacity:1;letter-spacing:.19em}
+.intro-ui nav a:hover:after{right:0}
+
+/* Section rhythm and subtle depth */
+.collection,.promise-section,.shop-section,.range-section,.zafran-feature,
+.brand-manifesto,.journal-section,.newsletter-section,.final-cta{
+  position:relative;isolation:isolate;
+}
+.collection:before,.shop-section:before,.journal-section:before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle at 82% 12%,rgba(104,127,71,.07),transparent 27%);
+}
+.collection>div:first-child h2,.promise-section>h2,.shop-head h2,.range-heading h2,
+.zafran-copy h2,.journal-head h2,.newsletter-section h2,.final-cta h2{
+  letter-spacing:-.045em;
+  text-wrap:balance;
+}
+.collection small,.promise-section>small,.shop-head small,.range-heading small,
+.zafran-copy>small,.journal-head small,.newsletter-section>small,.final-cta>small{
+  letter-spacing:.24em;
+}
+
+/* Ingredient editorial cards */
+.ingredient-card{
+  position:relative;overflow:hidden;
+  transition:transform .55s cubic-bezier(.2,.75,.2,1),border-color .35s ease;
+}
+.ingredient-card:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 38%);
+  opacity:0;transition:opacity .45s ease;
+}
+.ingredient-card:hover{transform:translateY(-8px)}
+.ingredient-card:hover:after{opacity:1}
+.ingredient-visual{overflow:hidden}
+.ingredient-art{transition:transform .8s cubic-bezier(.2,.75,.2,1)}
+.ingredient-card:hover .ingredient-art{transform:scale(1.055)}
+
+/* Premium product cards */
+.real-product-grid{gap:clamp(12px,1.45vw,24px)}
+.shop-card{
+  position:relative;overflow:hidden;
+  transition:transform .5s cubic-bezier(.2,.75,.2,1),box-shadow .5s ease,border-color .4s ease;
+}
+.shop-card:hover{
+  transform:translateY(-9px);
+  box-shadow:0 24px 52px rgba(22,47,34,.12);
+}
+.shop-card .badge{transition:letter-spacing .35s ease,opacity .35s ease}
+.shop-card:hover .badge{letter-spacing:.15em;opacity:.82}
+.real-product-art{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(255,255,255,.76),transparent 35%),
+    linear-gradient(145deg,rgba(111,139,79,.13),rgba(245,241,229,.45));
+}
+.real-product-art:after{
+  content:"";position:absolute;left:12%;right:12%;bottom:8%;height:14%;
+  background:radial-gradient(ellipse,rgba(24,46,33,.16),transparent 68%);
+  filter:blur(10px);pointer-events:none;
+}
+.real-product-art img{
+  position:relative;z-index:2;
+  transition:transform .7s cubic-bezier(.2,.75,.2,1),filter .5s ease;
+  filter:drop-shadow(0 16px 18px rgba(25,43,31,.16));
+}
+.shop-card:hover .real-product-art img{
+  transform:translateY(-8px) scale(1.045);
+  filter:drop-shadow(0 23px 24px rgba(25,43,31,.22));
+}
+.art-index{opacity:.055;transition:opacity .4s ease,transform .6s ease}
+.shop-card:hover .art-index{opacity:.09;transform:translateY(-5px)}
+.product-arrow{
+  transition:transform .35s ease,background .35s ease,color .35s ease;
+}
+.shop-card:hover .product-arrow{transform:rotate(45deg);background:#163a2a;color:#f4f0e4}
+
+/* Tabs become quieter, more luxury-editorial */
+.category-tabs button{
+  transition:background .3s ease,color .3s ease,border-color .3s ease,transform .3s ease;
+}
+.category-tabs button:hover{transform:translateY(-2px)}
+.category-tabs button.active{box-shadow:0 8px 22px rgba(22,58,42,.12)}
+
+/* Range: stronger gallery composition */
+.range-panels article{
+  position:relative;overflow:hidden;
+  transition:transform .5s cubic-bezier(.2,.75,.2,1);
+}
+.range-panels article:hover{transform:translateY(-7px)}
+.range-panels img{transition:transform .8s cubic-bezier(.2,.75,.2,1),filter .5s ease}
+.range-panels article:hover img{transform:scale(1.045);filter:contrast(1.025) saturate(1.03)}
+
+/* Saffron becomes a luxury feature moment */
+.zafran-feature{overflow:hidden}
+.zafran-photo{position:relative;overflow:hidden}
+.zafran-photo:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(22,58,42,.08);
+}
+.zafran-photo img{transition:transform 1s cubic-bezier(.2,.75,.2,1)}
+.zafran-feature:hover .zafran-photo img{transform:scale(1.025)}
+.zafran-meta span{transition:background .3s ease,color .3s ease}
+.zafran-meta span:hover{background:#163a2a;color:#f4f0e4}
+
+/* Manifesto: cleaner luxury dividers */
+.manifesto-grid>div{
+  transition:padding-left .35s ease,background .35s ease;
+}
+.manifesto-grid>div:hover{padding-left:12px;background:rgba(255,255,255,.025)}
+
+/* Journal cards with editorial image motion */
+.journal-grid article{transition:transform .45s cubic-bezier(.2,.75,.2,1)}
+.journal-grid article:hover{transform:translateY(-8px)}
+.journal-visual{overflow:hidden}
+.journal-visual img{
+  transition:transform .8s cubic-bezier(.2,.75,.2,1),filter .5s ease;
+}
+.journal-grid article:hover .journal-visual img{transform:scale(1.045);filter:contrast(1.03)}
+.journal-grid article a{display:inline-block;transition:transform .3s ease}
+.journal-grid article:hover a{transform:translateX(5px)}
+
+/* Newsletter and final CTA: premium finishing moments */
+.newsletter-section form{
+  transition:border-color .3s ease,box-shadow .3s ease;
+}
+.newsletter-section form:focus-within{
+  border-color:rgba(22,58,42,.58);
+  box-shadow:0 12px 34px rgba(22,58,42,.08);
+}
+.newsletter-section button{transition:letter-spacing .3s ease,transform .3s ease}
+.newsletter-section button:hover{letter-spacing:.18em;transform:translateX(3px)}
+.final-cta{overflow:hidden}
+.final-cta:before{
+  content:"";position:absolute;width:38vw;height:38vw;border:1px solid rgba(205,224,111,.12);
+  border-radius:50%;right:-15vw;top:-20vw;z-index:-1;pointer-events:none;
+}
+.final-cta:after{
+  content:"";position:absolute;width:25vw;height:25vw;border:1px solid rgba(205,224,111,.08);
+  border-radius:50%;right:-7vw;top:-12vw;z-index:-1;pointer-events:none;
+}
+.final-cta a{transition:transform .35s ease,background .35s ease,color .35s ease}
+.final-cta a:hover{transform:translateY(-3px);background:#d9ea7b;color:#0a2418}
+
+/* Respect reduced-motion without changing the default experience. */
+@media(prefers-reduced-motion:reduce){
+  .ingredient-card,.ingredient-art,.shop-card,.real-product-art img,.range-panels article,
+  .range-panels img,.zafran-photo img,.journal-grid article,.journal-visual img{transition:none}
+}
+@media(max-width:760px){
+  .shop-card:hover,.ingredient-card:hover,.range-panels article:hover,.journal-grid article:hover{transform:none}
+  .collection>div:first-child h2,.promise-section>h2,.shop-head h2,.range-heading h2,
+  .zafran-copy h2,.journal-head h2,.newsletter-section h2,.final-cta h2{letter-spacing:-.03em}
+}
