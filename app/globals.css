@@ -96,3 +96,98 @@
 .editorial-real-product{object-fit:contain!important}
 @media(max-width:1050px){.real-product-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.real-product-grid{grid-template-columns:1fr}.real-product-art{height:58vh;min-height:420px}.real-product-art>img:not(.botanical-accent):not(.trio){width:76%;height:84%}}
+
+
+/* 2026 catalogue refinement — lower site rebuilt around the real Herbal Botanics range.
+   Everything above OUR APPROACH / the approved cinematic sequence remains untouched. */
+.shop-section{padding-top:16vh;padding-bottom:15vh}
+.shop-head{grid-template-columns:minmax(0,1fr) minmax(260px,360px);border-bottom:1px solid #17322645;padding-bottom:7vh}
+.shop-head h2{margin-top:4vh}
+.category-tabs{margin-top:5vh}
+.real-product-grid{grid-template-columns:repeat(3,1fr);gap:0}
+.real-product-grid .shop-card{padding:16px}
+.real-product-grid .shop-art{height:62vh;min-height:520px}
+.real-product-grid .shop-art:before{inset:6%;border-color:rgba(23,50,38,.09)}
+.real-product-grid .shop-art>img:not(.botanical-accent):not(.trio){width:84%;height:88%;z-index:3}
+.real-product-grid .hair-product>img{width:88%!important}
+.real-product-grid .joint-product>img{width:82%!important}
+.real-product-grid .mens-product>img{width:80%!important}
+.real-product-grid .phakki-product>img,.real-product-grid .stomach-product>img{width:76%!important}
+.real-product-grid .zafran-product>img{width:100%!important;height:100%!important}
+.art-index{position:absolute;z-index:1;right:4%;bottom:-2%;font:400 clamp(90px,10vw,170px)/1 Georgia,serif;color:rgba(23,50,38,.055);letter-spacing:-.08em}
+.zafran-product .art-index{z-index:4;color:rgba(244,240,229,.5);text-shadow:0 1px 14px rgba(0,0,0,.16)}
+.real-product-grid .badge{top:30px;left:30px}
+.real-product-grid .shop-info{min-height:128px;padding:24px 8px 10px}
+.real-product-grid .shop-info h3{font-size:31px}
+.real-product-grid .shop-info p{max-width:280px;line-height:1.55}
+.product-arrow{flex:0 0 auto;width:54px;height:54px;border:1px solid #173226;border-radius:50%;display:grid;place-items:center;font-size:17px;transition:.3s}
+.product-arrow:hover{background:#173226;color:#f4f0e5;transform:rotate(45deg)}
+
+.range-section{background:#10271d;color:#f4f0e5;padding:14vh 6vw 16vh}
+.range-heading{display:grid;grid-template-columns:1fr 330px;gap:5vw;align-items:end;border-bottom:1px solid #f4f0e533;padding-bottom:9vh}
+.range-heading small,.range-panels small{font:8px DM Mono;letter-spacing:.22em}
+.range-heading h2{font:400 clamp(66px,8vw,124px)/.76 Georgia,serif;letter-spacing:-.065em;margin:4vh 0 0}
+.range-heading em,.zafran-copy em,.brand-manifesto em{font-family:Playfair Display,serif;color:#d5df8d;font-weight:500}
+.range-heading p{font-size:11px;line-height:1.8;color:#f4f0e5aa}
+.range-panels{display:grid;grid-template-columns:1fr 1fr;border-left:1px solid #f4f0e52b}
+.range-panels article{position:relative;min-height:72vh;border-right:1px solid #f4f0e52b;padding:38px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.range-panels article>span{font:8px DM Mono;letter-spacing:.2em;color:#d5df8d}
+.range-panels article>div{position:relative;z-index:3;max-width:310px}
+.range-panels h3{font:400 clamp(38px,4vw,62px)/.82 Georgia,serif;letter-spacing:-.045em;margin:20px 0}
+.range-panels p{font-size:10px;line-height:1.7;color:#f4f0e5a8}
+.range-panels img{position:absolute;right:-3%;bottom:-5%;width:58%;height:72%;object-fit:contain;filter:drop-shadow(0 30px 35px #0008);transition:transform .65s cubic-bezier(.2,.8,.2,1)}
+.range-panels article:hover img{transform:translateY(-12px) rotate(2deg) scale(1.035)}
+
+.zafran-feature{min-height:105vh;background:#d9d4ca;color:#173226;display:grid;grid-template-columns:1.12fr .88fr}
+.zafran-photo{min-height:105vh;overflow:hidden}
+.zafran-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.zafran-feature:hover .zafran-photo img{transform:scale(1.025)}
+.zafran-copy{padding:12vh 7vw;display:flex;flex-direction:column;justify-content:center}
+.zafran-copy>small,.manifesto-kicker,.zafran-meta{font:8px DM Mono;letter-spacing:.2em}
+.zafran-copy h2{font:400 clamp(72px,8vw,126px)/.74 Georgia,serif;letter-spacing:-.07em;margin:6vh 0}
+.zafran-copy em{color:#7c5e25}
+.zafran-copy>p{max-width:430px;font-size:12px;line-height:1.9}
+.zafran-meta{display:flex;flex-wrap:wrap;gap:9px;margin:5vh 0}
+.zafran-meta span{border:1px solid #17322655;border-radius:999px;padding:9px 12px}
+.zafran-copy>a{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #17322655;border-bottom:1px solid #17322655;padding:18px 0;font:8px DM Mono;letter-spacing:.18em}
+
+.brand-manifesto{background:#eee9dc;color:#173226;padding:14vh 6vw}
+.manifesto-kicker{display:flex;justify-content:space-between;border-bottom:1px solid #17322644;padding-bottom:22px}
+.brand-manifesto>h2{font:400 clamp(74px,9.4vw,150px)/.73 Georgia,serif;letter-spacing:-.07em;margin:11vh 0}
+.brand-manifesto em{color:#597143}
+.manifesto-grid{display:grid;grid-template-columns:1.3fr repeat(3,.7fr);border-top:1px solid #17322644}
+.manifesto-grid>p{padding:32px 8% 40px 0;max-width:420px;font-size:11px;line-height:1.8}
+.manifesto-grid>div{border-left:1px solid #17322644;padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;min-height:160px}
+.manifesto-grid span,.manifesto-grid b{font:8px DM Mono;letter-spacing:.16em}
+
+.product-journal{background:#f4f0e5}
+.product-story-visual{background:radial-gradient(circle,#e2e3d3,#c4cbb5)}
+.product-story-visual img{width:78%!important;height:82%!important;object-fit:contain!important}
+.zafran-story-visual{background:#d7d3ca}
+.zafran-story-visual img{width:100%!important;height:100%!important;object-fit:cover!important}
+.newsletter-section{background:#dce789;color:#173226}
+.newsletter-section h2 em{font-family:Playfair Display,serif;font-weight:500}
+.final-cta{min-height:96vh}
+
+@media(max-width:1050px){
+ .real-product-grid{grid-template-columns:repeat(2,1fr)}
+ .range-heading{grid-template-columns:1fr}
+ .manifesto-grid{grid-template-columns:1fr 1fr}
+ .manifesto-grid>p{grid-column:1/-1}
+}
+@media(max-width:760px){
+ .shop-head{grid-template-columns:1fr}
+ .real-product-grid{grid-template-columns:1fr}
+ .real-product-grid .shop-art{height:62vh;min-height:440px}
+ .range-section{padding-left:20px;padding-right:20px}
+ .range-panels{grid-template-columns:1fr}
+ .range-panels article{min-height:62vh}
+ .range-panels img{width:62%;height:65%}
+ .zafran-feature{grid-template-columns:1fr}
+ .zafran-photo{min-height:68vh}
+ .zafran-copy{padding:10vh 20px}
+ .manifesto-kicker span{display:none}
+ .brand-manifesto{padding-left:20px;padding-right:20px}
+ .manifesto-grid{grid-template-columns:1fr}
+ .manifesto-grid>div{border-left:0;border-top:1px solid #17322644;min-height:110px}
+}
