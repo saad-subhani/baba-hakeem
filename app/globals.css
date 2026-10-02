@@ -191,3 +191,10 @@
  .manifesto-grid{grid-template-columns:1fr}
  .manifesto-grid>div{border-left:0;border-top:1px solid #17322644;min-height:110px}
 }
+
+
+/* Real-product cinematic bottle: keep the approved motion, remove optical correction
+   that was only required by the old Aloe artwork. */
+.hero-bottle-art{transform:rotate(0deg);object-fit:contain}
+.bottle-journey img{transform:rotate(0deg);object-fit:contain}
+.ritual-destination-bottle{object-fit:contain}
