@@ -225,3 +225,18 @@
   .ritual-destination-bottle{transform:translateX(15%) scale(1.38) rotate(0deg)!important}
   .ritual-visual:hover .ritual-destination-bottle{transform:translateX(15%) translateY(-8px) scale(1.42) rotate(2deg)!important}
 }
+
+
+/* Final hand-stage alignment: crop only transparent/empty lower canvas and keep
+   the visible hands joined to the bottom edge of the cinematic frame. */
+.hands-stage{
+  bottom:-1px!important;
+  height:69vh!important;
+  object-fit:cover!important;
+  object-position:center top!important;
+  clip-path:inset(0 0 7.5% 0);
+  transform-origin:50% 100%;
+}
+@media(max-width:760px){
+  .hands-stage{height:62vh!important;clip-path:inset(0 0 6% 0)}
+}
