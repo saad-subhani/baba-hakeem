@@ -48,11 +48,11 @@ export default function Home(){
       .to('.drop',{x:(i)=>(i-9.5)*44,y:(i)=>150+(i%5)*68,rotation:(i)=>(i%2?1:-1)*(10+i*5),duration:1.45,ease:'power1.in'},.7)
       .to('.gel-core',{opacity:1,scale:1,duration:.7},1.15)
       .to('.reveal-leaf',{opacity:.38,scale:1.42,duration:.8},1.7)
-      .fromTo('.hero-bottle',{opacity:0,left:'50%',top:'50%',y:85,scale:.82,rotation:4},{opacity:1,left:'50%',top:'50%',y:0,scale:1.18,rotation:2,duration:.85,ease:'power2.out'},1.55)
+      .fromTo('.hero-bottle',{opacity:0,left:'50%',top:'50%',y:85,scale:.55,rotation:7},{opacity:1,left:'50%',top:'50%',y:0,scale:.82,rotation:5,duration:.85,ease:'power2.out'},1.55)
       .to('.halo',{opacity:.75,scale:.82,duration:.7},1.55)
-      .to('.hero-bottle',{rotation:1,scale:1.22,duration:.65,ease:'none'},2.18)
-      .to('.hero-bottle',{rotation:0,scale:1.25,duration:.65,ease:'none'},2.78)
-      .to('.hero-bottle',{rotation:-3,scale:1.27,duration:.8,ease:'none'},3.38)
+      .to('.hero-bottle',{rotation:2,scale:.88,duration:.65,ease:'none'},2.18)
+      .to('.hero-bottle',{rotation:-1,scale:.92,duration:.65,ease:'none'},2.78)
+      .to('.hero-bottle',{rotation:-9,scale:.94,duration:.8,ease:'none'},3.38)
       .to('.drop',{y:(i)=>310+(i%5)*76,opacity:0,duration:.9},2.45)
       .to('.product-copy',{opacity:1,y:0,duration:.7},2.55)
       .to('.gel-core',{opacity:.35,scale:1.12,duration:.65},3.35)
@@ -62,9 +62,9 @@ export default function Home(){
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:'75.4%',top:'66.2%',y:0,rotation:-2,scale:1.02,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hero-bottle',{left:'76%',top:'67%',y:0,rotation:-9,scale:.60,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.hero-bottle',{top:'66.2%',left:'75.4%',y:0,rotation:-2,scale:1.02,duration:.85,ease:'none'},5.35)
+      .to('.hero-bottle',{top:'67%',left:'76%',y:0,rotation:-9,scale:.60,duration:.85,ease:'none'},5.35)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
@@ -103,34 +103,33 @@ export default function Home(){
           /* Keep the travelling product elegant and out of the content:
              it follows a slim right-side rail, then only approaches/grows
              into the Herbal Method orbit near the end. */
-          const approach=clamp((p-.76)/.24,0,1);
+          const approach=clamp((p-.72)/.28,0,1);
           const ease=approach*approach*(3-2*approach);
 
-          const railW=window.innerWidth<760 ? 72 : 92;
-          const railH=railW*1.58;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 94 : 132);
-          const railY=window.innerHeight*.38;
+          const railW=window.innerWidth<760 ? 82 : 118;
+          const railH=railW*2.05;
+          const railX=window.innerWidth-(window.innerWidth<760 ? 102 : 165);
+          const railY=window.innerHeight*.34;
 
           /* Match the new transparent bottle to its actual visual footprint.
              Start from the exact rendered hero bottle rectangle so there is no
              size jump when the fixed travelling copy takes over. */
-          const depart=clamp(p/.28,0,1);
+          const depart=clamp(p/.22,0,1);
           const departEase=depart*depart*(3-2*depart);
-          const heroRect=document.querySelector('.hero-bottle')?.getBoundingClientRect();
-          const handW=heroRect?.width || (window.innerWidth<760 ? 92 : 150);
-          const handH=heroRect?.height || handW*1.72;
-          const handX=heroRect?.left ?? window.innerWidth*.754-handW/2;
-          const handY=heroRect?.top ?? window.innerHeight*.662-handH/2;
+          const handW=Math.min(window.innerWidth*.23,350)*.60;
+          const handH=window.innerHeight*.67*.60;
+          const handX=window.innerWidth*.76-handW/2;
+          const handY=window.innerHeight*.67-handH/2;
 
           const travelX=lerp(handX,railX,departEase);
           const travelY=lerp(handY,railY,departEase);
           const travelW=lerp(handW,railW,departEase);
           const travelH=lerp(handH,railH,departEase);
 
-          const targetW=Math.min(rect.width,window.innerWidth<760?112:150);
-          const targetH=Math.min(rect.height,window.innerWidth<760?210:280);
-          const targetX=rect.left+(rect.width-targetW)/2;
-          const targetY=rect.top+(rect.height-targetH)/2;
+          const targetX=rect.left;
+          const targetY=rect.top;
+          const targetW=rect.width;
+          const targetH=rect.height;
 
           const x=lerp(travelX,targetX,ease);
           const y=lerp(travelY,targetY,ease);
@@ -144,7 +143,7 @@ export default function Home(){
             top:y,
             width:w,
             height:h,
-            rotation:lerp(-2,0,ease)
+            rotation:lerp(-4,0,ease)
           });
 
           /* Handoff before the section is fully centered, preventing the
