@@ -227,16 +227,24 @@
 }
 
 
-/* Final hand-stage alignment: crop only transparent/empty lower canvas and keep
-   the visible hands joined to the bottom edge of the cinematic frame. */
+/* Hands: preserve the transparent artwork itself — never crop/stretch its canvas. */
 .hands-stage{
-  bottom:-1px!important;
-  height:69vh!important;
-  object-fit:cover!important;
-  object-position:center top!important;
-  clip-path:inset(0 0 7.5% 0);
-  transform-origin:50% 100%;
+  bottom:auto!important;
+  top:76%!important;
+  width:min(29vw,405px)!important;
+  height:42vh!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  clip-path:none!important;
+  transform-origin:center center!important;
 }
 @media(max-width:760px){
-  .hands-stage{height:62vh!important;clip-path:inset(0 0 6% 0)}
+  .hands-stage{
+    left:73%!important;
+    top:78%!important;
+    width:56vw!important;
+    height:36vh!important;
+    object-fit:contain!important;
+    clip-path:none!important;
+  }
 }
