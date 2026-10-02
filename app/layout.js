@@ -1,8 +1,8 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Herbal Botanics',
-  description: 'Immersive herbal skincare e-commerce demo'
+  title: 'Baba Hakeem Herbal Products',
+  description: 'Baba Hakeem Herbal Products — herbal oils, traditional blends and premium saffron.'
 };
 
 export default function RootLayout({ children }) {
