@@ -75,6 +75,96 @@ export default function Home(){
  gsap.from(card.querySelectorAll('b,h3,p'),{opacity:0,y:35,stagger:.08,scrollTrigger:{trigger:card,start:'top 82%',end:'center 62%',scrub:1}});
 });
 
+
+    /* Premium lower-page scroll choreography.
+       IMPORTANT: intentionally starts AFTER the locked cinematic system and never
+       targets film, bottle, hands, gel, journey or ritual-destination elements. */
+    const reveal=(target,trigger=target,vars={})=>{
+      gsap.from(target,{
+        opacity:0,y:58,duration:1.05,ease:'power3.out',
+        ...vars,
+        scrollTrigger:{trigger,start:'top 84%',toggleActions:'play none none reverse'}
+      });
+    };
+
+    /* Editorial headings open like printed spreads. */
+    [
+      '.promise-section > h2',
+      '.shop-head h2',
+      '.range-heading h2',
+      '.zafran-copy h2',
+      '.brand-manifesto .manifesto-kicker',
+      '.journal-head h2',
+      '.newsletter-section h2',
+      '.final-cta h2'
+    ].forEach(sel=>{
+      const el=document.querySelector(sel);
+      if(el) gsap.from(el,{
+        opacity:0,y:52,clipPath:'inset(0 0 100% 0)',duration:1.15,ease:'power4.out',
+        scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none reverse'}
+      });
+    });
+
+    /* Approach principles arrive in a measured sequence. */
+    gsap.from('.promise-grid article',{
+      opacity:0,y:52,stagger:.13,duration:.9,ease:'power3.out',
+      scrollTrigger:{trigger:'.promise-grid',start:'top 84%',toggleActions:'play none none reverse'}
+    });
+
+    /* Product collection opens as a staggered luxury catalogue. */
+    gsap.from('.category-tabs button',{
+      opacity:0,y:18,stagger:.07,duration:.55,ease:'power2.out',
+      scrollTrigger:{trigger:'.category-tabs',start:'top 88%',toggleActions:'play none none reverse'}
+    });
+    gsap.from('.real-product-grid .shop-card',{
+      opacity:0,y:72,scale:.965,stagger:.09,duration:1,ease:'power3.out',
+      scrollTrigger:{trigger:'.real-product-grid',start:'top 86%',toggleActions:'play none none reverse'}
+    });
+
+    /* Dark range section: copy and product panels enter from opposite directions. */
+    reveal('.range-heading','.range-section',{x:-42,y:0});
+    gsap.from('.range-panels article',{
+      opacity:0,x:64,stagger:.16,duration:1.05,ease:'power3.out',
+      scrollTrigger:{trigger:'.range-panels',start:'top 84%',toggleActions:'play none none reverse'}
+    });
+
+    /* Zafran feature behaves like a cinematic split-screen reveal. */
+    gsap.from('.zafran-photo',{
+      opacity:0,x:-70,clipPath:'inset(0 100% 0 0)',duration:1.2,ease:'power4.out',
+      scrollTrigger:{trigger:'.zafran-feature',start:'top 82%',toggleActions:'play none none reverse'}
+    });
+    gsap.from('.zafran-copy > *',{
+      opacity:0,x:42,stagger:.09,duration:.8,ease:'power3.out',
+      scrollTrigger:{trigger:'.zafran-feature',start:'top 78%',toggleActions:'play none none reverse'}
+    });
+
+    /* Manifesto lines and journal stories unfold instead of simply appearing. */
+    gsap.from('.manifesto-grid > *',{
+      opacity:0,y:42,stagger:.11,duration:.85,ease:'power3.out',
+      scrollTrigger:{trigger:'.manifesto-grid',start:'top 84%',toggleActions:'play none none reverse'}
+    });
+    gsap.from('.journal-grid article',{
+      opacity:0,y:68,stagger:.13,duration:1,ease:'power3.out',
+      scrollTrigger:{trigger:'.journal-grid',start:'top 84%',toggleActions:'play none none reverse'}
+    });
+
+    /* Gentle image parallax adds motion without changing layout or product sizing. */
+    gsap.utils.toArray('.range-panels img,.zafran-photo img,.journal-visual img').forEach(img=>{
+      gsap.fromTo(img,{yPercent:-4},{yPercent:4,ease:'none',
+        scrollTrigger:{trigger:img,start:'top bottom',end:'bottom top',scrub:.8}
+      });
+    });
+
+    /* Closing sections finish with a restrained upward reveal. */
+    gsap.from('.newsletter-section > small,.newsletter-section > p,.newsletter-section form,.newsletter-meta',{
+      opacity:0,y:34,stagger:.09,duration:.8,ease:'power3.out',
+      scrollTrigger:{trigger:'.newsletter-section',start:'top 82%',toggleActions:'play none none reverse'}
+    });
+    gsap.from('.final-cta > small,.final-cta > a',{
+      opacity:0,y:28,stagger:.12,duration:.8,ease:'power3.out',
+      scrollTrigger:{trigger:'.final-cta',start:'top 82%',toggleActions:'play none none reverse'}
+    });
+
     /* Continue the SAME product story after the approved handoff.
        A fixed duplicate leaves the hands, follows scroll, then hands off invisibly
        to the bottle already living inside THE HERBAL METHOD. */
