@@ -217,20 +217,3 @@
 @media(max-width:760px){
  .hero-bottle-art,.bottle-journey img,.ritual-destination-bottle{transform:scale(3.25) rotate(0deg)}
 }
-
-
-/* Performance pass: compositor hints only — no dimensions, timing, hover,
-   choreography, typography, colours or visible effects are changed. */
-.screen,.hero-photo,.hero-bg-photo,.hero-aloe,.reveal-leaf,.gel-core,.particles,
-.hero-bottle,.hero-bottle-art,.hands-stage,.halo,.product-copy,.bottle-journey,
-.bottle-journey img,.ritual-destination-bottle{
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-}
-.hero-bg-photo,.hero-aloe,.reveal-leaf,.hero-bottle,.hero-bottle-art,.hands-stage,
-.drop,.halo,.gel-core,.product-copy,.bottle-journey,.bottle-journey img{
-  transform-style:preserve-3d;
-}
-.screen,.hero-photo,.particles{contain:layout paint style}
-.hero-bg-photo,.hero-aloe,.reveal-leaf,.hands-stage,.hero-bottle-art,.drop,
-.bottle-journey img{image-rendering:auto}
