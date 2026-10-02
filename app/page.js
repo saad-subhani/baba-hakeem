@@ -13,6 +13,14 @@ const DROP='/Drop.png-removebg-preview.png';
 const REVEAL='/alovera_reveal-removebg-preview.png';
 const HANDS='/hands-removebg-preview.png';
 
+/* Real Herbal Botanics catalogue assets — hero/cinematic assets above stay untouched. */
+const HAIR_OIL='/products/hair%20oil%20mockup%20png.png';
+const JOINT_OIL='/products/30ml%20mockup.png';
+const MENS_OIL="/products/men's%20oil%2010%20ml%20label%20M%20png.png";
+const HERBAL_PHAKKI='/products/phakii.png';
+const STOMACH_PHAKKI='/products/stomach%20phakki-03.png';
+const ZAFRAN='/products/zafran/IMG_20241002_133345.webp';
+
 export default function Home(){
  const root=useRef(null);
  useEffect(()=>{
@@ -182,22 +190,24 @@ export default function Home(){
   <section className="promise-section" id="story"><small>04 / OUR APPROACH</small><h2>LESS NOISE.<br/>MORE <em>BOTANICAL INTENT.</em></h2><div className="promise-grid"><article><b>01</b><h3>PLANT-LED</h3><p>Familiar botanicals become the visual and sensory heart of every Herbal ritual.</p></article><article><b>02</b><h3>RITUAL-FIRST</h3><p>A calmer, more deliberate approach to the way skincare fits into everyday life.</p></article><article><b>03</b><h3>CONSIDERED</h3><p>Focused presentation, purposeful ingredients and a premium experience without unnecessary clutter.</p></article></div></section>
   <section className="shop-section" id="shop">
    <div className="shop-head"><div><small>05 / SHOP HERBAL</small><h2>BUILD YOUR<br/><em>BOTANICAL ROUTINE.</em></h2></div><p>Explore everyday botanical care by ritual, ingredient and skin goal.</p></div>
-   <div className="category-tabs"><button className="active">ALL PRODUCTS</button><button>HYDRATION</button><button>CLARIFY</button><button>GLOW</button><button>ESSENTIALS</button></div>
-   <div className="product-grid">
-    <article className="shop-card featured"><div className="badge">BESTSELLER</div><div className="shop-art aloe-tone"><img src={BOTTLE} alt="Aloe Vera botanical serum"/></div><div className="shop-info"><div><small>HYDRATION / 30 ML</small><h3>ALOE VERA SERUM</h3><p>Daily botanical hydration ritual.</p></div><button aria-label="Add Aloe Vera Serum">ADD <span>＋</span></button></div></article>
-    <article className="shop-card"><div className="badge">BOTANICAL</div><div className="shop-art neem-tone"><img src={BOTTLE} alt="Neem botanical concentrate"/><img className="botanical-accent neem-accent" src={NEEM} alt=""/></div><div className="shop-info"><div><small>CLARIFY / 30 ML</small><h3>NEEM CONCENTRATE</h3><p>A balancing botanical ritual.</p></div><button aria-label="Add Neem Concentrate">ADD <span>＋</span></button></div></article>
-    <article className="shop-card"><div className="badge">GLOW RITUAL</div><div className="shop-art turmeric-tone"><img src={BOTTLE} alt="Turmeric glow elixir"/><img className="botanical-accent turmeric-accent" src={TURMERIC} alt=""/></div><div className="shop-info"><div><small>GLOW / 30 ML</small><h3>TURMERIC ELIXIR</h3><p>A radiance-focused botanical ritual.</p></div><button aria-label="Add Turmeric Elixir">ADD <span>＋</span></button></div></article>
-    <article className="shop-card"><div className="badge">ROUTINE</div><div className="shop-art trio-tone"><img className="trio t1" src={BOTTLE} alt="Herbal botanical routine"/><img className="trio t2" src={BOTTLE} alt=""/><img className="trio t3" src={BOTTLE} alt=""/></div><div className="shop-info"><div><small>COMPLETE RITUAL</small><h3>BOTANICAL TRIO</h3><p>Three-step Herbal discovery set.</p></div><button aria-label="Add Botanical Trio">ADD <span>＋</span></button></div></article>
+   <div className="category-tabs"><button className="active">ALL PRODUCTS</button><button>HAIR CARE</button><button>JOINT CARE</button><button>MEN'S CARE</button><button>HERBAL POWDERS</button><button>SAFFRON</button></div>
+   <div className="product-grid real-product-grid">
+    <article className="shop-card featured"><div className="badge">HAIR CARE</div><div className="shop-art real-product-art hair-product"><img src={HAIR_OIL} alt="Herbal Botanics Hair Oil"/></div><div className="shop-info"><div><small>HERBAL BOTANICS / OIL</small><h3>HAIR OIL</h3><p>Herbal Botanics hair-care oil.</p></div><button aria-label="View Hair Oil">VIEW <span>↗</span></button></div></article>
+    <article className="shop-card"><div className="badge">JOINT CARE</div><div className="shop-art real-product-art joint-product"><img src={JOINT_OIL} alt="Herbal Botanics Joint Oil"/></div><div className="shop-info"><div><small>HERBAL BOTANICS / OIL</small><h3>JOINT OIL</h3><p>Herbal Botanics topical oil.</p></div><button aria-label="View Joint Oil">VIEW <span>↗</span></button></div></article>
+    <article className="shop-card"><div className="badge">MEN'S CARE</div><div className="shop-art real-product-art mens-product"><img src={MENS_OIL} alt="Herbal Botanics Men's Oil"/></div><div className="shop-info"><div><small>HERBAL BOTANICS / 10 ML</small><h3>MEN'S OIL</h3><p>Compact herbal oil presentation.</p></div><button aria-label="View Men's Oil">VIEW <span>↗</span></button></div></article>
+    <article className="shop-card"><div className="badge">HERBAL POWDER</div><div className="shop-art real-product-art phakki-product"><img src={HERBAL_PHAKKI} alt="Herbal Botanics Herbal Phakki"/></div><div className="shop-info"><div><small>TRADITIONAL HERBAL BLEND</small><h3>HERBAL PHAKKI</h3><p>Traditional powdered herbal blend.</p></div><button aria-label="View Herbal Phakki">VIEW <span>↗</span></button></div></article>
+    <article className="shop-card"><div className="badge">HERBAL POWDER</div><div className="shop-art real-product-art stomach-product"><img src={STOMACH_PHAKKI} alt="Herbal Botanics Stomach Phakki"/></div><div className="shop-info"><div><small>HERBAL BOTANICS / POWDER</small><h3>STOMACH PHAKKI</h3><p>Traditional herbal powder presentation.</p></div><button aria-label="View Stomach Phakki">VIEW <span>↗</span></button></div></article>
+    <article className="shop-card zafran-card"><div className="badge">PREMIUM SAFFRON</div><div className="shop-art real-product-art zafran-product"><img src={ZAFRAN} alt="Herbal Botanics Zafran saffron"/></div><div className="shop-info"><div><small>HERBAL BOTANICS / SAFFRON</small><h3>ZAFRAN</h3><p>Premium saffron in Herbal Botanics packaging.</p></div><button aria-label="View Zafran">VIEW <span>↗</span></button></div></article>
    </div>
   </section>
   <section className="shop-by">
-   <div className="shop-by-head"><small>06 / FIND YOUR RITUAL</small><h2>SHOP BY<br/><em>what your skin needs.</em></h2></div>
-   <div className="need-grid"><a href="#shop"><span>01</span><h3>HYDRATE</h3><p>ALOE VERA</p><b>↗</b></a><a href="#shop"><span>02</span><h3>BALANCE</h3><p>NEEM</p><b>↗</b></a><a href="#shop"><span>03</span><h3>GLOW</h3><p>TURMERIC</p><b>↗</b></a><a href="#shop"><span>04</span><h3>DISCOVER</h3><p>THE FULL ROUTINE</p><b>↗</b></a></div>
+   <div className="shop-by-head"><small>06 / EXPLORE THE RANGE</small><h2>SHOP BY<br/><em>product family.</em></h2></div>
+   <div className="need-grid"><a href="#shop"><span>01</span><h3>HAIR CARE</h3><p>HAIR OIL</p><b>↗</b></a><a href="#shop"><span>02</span><h3>BODY CARE</h3><p>JOINT OIL</p><b>↗</b></a><a href="#shop"><span>03</span><h3>HERBAL BLENDS</h3><p>PHAKKI COLLECTION</p><b>↗</b></a><a href="#shop"><span>04</span><h3>PREMIUM</h3><p>ZAFRAN / SAFFRON</p><b>↗</b></a></div>
   </section>
   <section className="commerce-confidence"><div><b>01</b><h3>BOTANICAL FOCUS</h3><p>Ingredient-led routines with a clear purpose.</p></div><div><b>02</b><h3>CURATED ROUTINES</h3><p>Simple categories make product discovery easier.</p></div><div><b>03</b><h3>PREMIUM EXPERIENCE</h3><p>From first scroll to product selection, every detail feels considered.</p></div></section>
   <section className="editorial-break">
    <div className="editorial-number">07</div><div className="editorial-copy"><small>BOTANICAL INTELLIGENCE / DAILY RITUAL</small><h2>YOUR SKIN.<br/><em>YOUR RITUAL.</em></h2><p>Build a simple routine around the botanical experience that feels right for you.</p><a href="#shop">SHOP THE COLLECTION <span>↗</span></a></div>
-   <div className="editorial-art"><span className="plant-word">ALOE</span><img src={BOTTLE} alt="Herbal Botanics Aloe Vera serum"/><i className="ring r1"/><i className="ring r2"/></div>
+   <div className="editorial-art"><span className="plant-word">HERBAL</span><img className="editorial-real-product" src={HAIR_OIL} alt="Herbal Botanics Hair Oil"/><i className="ring r1"/><i className="ring r2"/></div>
   </section>
   <section className="routine-builder">
    <div className="routine-title"><small>08 / THREE STEPS</small><h2>A BETTER ROUTINE,<br/><em>made simple.</em></h2></div>
