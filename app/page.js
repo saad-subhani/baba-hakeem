@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import Lenis from '@studio-freight/lenis';
 
 const ALOE='/aloe-hero.png.png';
-const BOTTLE='/aloe-bottle.png.png';
+const BOTTLE='/products/30ml%20mockup.png';
 const ALOE_ING='/aloe.png.png';
 const NEEM='/neem.png-removebg-preview.png';
 const TURMERIC='/turmeric.png-removebg-preview.png';
@@ -143,7 +143,7 @@ export default function Home(){
             height:h,
             rotation:lerp(-4,0,ease)
           });
-          gsap.set(journeyArt,{rotation:lerp(-10,0,ease)});
+          gsap.set(journeyArt,{rotation:0});
 
           /* Handoff before the section is fully centered, preventing the
              oversized/cropped travelling bottle seen in the recording. */
@@ -171,7 +171,7 @@ export default function Home(){
    <div className="intro-title intro-ui night"><small>PURE BOTANICAL CARE — 01</small><h1>FROM<br/><em>NATURE.</em></h1><aside><span>POTENT PLANTS.<br/>PURER RITUALS.</span><h2>MADE<br/>FOR <em>SKIN.</em></h2></aside></div>
    <div className="halo night"/>
    <img className="hands-stage night" src={HANDS} alt="Hands receiving Herbal bottle"/>
-   <div className="hero-bottle"><img className="hero-bottle-art" src={BOTTLE} alt="Herbal Aloe Vera bottle"/></div>
+   <div className="hero-bottle"><img className="hero-bottle-art" src={BOTTLE} alt="Herbal Botanics premium oil bottle"/></div>
    <div className="product-copy"><small>01 / BOTANICAL HYDRATION</small><h2>ALOE,<br/><em>REIMAGINED.</em></h2><p>Plant becomes texture. Texture becomes ritual. A botanical story revealed by your scroll.</p><a href="#collection">DISCOVER THE RITUAL →</a></div>
    <div className="scroll intro-ui night">SCROLL TO TRANSFORM <b>↓</b></div><div className="day chapter">THE PLANT / THE FORMULA / THE RITUAL</div>
   </div></section>
@@ -184,7 +184,7 @@ export default function Home(){
    <div className="ritual-kicker"><small>03 / THE HERBAL METHOD</small><span>PLANT → FORMULA → RITUAL</span></div>
    <div className="ritual-grid">
     <div className="ritual-copy"><h2>SKINCARE,<br/><em>rooted in plants.</em></h2><p>A focused botanical ritual designed around ingredients people already know — presented with a cleaner, more considered experience.</p><a href="#ingredients">VIEW INGREDIENTS <b>→</b></a></div>
-    <div className="ritual-visual"><div className="orbit orbit-a"/><div className="orbit orbit-b"/><img className="ritual-destination-bottle" src={BOTTLE} alt="Herbal botanical skincare"/><span className="float-note n1">ALOE<br/>HYDRATE</span><span className="float-note n2">NEEM<br/>BALANCE</span><span className="float-note n3">TURMERIC<br/>GLOW</span></div>
+    <div className="ritual-visual"><div className="orbit orbit-a"/><div className="orbit orbit-b"/><img className="ritual-destination-bottle" src={BOTTLE} alt="Herbal Botanics premium oil bottle"/><span className="float-note n1">ALOE<br/>HYDRATE</span><span className="float-note n2">NEEM<br/>BALANCE</span><span className="float-note n3">TURMERIC<br/>GLOW</span></div>
    </div>
   </section>
   <section className="promise-section" id="story"><small>04 / OUR APPROACH</small><h2>LESS NOISE.<br/>MORE <em>BOTANICAL INTENT.</em></h2><div className="promise-grid"><article><b>01</b><h3>PLANT-LED</h3><p>Familiar botanicals become the visual and sensory heart of every Herbal ritual.</p></article><article><b>02</b><h3>RITUAL-FIRST</h3><p>A calmer, more deliberate approach to the way skincare fits into everyday life.</p></article><article><b>03</b><h3>CONSIDERED</h3><p>Focused presentation, purposeful ingredients and a premium experience without unnecessary clutter.</p></article></div></section>
