@@ -103,15 +103,28 @@ export default function Home(){
           const railX=window.innerWidth-(window.innerWidth<760 ? 102 : 165);
           const railY=window.innerHeight*.34;
 
+          /* Smooth departure from the hands into the travel rail. */
+          const depart=clamp(p/.22,0,1);
+          const departEase=depart*depart*(3-2*depart);
+          const handW=Math.min(window.innerWidth*.23,350)*.60;
+          const handH=window.innerHeight*.67*.60;
+          const handX=window.innerWidth*.76-handW/2;
+          const handY=window.innerHeight*.67-handH/2;
+
+          const travelX=lerp(handX,railX,departEase);
+          const travelY=lerp(handY,railY,departEase);
+          const travelW=lerp(handW,railW,departEase);
+          const travelH=lerp(handH,railH,departEase);
+
           const targetX=rect.left;
           const targetY=rect.top;
           const targetW=rect.width;
           const targetH=rect.height;
 
-          const x=lerp(railX,targetX,ease);
-          const y=lerp(railY,targetY,ease);
-          const w=lerp(railW,targetW,ease);
-          const h=lerp(railH,targetH,ease);
+          const x=lerp(travelX,targetX,ease);
+          const y=lerp(travelY,targetY,ease);
+          const w=lerp(travelW,targetW,ease);
+          const h=lerp(travelH,targetH,ease);
 
           gsap.set('.hero-bottle',{autoAlpha:p>.02?0:1});
           gsap.set(journey,{
