@@ -205,3 +205,15 @@
 .hero-bottle-art{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 24px 22px rgba(0,0,0,.34))}
 .bottle-journey img,.ritual-destination-bottle{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(0,0,0,.24))}
 @media(max-width:760px){.hero-bottle{width:clamp(108px,28vw,155px);height:clamp(205px,34vh,290px)}}
+
+
+/* Final correction for hero-premium-bottle.png.png.
+   The source PNG contains substantial transparent padding, so scale the artwork
+   inside the existing animation boxes instead of destabilising the GSAP path. */
+.hero-bottle,.bottle-journey,.ritual-visual{overflow:visible}
+.hero-bottle-art{transform:scale(3.65) rotate(0deg)!important;transform-origin:50% 50%;filter:drop-shadow(0 18px 14px rgba(0,0,0,.38))}
+.bottle-journey img{transform:scale(3.65) rotate(0deg);transform-origin:50% 50%;filter:drop-shadow(0 14px 12px rgba(0,0,0,.3))}
+.ritual-destination-bottle{transform:scale(3.65);transform-origin:50% 50%;filter:drop-shadow(0 20px 18px rgba(0,0,0,.28))}
+@media(max-width:760px){
+ .hero-bottle-art,.bottle-journey img,.ritual-destination-bottle{transform:scale(3.25) rotate(0deg)}
+}
