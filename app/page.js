@@ -127,10 +127,10 @@ export default function Home(){
           const travelW=lerp(handW,railW,departEase);
           const travelH=lerp(handH,railH,departEase);
 
-          const targetX=rect.left;
-          const targetY=rect.top;
-          const targetW=rect.width;
-          const targetH=rect.height;
+          const targetW=Math.min(rect.width,window.innerWidth<760?112:150);
+          const targetH=Math.min(rect.height,window.innerWidth<760?210:280);
+          const targetX=rect.left+(rect.width-targetW)/2;
+          const targetY=rect.top+(rect.height-targetH)/2;
 
           const x=lerp(travelX,targetX,ease);
           const y=lerp(travelY,targetY,ease);
