@@ -113,6 +113,7 @@ export default function Home(){
           const w=lerp(railW,targetW,ease);
           const h=lerp(railH,targetH,ease);
 
+          gsap.set('.hero-bottle',{autoAlpha:p>.02?0:1});
           gsap.set(journey,{
             autoAlpha:(p>.02 && p<.965)?1:0,
             left:x,
@@ -129,8 +130,8 @@ export default function Home(){
           gsap.set(journey,{opacity:(p<.88?1:1-handoff)});
           gsap.set(destination,{opacity:handoff});
         },
-        onLeave:()=>{gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});},
-        onLeaveBack:()=>{gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});}
+        onLeave:()=>{gsap.set('.hero-bottle',{autoAlpha:0});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});},
+        onLeaveBack:()=>{gsap.set('.hero-bottle',{autoAlpha:1});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});}
       });;
     }
     ScrollTrigger.refresh();
