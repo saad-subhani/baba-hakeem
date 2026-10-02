@@ -248,3 +248,31 @@
     clip-path:none!important;
   }
 }
+
+
+/* FINAL cinematic hands geometry — authoritative override.
+   Preserve the full transparent PNG and place it behind the bottle as one clean unit. */
+.hands-stage{
+  left:76.8%!important;
+  top:70%!important;
+  width:min(31vw,430px)!important;
+  height:48vh!important;
+  bottom:auto!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  clip-path:none!important;
+  overflow:visible!important;
+  filter:drop-shadow(0 18px 24px rgba(0,0,0,.32))!important;
+  transform-origin:center center!important;
+}
+@media(max-width:760px){
+  .hands-stage{
+    left:76%!important;
+    top:70%!important;
+    width:78vw!important;
+    height:48vh!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    clip-path:none!important;
+  }
+}
