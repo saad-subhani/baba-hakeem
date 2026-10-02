@@ -62,9 +62,9 @@ export default function Home(){
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:'76.8%',top:'64.5%',y:0,rotation:0,scale:1.08,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hero-bottle',{left:'75.2%',top:'64.5%',y:0,rotation:0,scale:1.08,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.hero-bottle',{top:'64.5%',left:'76.8%',y:0,rotation:0,scale:1.08,duration:.85,ease:'none'},5.35)
+      .to('.hero-bottle',{top:'64.5%',left:'75.2%',y:0,rotation:0,scale:1.08,duration:.85,ease:'none'},5.35)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
@@ -109,9 +109,9 @@ export default function Home(){
           /* Stable visible size while travelling. The PNG itself has transparent
              padding, so this wrapper is intentionally generous and stays constant
              until the final orbit approach. */
-          const railW=window.innerWidth<760 ? 150 : 220;
-          const railH=window.innerWidth<760 ? 270 : 390;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 194 : 285);
+          const railW=window.innerWidth<760 ? 180 : 270;
+          const railH=window.innerWidth<760 ? 320 : 480;
+          const railX=window.innerWidth-(window.innerWidth<760 ? 218 : 330);
           const railY=window.innerHeight*.30;
 
           /* Match the new transparent bottle to its actual visual footprint.
@@ -121,7 +121,7 @@ export default function Home(){
           const departEase=depart*depart*(3-2*depart);
           const handW=window.innerWidth<760 ? 155 : 220;
           const handH=window.innerWidth<760 ? 280 : 390;
-          const handX=window.innerWidth*.768-handW/2;
+          const handX=window.innerWidth*.752-handW/2;
           const handY=window.innerHeight*.645-handH/2;
 
           const travelX=lerp(handX,railX,departEase);
