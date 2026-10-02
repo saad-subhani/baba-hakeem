@@ -65,7 +65,60 @@ export default function Home(){
  gsap.fromTo(visual,{y:110,scale:.78,rotation:i===1?-7:7},{y:0,scale:1,rotation:0,ease:'none',scrollTrigger:{trigger:card,start:'top 98%',end:'center 58%',scrub:1}});
  gsap.fromTo(art,{scale:1.18,yPercent:10},{scale:1,yPercent:-4,ease:'none',scrollTrigger:{trigger:card,start:'top bottom',end:'bottom 35%',scrub:1}});
  gsap.from(card.querySelectorAll('b,h3,p'),{opacity:0,y:35,stagger:.08,scrollTrigger:{trigger:card,start:'top 82%',end:'center 62%',scrub:1}});
-}); ScrollTrigger.refresh();
+});
+
+    /* Continue the SAME product story after the approved handoff.
+       A fixed duplicate leaves the hands, follows scroll, then hands off invisibly
+       to the bottle already living inside THE HERBAL METHOD. */
+    const journey=document.querySelector('.bottle-journey');
+    const journeyArt=journey?.querySelector('img');
+    const destination=document.querySelector('.ritual-destination-bottle');
+    const benefit=document.querySelector('.benefit-strip');
+    if(journey && journeyArt && destination && benefit){
+      gsap.set(journey,{autoAlpha:0});
+      gsap.set(destination,{opacity:1});
+
+      const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+      const lerp=(a,b,t)=>a+(b-a)*t;
+
+      ScrollTrigger.create({
+        trigger:benefit,
+        start:'top bottom',
+        endTrigger:destination,
+        end:'center center',
+        scrub:true,
+        invalidateOnRefresh:true,
+        onUpdate:self=>{
+          const p=clamp(self.progress,0,1);
+          const smooth=p*p*(3-2*p);
+          const rect=destination.getBoundingClientRect();
+
+          const sourceW=Math.min(window.innerWidth*.23,350)*.60;
+          const sourceH=window.innerHeight*.67*.60;
+          const sourceX=window.innerWidth*.76-sourceW/2;
+          const sourceY=window.innerHeight*.67-sourceH/2;
+
+          const targetX=rect.left;
+          const targetY=rect.top;
+          const targetW=rect.width;
+          const targetH=rect.height;
+
+          gsap.set(journey,{
+            autoAlpha:(p>.015 && p<.995)?1:0,
+            left:lerp(sourceX,targetX,smooth),
+            top:lerp(sourceY,targetY,smooth),
+            width:lerp(sourceW,targetW,smooth),
+            height:lerp(sourceH,targetH,smooth),
+            rotation:lerp(-9,0,smooth)
+          });
+          gsap.set(journeyArt,{rotation:lerp(-10,0,smooth)});
+          gsap.set(destination,{opacity:p>.94?clamp((p-.94)/.06,0,1):0});
+        },
+        onLeave:()=>{gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});},
+        onLeaveBack:()=>{gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});}
+      });
+    }
+    ScrollTrigger.refresh();
    },root);
   })();
   return()=>{dead=true;if(ctx)ctx.revert();if(raf)gsap.ticker.remove(raf);if(lenis)lenis.destroy()};
@@ -85,6 +138,7 @@ export default function Home(){
    <div className="product-copy"><small>01 / BOTANICAL HYDRATION</small><h2>ALOE,<br/><em>REIMAGINED.</em></h2><p>Plant becomes texture. Texture becomes ritual. A botanical story revealed by your scroll.</p><a href="#collection">DISCOVER THE RITUAL →</a></div>
    <div className="scroll intro-ui night">SCROLL TO TRANSFORM <b>↓</b></div><div className="day chapter">THE PLANT / THE FORMULA / THE RITUAL</div>
   </div></section>
+  <div className="bottle-journey" aria-hidden="true"><img src={BOTTLE} alt=""/></div>
   <section className="benefit-strip" aria-label="Herbal principles"><span>BOTANICAL ACTIVES</span><i/> <span>MINDFUL FORMULAS</span><i/> <span>SKIN-FIRST RITUALS</span><i/> <span>NATURE, REFINED</span></section>
   <section className="collection" id="collection"><div><small>02 / THE COLLECTION</small><h2>THE STORY BECOMES<br/><em>something you can hold.</em></h2></div><div className="ingredient-row" id="ingredients"><article className="ingredient-card aloe-card"><div className="ingredient-visual"><img className="ingredient-art" src={ALOE_ING} alt="Aloe Vera"/></div><b>01</b><h3>ALOE VERA</h3><p>HYDRATE / SOOTHE / RESET</p></article><article className="ingredient-card neem-card"><div className="ingredient-visual"><img className="ingredient-art" src={NEEM} alt="Neem leaves"/></div><b>02</b><h3>NEEM</h3><p>CLARIFY / BALANCE / CARE</p></article><article className="ingredient-card turmeric-card"><div className="ingredient-visual"><img className="ingredient-art" src={TURMERIC} alt="Turmeric"/></div><b>03</b><h3>TURMERIC</h3><p>GLOW / REVIVE / RITUAL</p></article></div>
    <div className="collection-actions"><a className="primary-cta" href="#ritual">EXPLORE THE RITUAL <span>↗</span></a><p>Three botanicals. One considered approach to everyday skin care.</p></div>
@@ -93,7 +147,7 @@ export default function Home(){
    <div className="ritual-kicker"><small>03 / THE HERBAL METHOD</small><span>PLANT → FORMULA → RITUAL</span></div>
    <div className="ritual-grid">
     <div className="ritual-copy"><h2>SKINCARE,<br/><em>rooted in plants.</em></h2><p>A focused botanical ritual designed around ingredients people already know — presented with a cleaner, more considered experience.</p><a href="#ingredients">VIEW INGREDIENTS <b>→</b></a></div>
-    <div className="ritual-visual"><div className="orbit orbit-a"/><div className="orbit orbit-b"/><img src={BOTTLE} alt="Herbal botanical skincare"/><span className="float-note n1">ALOE<br/>HYDRATE</span><span className="float-note n2">NEEM<br/>BALANCE</span><span className="float-note n3">TURMERIC<br/>GLOW</span></div>
+    <div className="ritual-visual"><div className="orbit orbit-a"/><div className="orbit orbit-b"/><img className="ritual-destination-bottle" src={BOTTLE} alt="Herbal botanical skincare"/><span className="float-note n1">ALOE<br/>HYDRATE</span><span className="float-note n2">NEEM<br/>BALANCE</span><span className="float-note n3">TURMERIC<br/>GLOW</span></div>
    </div>
   </section>
   <section className="promise-section" id="story"><small>04 / OUR APPROACH</small><h2>LESS NOISE.<br/>MORE <em>BOTANICAL INTENT.</em></h2><div className="promise-grid"><article><b>01</b><h3>PLANT-LED</h3><p>Familiar botanicals become the visual and sensory heart of every Herbal ritual.</p></article><article><b>02</b><h3>RITUAL-FIRST</h3><p>A calmer, more deliberate approach to the way skincare fits into everyday life.</p></article><article><b>03</b><h3>CONSIDERED</h3><p>Focused presentation, purposeful ingredients and a premium experience without unnecessary clutter.</p></article></div></section>
