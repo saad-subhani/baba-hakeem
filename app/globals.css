@@ -70,3 +70,10 @@
 .hands-stage{top:76%!important;width:min(29vw,405px)!important;height:42vh!important;object-position:center top!important}
 .benefit-strip{position:relative;z-index:30;margin-top:-1px}
 @media(max-width:760px){.hands-stage{left:73%!important;top:78%!important;width:56vw!important;height:36vh!important}}
+
+/* Scroll continuation: visual bridge from the approved hands scene to THE HERBAL METHOD.
+   Separate layer = zero changes to the successful hero choreography. */
+.bottle-journey{position:fixed;z-index:120;left:0;top:0;width:1px;height:1px;pointer-events:none;opacity:0;visibility:hidden;will-change:left,top,width,height,transform}
+.bottle-journey img{display:block;width:100%;height:100%;object-fit:contain;transform-origin:50% 50%;filter:drop-shadow(0 30px 32px rgba(0,0,0,.48));will-change:transform}
+.ritual-destination-bottle{will-change:opacity}
+@media(max-width:760px){.bottle-journey{z-index:120}}
