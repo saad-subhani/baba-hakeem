@@ -48,7 +48,7 @@ export default function Home(){
       .to('.drop',{x:(i)=>(i-9.5)*44,y:(i)=>150+(i%5)*68,rotation:(i)=>(i%2?1:-1)*(10+i*5),duration:1.45,ease:'power1.in'},.7)
       .to('.gel-core',{opacity:1,scale:1,duration:.7},1.15)
       .to('.reveal-leaf',{opacity:.38,scale:1.42,duration:.8},1.7)
-      .fromTo('.hero-bottle',{opacity:0,left:'50%',top:'50%',y:85,scale:.55,rotation:7},{opacity:1,left:'50%',top:'50%',y:0,scale:.82,rotation:5,duration:.85,ease:'power2.out'},1.55)
+      .fromTo('.hero-bottle',{opacity:0,left:'47%',top:'50%',y:85,scale:.55,rotation:4},{opacity:1,left:'47%',top:'50%',y:0,scale:.82,rotation:2,duration:.85,ease:'power2.out'},1.55)
       .to('.halo',{opacity:.75,scale:.82,duration:.7},1.55)
       .to('.hero-bottle',{rotation:2,scale:.88,duration:.65,ease:'none'},2.18)
       .to('.hero-bottle',{rotation:-1,scale:.92,duration:.65,ease:'none'},2.78)
@@ -62,9 +62,9 @@ export default function Home(){
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:'76%',top:'67%',y:0,rotation:0,scale:.92,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hero-bottle',{left:'76.8%',top:'64.5%',y:0,rotation:0,scale:1.08,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.hero-bottle',{top:'67%',left:'76%',y:0,rotation:0,scale:.92,duration:.85,ease:'none'},5.35)
+      .to('.hero-bottle',{top:'64.5%',left:'76.8%',y:0,rotation:0,scale:1.08,duration:.85,ease:'none'},5.35)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
@@ -106,9 +106,9 @@ export default function Home(){
           const approach=clamp((p-.72)/.28,0,1);
           const ease=approach*approach*(3-2*approach);
 
-          const railW=window.innerWidth<760 ? 82 : 118;
-          const railH=railW*2.05;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 102 : 165);
+          const railW=window.innerWidth<760 ? 104 : 150;
+          const railH=railW*1.72;
+          const railX=window.innerWidth-(window.innerWidth<760 ? 122 : 190);
           const railY=window.innerHeight*.34;
 
           /* Match the new transparent bottle to its actual visual footprint.
@@ -116,10 +116,10 @@ export default function Home(){
              size jump when the fixed travelling copy takes over. */
           const depart=clamp(p/.22,0,1);
           const departEase=depart*depart*(3-2*depart);
-          const handW=Math.min(window.innerWidth*.23,350)*.60;
-          const handH=window.innerHeight*.67*.60;
-          const handX=window.innerWidth*.76-handW/2;
-          const handY=window.innerHeight*.67-handH/2;
+          const handW=Math.min(window.innerWidth*.23,350)*.68;
+          const handH=window.innerHeight*.67*.68;
+          const handX=window.innerWidth*.768-handW/2;
+          const handY=window.innerHeight*.645-handH/2;
 
           const travelX=lerp(handX,railX,departEase);
           const travelY=lerp(handY,railY,departEase);
