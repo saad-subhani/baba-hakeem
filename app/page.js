@@ -103,21 +103,24 @@ export default function Home(){
           /* Keep the travelling product elegant and out of the content:
              it follows a slim right-side rail, then only approaches/grows
              into the Herbal Method orbit near the end. */
-          const approach=clamp((p-.72)/.28,0,1);
+          const approach=clamp((p-.88)/.12,0,1);
           const ease=approach*approach*(3-2*approach);
 
-          const railW=window.innerWidth<760 ? 122 : 178;
-          const railH=railW*1.78;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 138 : 210);
-          const railY=window.innerHeight*.34;
+          /* Stable visible size while travelling. The PNG itself has transparent
+             padding, so this wrapper is intentionally generous and stays constant
+             until the final orbit approach. */
+          const railW=window.innerWidth<760 ? 150 : 220;
+          const railH=window.innerWidth<760 ? 270 : 390;
+          const railX=window.innerWidth-(window.innerWidth<760 ? 174 : 255);
+          const railY=window.innerHeight*.30;
 
           /* Match the new transparent bottle to its actual visual footprint.
              Start from the exact rendered hero bottle rectangle so there is no
              size jump when the fixed travelling copy takes over. */
           const depart=clamp(p/.22,0,1);
           const departEase=depart*depart*(3-2*depart);
-          const handW=Math.min(window.innerWidth*.23,350)*.68;
-          const handH=window.innerHeight*.67*.68;
+          const handW=window.innerWidth<760 ? 155 : 220;
+          const handH=window.innerWidth<760 ? 280 : 390;
           const handX=window.innerWidth*.768-handW/2;
           const handY=window.innerHeight*.645-handH/2;
 
@@ -126,10 +129,10 @@ export default function Home(){
           const travelW=lerp(handW,railW,departEase);
           const travelH=lerp(handH,railH,departEase);
 
-          const targetX=rect.left;
-          const targetY=rect.top;
-          const targetW=rect.width;
-          const targetH=rect.height;
+          const targetW=window.innerWidth<760 ? 150 : 220;
+          const targetH=window.innerWidth<760 ? 270 : 390;
+          const targetX=rect.left+(rect.width-targetW)/2;
+          const targetY=rect.top+(rect.height-targetH)/2;
 
           const x=lerp(travelX,targetX,ease);
           const y=lerp(travelY,targetY,ease);
@@ -138,7 +141,7 @@ export default function Home(){
 
           gsap.set('.hero-bottle',{autoAlpha:p>.02?0:1});
           gsap.set(journey,{
-            autoAlpha:(p>.02 && p<.965)?1:0,
+            autoAlpha:(p>.02 && p<.995)?1:0,
             left:x,
             top:y,
             width:w,
@@ -148,8 +151,8 @@ export default function Home(){
 
           /* Handoff before the section is fully centered, preventing the
              oversized/cropped travelling bottle seen in the recording. */
-          const handoff=clamp((p-.94)/.045,0,1);
-          gsap.set(journey,{opacity:(p<.88?1:1-handoff)});
+          const handoff=clamp((p-.965)/.03,0,1);
+          gsap.set(journey,{opacity:1-handoff});
           gsap.set(destination,{opacity:handoff});
         },
         onLeave:()=>{gsap.set('.hero-bottle',{autoAlpha:0});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});},
