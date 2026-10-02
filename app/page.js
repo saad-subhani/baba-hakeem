@@ -166,7 +166,7 @@ export default function Home(){
  },[]);
  return <main ref={root}>
   <section className="film"><div className="screen">
-   <header className="intro-ui"><a href="#" className="logo">HERBAL<span>BOTANICS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
+   <header className="intro-ui"><a href="#" className="logo">BABA HAKEEM<span>HERBAL PRODUCTS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
    <div className="night cinematic-bg"/>
    <div className="hero-photo night"><img className="hero-bg-photo" src={ALOE} alt=""/><img className="hero-aloe" src={ALOE_ING} alt="Fresh aloe vera"/><img className="reveal-leaf" src={REVEAL} alt="Aloe vera leaf opening"/></div>
    <div className="photo-shade night"/>
@@ -193,7 +193,7 @@ export default function Home(){
   </section>
   <section className="promise-section" id="story"><small>04 / OUR APPROACH</small><h2>LESS NOISE.<br/>MORE <em>BOTANICAL INTENT.</em></h2><div className="promise-grid"><article><b>01</b><h3>PLANT-LED</h3><p>Familiar botanicals become the visual and sensory heart of every Herbal ritual.</p></article><article><b>02</b><h3>RITUAL-FIRST</h3><p>A calmer, more deliberate approach to the way skincare fits into everyday life.</p></article><article><b>03</b><h3>CONSIDERED</h3><p>Focused presentation, purposeful ingredients and a premium experience without unnecessary clutter.</p></article></div></section>
   <section className="shop-section" id="shop">
-   <div className="shop-head"><div><small>05 / THE COLLECTION</small><h2>HERBAL CARE,<br/><em>made tangible.</em></h2></div><p>Six distinct Baba Hakeem Herbal Products products, presented as one considered collection — oils, traditional herbal blends and premium saffron.</p></div>
+   <div className="shop-head"><div><small>05 / THE COLLECTION</small><h2>HERBAL CARE,<br/><em>made tangible.</em></h2></div><p>Six distinct products, presented as one considered collection — oils, traditional herbal blends and premium saffron.</p></div>
    <div className="category-tabs"><button className="active">ALL PRODUCTS</button><button>OILS</button><button>HERBAL BLENDS</button><button>SAFFRON</button></div>
    <div className="product-grid real-product-grid">
     <article className="shop-card featured"><div className="badge">01 / HAIR CARE</div><div className="shop-art real-product-art hair-product"><span className="art-index">01</span><img src={HAIR_OIL} alt="Baba Hakeem Herbal Products Hair Oil"/></div><div className="shop-info"><div><small>BABA HAKEEM HERBAL PRODUCTS / OIL</small><h3>HAIR OIL</h3><p>A dedicated oil in the Baba Hakeem Herbal Products care collection.</p></div><a className="product-arrow" href="#collection-focus" aria-label="Explore Hair Oil">↗</a></div></article>
