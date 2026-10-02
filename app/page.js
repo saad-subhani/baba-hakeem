@@ -34,13 +34,13 @@ export default function Home(){
     gsap.from('.intro-ui',{opacity:0,y:18,stagger:.08,duration:1,ease:'power3.out'});
     gsap.set('.hero-photo',{opacity:1});
     gsap.set('.hero-bottle',{xPercent:-50,yPercent:-50,rotation:7,transformOrigin:'50% 50%'});
-    gsap.set('.hero-bg-photo',{opacity:1});
+    gsap.set('.hero-bg-photo',{opacity:1,filter:'brightness(.68) saturate(1.12)'});
     gsap.set('.hero-aloe',{opacity:1});
     gsap.set('.hands-stage',{opacity:0,yPercent:18,scale:.86});
     gsap.from('.hero-photo',{scale:1.025,duration:1.35,ease:'power3.out'});
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
     tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
-      .to('.hero-bg-photo',{scale:1.2,filter:'brightness(.68) saturate(1.12)',duration:1.4},0)
+      .to('.hero-bg-photo',{scale:1.2,duration:1.4},0)
       .to('.hero-aloe',{scale:1.18,opacity:.18,duration:.75},.12)
       .fromTo('.reveal-leaf',{opacity:0,scale:.78,yPercent:8},{opacity:1,scale:1.08,yPercent:0,duration:1.25,ease:'power1.out'},.18)
       .to('.reveal-leaf',{scale:1.28,yPercent:2,duration:1.15,ease:'none'},1.15)
@@ -59,14 +59,14 @@ export default function Home(){
       .to('.product-copy',{opacity:0,y:-30,duration:.45},3.75)
       .to('.reveal-leaf',{opacity:0,scale:1.5,duration:.65},3.72)
       .to('.hero-aloe',{opacity:0,duration:.5},3.72)
-      .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
+      .to('.hero-bg-photo',{scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
       .to('.hero-bottle',{left:'75.4%',top:'66.2%',y:0,rotation:-2,scale:1.02,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
       .to('.hero-bottle',{top:'66.2%',left:'75.4%',y:0,rotation:-2,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
-      .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
+      .to('.hero-bg-photo',{duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
  const visual=card.querySelector('.ingredient-visual');
  const art=card.querySelector('.ingredient-art');
@@ -146,7 +146,6 @@ export default function Home(){
             height:h,
             rotation:lerp(-2,0,ease)
           });
-          gsap.set(journeyArt,{rotation:0,scale:3.65,transformOrigin:'50% 50%'});
 
           /* Handoff before the section is fully centered, preventing the
              oversized/cropped travelling bottle seen in the recording. */
