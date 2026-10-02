@@ -86,37 +86,52 @@ export default function Home(){
         start:'top bottom',
         endTrigger:destination,
         end:'center center',
-        scrub:true,
+        scrub:.65,
         invalidateOnRefresh:true,
         onUpdate:self=>{
           const p=clamp(self.progress,0,1);
-          const smooth=p*p*(3-2*p);
           const rect=destination.getBoundingClientRect();
 
-          const sourceW=Math.min(window.innerWidth*.23,350)*.60;
-          const sourceH=window.innerHeight*.67*.60;
-          const sourceX=window.innerWidth*.76-sourceW/2;
-          const sourceY=window.innerHeight*.67-sourceH/2;
+          /* Keep the travelling product elegant and out of the content:
+             it follows a slim right-side rail, then only approaches/grows
+             into the Herbal Method orbit near the end. */
+          const approach=clamp((p-.72)/.28,0,1);
+          const ease=approach*approach*(3-2*approach);
+
+          const railW=window.innerWidth<760 ? 82 : 118;
+          const railH=railW*2.05;
+          const railX=window.innerWidth-(window.innerWidth<760 ? 102 : 165);
+          const railY=window.innerHeight*.34;
 
           const targetX=rect.left;
           const targetY=rect.top;
           const targetW=rect.width;
           const targetH=rect.height;
 
+          const x=lerp(railX,targetX,ease);
+          const y=lerp(railY,targetY,ease);
+          const w=lerp(railW,targetW,ease);
+          const h=lerp(railH,targetH,ease);
+
           gsap.set(journey,{
-            autoAlpha:(p>.015 && p<.995)?1:0,
-            left:lerp(sourceX,targetX,smooth),
-            top:lerp(sourceY,targetY,smooth),
-            width:lerp(sourceW,targetW,smooth),
-            height:lerp(sourceH,targetH,smooth),
-            rotation:lerp(-9,0,smooth)
+            autoAlpha:(p>.02 && p<.965)?1:0,
+            left:x,
+            top:y,
+            width:w,
+            height:h,
+            rotation:lerp(-4,0,ease)
           });
-          gsap.set(journeyArt,{rotation:lerp(-10,0,smooth)});
-          gsap.set(destination,{opacity:p>.94?clamp((p-.94)/.06,0,1):0});
+          gsap.set(journeyArt,{rotation:lerp(-10,0,ease)});
+
+          /* Handoff before the section is fully centered, preventing the
+             oversized/cropped travelling bottle seen in the recording. */
+          const handoff=clamp((p-.88)/.08,0,1);
+          gsap.set(journey,{opacity:(p<.88?1:1-handoff)});
+          gsap.set(destination,{opacity:handoff});
         },
         onLeave:()=>{gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});},
         onLeaveBack:()=>{gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});}
-      });
+      });;
     }
     ScrollTrigger.refresh();
    },root);
