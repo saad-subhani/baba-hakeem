@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import Lenis from '@studio-freight/lenis';
 
 const ALOE='/aloe-hero.png.png';
-const BOTTLE='/products/30ml%20mockup.png';
+const BOTTLE='/products/hero-premium-bottle.png.png';
 const ALOE_ING='/aloe.png.png';
 const NEEM='/neem.png-removebg-preview.png';
 const TURMERIC='/turmeric.png-removebg-preview.png';
