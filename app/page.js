@@ -62,9 +62,9 @@ export default function Home(){
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:'76%',top:'67%',y:0,rotation:-3,scale:.88,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hero-bottle',{left:'75.4%',top:'66.2%',y:0,rotation:-2,scale:1.02,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.hero-bottle',{top:'67%',left:'76%',y:0,rotation:-3,scale:.88,duration:.85,ease:'none'},5.35)
+      .to('.hero-bottle',{top:'66.2%',left:'75.4%',y:0,rotation:-2,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
@@ -106,9 +106,9 @@ export default function Home(){
           const approach=clamp((p-.76)/.24,0,1);
           const ease=approach*approach*(3-2*approach);
 
-          const railW=window.innerWidth<760 ? 64 : 82;
-          const railH=railW*1.72;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 82 : 118);
+          const railW=window.innerWidth<760 ? 72 : 92;
+          const railH=railW*1.58;
+          const railX=window.innerWidth-(window.innerWidth<760 ? 94 : 132);
           const railY=window.innerHeight*.38;
 
           /* Match the new transparent bottle to its actual visual footprint.
@@ -119,8 +119,8 @@ export default function Home(){
           const heroRect=document.querySelector('.hero-bottle')?.getBoundingClientRect();
           const handW=heroRect?.width || (window.innerWidth<760 ? 92 : 150);
           const handH=heroRect?.height || handW*1.72;
-          const handX=heroRect?.left ?? window.innerWidth*.76-handW/2;
-          const handY=heroRect?.top ?? window.innerHeight*.67-handH/2;
+          const handX=heroRect?.left ?? window.innerWidth*.754-handW/2;
+          const handY=heroRect?.top ?? window.innerHeight*.662-handH/2;
 
           const travelX=lerp(handX,railX,departEase);
           const travelY=lerp(handY,railY,departEase);
@@ -146,7 +146,7 @@ export default function Home(){
             height:h,
             rotation:lerp(-2,0,ease)
           });
-          gsap.set(journeyArt,{rotation:0});
+          gsap.set(journeyArt,{rotation:0,scale:3.65,transformOrigin:'50% 50%'});
 
           /* Handoff before the section is fully centered, preventing the
              oversized/cropped travelling bottle seen in the recording. */
