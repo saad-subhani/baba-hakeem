@@ -106,9 +106,9 @@ export default function Home(){
           const approach=clamp((p-.72)/.28,0,1);
           const ease=approach*approach*(3-2*approach);
 
-          const railW=window.innerWidth<760 ? 104 : 150;
-          const railH=railW*1.72;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 122 : 190);
+          const railW=window.innerWidth<760 ? 122 : 178;
+          const railH=railW*1.78;
+          const railX=window.innerWidth-(window.innerWidth<760 ? 138 : 210);
           const railY=window.innerHeight*.34;
 
           /* Match the new transparent bottle to its actual visual footprint.
