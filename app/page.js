@@ -84,7 +84,7 @@ export default function Home(){
     const benefit=document.querySelector('.benefit-strip');
     if(journey && journeyArt && destination && benefit){
       gsap.set(journey,{autoAlpha:0});
-      gsap.set(destination,{opacity:1});
+      gsap.set(destination,{opacity:0});
 
       const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
       const lerp=(a,b,t)=>a+(b-a)*t;
@@ -148,12 +148,12 @@ export default function Home(){
 
           /* Handoff before the section is fully centered, preventing the
              oversized/cropped travelling bottle seen in the recording. */
-          const handoff=clamp((p-.88)/.08,0,1);
+          const handoff=clamp((p-.94)/.045,0,1);
           gsap.set(journey,{opacity:(p<.88?1:1-handoff)});
           gsap.set(destination,{opacity:handoff});
         },
         onLeave:()=>{gsap.set('.hero-bottle',{autoAlpha:0});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});},
-        onLeaveBack:()=>{gsap.set('.hero-bottle',{autoAlpha:1});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});}
+        onLeaveBack:()=>{gsap.set('.hero-bottle',{autoAlpha:1});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:0});}
       });;
     }
     ScrollTrigger.refresh();
