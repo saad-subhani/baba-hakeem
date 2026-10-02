@@ -111,7 +111,7 @@ export default function Home(){
              until the final orbit approach. */
           const railW=window.innerWidth<760 ? 150 : 220;
           const railH=window.innerWidth<760 ? 270 : 390;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 174 : 255);
+          const railX=window.innerWidth-(window.innerWidth<760 ? 194 : 285);
           const railY=window.innerHeight*.30;
 
           /* Match the new transparent bottle to its actual visual footprint.
