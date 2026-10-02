@@ -207,13 +207,26 @@
 @media(max-width:760px){.hero-bottle{width:clamp(108px,28vw,155px);height:clamp(205px,34vh,290px)}}
 
 
-/* Final correction for hero-premium-bottle.png.png.
-   The source PNG contains substantial transparent padding, so scale the artwork
-   inside the existing animation boxes instead of destabilising the GSAP path. */
+/* Calibrated correction for hero-premium-bottle.png.png.
+   Its transparent canvas is asymmetric: center the visible bottle independently
+   while keeping the proven GSAP wrapper path unchanged. */
 .hero-bottle,.bottle-journey,.ritual-visual{overflow:visible}
-.hero-bottle-art{transform:scale(3.65) rotate(0deg)!important;transform-origin:50% 50%;filter:drop-shadow(0 18px 14px rgba(0,0,0,.38))}
-.bottle-journey img{transform:scale(3.65) rotate(0deg);transform-origin:50% 50%;filter:drop-shadow(0 14px 12px rgba(0,0,0,.3))}
-.ritual-destination-bottle{transform:scale(3.65);transform-origin:50% 50%;filter:drop-shadow(0 20px 18px rgba(0,0,0,.28))}
+.hero-bottle-art{
+  transform:translateX(42%) scale(3.65) rotate(0deg)!important;
+  transform-origin:50% 50%;
+  filter:drop-shadow(0 18px 14px rgba(0,0,0,.38))
+}
+.bottle-journey img{
+  transform:translateX(42%) scale(3.65) rotate(0deg);
+  transform-origin:50% 50%;
+  filter:drop-shadow(0 14px 12px rgba(0,0,0,.3))
+}
+.ritual-destination-bottle{
+  transform:translateX(15%) scale(1.42);
+  transform-origin:50% 50%;
+  filter:drop-shadow(0 20px 18px rgba(0,0,0,.28))
+}
 @media(max-width:760px){
- .hero-bottle-art,.bottle-journey img,.ritual-destination-bottle{transform:scale(3.25) rotate(0deg)}
+ .hero-bottle-art,.bottle-journey img{transform:translateX(38%) scale(3.25) rotate(0deg)!important}
+ .ritual-destination-bottle{transform:translateX(12%) scale(1.3)}
 }
