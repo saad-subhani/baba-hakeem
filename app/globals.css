@@ -77,3 +77,22 @@
 .bottle-journey img{display:block;width:100%;height:100%;object-fit:contain;transform-origin:50% 50%;filter:drop-shadow(0 30px 32px rgba(0,0,0,.48));will-change:transform}
 .ritual-destination-bottle{will-change:opacity}
 @media(max-width:760px){.bottle-journey{z-index:120}}
+
+
+/* Real Herbal Botanics catalogue — additive overrides only; cinematic hero remains untouched. */
+.real-product-grid{grid-template-columns:repeat(3,1fr)}
+.real-product-art{height:52vh;min-height:430px;background:linear-gradient(145deg,#ece7d9 0%,#ded8c7 100%)}
+.real-product-art:before{content:"";position:absolute;inset:8%;border:1px solid rgba(23,50,38,.12);border-radius:999px 999px 38% 38%;pointer-events:none}
+.real-product-art>img:not(.botanical-accent):not(.trio){width:72%;height:82%;object-fit:contain;filter:drop-shadow(0 28px 28px rgba(23,50,38,.25))}
+.hair-product{background:radial-gradient(circle at 50% 42%,#e7ead8,#c9d2b7 58%,#a9b795)}
+.joint-product{background:radial-gradient(circle at 50% 42%,#eee8d8,#d7cdb8 58%,#b8aa90)}
+.mens-product{background:radial-gradient(circle at 50% 42%,#e4dfd1,#c9c0ad 58%,#a99d87)}
+.phakki-product,.stomach-product{background:radial-gradient(circle at 50% 42%,#eee8d8,#d8cfb9 58%,#b8aa8d)}
+.zafran-product{background:#d7d3ca}
+.zafran-product>img:not(.botanical-accent):not(.trio){width:100%;height:100%;object-fit:cover;filter:none}
+.zafran-card .shop-art:after{display:none}
+.real-product-grid .shop-info button{width:58px;height:58px;font-size:6px}
+.real-product-grid .shop-info button span{display:block;font-size:12px;margin-top:2px}
+.editorial-real-product{object-fit:contain!important}
+@media(max-width:1050px){.real-product-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.real-product-grid{grid-template-columns:1fr}.real-product-art{height:58vh;min-height:420px}.real-product-art>img:not(.botanical-accent):not(.trio){width:76%;height:84%}}
