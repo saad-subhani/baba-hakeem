@@ -1,4 +1,4 @@
-# Herbal Botanics
+# Baba Hakeem Herbal Products
 
 Immersive herbal e-commerce concept built as a senior-review demo.
 
