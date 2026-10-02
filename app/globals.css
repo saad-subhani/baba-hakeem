@@ -449,3 +449,19 @@
   .collection>div:first-child h2,.promise-section>h2,.shop-head h2,.range-heading h2,
   .zafran-copy h2,.journal-head h2,.newsletter-section h2,.final-cta h2{letter-spacing:-.03em}
 }
+
+
+/* Premium motion support for lower editorial sections only.
+   No cinematic hero / bottle / hands / orbit selectors live in this block. */
+.promise-section,.shop-section,.range-section,.zafran-feature,
+.brand-manifesto,.journal-section,.newsletter-section,.final-cta{
+  overflow:clip;
+}
+.promise-grid article,.shop-card,.range-panels article,.journal-grid article{
+  will-change:transform,opacity;
+}
+.zafran-photo,.zafran-copy,.range-heading{will-change:transform,opacity}
+@media(prefers-reduced-motion:reduce){
+  .promise-grid article,.shop-card,.range-panels article,.journal-grid article,
+  .zafran-photo,.zafran-copy,.range-heading{will-change:auto}
+}
