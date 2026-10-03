@@ -502,3 +502,126 @@
   .real-product-grid .shop-info{min-height:88px!important;padding:14px 5px 7px!important}
   .real-product-grid .shop-info h3{font-size:22px!important}
 }
+
+
+/* =========================================================
+   MOBILE RESPONSIVE PASS — content below the locked cinematic
+   Hero/bottle/hands/journey selectors intentionally untouched.
+   ========================================================= */
+@media (max-width:760px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+
+  /* Ingredient story */
+  .collection{padding-left:18px!important;padding-right:18px!important}
+  .collection>div:first-child h2{font-size:clamp(42px,13vw,64px)!important;line-height:.82!important}
+  .ingredient-row{grid-template-columns:1fr!important;gap:12px!important}
+  .ingredient-card{min-width:0!important}
+  .ingredient-visual{height:230px!important;min-height:0!important}
+  .ingredient-art{max-width:78%!important;max-height:82%!important;object-fit:contain!important}
+  .collection-actions{grid-template-columns:1fr!important;gap:24px!important}
+
+  /* Ritual / approach */
+  .ritual{padding-left:18px!important;padding-right:18px!important}
+  .ritual-copy h2{font-size:clamp(46px,14vw,70px)!important}
+  .promise-section{padding-left:18px!important;padding-right:18px!important}
+  .promise-section>h2{font-size:clamp(44px,13vw,66px)!important;line-height:.82!important}
+  .promise-grid{grid-template-columns:1fr!important}
+  .promise-grid article{min-height:auto!important;padding:26px 0!important}
+
+  /* Main real-product catalogue */
+  .shop-section{padding:10vh 16px 11vh!important}
+  .shop-head{display:block!important;padding-bottom:32px!important}
+  .shop-head h2{font-size:clamp(46px,14vw,68px)!important;line-height:.82!important;margin-top:24px!important}
+  .shop-head>p{max-width:100%!important;margin-top:24px!important;font-size:12px!important}
+  .category-tabs{
+    margin:32px -16px 20px!important;padding:0 16px 16px!important;
+    flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none
+  }
+  .category-tabs::-webkit-scrollbar{display:none}
+  .category-tabs button{flex:0 0 auto!important;white-space:nowrap!important}
+
+  .real-product-grid{
+    display:grid!important;grid-template-columns:1fr!important;
+    gap:16px!important;border:0!important
+  }
+  .real-product-grid .shop-card{
+    width:100%!important;min-width:0!important;padding:10px!important;
+    border:1px solid rgba(23,50,38,.22)!important
+  }
+  .real-product-grid .shop-art{
+    display:grid!important;place-items:center!important;
+    width:100%!important;height:clamp(300px,76vw,380px)!important;
+    min-height:300px!important;max-height:380px!important;
+    overflow:hidden!important
+  }
+  .real-product-grid .real-product-art>img:not(.botanical-accent):not(.trio){
+    display:block!important;position:relative!important;
+    width:78%!important;height:78%!important;
+    max-width:300px!important;max-height:300px!important;
+    object-fit:contain!important;object-position:center!important;
+    opacity:1!important;visibility:visible!important
+  }
+  .real-product-grid .hair-product>img{width:88%!important}
+  .real-product-grid .joint-product>img{width:82%!important}
+  .real-product-grid .mens-product>img{width:80%!important}
+  .real-product-grid .phakki-product>img,
+  .real-product-grid .stomach-product>img{width:76%!important}
+  .real-product-grid .zafran-product>img{
+    width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;
+    object-fit:cover!important
+  }
+  .real-product-grid .badge{top:18px!important;left:18px!important;font-size:6px!important}
+  .real-product-grid .shop-info{
+    min-height:0!important;padding:15px 4px 7px!important;
+    display:flex!important;align-items:center!important;gap:12px!important
+  }
+  .real-product-grid .shop-info>div{min-width:0!important;flex:1}
+  .real-product-grid .shop-info h3{font-size:25px!important;line-height:1!important;margin:7px 0 5px!important}
+  .real-product-grid .shop-info p{font-size:10px!important;line-height:1.45!important}
+  .real-product-grid .product-arrow{width:42px!important;height:42px!important;flex:0 0 42px!important}
+
+  /* Dark product-family gallery */
+  .range-section{padding:10vh 16px!important}
+  .range-heading{display:block!important;padding-bottom:42px!important}
+  .range-heading h2{font-size:clamp(46px,14vw,68px)!important;line-height:.82!important}
+  .range-heading p{margin-top:24px!important}
+  .range-panels{grid-template-columns:1fr!important;border-left:0!important}
+  .range-panels article{min-height:470px!important;padding:24px!important;border-left:1px solid #f4f0e52b!important}
+  .range-panels img{
+    display:block!important;width:76%!important;height:280px!important;
+    max-width:320px!important;object-fit:contain!important;margin:auto!important
+  }
+
+  /* Saffron feature */
+  .zafran-feature{grid-template-columns:1fr!important}
+  .zafran-photo{min-height:390px!important;height:62vh!important}
+  .zafran-photo img{width:100%!important;height:100%!important;object-fit:cover!important}
+  .zafran-copy{padding:64px 18px!important}
+  .zafran-copy h2{font-size:clamp(48px,15vw,72px)!important;line-height:.82!important}
+
+  /* Manifesto / journal / final content */
+  .brand-manifesto{padding:10vh 18px!important}
+  .brand-manifesto h2{font-size:clamp(45px,13vw,66px)!important;line-height:.82!important}
+  .manifesto-grid{grid-template-columns:1fr!important}
+  .journal-section{padding:10vh 16px!important}
+  .journal-head h2{font-size:clamp(45px,13vw,66px)!important;line-height:.84!important}
+  .journal-grid{grid-template-columns:1fr!important;gap:42px!important}
+  .journal-visual{height:330px!important;min-height:0!important}
+  .journal-visual img{display:block!important;width:82%!important;height:82%!important;object-fit:contain!important}
+  .newsletter-section{padding:10vh 18px 6vh!important;min-height:70vh!important}
+  .newsletter-section h2{font-size:clamp(50px,15vw,74px)!important;line-height:.78!important}
+  .newsletter-section form{width:100%!important}
+  .final-cta{min-height:72vh!important;padding-left:18px!important;padding-right:18px!important}
+  .final-cta h2{font-size:clamp(52px,16vw,78px)!important;line-height:.78!important}
+}
+
+/* Extra-small phones */
+@media (max-width:390px){
+  .real-product-grid .shop-art{height:290px!important;min-height:290px!important}
+  .real-product-grid .real-product-art>img:not(.botanical-accent):not(.trio){
+    max-width:260px!important;max-height:260px!important
+  }
+  .real-product-grid .shop-info h3{font-size:23px!important}
+  .range-panels article{min-height:440px!important}
+  .zafran-photo{min-height:340px!important;height:56vh!important}
+}
