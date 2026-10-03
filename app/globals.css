@@ -655,3 +655,64 @@
     top:76.5%!important;
   }
 }
+
+
+/* MOBILE-ONLY precision fixes — desktop/web remains untouched.
+   1) receiving hands: smaller + anchored to the bottom/green strip
+   2) range panels: centered composition with artwork below copy */
+@media(max-width:760px){
+  .hands-stage{
+    left:73%!important;
+    top:auto!important;
+    bottom:-1px!important;
+    width:42vw!important;
+    height:27vh!important;
+    max-height:210px!important;
+    object-fit:contain!important;
+    object-position:center bottom!important;
+    transform-origin:center bottom!important;
+  }
+
+  .range-panels article{
+    min-height:430px!important;
+    padding:34px 20px 24px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    text-align:center!important;
+  }
+  .range-panels article>span{
+    align-self:center!important;
+    margin-bottom:20px!important;
+  }
+  .range-panels article>div{
+    position:relative!important;
+    z-index:2!important;
+    width:100%!important;
+    max-width:285px!important;
+    margin:0 auto!important;
+    text-align:center!important;
+  }
+  .range-panels article h3{
+    margin:12px auto 12px!important;
+    font-size:clamp(38px,12vw,52px)!important;
+    line-height:.82!important;
+  }
+  .range-panels article p{
+    max-width:270px!important;
+    margin:0 auto!important;
+  }
+  .range-panels article>img{
+    position:relative!important;
+    z-index:1!important;
+    inset:auto!important;
+    transform:none!important;
+    width:auto!important;
+    height:150px!important;
+    max-width:78%!important;
+    max-height:150px!important;
+    object-fit:contain!important;
+    margin:28px auto 0!important;
+  }
+}
