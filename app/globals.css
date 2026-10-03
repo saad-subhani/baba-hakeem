@@ -716,3 +716,12 @@
     margin:28px auto 0!important;
   }
 }
+
+
+/* DESKTOP-ONLY hands lift — 2026-10-03.
+   Mobile is intentionally excluded. Bottle and all choreography remain untouched. */
+@media(min-width:761px){
+  .hands-stage{
+    top:76%!important;
+  }
+}
