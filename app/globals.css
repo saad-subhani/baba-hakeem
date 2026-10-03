@@ -647,7 +647,7 @@
    with a small upward correction so the bottle base rests on the palms. */
 .hands-stage{
   left:74.9%!important;
-  top:75.2%!important;
+  top:82%!important;
 }
 @media(max-width:760px){
   .hands-stage{
