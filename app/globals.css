@@ -722,6 +722,6 @@
    Mobile is intentionally excluded. Bottle and all choreography remain untouched. */
 @media(min-width:761px){
   .hands-stage{
-    top:70%!important;
+    top:68%!important;
   }
 }
