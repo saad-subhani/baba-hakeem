@@ -625,3 +625,17 @@
   .range-panels article{min-height:440px!important}
   .zafran-photo{min-height:340px!important;height:56vh!important}
 }
+
+
+/* Hands-only correction 2026-10-03.
+   Bottle choreography is intentionally untouched.
+   Lower the receiving hands so the bottle remains in its approved position
+   while the palms sit naturally beneath it. */
+.hands-stage{
+  top:77.5%!important;
+}
+@media(max-width:760px){
+  .hands-stage{
+    top:79%!important;
+  }
+}
