@@ -39,8 +39,8 @@ export default function Home(){
     gsap.set('.hands-stage',{opacity:0,yPercent:18,scale:.86});
     gsap.from('.hero-photo',{scale:1.025,duration:1.35,ease:'power3.out'});
     const mobileHero=window.matchMedia('(max-width: 760px)').matches;
-    const eggBottleLeft=mobileHero?'76%':'47%';
-    const handBottleLeft=mobileHero?'95%':'72.8%';
+    const eggBottleLeft=mobileHero?'50%':'47%';
+    const handBottleLeft=mobileHero?'73.8%':'72.8%';
     const handBottleTop=mobileHero?'74%':'64.5%';
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
     tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
