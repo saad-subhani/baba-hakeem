@@ -639,3 +639,19 @@
     top:79%!important;
   }
 }
+
+
+/* FINAL palms alignment correction.
+   Keep the approved bottle completely fixed; move ONLY the hands artwork.
+   The palms' meeting point is shifted left to sit directly beneath the bottle,
+   with a small upward correction so the bottle base rests on the palms. */
+.hands-stage{
+  left:74.9%!important;
+  top:75.2%!important;
+}
+@media(max-width:760px){
+  .hands-stage{
+    left:74.5%!important;
+    top:76.5%!important;
+  }
+}
