@@ -62,9 +62,9 @@ export default function Home(){
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:'74.5%',top:'64.5%',y:0,rotation:0,scale:0.98,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hero-bottle',{left:'73.5%',top:'64.5%',y:0,rotation:0,scale:0.78,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.hero-bottle',{top:'64.5%',left:'74.5%',y:0,rotation:0,scale:0.98,duration:.85,ease:'none'},5.35)
+      .to('.hero-bottle',{top:'64.5%',left:'73.5%',y:0,rotation:0,scale:0.78,duration:.85,ease:'none'},5.35)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
