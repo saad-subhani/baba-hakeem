@@ -38,6 +38,10 @@ export default function Home(){
     gsap.set('.hero-aloe',{opacity:1});
     gsap.set('.hands-stage',{opacity:0,yPercent:18,scale:.86});
     gsap.from('.hero-photo',{scale:1.025,duration:1.35,ease:'power3.out'});
+    const mobileHero=window.matchMedia('(max-width: 760px)').matches;
+    const eggBottleLeft=mobileHero?'76%':'47%';
+    const handBottleLeft=mobileHero?'95%':'72.8%';
+    const handBottleTop=mobileHero?'74%':'64.5%';
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
     tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
       .to('.hero-bg-photo',{scale:1.2,filter:'brightness(.68) saturate(1.12)',duration:1.4},0)
@@ -48,7 +52,7 @@ export default function Home(){
       .to('.drop',{x:(i)=>(i-9.5)*44,y:(i)=>150+(i%5)*68,rotation:(i)=>(i%2?1:-1)*(10+i*5),duration:1.45,ease:'power1.in'},.7)
       .to('.gel-core',{opacity:1,scale:1,duration:.7},1.15)
       .to('.reveal-leaf',{opacity:.38,scale:1.42,duration:.8},1.7)
-      .fromTo('.hero-bottle',{opacity:0,left:'47%',top:'50%',y:85,scale:.55,rotation:4},{opacity:1,left:'47%',top:'50%',y:0,scale:.82,rotation:2,duration:.85,ease:'power2.out'},1.55)
+      .fromTo('.hero-bottle',{opacity:0,left:eggBottleLeft,top:'50%',y:85,scale:.55,rotation:4},{opacity:1,left:eggBottleLeft,top:'50%',y:0,scale:.82,rotation:2,duration:.85,ease:'power2.out'},1.55)
       .to('.halo',{opacity:.75,scale:.82,duration:.7},1.55)
       .to('.hero-bottle',{rotation:2,scale:.88,duration:.65,ease:'none'},2.18)
       .to('.hero-bottle',{rotation:-1,scale:.92,duration:.65,ease:'none'},2.78)
@@ -62,9 +66,9 @@ export default function Home(){
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
       .to('.gel-core',{opacity:0,duration:.45},3.82)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:'72.8%',top:'64.5%',y:0,rotation:0,scale:0.78,duration:1.05,ease:'power1.inOut'},4.08)
+      .to('.hero-bottle',{left:handBottleLeft,top:handBottleTop,y:0,rotation:0,scale:0.78,duration:1.05,ease:'power1.inOut'},4.08)
       .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.hero-bottle',{top:'64.5%',left:'72.8%',y:0,rotation:0,scale:0.78,duration:.85,ease:'none'},5.35)
+      .to('.hero-bottle',{top:handBottleTop,left:handBottleLeft,y:0,rotation:0,scale:0.78,duration:.85,ease:'none'},5.35)
       .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
       .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
