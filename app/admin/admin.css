@@ -355,3 +355,13 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
 .stock-count{display:block;margin-top:7px;font:9px monospace;color:#597143}.stock-alert{color:#9a5d20!important;font-weight:700!important}
 @media(max-width:1100px){.order-summary{grid-template-columns:repeat(3,1fr)}.order-summary span:nth-child(4){border-left:0}.orders-toolbar{grid-template-columns:1fr 120px}}
 @media(max-width:650px){.order-summary{grid-template-columns:1fr 1fr}.order-summary span{border-bottom:1px solid #1732261f}.order-summary span:nth-child(odd){border-left:0}.orders-toolbar{grid-template-columns:1fr}.orders-toolbar>select{min-height:42px}}
+
+
+/* ADMIN PASSWORD RECOVERY — isolated to /admin authentication. */
+.forgot-password{width:100%;border:0;background:transparent;color:#173226;text-decoration:underline;text-underline-offset:4px;padding:12px 0 2px;cursor:pointer;font:10px monospace;letter-spacing:.12em}
+.forgot-password:hover{opacity:.65}
+.recovery-success{margin-top:12px;padding:12px 14px;border-left:2px solid #597143;background:#5971430d;color:#36512f;font-size:11px;line-height:1.55}
+.reset-auth-screen{display:grid!important;place-items:center!important;grid-template-columns:1fr!important;min-height:100vh!important;padding:24px!important}
+.reset-panel{width:min(560px,100%)!important;min-height:0!important;padding:0!important;background:transparent!important}
+.reset-panel .login-card{width:100%!important}
+.login-submit:disabled{opacity:.6;cursor:wait}
