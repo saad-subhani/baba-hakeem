@@ -312,3 +312,36 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
 .login-brand small,.login-quote span,.login-card small,.login-card label>span,.login-footer{font-size:8px!important}
 .password-field button,.login-submit{font-size:9px!important}
 .login-card>p{font-size:12px!important}
+
+
+/* READABILITY PASS 2 — increase microcopy and controls throughout admin.
+   Typography only: no structural layout or storefront choreography changes. */
+.admin-side .side-brand small,.admin-side .side-brand p{font-size:10px!important}
+.admin-side nav a{font-size:12px!important}
+.side-bottom>a,.logout-btn{font-size:11px!important}
+.admin-top>div>small,.admin-top small{font-size:10px!important}
+.admin-top p{font-size:12px!important}
+.admin-top .top-actions a,.admin-top .top-actions span{font-size:10px!important}
+.admin-stats small{font-size:10px!important}
+.admin-stats span{font-size:11px!important}
+.panel-heading small{font-size:10px!important}
+.panel-heading p{font-size:12px!important}
+.panel-heading>span{font-size:10px!important}
+.order-filter-tabs button,.filter-tabs button,.admin-sort{font-size:10px!important}
+.order-id small{font-size:10px!important}
+.order-id span,.order-customer span,.order-customer p,.order-customer em,.order-money span{font-size:11px!important}
+.order-actions select{font-size:11px!important}
+.order-actions button{font-size:9px!important}
+.product-form label>span,.security-form label>span,.feature-check span{font-size:10px!important}
+.product-form input,.product-form select,.product-form textarea,.security-form input{font-size:14px!important}
+.upload-box small,.upload-box span{font-size:10px!important}
+.publish-btn,.cancel-edit{font-size:10px!important}
+.admin-product-copy small{font-size:10px!important}
+.admin-product-copy p{font-size:11px!important}
+.storage-note,.admin-notice{font-size:11px!important}
+.login-brand small,.login-quote span,.login-card small,.login-card label>span,.login-footer{font-size:10px!important}
+.password-field button,.login-submit{font-size:10px!important}
+@media(max-width:850px){
+ .admin-side nav a{font-size:11px!important}
+ .admin-top p,.panel-heading p{font-size:11px!important}
+}
