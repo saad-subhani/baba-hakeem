@@ -735,3 +735,49 @@
   .admin-added-card .shop-art{height:clamp(300px,76vw,380px)!important;min-height:300px!important}
   .admin-added-card .shop-art>img{display:block!important;width:78%!important;height:78%!important;object-fit:contain!important}
 }
+
+
+/* Keep dynamically added products typographically identical to the original catalogue.
+   Admin-entered text must not inherit browser/input font rendering. */
+.real-product-grid .admin-added-card .shop-info small{
+  font-family:"DM Mono","Courier New",monospace!important;
+  font-size:6px!important;
+  font-weight:400!important;
+  letter-spacing:.17em!important;
+  line-height:1.35!important;
+  color:#173226!important;
+  text-rendering:geometricPrecision;
+}
+.real-product-grid .admin-added-card .shop-info h3{
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:27px!important;
+  font-weight:400!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+  color:#173226!important;
+  margin:8px 0 6px!important;
+  text-rendering:geometricPrecision;
+}
+.real-product-grid .admin-added-card .shop-info p{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:9px!important;
+  font-weight:400!important;
+  line-height:1.55!important;
+  letter-spacing:0!important;
+  color:rgba(23,50,38,.67)!important;
+  max-width:280px!important;
+  margin:0!important;
+  text-rendering:geometricPrecision;
+}
+.real-product-grid .admin-added-card .admin-card-price{
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:15px!important;
+  font-weight:400!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+  color:#173226!important;
+}
+@media(max-width:760px){
+ .real-product-grid .admin-added-card .shop-info h3{font-size:23px!important}
+ .real-product-grid .admin-added-card .shop-info p{font-size:10px!important}
+}
