@@ -878,5 +878,5 @@ footer,footer a{font-size:11px!important}
 
 /* Desktop-only final hands placement. Mobile remains locked. */
 @media(min-width:761px){
-  .hands-stage{top:76%!important}
+  .hands-stage{top:80%!important}
 }
