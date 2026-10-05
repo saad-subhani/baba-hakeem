@@ -5,7 +5,7 @@ import Link from 'next/link';
 import './admin.css';
 import { supabase } from '../../lib/supabase';
 
-const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Published',image:''};
+const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Published',image:'',stock_status:'In Stock',featured:false,sort_order:0,whatsapp_number:''};
 
 export default function AdminPage(){
   const [products,setProducts]=useState([]);
@@ -14,6 +14,7 @@ export default function AdminPage(){
   const [dragging,setDragging]=useState(false);
   const [query,setQuery]=useState('');
   const [filter,setFilter]=useState('All');
+  const [sort,setSort]=useState('Newest');
   const [editingId,setEditingId]=useState(null);
   const [authReady,setAuthReady]=useState(false);
   const [authenticated,setAuthenticated]=useState(false);
@@ -39,7 +40,11 @@ export default function AdminPage(){
     const q=query.trim().toLowerCase();
     const matchesText=!q||[p.name,p.category,p.type,p.description].some(v=>String(v||'').toLowerCase().includes(q));
     return matchesText&&(filter==='All'||p.status===filter);
-  }),[products,query,filter]);
+  }).sort((a,b)=>{
+    if(sort==='Name')return String(a.name).localeCompare(String(b.name));
+    if(sort==='Order')return Number(a.sort_order||0)-Number(b.sort_order||0);
+    return new Date(b.created_at)-new Date(a.created_at);
+  }),[products,query,filter,sort]);
 
   const refreshProducts=async()=>{
     const {data,error}=await supabase.from('products').select('*').order('created_at',{ascending:false});
@@ -70,7 +75,8 @@ export default function AdminPage(){
     try{
       setNotice(editingId?'Saving changes...':'Uploading product...');
       const uploaded=await uploadImage(form.image);
-      const payload={name:form.name.trim(),category:form.category,type:form.type,description:form.description,price:form.price,status:form.status,image:uploaded.url,updated_at:new Date().toISOString()};
+      const slug=(form.name.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'product')+'-'+(editingId?String(editingId).slice(0,8):(crypto.randomUUID?.()||Date.now()).toString().slice(0,8));
+      const payload={name:form.name.trim(),slug,category:form.category,type:form.type,description:form.description,price:form.price,status:form.status,image:uploaded.url,stock_status:form.stock_status,featured:!!form.featured,sort_order:Number(form.sort_order||0),whatsapp_number:form.whatsapp_number.trim(),updated_at:new Date().toISOString()};
       if(uploaded.path)payload.image_path=uploaded.path;
       if(editingId){
         const old=products.find(p=>p.id===editingId);
@@ -98,7 +104,7 @@ export default function AdminPage(){
     const {error}=await supabase.from('products').update({status:p.status==='Published'?'Draft':'Published',updated_at:new Date().toISOString()}).eq('id',id);
     if(error){setNotice(error.message);return;}await refreshProducts();
   };
-  const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||''});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
+  const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||'',stock_status:p.stock_status||'In Stock',featured:!!p.featured,sort_order:p.sort_order||0,whatsapp_number:p.whatsapp_number||''});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
   const cancelEdit=()=>{setEditingId(null);setForm(empty);setNotice('');};
   const signIn=async(e)=>{e.preventDefault();setLoginError('');const {error}=await supabase.auth.signInWithPassword({email:login.email.trim(),password:login.password});if(error)setLoginError(error.message);};
   const signOut=async()=>{await supabase.auth.signOut();setAuthenticated(false);};
@@ -137,6 +143,12 @@ export default function AdminPage(){
               <label><span>PRICE (OPTIONAL)</span><input value={form.price} onChange={e=>setForm({...form,price:e.target.value})} placeholder="e.g. Rs 1,250"/></label>
               <label><span>STATUS</span><select value={form.status} onChange={e=>setForm({...form,status:e.target.value})}><option>Published</option><option>Draft</option></select></label>
             </div>
+            <div className="form-row">
+              <label><span>STOCK</span><select value={form.stock_status} onChange={e=>setForm({...form,stock_status:e.target.value})}><option>In Stock</option><option>Low Stock</option><option>Out of Stock</option></select></label>
+              <label><span>DISPLAY ORDER</span><input type="number" value={form.sort_order} onChange={e=>setForm({...form,sort_order:e.target.value})} placeholder="0"/></label>
+            </div>
+            <label><span>WHATSAPP NUMBER (OPTIONAL)</span><input value={form.whatsapp_number} onChange={e=>setForm({...form,whatsapp_number:e.target.value})} placeholder="e.g. 923001234567"/></label>
+            <label className="feature-check"><input type="checkbox" checked={form.featured} onChange={e=>setForm({...form,featured:e.target.checked})}/><span>FEATURE THIS PRODUCT</span></label>
           </div>
           <div className="upload-column">
             <label className={'upload-box '+(dragging?'dragging':'')} onDragOver={e=>{e.preventDefault();setDragging(true)}} onDragLeave={()=>setDragging(false)} onDrop={e=>{e.preventDefault();setDragging(false);readImage(e.dataTransfer.files[0])}}>
@@ -151,11 +163,11 @@ export default function AdminPage(){
       </section>
 
       <section className="admin-panel products-panel" id="products">
-        <div className="panel-heading catalogue-heading"><div><small>CATALOGUE / MANAGE</small><h3>Uploaded products</h3><p>Search products or switch their publishing status instantly.</p></div><span>{products.length} items</span></div><div className="catalogue-tools"><label className="admin-search"><span>⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search products..."/></label><div className="filter-tabs">{['All','Published','Draft'].map(x=><button type="button" className={filter===x?'active':''} onClick={()=>setFilter(x)} key={x}>{x}</button>)}</div></div>
+        <div className="panel-heading catalogue-heading"><div><small>CATALOGUE / MANAGE</small><h3>Uploaded products</h3><p>Search products or switch their publishing status instantly.</p></div><span>{products.length} items</span></div><div className="catalogue-tools"><label className="admin-search"><span>⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search products..."/></label><div className="filter-tabs">{['All','Published','Draft'].map(x=><button type="button" className={filter===x?'active':''} onClick={()=>setFilter(x)} key={x}>{x}</button>)}</div><select className="admin-sort" value={sort} onChange={e=>setSort(e.target.value)}><option>Newest</option><option>Name</option><option>Order</option></select></div>
         {products.length===0?<div className="empty-state"><b>＋</b><h4>No admin products yet</h4><p>Use the form above to upload the first product.</p></div>:
         <div className="admin-product-list">{filtered.length===0?<div className="no-results">No products match your search.</div>:filtered.map(p=><article key={p.id}>
           <div className="admin-thumb"><img src={p.image} alt=""/></div>
-          <div className="admin-product-copy"><small>{p.category} / {p.type}</small><h4>{p.name}</h4><p>{p.description||'No description added.'}</p></div>
+          <div className="admin-product-copy"><small>{p.category} / {p.type} / {p.stock_status||'In Stock'}{p.featured?' / FEATURED':''}</small><h4>{p.name}</h4><p>{p.description||'No description added.'}</p></div>
           <div className="admin-product-meta">{p.price&&<b>{p.price}</b>}<button className={p.status==='Published'?'published':'draft'} onClick={()=>toggle(p.id)}>{p.status}</button></div>
           <div className="row-actions"><button className="edit-product" onClick={()=>edit(p)} aria-label={'Edit '+p.name}>EDIT</button><button className="delete-product" onClick={()=>remove(p.id)} aria-label={'Delete '+p.name}>×</button></div>
         </article>)}</div>}
