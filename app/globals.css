@@ -854,3 +854,24 @@ footer,footer a{font-size:9px!important}
  .real-product-grid .shop-info small,.real-product-grid .admin-added-card .shop-info small{font-size:8px!important}
  .real-product-grid .shop-info p,.real-product-grid .admin-added-card .shop-info p{font-size:11px!important}
 }
+
+
+/* READABILITY PASS 2 — site-wide microcopy only.
+   Bottle/hands/hero positioning, transforms, GSAP and scroll choreography are untouched. */
+header nav a,.nav-link,.eyebrow,.section-label{font-size:12px!important}
+.benefit-strip span,.benefit-strip p{font-size:13px!important}
+.ingredient-story p,.ritual-section p,.premium-promise p,.range-section p,.zafran-copy p,.brand-manifesto p,.journal-section p,.newsletter-section p,.final-cta p{font-size:14px!important;line-height:1.65!important}
+.real-product-grid .badge{font-size:10px!important}
+.real-product-grid .shop-info small,.real-product-grid .admin-added-card .shop-info small{font-size:10px!important}
+.real-product-grid .shop-info p,.real-product-grid .admin-added-card .shop-info p{font-size:13px!important;line-height:1.55!important}
+.range-panels article>span,.journal-section small,.newsletter-section small{font-size:11px!important}
+footer,footer a{font-size:11px!important}
+@media(max-width:760px){
+ header nav a,.nav-link,.eyebrow,.section-label{font-size:10px!important}
+ .benefit-strip span,.benefit-strip p{font-size:12px!important}
+ .ingredient-story p,.ritual-section p,.premium-promise p,.range-section p,.zafran-copy p,.brand-manifesto p,.journal-section p,.newsletter-section p,.final-cta p{font-size:13px!important}
+ .real-product-grid .badge{font-size:9px!important}
+ .real-product-grid .shop-info small,.real-product-grid .admin-added-card .shop-info small{font-size:9px!important}
+ .real-product-grid .shop-info p,.real-product-grid .admin-added-card .shop-info p{font-size:12px!important}
+ footer,footer a{font-size:10px!important}
+}
