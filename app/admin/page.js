@@ -6,6 +6,9 @@ import './admin.css';
 
 const STORAGE_KEY='baba-hakeem-admin-products-v1';
 const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Published',image:''};
+const ADMIN_USER='admin';
+const ADMIN_PASS='BabaHakeem@2026';
+const AUTH_KEY='baba-hakeem-admin-auth-v1';
 
 export default function AdminPage(){
   const [products,setProducts]=useState([]);
@@ -15,9 +18,18 @@ export default function AdminPage(){
   const [query,setQuery]=useState('');
   const [filter,setFilter]=useState('All');
   const [editingId,setEditingId]=useState(null);
+  const [authReady,setAuthReady]=useState(false);
+  const [authenticated,setAuthenticated]=useState(false);
+  const [login,setLogin]=useState({username:'',password:''});
+  const [loginError,setLoginError]=useState('');
+  const [showPassword,setShowPassword]=useState(false);
 
   useEffect(()=>{
-    try{ setProducts(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')); }catch{ setProducts([]); }
+    try{
+      setAuthenticated(sessionStorage.getItem(AUTH_KEY)==='true');
+      setProducts(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'));
+    }catch{ setProducts([]); }
+    setAuthReady(true);
   },[]);
 
   const published=useMemo(()=>products.filter(p=>p.status==='Published').length,[products]);
@@ -59,12 +71,17 @@ export default function AdminPage(){
   const toggle=(id)=>save(products.map(p=>p.id===id?{...p,status:p.status==='Published'?'Draft':'Published'}:p));
   const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||''});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
   const cancelEdit=()=>{setEditingId(null);setForm(empty);setNotice('');};
+  const signIn=(e)=>{e.preventDefault();if(login.username===ADMIN_USER&&login.password===ADMIN_PASS){sessionStorage.setItem(AUTH_KEY,'true');setAuthenticated(true);setLoginError('');setLogin({username:'',password:''});}else{setLoginError('Incorrect username or password.');}};
+  const signOut=()=>{sessionStorage.removeItem(AUTH_KEY);setAuthenticated(false);setLogin({username:'',password:''});};
+
+  if(!authReady)return <main className="admin-auth-screen"/>;
+  if(!authenticated)return <main className="admin-auth-screen"><section className="login-visual"><div className="login-brand"><span className="login-mark">BH</span><small>PRIVATE ADMINISTRATION</small><h1>Baba Hakeem<br/><em>Herbal Products</em></h1><p>Secure catalogue management for the Baba Hakeem product collection.</p></div><div className="login-quote"><span>EST. / HERBAL TRADITION</span><p>Rooted in nature.<br/>Managed with care.</p></div></section><section className="login-panel"><div className="login-card"><div className="login-card-top"><span className="secure-icon">⌾</span><small>AUTHORIZED ACCESS ONLY</small></div><h2>Welcome back.</h2><p>Sign in to access product management.</p><form onSubmit={signIn}><label><span>USERNAME</span><input autoFocus autoComplete="username" value={login.username} onChange={e=>setLogin({...login,username:e.target.value})} placeholder="Enter username"/></label><label><span>PASSWORD</span><div className="password-field"><input type={showPassword?'text':'password'} autoComplete="current-password" value={login.password} onChange={e=>setLogin({...login,password:e.target.value})} placeholder="Enter password"/><button type="button" onClick={()=>setShowPassword(!showPassword)}>{showPassword?'HIDE':'SHOW'}</button></div></label>{loginError&&<div className="login-error">{loginError}</div>}<button className="login-submit" type="submit"><span>SIGN IN TO DASHBOARD</span><b>→</b></button></form><div className="login-footer"><span>SECURE ADMIN PORTAL</span><Link href="/">← Return to storefront</Link></div></div></section></main>;
 
   return <main className="admin-shell">
     <aside className="admin-side">
       <div><span className="admin-mark">BH</span><h1>BABA HAKEEM</h1><small>HERBAL PRODUCTS / ADMIN</small></div>
       <nav><a className="active" href="#dashboard">Dashboard</a><a href="#add-product">Add Product</a><a href="#products">Products</a></nav>
-      <Link href="/">← View storefront</Link>
+      <div className="side-bottom"><button className="logout-btn" onClick={signOut}>↪ Sign out</button><Link href="/">← View storefront</Link></div>
     </aside>
 
     <section className="admin-main" id="dashboard">
