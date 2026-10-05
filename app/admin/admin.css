@@ -374,3 +374,14 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
 .auth-tabs button.active{background:#173226;color:#f4f0e5}
 .login-card form>label>input{width:100%;min-height:48px;border:1px solid #17322635;background:#ebe7dc;color:#173226;padding:13px;outline:0;font-size:14px}
 .login-card form>label>input:focus{border-color:#173226}
+
+
+/* SINGLE OWNER ADMIN — /admin only. */
+.auth-tabs.single-tab{grid-template-columns:1fr}.auth-tabs.single-tab button+button{border-left:0}
+.owner-gate{display:grid!important;place-items:center!important;grid-template-columns:1fr!important;min-height:100vh!important;padding:24px!important}
+.ownership-panel{border-color:#17322638!important}
+.owner-current{display:grid;gap:6px;padding:18px 20px;margin-bottom:16px;background:#f2eee4;border:1px solid #1732261f}.owner-current small{font:10px monospace;letter-spacing:.13em;color:#1732268c}.owner-current b{font:400 22px Georgia}
+.transfer-form{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.transfer-form label{display:grid;gap:8px}.transfer-form label span{font:10px monospace;letter-spacing:.12em}.transfer-form input{min-height:48px;border:1px solid #17322635;background:#ebe7dc;padding:12px 14px;font-size:14px;color:#173226;outline:0}.transfer-form input:focus{border-color:#173226}
+.transfer-btn{min-height:48px;border:0;background:#8a2f25;color:#fff8ed;padding:0 18px;font:10px monospace;letter-spacing:.11em;cursor:pointer}.transfer-btn:hover{background:#6f241d}
+.ownership-warning{font-size:11px;line-height:1.55;color:#8a2f25;margin:14px 0 0}
+@media(max-width:700px){.transfer-form{grid-template-columns:1fr}.transfer-btn{width:100%}}
