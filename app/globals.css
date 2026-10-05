@@ -798,3 +798,40 @@
   z-index:4!important;
   background:#f4f0e5!important;
 }
+
+
+/* Live/admin catalogue text: match the original product cards exactly.
+   Remove special text rasterization that made dynamically loaded copy look soft. */
+.real-product-grid .admin-added-card .shop-info small,
+.real-product-grid .admin-added-card .shop-info h3,
+.real-product-grid .admin-added-card .shop-info p,
+.real-product-grid .admin-added-card .admin-card-price{
+  text-rendering:auto!important;
+  -webkit-font-smoothing:auto!important;
+  -moz-osx-font-smoothing:auto!important;
+  filter:none!important;
+  opacity:1!important;
+  transform:none!important;
+}
+.real-product-grid .admin-added-card .shop-info small{
+  font:inherit!important;
+  font-family:"DM Mono","Courier New",monospace!important;
+  font-size:6px!important;
+  font-weight:400!important;
+  letter-spacing:.17em!important;
+}
+.real-product-grid .admin-added-card .shop-info h3{
+  font:400 27px/1 Georgia,"Times New Roman",serif!important;
+  letter-spacing:0!important;
+}
+.real-product-grid .admin-added-card .shop-info p{
+  font:400 9px/1.55 Arial,Helvetica,sans-serif!important;
+  letter-spacing:0!important;
+}
+.real-product-grid .admin-added-card .admin-card-price{
+  font:400 15px/1 Georgia,"Times New Roman",serif!important;
+}
+@media(max-width:760px){
+ .real-product-grid .admin-added-card .shop-info h3{font-size:23px!important}
+ .real-product-grid .admin-added-card .shop-info p{font-size:10px!important}
+}
