@@ -345,3 +345,13 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
  .admin-side nav a{font-size:11px!important}
  .admin-top p,.panel-heading p{font-size:11px!important}
 }
+
+
+/* FINAL COMMERCE ADMIN POLISH — admin only. */
+.order-summary{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid #1732261f;margin-bottom:14px;background:#f6f2e9}.order-summary span{padding:13px 14px;font:10px monospace;color:#1732269c}.order-summary span+span{border-left:1px solid #1732261f}.order-summary b{display:block;font:400 22px Georgia;color:#173226;margin-bottom:3px}
+.orders-toolbar{display:grid;grid-template-columns:1fr 150px;gap:10px;margin-bottom:10px}.order-search{display:flex;align-items:center;border:1px solid #1732262b;background:#faf7ef;padding:0 13px}.order-search input{width:100%;border:0;background:transparent;outline:0;padding:12px;font-size:12px;color:#173226}.orders-toolbar>select{border:1px solid #1732262b;background:#faf7ef;color:#173226;padding:0 12px;font:10px monospace}
+.order-customer a{color:#173226;text-decoration:none;border-bottom:1px solid #17322638}.order-customer a:hover{border-color:#173226}
+.order-wa{font:9px monospace;letter-spacing:.08em;color:#173226;text-decoration:none;border:1px solid #17322635;padding:8px;text-align:center}.order-wa:hover{background:#173226;color:#f4f0e5}
+.stock-count{display:block;margin-top:7px;font:9px monospace;color:#597143}.stock-alert{color:#9a5d20!important;font-weight:700!important}
+@media(max-width:1100px){.order-summary{grid-template-columns:repeat(3,1fr)}.order-summary span:nth-child(4){border-left:0}.orders-toolbar{grid-template-columns:1fr 120px}}
+@media(max-width:650px){.order-summary{grid-template-columns:1fr 1fr}.order-summary span{border-bottom:1px solid #1732261f}.order-summary span:nth-child(odd){border-left:0}.orders-toolbar{grid-template-columns:1fr}.orders-toolbar>select{min-height:42px}}
