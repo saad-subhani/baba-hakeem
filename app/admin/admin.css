@@ -218,3 +218,54 @@ body:has(.admin-shell){overflow-x:hidden!important;background:#f1eee5!important}
  .login-card h2{font-size:35px;margin-top:27px}
  .login-footer>span{display:none}
 }
+
+
+/* LOGIN HARD ISOLATION — storefront globals contain generic main/section/form rules.
+   Scope and reset the auth tree so /admin login always renders as designed. */
+html:has(.admin-auth-screen),body:has(.admin-auth-screen){margin:0!important;padding:0!important;width:100%!important;min-height:100%!important;background:#f2eee3!important;overflow:auto!important}
+body:has(.admin-auth-screen)>main.admin-auth-screen{
+ position:relative!important;inset:auto!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+ width:100vw!important;max-width:none!important;height:auto!important;min-height:100vh!important;
+ margin:0!important;padding:0!important;transform:none!important;opacity:1!important;
+ display:grid!important;grid-template-columns:minmax(0,1.08fr) minmax(420px,.92fr)!important;
+ overflow:hidden!important;background:#f2eee3!important;color:#173226!important;z-index:10000!important
+}
+.admin-auth-screen .login-visual,.admin-auth-screen .login-panel{
+ position:relative!important;inset:auto!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+ width:auto!important;max-width:none!important;height:auto!important;min-height:100vh!important;
+ margin:0!important;transform:none!important;opacity:1!important
+}
+.admin-auth-screen .login-visual{
+ padding:clamp(38px,6vw,82px)!important;
+ display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:stretch!important;
+ background:radial-gradient(circle at 74% 22%,rgba(213,223,141,.16),transparent 24%),linear-gradient(145deg,#0c281c,#143827 58%,#0b251a)!important;
+ color:#f4f0e5!important
+}
+.admin-auth-screen .login-panel{
+ padding:40px!important;display:grid!important;place-items:center!important;
+ background:linear-gradient(rgba(23,50,38,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(23,50,38,.035) 1px,transparent 1px),#f2eee3!important;
+ background-size:54px 54px!important
+}
+.admin-auth-screen .login-brand,.admin-auth-screen .login-quote,.admin-auth-screen .login-card,
+.admin-auth-screen .login-card-top,.admin-auth-screen .login-card form,.admin-auth-screen .login-card label,
+.admin-auth-screen .password-field,.admin-auth-screen .login-footer{
+ position:relative!important;inset:auto!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+ transform:none!important;opacity:1!important
+}
+.admin-auth-screen .login-card{display:block!important;width:min(440px,100%)!important;height:auto!important;min-height:0!important;margin:0!important}
+.admin-auth-screen .login-card form{display:grid!important;width:100%!important;height:auto!important;gap:19px!important;margin:0!important;padding:0!important}
+.admin-auth-screen .login-card label{display:grid!important;width:100%!important;height:auto!important;gap:9px!important;margin:0!important;padding:0!important}
+.admin-auth-screen .login-card input{display:block!important;width:100%!important;max-width:none!important;height:52px!important;margin:0!important}
+.admin-auth-screen .password-field{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;width:100%!important;height:52px!important;margin:0!important;padding:0!important}
+.admin-auth-screen .password-field input{height:50px!important}
+.admin-auth-screen .login-submit{display:flex!important;width:100%!important;height:54px!important;margin:0!important}
+.admin-auth-screen .login-footer{display:flex!important;width:100%!important;height:auto!important}
+@media(max-width:850px){
+ body:has(.admin-auth-screen)>main.admin-auth-screen{grid-template-columns:1fr!important}
+ .admin-auth-screen .login-visual{min-height:38vh!important;padding:32px 28px!important}
+ .admin-auth-screen .login-panel{min-height:62vh!important;padding:28px 18px!important}
+}
+@media(max-width:520px){
+ .admin-auth-screen .login-visual{min-height:32vh!important;padding:25px 20px!important}
+ .admin-auth-screen .login-panel{min-height:68vh!important;padding:18px 12px!important}
+}
