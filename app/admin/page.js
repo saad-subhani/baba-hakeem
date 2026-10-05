@@ -5,10 +5,12 @@ import Link from 'next/link';
 import './admin.css';
 import { supabase } from '../../lib/supabase';
 
-const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Published',image:'',stock_status:'In Stock',featured:false,sort_order:0,whatsapp_number:''};
+const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Published',image:'',stock_status:'In Stock',stock_quantity:0,featured:false,sort_order:0,whatsapp_number:''};
 
 export default function AdminPage(){
   const [products,setProducts]=useState([]);
+  const [orders,setOrders]=useState([]);
+  const [orderFilter,setOrderFilter]=useState('All');
   const [form,setForm]=useState(empty);
   const [notice,setNotice]=useState('');
   const [dragging,setDragging]=useState(false);
@@ -26,14 +28,23 @@ export default function AdminPage(){
 
   useEffect(()=>{
     let mounted=true;
+    const loadOrders=async()=>{const {data,error}=await supabase.from('orders').select('*').order('created_at',{ascending:false});if(mounted&&!error)setOrders(data||[]);};
     const loadProducts=async()=>{
       const {data,error}=await supabase.from('products').select('*').order('created_at',{ascending:false});
       if(mounted){if(error)setNotice(error.message);else setProducts(data||[]);}
     };
-    supabase.auth.getSession().then(({data})=>{if(!mounted)return;const ok=!!data.session;setAuthenticated(ok);setAuthReady(true);if(ok)loadProducts();});
-    const {data:listener}=supabase.auth.onAuthStateChange((_event,session)=>{if(!mounted)return;setAuthenticated(!!session);setAuthReady(true);if(session)loadProducts();else setProducts([]);});
+    supabase.auth.getSession().then(({data})=>{if(!mounted)return;const ok=!!data.session;setAuthenticated(ok);setAuthReady(true);if(ok){loadProducts();loadOrders();}});
+    const {data:listener}=supabase.auth.onAuthStateChange((_event,session)=>{if(!mounted)return;setAuthenticated(!!session);setAuthReady(true);if(session){loadProducts();loadOrders();}else{setProducts([]);setOrders([]);}});
     return()=>{mounted=false;listener.subscription.unsubscribe();};
   },[]);
+
+  const pendingOrders=useMemo(()=>orders.filter(o=>o.status==='Pending').length,[orders]);
+  const revenue=useMemo(()=>orders.filter(o=>o.status==='Delivered').reduce((sum,o)=>sum+Number(o.total_amount||0),0),[orders]);
+  const lowStock=useMemo(()=>products.filter(p=>p.stock_status==='Low Stock'||(Number(p.stock_quantity)>0&&Number(p.stock_quantity)<=5)).length,[products]);
+  const visibleOrders=useMemo(()=>orderFilter==='All'?orders:orders.filter(o=>o.status===orderFilter),[orders,orderFilter]);
+  const refreshOrders=async()=>{const {data,error}=await supabase.from('orders').select('*').order('created_at',{ascending:false});if(error){setNotice(error.message);return;}setOrders(data||[]);};
+  const updateOrderStatus=async(order,status)=>{const previous=order.status;const {error}=await supabase.from('orders').update({status,updated_at:new Date().toISOString()}).eq('id',order.id);if(error){setNotice(error.message);return;}if(status==='Confirmed'&&previous==='Pending'&&order.product_id){const p=products.find(x=>x.id===order.product_id);if(p&&Number(p.stock_quantity)>0){const qty=Math.max(0,Number(p.stock_quantity)-Number(order.quantity));await supabase.from('products').update({stock_quantity:qty,stock_status:qty===0?'Out of Stock':qty<=5?'Low Stock':'In Stock',updated_at:new Date().toISOString()}).eq('id',p.id);await refreshProducts();}}await refreshOrders();};
+  const deleteOrder=async(id)=>{if(!confirm('Delete this order record?'))return;const {error}=await supabase.from('orders').delete().eq('id',id);if(error)setNotice(error.message);else refreshOrders();};
 
   const published=useMemo(()=>products.filter(p=>p.status==='Published').length,[products]);
   const filtered=useMemo(()=>products.filter(p=>{
@@ -76,7 +87,7 @@ export default function AdminPage(){
       setNotice(editingId?'Saving changes...':'Uploading product...');
       const uploaded=await uploadImage(form.image);
       const slug=(form.name.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'product')+'-'+(editingId?String(editingId).slice(0,8):(crypto.randomUUID?.()||Date.now()).toString().slice(0,8));
-      const payload={name:form.name.trim(),slug,category:form.category,type:form.type,description:form.description,price:form.price,status:form.status,image:uploaded.url,stock_status:form.stock_status,featured:!!form.featured,sort_order:Number(form.sort_order||0),whatsapp_number:form.whatsapp_number.trim(),updated_at:new Date().toISOString()};
+      const payload={name:form.name.trim(),slug,category:form.category,type:form.type,description:form.description,price:form.price,status:form.status,image:uploaded.url,stock_status:form.stock_status,featured:!!form.featured,sort_order:Number(form.sort_order||0),whatsapp_number:form.whatsapp_number.trim(),stock_quantity:Math.max(0,Number(form.stock_quantity||0)),updated_at:new Date().toISOString()};
       if(uploaded.path)payload.image_path=uploaded.path;
       if(editingId){
         const old=products.find(p=>p.id===editingId);
@@ -104,7 +115,7 @@ export default function AdminPage(){
     const {error}=await supabase.from('products').update({status:p.status==='Published'?'Draft':'Published',updated_at:new Date().toISOString()}).eq('id',id);
     if(error){setNotice(error.message);return;}await refreshProducts();
   };
-  const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||'',stock_status:p.stock_status||'In Stock',featured:!!p.featured,sort_order:p.sort_order||0,whatsapp_number:p.whatsapp_number||''});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
+  const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||'',stock_status:p.stock_status||'In Stock',featured:!!p.featured,sort_order:p.sort_order||0,whatsapp_number:p.whatsapp_number||'',stock_quantity:p.stock_quantity||0});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
   const cancelEdit=()=>{setEditingId(null);setForm(empty);setNotice('');};
   const signIn=async(e)=>{e.preventDefault();setLoginError('');const {error}=await supabase.auth.signInWithPassword({email:login.email.trim(),password:login.password});if(error)setLoginError(error.message);};
   const signOut=async()=>{await supabase.auth.signOut();setAuthenticated(false);};
@@ -116,18 +127,20 @@ export default function AdminPage(){
   return <main className="admin-shell">
     <aside className="admin-side">
       <div><span className="admin-mark">BH</span><h1>BABA HAKEEM</h1><small>HERBAL PRODUCTS / ADMIN</small></div>
-      <nav><a className="active" href="#dashboard">Dashboard</a><a href="#add-product">Add Product</a><a href="#products">Products</a><a href="#security">Security</a></nav>
+      <nav><a className="active" href="#dashboard">Dashboard</a><a href="#orders">Orders</a><a href="#add-product">Add Product</a><a href="#products">Products</a><a href="#security">Security</a></nav>
       <div className="side-bottom"><button className="logout-btn" onClick={signOut}>↪ Sign out</button><Link href="/">← View storefront</Link></div>
     </aside>
 
     <section className="admin-main" id="dashboard">
       <header className="admin-top"><div><small>ADMIN CONSOLE / BABA HAKEEM</small><h2>Product Management</h2><p>Manage your catalogue, product visuals and publishing status from one place.</p></div><div className="top-actions"><span className="live-pill"><i/> STOREFRONT LIVE</span><Link href="/">Open website ↗</Link></div></header>
 
-      <div className="admin-stats">
-        <article><div className="stat-icon">◇</div><small>TOTAL PRODUCTS</small><strong>{products.length}</strong><span>Admin-added products</span></article>
-        <article><div className="stat-icon">✓</div><small>PUBLISHED</small><strong>{published}</strong><span>Visible on storefront</span></article>
-        <article><div className="stat-icon">○</div><small>DRAFTS</small><strong>{products.length-published}</strong><span>Saved, not displayed</span></article>
+      <div className="admin-stats commerce-stats">
+        <article><div className="stat-icon">◇</div><small>TOTAL PRODUCTS</small><strong>{products.length}</strong><span>{published} published</span></article>
+        <article><div className="stat-icon">◎</div><small>TOTAL ORDERS</small><strong>{orders.length}</strong><span>{pendingOrders} pending</span></article>
+        <article><div className="stat-icon">↗</div><small>DELIVERED REVENUE</small><strong>{revenue.toLocaleString()}</strong><span>From delivered orders</span></article>
+        <article><div className="stat-icon">!</div><small>LOW STOCK</small><strong>{lowStock}</strong><span>Products need attention</span></article>
       </div>
+      <section className="admin-panel orders-panel" id="orders"><div className="panel-heading"><div><small>ORDERS / LIVE</small><h3>Customer orders</h3><p>Track incoming orders from request to delivery.</p></div><span>{orders.length} orders</span></div><div className="order-filter-tabs">{['All','Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><button key={x} className={orderFilter===x?'active':''} onClick={()=>setOrderFilter(x)}>{x}</button>)}</div>{visibleOrders.length===0?<div className="empty-state"><b>◎</b><h4>No orders here</h4><p>New customer orders will appear automatically.</p></div>:<div className="orders-list">{visibleOrders.map(o=><article key={o.id}><div className="order-id"><small>{o.order_number}</small><b>{o.product_name}</b><span>{new Date(o.created_at).toLocaleString()}</span></div><div className="order-customer"><b>{o.customer_name}</b><span>{o.phone} · {o.city}</span><p>{o.address}</p>{o.notes&&<em>{o.notes}</em>}</div><div className="order-money"><span>{o.quantity} × {Number(o.unit_price||0).toLocaleString()}</span><b>{Number(o.total_amount||0).toLocaleString()}</b></div><div className="order-actions"><select value={o.status} onChange={e=>updateOrderStatus(o,e.target.value)}>{['Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><option key={x}>{x}</option>)}</select><button onClick={()=>deleteOrder(o.id)}>DELETE</button></div></article>)}</div>}</section>
 
       <section className="admin-panel" id="add-product">
         <div className="panel-heading"><div><small>{editingId?'PRODUCT / EDIT':'NEW PRODUCT / CREATE'}</small><h3>{editingId?'Edit product':'Add to collection'}</h3><p>{editingId?'Update the selected product and save your changes.':'Build a polished storefront product card in a few fields.'}</p></div><div className="heading-actions">{editingId&&<button type="button" onClick={cancelEdit}>Cancel edit</button>}<span>Required fields are marked *</span></div></div>
@@ -147,7 +160,7 @@ export default function AdminPage(){
               <label><span>STOCK</span><select value={form.stock_status} onChange={e=>setForm({...form,stock_status:e.target.value})}><option>In Stock</option><option>Low Stock</option><option>Out of Stock</option></select></label>
               <label><span>DISPLAY ORDER</span><input type="number" value={form.sort_order} onChange={e=>setForm({...form,sort_order:e.target.value})} placeholder="0"/></label>
             </div>
-            <label><span>WHATSAPP NUMBER (OPTIONAL)</span><input value={form.whatsapp_number} onChange={e=>setForm({...form,whatsapp_number:e.target.value})} placeholder="e.g. 923001234567"/></label>
+            <div className="form-row"><label><span>STOCK QUANTITY</span><input type="number" min="0" value={form.stock_quantity} onChange={e=>setForm({...form,stock_quantity:e.target.value})}/></label><label><span>WHATSAPP NUMBER (OPTIONAL)</span><input value={form.whatsapp_number} onChange={e=>setForm({...form,whatsapp_number:e.target.value})} placeholder="e.g. 923001234567"/></label></div>
             <label className="feature-check"><input type="checkbox" checked={form.featured} onChange={e=>setForm({...form,featured:e.target.checked})}/><span>FEATURE THIS PRODUCT</span></label>
           </div>
           <div className="upload-column">
