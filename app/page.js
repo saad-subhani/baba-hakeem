@@ -34,6 +34,7 @@ export default function Home(){
  },[]);
  useEffect(()=>{
   let ctx,lenis,raf,dead=false;
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
   (async()=>{
    const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(dead)return;
    gsap.registerPlugin(ScrollTrigger);
@@ -50,7 +51,7 @@ export default function Home(){
     const mobileHero=window.matchMedia('(max-width: 760px)').matches;
     const eggBottleLeft=mobileHero?'47%':'47%';
     const handBottleLeft=mobileHero?'70.5%':'72.8%';
-    const handBottleTop=mobileHero?'88%':'58%';
+    const handBottleTop=mobileHero?'88%':'64.5%';
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
     tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
       .to('.hero-bg-photo',{scale:1.2,filter:'brightness(.68) saturate(1.12)',duration:1.4},0)
@@ -263,6 +264,7 @@ export default function Home(){
       });;
     }
     ScrollTrigger.refresh();
+    requestAnimationFrame(()=>{ScrollTrigger.refresh();window.scrollTo(0,0);lenis?.scrollTo(0,{immediate:true});});
    },root);
   })();
   return()=>{dead=true;if(ctx)ctx.revert();if(raf)gsap.ticker.remove(raf);if(lenis)lenis.destroy()};
