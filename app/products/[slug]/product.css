@@ -44,3 +44,18 @@ body:has(.product-page){margin:0;background:#f4f0e5;color:#173226;overflow-x:hid
 .order-modal input,.order-modal textarea{font-size:14px!important}
 .place-order,.order-success a{font-size:10px!important}
 .order-error{font-size:11px!important}
+
+
+/* READABILITY PASS 2 — product page supporting text only. */
+.product-nav a{font-size:12px!important}
+.product-logo span{font-size:10px!important}
+.product-detail-art>span{font-size:10px!important}
+.product-detail-copy>small{font-size:10px!important}
+.product-detail-copy>p{font-size:16px!important}
+.product-facts span{font-size:10px!important}
+.order-whatsapp,.order-disabled,.buy-now{font-size:11px!important}
+.product-disclaimer{font-size:11px!important}
+.product-footer{font-size:10px!important}
+.order-modal>small,.order-modal label>span,.order-total span{font-size:10px!important}
+.order-modal>p,.order-success p{font-size:14px!important}
+.place-order,.order-success a{font-size:11px!important}
