@@ -187,3 +187,78 @@ drop policy if exists "Approved admins can delete orders" on public.orders;
 create policy "Approved admins can delete orders"
 on public.orders for delete to authenticated
 using (exists(select 1 from public.admin_users a where a.user_id=auth.uid()));
+
+
+-- ============================================================
+-- SINGLE OWNER ADMIN — run this migration once in SQL Editor.
+-- Exactly one row may exist in admin_users. Ownership can only
+-- be claimed when empty or transferred by the current owner.
+-- ============================================================
+
+create unique index if not exists admin_users_single_owner
+on public.admin_users ((true));
+
+create or replace function public.admin_owner_status()
+returns table(has_owner boolean, is_owner boolean, owner_email text)
+language sql
+security definer
+set search_path = public, auth
+as $$
+  select
+    exists(select 1 from public.admin_users) as has_owner,
+    exists(select 1 from public.admin_users where user_id=auth.uid()) as is_owner,
+    case when exists(select 1 from public.admin_users where user_id=auth.uid())
+      then (select u.email from auth.users u join public.admin_users a on a.user_id=u.id limit 1)
+      else null end as owner_email;
+$$;
+
+revoke all on function public.admin_owner_status() from public;
+grant execute on function public.admin_owner_status() to anon, authenticated;
+
+create or replace function public.claim_admin_ownership()
+returns boolean
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+begin
+  if auth.uid() is null then raise exception 'Authentication required'; end if;
+  if exists(select 1 from public.admin_users) then return false; end if;
+  insert into public.admin_users(user_id) values(auth.uid());
+  return true;
+exception when unique_violation then
+  return false;
+end;
+$$;
+revoke all on function public.claim_admin_ownership() from public;
+grant execute on function public.claim_admin_ownership() to authenticated;
+
+create or replace function public.transfer_admin_ownership(target_email text)
+returns text
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+declare target_id uuid; normalized text;
+begin
+  if not exists(select 1 from public.admin_users where user_id=auth.uid()) then
+    raise exception 'Only the current owner can transfer ownership';
+  end if;
+  normalized := lower(trim(target_email));
+  select id into target_id from auth.users where lower(email)=normalized limit 1;
+  if target_id is null then
+    raise exception 'That email must register and confirm its account before ownership can be transferred';
+  end if;
+  delete from public.admin_users;
+  insert into public.admin_users(user_id) values(target_id);
+  return normalized;
+end;
+$$;
+revoke all on function public.transfer_admin_ownership(text) from public;
+grant execute on function public.transfer_admin_ownership(text) to authenticated;
+
+-- admin_users is now controlled only through the secure owner functions.
+drop policy if exists "Admins can read own allow-list entry" on public.admin_users;
+create policy "Owner can read own entry"
+on public.admin_users for select to authenticated
+using (user_id=auth.uid());
