@@ -3,12 +3,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import './admin.css';
+import { supabase } from '../../lib/supabase';
 
-const STORAGE_KEY='baba-hakeem-admin-products-v1';
 const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Published',image:''};
-const ADMIN_USER='admin';
-const ADMIN_PASS='BabaHakeem@2026';
-const AUTH_KEY='baba-hakeem-admin-auth-v1';
 
 export default function AdminPage(){
   const [products,setProducts]=useState([]);
@@ -20,16 +17,19 @@ export default function AdminPage(){
   const [editingId,setEditingId]=useState(null);
   const [authReady,setAuthReady]=useState(false);
   const [authenticated,setAuthenticated]=useState(false);
-  const [login,setLogin]=useState({username:'',password:''});
+  const [login,setLogin]=useState({email:'',password:''});
   const [loginError,setLoginError]=useState('');
   const [showPassword,setShowPassword]=useState(false);
 
   useEffect(()=>{
-    try{
-      setAuthenticated(sessionStorage.getItem(AUTH_KEY)==='true');
-      setProducts(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'));
-    }catch{ setProducts([]); }
-    setAuthReady(true);
+    let mounted=true;
+    const loadProducts=async()=>{
+      const {data,error}=await supabase.from('products').select('*').order('created_at',{ascending:false});
+      if(mounted){if(error)setNotice(error.message);else setProducts(data||[]);}
+    };
+    supabase.auth.getSession().then(({data})=>{if(!mounted)return;const ok=!!data.session;setAuthenticated(ok);setAuthReady(true);if(ok)loadProducts();});
+    const {data:listener}=supabase.auth.onAuthStateChange((_event,session)=>{if(!mounted)return;setAuthenticated(!!session);setAuthReady(true);if(session)loadProducts();else setProducts([]);});
+    return()=>{mounted=false;listener.subscription.unsubscribe();};
   },[]);
 
   const published=useMemo(()=>products.filter(p=>p.status==='Published').length,[products]);
@@ -39,10 +39,10 @@ export default function AdminPage(){
     return matchesText&&(filter==='All'||p.status===filter);
   }),[products,query,filter]);
 
-  const save=(next)=>{
-    setProducts(next);
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(next));
-    window.dispatchEvent(new Event('baba-products-updated'));
+  const refreshProducts=async()=>{
+    const {data,error}=await supabase.from('products').select('*').order('created_at',{ascending:false});
+    if(error){setNotice(error.message);return false;}
+    setProducts(data||[]);return true;
   };
 
   const readImage=(file)=>{
@@ -50,32 +50,59 @@ export default function AdminPage(){
     if(!file.type.startsWith('image/')){setNotice('Please choose an image file.');return;}
     if(file.size>4*1024*1024){setNotice('Please use an image smaller than 4 MB.');return;}
     const reader=new FileReader();
-    reader.onload=()=>{setForm(v=>({...v,image:reader.result}));setNotice('Image ready.');};
-    reader.readAsDataURL(file);
+    setForm(v=>({...v,image:file}));setNotice('Image ready to upload.');
   };
 
-  const submit=(e)=>{
+  const uploadImage=async(file)=>{
+    if(typeof file==='string')return {url:file,path:null};
+    const ext=(file.name.split('.').pop()||'webp').toLowerCase();
+    const path=`${crypto.randomUUID?.()||Date.now()}.${ext}`;
+    const {error}=await supabase.storage.from('product-images').upload(path,file,{cacheControl:'3600',upsert:false});
+    if(error)throw error;
+    return {url:supabase.storage.from('product-images').getPublicUrl(path).data.publicUrl,path};
+  };
+
+  const submit=async(e)=>{
     e.preventDefault();
     if(!form.name.trim()||!form.image){setNotice('Product name and image are required.');return;}
-    if(editingId){
-      save(products.map(p=>p.id===editingId?{...p,...form,updatedAt:new Date().toISOString()}:p));
-      setEditingId(null); setForm(empty); setNotice('Product updated successfully.'); return;
-    }
-    const item={...form,id:crypto.randomUUID?.()||String(Date.now()),createdAt:new Date().toISOString()};
-    save([item,...products]);
-    setForm(empty);
-    setNotice('Product added successfully and is ready for the storefront on this browser.');
+    try{
+      setNotice(editingId?'Saving changes...':'Uploading product...');
+      const uploaded=await uploadImage(form.image);
+      const payload={name:form.name.trim(),category:form.category,type:form.type,description:form.description,price:form.price,status:form.status,image:uploaded.url,updated_at:new Date().toISOString()};
+      if(uploaded.path)payload.image_path=uploaded.path;
+      if(editingId){
+        const old=products.find(p=>p.id===editingId);
+        const {error}=await supabase.from('products').update(payload).eq('id',editingId);
+        if(error)throw error;
+        if(uploaded.path&&old?.image_path)await supabase.storage.from('product-images').remove([old.image_path]);
+        setEditingId(null);setForm(empty);await refreshProducts();setNotice('Product updated successfully on the live database.');return;
+      }
+      const {error}=await supabase.from('products').insert(payload);
+      if(error)throw error;
+      setForm(empty);await refreshProducts();setNotice('Product added successfully to the live storefront.');
+    }catch(err){setNotice(err?.message||'Could not save product.');}
   };
 
-  const remove=(id)=>{if(confirm('Delete this product?'))save(products.filter(p=>p.id!==id));};
-  const toggle=(id)=>save(products.map(p=>p.id===id?{...p,status:p.status==='Published'?'Draft':'Published'}:p));
+  const remove=async(id)=>{
+    if(!confirm('Delete this product?'))return;
+    const old=products.find(p=>p.id===id);
+    const {error}=await supabase.from('products').delete().eq('id',id);
+    if(error){setNotice(error.message);return;}
+    if(old?.image_path)await supabase.storage.from('product-images').remove([old.image_path]);
+    await refreshProducts();setNotice('Product deleted.');
+  };
+  const toggle=async(id)=>{
+    const p=products.find(x=>x.id===id);if(!p)return;
+    const {error}=await supabase.from('products').update({status:p.status==='Published'?'Draft':'Published',updated_at:new Date().toISOString()}).eq('id',id);
+    if(error){setNotice(error.message);return;}await refreshProducts();
+  };
   const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||''});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
   const cancelEdit=()=>{setEditingId(null);setForm(empty);setNotice('');};
-  const signIn=(e)=>{e.preventDefault();if(login.username===ADMIN_USER&&login.password===ADMIN_PASS){sessionStorage.setItem(AUTH_KEY,'true');setAuthenticated(true);setLoginError('');setLogin({username:'',password:''});}else{setLoginError('Incorrect username or password.');}};
-  const signOut=()=>{sessionStorage.removeItem(AUTH_KEY);setAuthenticated(false);setLogin({username:'',password:''});};
+  const signIn=async(e)=>{e.preventDefault();setLoginError('');const {error}=await supabase.auth.signInWithPassword({email:login.email.trim(),password:login.password});if(error)setLoginError(error.message);};
+  const signOut=async()=>{await supabase.auth.signOut();setAuthenticated(false);};
 
   if(!authReady)return <main className="admin-auth-screen"/>;
-  if(!authenticated)return <main className="admin-auth-screen"><section className="login-visual"><div className="login-brand"><span className="login-mark">BH</span><small>PRIVATE ADMINISTRATION</small><h1>Baba Hakeem<br/><em>Herbal Products</em></h1><p>Secure catalogue management for the Baba Hakeem product collection.</p></div><div className="login-quote"><span>EST. / HERBAL TRADITION</span><p>Rooted in nature.<br/>Managed with care.</p></div></section><section className="login-panel"><div className="login-card"><div className="login-card-top"><span className="secure-icon">⌾</span><small>AUTHORIZED ACCESS ONLY</small></div><h2>Welcome back.</h2><p>Sign in to access product management.</p><form onSubmit={signIn}><label><span>USERNAME</span><input autoFocus autoComplete="username" value={login.username} onChange={e=>setLogin({...login,username:e.target.value})} placeholder="Enter username"/></label><label><span>PASSWORD</span><div className="password-field"><input type={showPassword?'text':'password'} autoComplete="current-password" value={login.password} onChange={e=>setLogin({...login,password:e.target.value})} placeholder="Enter password"/><button type="button" onClick={()=>setShowPassword(!showPassword)}>{showPassword?'HIDE':'SHOW'}</button></div></label>{loginError&&<div className="login-error">{loginError}</div>}<button className="login-submit" type="submit"><span>SIGN IN TO DASHBOARD</span><b>→</b></button></form><div className="login-footer"><span>SECURE ADMIN PORTAL</span><Link href="/">← Return to storefront</Link></div></div></section></main>;
+  if(!authenticated)return <main className="admin-auth-screen"><section className="login-visual"><div className="login-brand"><span className="login-mark">BH</span><small>PRIVATE ADMINISTRATION</small><h1>Baba Hakeem<br/><em>Herbal Products</em></h1><p>Secure catalogue management for the Baba Hakeem product collection.</p></div><div className="login-quote"><span>EST. / HERBAL TRADITION</span><p>Rooted in nature.<br/>Managed with care.</p></div></section><section className="login-panel"><div className="login-card"><div className="login-card-top"><span className="secure-icon">⌾</span><small>AUTHORIZED ACCESS ONLY</small></div><h2>Welcome back.</h2><p>Sign in to access product management.</p><form onSubmit={signIn}><label><span>EMAIL</span><input autoFocus autoComplete="username" value={login.email} onChange={e=>setLogin({...login,email:e.target.value})} placeholder="admin@company.com"/></label><label><span>PASSWORD</span><div className="password-field"><input type={showPassword?'text':'password'} autoComplete="current-password" value={login.password} onChange={e=>setLogin({...login,password:e.target.value})} placeholder="Enter password"/><button type="button" onClick={()=>setShowPassword(!showPassword)}>{showPassword?'HIDE':'SHOW'}</button></div></label>{loginError&&<div className="login-error">{loginError}</div>}<button className="login-submit" type="submit"><span>SIGN IN TO DASHBOARD</span><b>→</b></button></form><div className="login-footer"><span>SECURE ADMIN PORTAL</span><Link href="/">← Return to storefront</Link></div></div></section></main>;
 
   return <main className="admin-shell">
     <aside className="admin-side">
@@ -110,7 +137,7 @@ export default function AdminPage(){
           </div>
           <div className="upload-column">
             <label className={'upload-box '+(dragging?'dragging':'')} onDragOver={e=>{e.preventDefault();setDragging(true)}} onDragLeave={()=>setDragging(false)} onDrop={e=>{e.preventDefault();setDragging(false);readImage(e.dataTransfer.files[0])}}>
-              {form.image?<img src={form.image} alt="Product preview"/>:<><b>＋</b><strong>UPLOAD PRODUCT IMAGE</strong><span>Drop image here or click to browse<br/>PNG / JPG / WEBP · max 4 MB</span></>}
+              {form.image?<img src={typeof form.image==='string'?form.image:URL.createObjectURL(form.image)} alt="Product preview"/>:<><b>＋</b><strong>UPLOAD PRODUCT IMAGE</strong><span>Drop image here or click to browse<br/>PNG / JPG / WEBP · max 4 MB</span></>}
               <input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>readImage(e.target.files?.[0])}/>
             </label>
             {form.image&&<button className="replace-image" type="button" onClick={()=>setForm({...form,image:''})}>Remove image</button>}
@@ -131,7 +158,7 @@ export default function AdminPage(){
         </article>)}</div>}
       </section>
 
-      <p className="storage-note"><b>Storage note:</b> this dashboard currently stores uploaded products in the browser, so it works immediately without changing the Cloudflare deployment. A shared company-wide admin requires connecting cloud database/image storage.</p>
+      <p className="storage-note"><b>Live storage:</b> products are stored in Supabase Database and product images in Supabase Storage. Changes made here are shared across devices and the live storefront.</p>
     </section>
   </main>
 }
