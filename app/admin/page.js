@@ -11,6 +11,8 @@ export default function AdminPage(){
   const [products,setProducts]=useState([]);
   const [orders,setOrders]=useState([]);
   const [orderFilter,setOrderFilter]=useState('All');
+  const [orderQuery,setOrderQuery]=useState('');
+  const [orderSort,setOrderSort]=useState('Newest');
   const [form,setForm]=useState(empty);
   const [notice,setNotice]=useState('');
   const [dragging,setDragging]=useState(false);
@@ -41,10 +43,20 @@ export default function AdminPage(){
   const pendingOrders=useMemo(()=>orders.filter(o=>o.status==='Pending').length,[orders]);
   const revenue=useMemo(()=>orders.filter(o=>o.status==='Delivered').reduce((sum,o)=>sum+Number(o.total_amount||0),0),[orders]);
   const lowStock=useMemo(()=>products.filter(p=>p.stock_status==='Low Stock'||(Number(p.stock_quantity)>0&&Number(p.stock_quantity)<=5)).length,[products]);
-  const visibleOrders=useMemo(()=>orderFilter==='All'?orders:orders.filter(o=>o.status===orderFilter),[orders,orderFilter]);
+  const visibleOrders=useMemo(()=>orders.filter(o=>{
+    const q=orderQuery.trim().toLowerCase();
+    const matchesStatus=orderFilter==='All'||o.status===orderFilter;
+    const matchesText=!q||[o.order_number,o.product_name,o.customer_name,o.phone,o.city,o.address].some(v=>String(v||'').toLowerCase().includes(q));
+    return matchesStatus&&matchesText;
+  }).sort((a,b)=>orderSort==='Oldest'?new Date(a.created_at)-new Date(b.created_at):orderSort==='Amount'?Number(b.total_amount||0)-Number(a.total_amount||0):new Date(b.created_at)-new Date(a.created_at)),[orders,orderFilter,orderQuery,orderSort]);
   const refreshOrders=async()=>{const {data,error}=await supabase.from('orders').select('*').order('created_at',{ascending:false});if(error){setNotice(error.message);return;}setOrders(data||[]);};
   const updateOrderStatus=async(order,status)=>{const previous=order.status;const {error}=await supabase.from('orders').update({status,updated_at:new Date().toISOString()}).eq('id',order.id);if(error){setNotice(error.message);return;}if(status==='Confirmed'&&previous==='Pending'&&order.product_id){const p=products.find(x=>x.id===order.product_id);if(p&&Number(p.stock_quantity)>0){const qty=Math.max(0,Number(p.stock_quantity)-Number(order.quantity));await supabase.from('products').update({stock_quantity:qty,stock_status:qty===0?'Out of Stock':qty<=5?'Low Stock':'In Stock',updated_at:new Date().toISOString()}).eq('id',p.id);await refreshProducts();}}await refreshOrders();};
   const deleteOrder=async(id)=>{if(!confirm('Delete this order record?'))return;const {error}=await supabase.from('orders').delete().eq('id',id);if(error)setNotice(error.message);else refreshOrders();};
+
+  const confirmedOrders=useMemo(()=>orders.filter(o=>o.status==='Confirmed').length,[orders]);
+  const shippedOrders=useMemo(()=>orders.filter(o=>o.status==='Shipped').length,[orders]);
+  const deliveredOrders=useMemo(()=>orders.filter(o=>o.status==='Delivered').length,[orders]);
+  const unitsSold=useMemo(()=>orders.filter(o=>o.status==='Delivered').reduce((sum,o)=>sum+Number(o.quantity||0),0),[orders]);
 
   const published=useMemo(()=>products.filter(p=>p.status==='Published').length,[products]);
   const filtered=useMemo(()=>products.filter(p=>{
@@ -140,7 +152,7 @@ export default function AdminPage(){
         <article><div className="stat-icon">↗</div><small>DELIVERED REVENUE</small><strong>{revenue.toLocaleString()}</strong><span>From delivered orders</span></article>
         <article><div className="stat-icon">!</div><small>LOW STOCK</small><strong>{lowStock}</strong><span>Products need attention</span></article>
       </div>
-      <section className="admin-panel orders-panel" id="orders"><div className="panel-heading"><div><small>ORDERS / LIVE</small><h3>Customer orders</h3><p>Track incoming orders from request to delivery.</p></div><span>{orders.length} orders</span></div><div className="order-filter-tabs">{['All','Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><button key={x} className={orderFilter===x?'active':''} onClick={()=>setOrderFilter(x)}>{x}</button>)}</div>{visibleOrders.length===0?<div className="empty-state"><b>◎</b><h4>No orders here</h4><p>New customer orders will appear automatically.</p></div>:<div className="orders-list">{visibleOrders.map(o=><article key={o.id}><div className="order-id"><small>{o.order_number}</small><b>{o.product_name}</b><span>{new Date(o.created_at).toLocaleString()}</span></div><div className="order-customer"><b>{o.customer_name}</b><span>{o.phone} · {o.city}</span><p>{o.address}</p>{o.notes&&<em>{o.notes}</em>}</div><div className="order-money"><span>{o.quantity} × {Number(o.unit_price||0).toLocaleString()}</span><b>{Number(o.total_amount||0).toLocaleString()}</b></div><div className="order-actions"><select value={o.status} onChange={e=>updateOrderStatus(o,e.target.value)}>{['Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><option key={x}>{x}</option>)}</select><button onClick={()=>deleteOrder(o.id)}>DELETE</button></div></article>)}</div>}</section>
+      <section className="admin-panel orders-panel" id="orders"><div className="panel-heading"><div><small>ORDERS / LIVE</small><h3>Customer orders</h3><p>Track incoming orders from request to delivery.</p></div><span>{orders.length} orders</span></div><div className="order-summary"><span><b>{pendingOrders}</b> Pending</span><span><b>{confirmedOrders}</b> Confirmed</span><span><b>{shippedOrders}</b> Shipped</span><span><b>{deliveredOrders}</b> Delivered</span><span><b>{unitsSold}</b> Units sold</span></div><div className="orders-toolbar"><label className="order-search"><span>⌕</span><input value={orderQuery} onChange={e=>setOrderQuery(e.target.value)} placeholder="Search order, customer, phone, city..."/></label><select value={orderSort} onChange={e=>setOrderSort(e.target.value)}><option>Newest</option><option>Oldest</option><option>Amount</option></select></div><div className="order-filter-tabs">{['All','Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><button key={x} className={orderFilter===x?'active':''} onClick={()=>setOrderFilter(x)}>{x}</button>)}</div>{visibleOrders.length===0?<div className="empty-state"><b>◎</b><h4>No orders here</h4><p>No orders match the current search/filter.</p></div>:<div className="orders-list">{visibleOrders.map(o=><article key={o.id}><div className="order-id"><small>{o.order_number}</small><b>{o.product_name}</b><span>{new Date(o.created_at).toLocaleString()}</span></div><div className="order-customer"><b>{o.customer_name}</b><span><a href={'tel:'+o.phone}>{o.phone}</a> · {o.city}</span><p>{o.address}</p>{o.notes&&<em>{o.notes}</em>}</div><div className="order-money"><span>{o.quantity} × {Number(o.unit_price||0).toLocaleString()}</span><b>{Number(o.total_amount||0).toLocaleString()}</b></div><div className="order-actions"><a className="order-wa" href={'https://wa.me/'+String(o.phone||'').replace(/\D/g,'').replace(/^0/,'92')+'?text='+encodeURIComponent('Hello '+o.customer_name+', regarding your Baba Hakeem order '+o.order_number+'.')} target="_blank" rel="noopener noreferrer">WHATSAPP ↗</a><select value={o.status} onChange={e=>updateOrderStatus(o,e.target.value)}>{['Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><option key={x}>{x}</option>)}</select><button onClick={()=>deleteOrder(o.id)}>DELETE</button></div></article>)}</div>}</section>
 
       <section className="admin-panel" id="add-product">
         <div className="panel-heading"><div><small>{editingId?'PRODUCT / EDIT':'NEW PRODUCT / CREATE'}</small><h3>{editingId?'Edit product':'Add to collection'}</h3><p>{editingId?'Update the selected product and save your changes.':'Build a polished storefront product card in a few fields.'}</p></div><div className="heading-actions">{editingId&&<button type="button" onClick={cancelEdit}>Cancel edit</button>}<span>Required fields are marked *</span></div></div>
@@ -181,7 +193,7 @@ export default function AdminPage(){
         <div className="admin-product-list">{filtered.length===0?<div className="no-results">No products match your search.</div>:filtered.map(p=><article key={p.id}>
           <div className="admin-thumb"><img src={p.image} alt=""/></div>
           <div className="admin-product-copy"><small>{p.category} / {p.type} / {p.stock_status||'In Stock'}{p.featured?' / FEATURED':''}</small><h4>{p.name}</h4><p>{p.description||'No description added.'}</p></div>
-          <div className="admin-product-meta">{p.price&&<b>{p.price}</b>}<button className={p.status==='Published'?'published':'draft'} onClick={()=>toggle(p.id)}>{p.status}</button></div>
+          <div className="admin-product-meta">{p.price&&<b>{p.price}</b>}<span className={(Number(p.stock_quantity)<=5?'stock-alert ':'')+'stock-count'}>{Number(p.stock_quantity||0)} in stock</span><button className={p.status==='Published'?'published':'draft'} onClick={()=>toggle(p.id)}>{p.status}</button></div>
           <div className="row-actions"><button className="edit-product" onClick={()=>edit(p)} aria-label={'Edit '+p.name}>EDIT</button><button className="delete-product" onClick={()=>remove(p.id)} aria-label={'Delete '+p.name}>×</button></div>
         </article>)}</div>}
       </section>
