@@ -725,3 +725,13 @@
     top:68%!important;
   }
 }
+
+
+/* Admin-added catalogue items only — cinematic hero remains completely untouched. */
+.admin-added-grid{margin-top:18px;border-top:1px solid #17322645}
+.admin-added-card .admin-card-price{display:block;margin-top:10px;font:400 15px Georgia,serif;color:#173226}
+@media(max-width:760px){
+  .admin-added-grid{grid-template-columns:1fr!important}
+  .admin-added-card .shop-art{height:clamp(300px,76vw,380px)!important;min-height:300px!important}
+  .admin-added-card .shop-art>img{display:block!important;width:78%!important;height:78%!important;object-fit:contain!important}
+}
