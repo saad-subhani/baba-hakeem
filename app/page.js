@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Lenis from '@studio-freight/lenis';
 
@@ -23,6 +23,12 @@ const ZAFRAN='/products/zafran/IMG_20241002_133345.webp';
 
 export default function Home(){
  const root=useRef(null);
+ const [adminProducts,setAdminProducts]=useState([]);
+ useEffect(()=>{
+  const load=()=>{try{setAdminProducts(JSON.parse(localStorage.getItem('baba-hakeem-admin-products-v1')||'[]').filter(p=>p.status==='Published'));}catch{setAdminProducts([])}};
+  load(); window.addEventListener('baba-products-updated',load); window.addEventListener('storage',load);
+  return()=>{window.removeEventListener('baba-products-updated',load);window.removeEventListener('storage',load)};
+ },[]);
  useEffect(()=>{
   let ctx,lenis,raf,dead=false;
   (async()=>{
@@ -297,6 +303,7 @@ export default function Home(){
     <article className="shop-card"><div className="badge">05 / HERBAL BLEND</div><div className="shop-art real-product-art stomach-product"><span className="art-index">05</span><img src={STOMACH_PHAKKI} alt="Baba Hakeem Herbal Products Stomach Phakki"/></div><div className="shop-info"><div><small>BABA HAKEEM HERBAL PRODUCTS / POWDER</small><h3>STOMACH PHAKKI</h3><p>A traditional herbal powder presentation.</p></div><a className="product-arrow" href="#collection-focus" aria-label="Explore Stomach Phakki">↗</a></div></article>
     <article className="shop-card zafran-card"><div className="badge">06 / PREMIUM SAFFRON</div><div className="shop-art real-product-art zafran-product"><span className="art-index">06</span><img src={ZAFRAN} alt="Baba Hakeem Herbal Products Zafran saffron"/></div><div className="shop-info"><div><small>BABA HAKEEM HERBAL PRODUCTS / SAFFRON</small><h3>ZAFRAN</h3><p>Premium saffron presented in Baba Hakeem Herbal Products packaging.</p></div><a className="product-arrow" href="#zafran-story" aria-label="Explore Zafran">↗</a></div></article>
    </div>
+   {adminProducts.length>0&&<div className="product-grid real-product-grid admin-added-grid">{adminProducts.map((p,i)=><article className="shop-card admin-added-card" key={p.id}><div className="badge">{String(i+7).padStart(2,'0')} / {p.category.toUpperCase()}</div><div className="shop-art real-product-art"><span className="art-index">{String(i+7).padStart(2,'0')}</span><img src={p.image} alt={p.name}/></div><div className="shop-info"><div><small>BABA HAKEEM HERBAL PRODUCTS / {p.type||'PRODUCT'}</small><h3>{p.name.toUpperCase()}</h3><p>{p.description||'A product from the Baba Hakeem Herbal Products collection.'}</p>{p.price&&<b className="admin-card-price">{p.price}</b>}</div><a className="product-arrow" href="#shop" aria-label={'Explore '+p.name}>↗</a></div></article>)}</div>}
   </section>
 
   <section className="range-section" id="collection-focus">
