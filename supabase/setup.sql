@@ -143,3 +143,47 @@ using (bucket_id='product-images' and exists(select 1 from public.admin_users a 
 -- Run once after creating your Supabase Auth admin user:
 -- insert into public.admin_users(user_id)
 -- select id from auth.users where email='YOUR_ADMIN_EMAIL';
+
+
+-- Phase 3: inventory + customer orders.
+alter table public.products add column if not exists stock_quantity integer not null default 0 check (stock_quantity >= 0);
+
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  order_number text not null unique default ('BH-' || upper(substr(replace(gen_random_uuid()::text,'-',''),1,8))),
+  product_id uuid references public.products(id) on delete set null,
+  product_name text not null,
+  unit_price numeric(12,2) not null default 0,
+  quantity integer not null default 1 check (quantity > 0),
+  total_amount numeric(12,2) not null default 0,
+  customer_name text not null,
+  phone text not null,
+  city text not null,
+  address text not null,
+  notes text,
+  status text not null default 'Pending' check (status in ('Pending','Confirmed','Shipped','Delivered','Cancelled')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.orders enable row level security;
+
+drop policy if exists "Anyone can create an order" on public.orders;
+create policy "Anyone can create an order"
+on public.orders for insert to anon, authenticated
+with check (status='Pending' and quantity > 0);
+
+drop policy if exists "Approved admins can view orders" on public.orders;
+create policy "Approved admins can view orders"
+on public.orders for select to authenticated
+using (exists(select 1 from public.admin_users a where a.user_id=auth.uid()));
+
+drop policy if exists "Approved admins can update orders" on public.orders;
+create policy "Approved admins can update orders"
+on public.orders for update to authenticated
+using (exists(select 1 from public.admin_users a where a.user_id=auth.uid()))
+with check (exists(select 1 from public.admin_users a where a.user_id=auth.uid()));
+
+drop policy if exists "Approved admins can delete orders" on public.orders;
+create policy "Approved admins can delete orders"
+on public.orders for delete to authenticated
+using (exists(select 1 from public.admin_users a where a.user_id=auth.uid()));
