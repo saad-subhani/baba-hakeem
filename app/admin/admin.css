@@ -269,3 +269,14 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
  .admin-auth-screen .login-visual{min-height:32vh!important;padding:25px 20px!important}
  .admin-auth-screen .login-panel{min-height:68vh!important;padding:18px 12px!important}
 }
+
+.security-panel{position:relative!important}
+.security-panel:before{content:"03";position:absolute;right:30px;top:23px;font:46px Georgia;color:#1732260b;pointer-events:none}
+.security-form{max-width:720px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.security-form label{display:grid;gap:8px}
+.security-form label:first-child{grid-column:1/-1}
+.security-form label>span{font:700 7px monospace;letter-spacing:.17em;color:#173226b8}
+.security-form input{width:100%;min-height:49px;border:1px solid #17322635;background:#eeeadf;color:#173226;padding:14px 13px;outline:0;font:12px Arial}
+.security-form input:focus{border-color:#173226;background:#f5f1e7;box-shadow:0 0 0 3px rgba(23,50,38,.055)}
+.security-form .publish-btn,.security-form .admin-notice{grid-column:1/-1}
+@media(max-width:520px){.security-form{grid-template-columns:1fr}.security-form label:first-child,.security-form .publish-btn,.security-form .admin-notice{grid-column:auto}}
