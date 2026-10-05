@@ -365,3 +365,12 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
 .reset-panel{width:min(560px,100%)!important;min-height:0!important;padding:0!important;background:transparent!important}
 .reset-panel .login-card{width:100%!important}
 .login-submit:disabled{opacity:.6;cursor:wait}
+
+
+/* LOGIN / REGISTER TABS — admin auth only. */
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid #1732262b;margin:20px 0 28px}
+.auth-tabs button{min-height:44px;border:0;background:transparent;color:#173226;font:10px monospace;letter-spacing:.14em;cursor:pointer}
+.auth-tabs button+button{border-left:1px solid #1732262b}
+.auth-tabs button.active{background:#173226;color:#f4f0e5}
+.login-card form>label>input{width:100%;min-height:48px;border:1px solid #17322635;background:#ebe7dc;color:#173226;padding:13px;outline:0;font-size:14px}
+.login-card form>label>input:focus{border-color:#173226}
