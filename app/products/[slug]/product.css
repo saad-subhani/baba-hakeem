@@ -26,3 +26,21 @@ body:has(.product-page){margin:0;background:#f4f0e5;color:#173226;overflow-x:hid
 .order-modal{position:relative!important;width:min(720px,100%)!important;max-height:92vh!important;overflow:auto!important;background:#f4f0e5!important;color:#173226!important;padding:clamp(28px,5vw,54px)!important;border:1px solid #d5df8d!important;box-shadow:0 30px 100px rgba(0,0,0,.25)!important;transform:none!important;opacity:1!important}
 .order-close{position:absolute;right:18px;top:15px;border:0;background:none;font:30px Georgia;color:#173226;cursor:pointer}.order-modal>small,.order-modal label>span,.order-total span{font:7px monospace;letter-spacing:.16em}.order-modal h2{font:400 clamp(34px,5vw,55px)/1 Georgia;margin:13px 0}.order-modal>p,.order-success p{font-size:11px;line-height:1.7;color:#173226a0;max-width:550px}.order-modal form{display:grid;gap:15px;margin-top:28px}.order-form-row{display:grid;grid-template-columns:1fr 1fr;gap:13px}.order-modal label{display:grid;gap:8px}.order-modal input,.order-modal textarea{width:100%;border:1px solid #17322635;background:#ebe7dc;color:#173226;padding:13px;outline:0;font:12px Arial}.order-modal input:focus,.order-modal textarea:focus{border-color:#173226}.order-total{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #17322635;border-bottom:1px solid #17322635;padding:16px 0}.order-total b{font:400 21px Georgia}.place-order,.order-success a{min-height:54px;border:0;background:#173226;color:#f4f0e5;padding:0 18px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;font:8px monospace;letter-spacing:.14em;cursor:pointer}.place-order:disabled{opacity:.6}.order-error{font-size:10px;color:#8a2f25;border-left:2px solid #8a2f25;padding:9px 11px;background:#8a2f2508}.order-success{display:grid;gap:17px}.order-success h2{font:400 55px Georgia;margin:0}.order-success a{margin-top:12px}
 @media(max-width:560px){.order-form-row{grid-template-columns:1fr}.order-modal-backdrop{padding:8px!important}.order-modal{padding:34px 20px!important}.order-success h2{font-size:42px}}
+
+
+/* READABILITY PASS — product/checkout typography only. */
+.product-nav a{font-size:10px!important}
+.product-logo span{font-size:8px!important}
+.product-detail-art>span{font-size:9px!important}
+.product-detail-copy>small{font-size:9px!important}
+.product-detail-copy>p{font-size:15px!important;line-height:1.7!important}
+.product-facts span{font-size:9px!important}
+.order-whatsapp,.order-disabled,.buy-now{font-size:10px!important}
+.product-disclaimer{font-size:10px!important;line-height:1.5!important}
+.product-footer{font-size:9px!important}
+.product-loading,.product-missing a{font-size:10px!important}
+.order-modal>small,.order-modal label>span,.order-total span{font-size:9px!important}
+.order-modal>p,.order-success p{font-size:13px!important;line-height:1.65!important}
+.order-modal input,.order-modal textarea{font-size:14px!important}
+.place-order,.order-success a{font-size:10px!important}
+.order-error{font-size:11px!important}
