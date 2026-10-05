@@ -781,3 +781,20 @@
  .real-product-grid .admin-added-card .shop-info h3{font-size:23px!important}
  .real-product-grid .admin-added-card .shop-info p{font-size:10px!important}
 }
+
+
+/* Product-card border fix: keep each catalogue card self-contained.
+   Prevents the bottom border of shorter first-row cards from visually crossing
+   through the text area of neighbouring cards. */
+.real-product-grid{
+  align-items:start!important;
+}
+.real-product-grid .shop-card{
+  align-self:start!important;
+  height:auto!important;
+}
+.real-product-grid .shop-info{
+  position:relative!important;
+  z-index:4!important;
+  background:#f4f0e5!important;
+}
