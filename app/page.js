@@ -50,7 +50,7 @@ export default function Home(){
     const mobileHero=window.matchMedia('(max-width: 760px)').matches;
     const eggBottleLeft=mobileHero?'47%':'47%';
     const handBottleLeft=mobileHero?'70.5%':'72.8%';
-    const handBottleTop=mobileHero?'88%':'64.5%';
+    const handBottleTop=mobileHero?'88%':'58%';
     const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
     tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
       .to('.hero-bg-photo',{scale:1.2,filter:'brightness(.68) saturate(1.12)',duration:1.4},0)
