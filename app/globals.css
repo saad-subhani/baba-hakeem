@@ -875,3 +875,8 @@ footer,footer a{font-size:11px!important}
  .real-product-grid .shop-info p,.real-product-grid .admin-added-card .shop-info p{font-size:12px!important}
  footer,footer a{font-size:10px!important}
 }
+
+/* Desktop-only final hands placement. Mobile remains locked. */
+@media(min-width:761px){
+  .hands-stage{top:76%!important}
+}
