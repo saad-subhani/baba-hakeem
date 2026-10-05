@@ -14,6 +14,7 @@ export default function AdminPage(){
   const [dragging,setDragging]=useState(false);
   const [query,setQuery]=useState('');
   const [filter,setFilter]=useState('All');
+  const [editingId,setEditingId]=useState(null);
 
   useEffect(()=>{
     try{ setProducts(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')); }catch{ setProducts([]); }
@@ -44,6 +45,10 @@ export default function AdminPage(){
   const submit=(e)=>{
     e.preventDefault();
     if(!form.name.trim()||!form.image){setNotice('Product name and image are required.');return;}
+    if(editingId){
+      save(products.map(p=>p.id===editingId?{...p,...form,updatedAt:new Date().toISOString()}:p));
+      setEditingId(null); setForm(empty); setNotice('Product updated successfully.'); return;
+    }
     const item={...form,id:crypto.randomUUID?.()||String(Date.now()),createdAt:new Date().toISOString()};
     save([item,...products]);
     setForm(empty);
@@ -52,6 +57,8 @@ export default function AdminPage(){
 
   const remove=(id)=>{if(confirm('Delete this product?'))save(products.filter(p=>p.id!==id));};
   const toggle=(id)=>save(products.map(p=>p.id===id?{...p,status:p.status==='Published'?'Draft':'Published'}:p));
+  const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||''});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
+  const cancelEdit=()=>{setEditingId(null);setForm(empty);setNotice('');};
 
   return <main className="admin-shell">
     <aside className="admin-side">
@@ -70,7 +77,7 @@ export default function AdminPage(){
       </div>
 
       <section className="admin-panel" id="add-product">
-        <div className="panel-heading"><div><small>NEW PRODUCT / CREATE</small><h3>Add to collection</h3><p>Build a polished storefront product card in a few fields.</p></div><span>Required fields are marked *</span></div>
+        <div className="panel-heading"><div><small>{editingId?'PRODUCT / EDIT':'NEW PRODUCT / CREATE'}</small><h3>{editingId?'Edit product':'Add to collection'}</h3><p>{editingId?'Update the selected product and save your changes.':'Build a polished storefront product card in a few fields.'}</p></div><div className="heading-actions">{editingId&&<button type="button" onClick={cancelEdit}>Cancel edit</button>}<span>Required fields are marked *</span></div></div>
         <form className="product-form" onSubmit={submit}>
           <div className="form-fields">
             <label><span>PRODUCT NAME *</span><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="e.g. Herbal Hair Oil" required/></label>
@@ -90,7 +97,7 @@ export default function AdminPage(){
               <input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>readImage(e.target.files?.[0])}/>
             </label>
             {form.image&&<button className="replace-image" type="button" onClick={()=>setForm({...form,image:''})}>Remove image</button>}
-            <button className="publish-btn" type="submit">ADD PRODUCT <span>→</span></button>
+            <button className="publish-btn" type="submit">{editingId?'SAVE CHANGES':'ADD PRODUCT'} <span>→</span></button>
             {notice&&<p className="admin-notice">{notice}</p>}
           </div>
         </form>
@@ -103,7 +110,7 @@ export default function AdminPage(){
           <div className="admin-thumb"><img src={p.image} alt=""/></div>
           <div className="admin-product-copy"><small>{p.category} / {p.type}</small><h4>{p.name}</h4><p>{p.description||'No description added.'}</p></div>
           <div className="admin-product-meta">{p.price&&<b>{p.price}</b>}<button className={p.status==='Published'?'published':'draft'} onClick={()=>toggle(p.id)}>{p.status}</button></div>
-          <button className="delete-product" onClick={()=>remove(p.id)} aria-label={'Delete '+p.name}>×</button>
+          <div className="row-actions"><button className="edit-product" onClick={()=>edit(p)} aria-label={'Edit '+p.name}>EDIT</button><button className="delete-product" onClick={()=>remove(p.id)} aria-label={'Delete '+p.name}>×</button></div>
         </article>)}</div>}
       </section>
 
