@@ -59,3 +59,19 @@ body:has(.product-page){margin:0;background:#f4f0e5;color:#173226;overflow-x:hid
 .order-modal>small,.order-modal label>span,.order-total span{font-size:10px!important}
 .order-modal>p,.order-success p{font-size:14px!important}
 .place-order,.order-success a{font-size:11px!important}
+
+
+/* FINAL CHECKOUT POLISH — product page only. */
+.product-facts div small{font:10px/1.4 monospace;color:#1732268c;letter-spacing:.06em}
+.order-modal-backdrop{overflow-y:auto!important;align-items:center!important}
+.order-modal{width:min(760px,calc(100vw - 40px))!important;max-height:min(860px,calc(100vh - 40px))!important;padding:42px 48px!important;border-radius:2px;scrollbar-width:thin;scrollbar-color:#17322655 transparent}
+.order-modal h2{margin:10px 42px 12px 0!important;line-height:.95!important}
+.order-modal>p{margin:0!important}
+.order-modal form{gap:13px!important;margin-top:22px!important}
+.order-modal input{min-height:48px}.order-modal textarea{resize:vertical;min-height:74px}
+.checkout-stock{font:10px monospace;letter-spacing:.08em;color:#597143;background:#d5df8d2b;border-left:2px solid #8ca050;padding:10px 12px}
+.order-close{width:40px;height:40px;display:grid;place-items:center;border:1px solid #17322625!important;border-radius:50%;z-index:2}
+.order-close:hover{background:#173226;color:#f4f0e5}
+.order-success{padding:22px 0}.order-success small{font:10px monospace;letter-spacing:.15em}
+@media(min-width:761px) and (min-height:760px){.order-modal{overflow:hidden!important}}
+@media(max-width:760px){.order-modal{width:100%!important;max-height:calc(100vh - 16px)!important;padding:34px 22px!important}.order-modal h2{font-size:42px!important}.order-modal form{margin-top:20px!important}}
