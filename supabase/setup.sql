@@ -262,3 +262,91 @@ drop policy if exists "Admins can read own allow-list entry" on public.admin_use
 create policy "Owner can read own entry"
 on public.admin_users for select to authenticated
 using (user_id=auth.uid());
+
+
+-- ============================================================
+-- OWNERSHIP INVITATIONS
+-- Current owner creates a pending invite. The invited person
+-- signs up through Supabase email confirmation, then accepts.
+-- Current owner remains owner until acceptance.
+-- ============================================================
+
+create table if not exists public.admin_transfer_invites (
+  id uuid primary key default gen_random_uuid(),
+  email text not null,
+  token uuid not null unique default gen_random_uuid(),
+  created_by uuid not null references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  expires_at timestamptz not null default (now() + interval '7 days')
+);
+alter table public.admin_transfer_invites enable row level security;
+create unique index if not exists admin_transfer_one_pending on public.admin_transfer_invites ((true));
+
+create or replace function public.create_admin_transfer_invite(target_email text)
+returns table(email text, token uuid, expires_at timestamptz)
+language plpgsql security definer set search_path=public,auth
+as $$
+declare normalized text;
+begin
+  if not exists(select 1 from public.admin_users where user_id=auth.uid()) then raise exception 'Only the current owner can invite a new owner'; end if;
+  normalized:=lower(trim(target_email));
+  if normalized='' or normalized not like '%@%' then raise exception 'Enter a valid email address'; end if;
+  delete from public.admin_transfer_invites;
+  return query
+    insert into public.admin_transfer_invites(email,created_by)
+    values(normalized,auth.uid())
+    returning admin_transfer_invites.email,admin_transfer_invites.token,admin_transfer_invites.expires_at;
+end; $$;
+revoke all on function public.create_admin_transfer_invite(text) from public;
+grant execute on function public.create_admin_transfer_invite(text) to authenticated;
+
+create or replace function public.get_admin_transfer_invite(invite_token uuid)
+returns table(email text, expires_at timestamptz, valid boolean)
+language sql security definer set search_path=public,auth
+as $$
+ select i.email,i.expires_at,(i.expires_at>now()) from public.admin_transfer_invites i where i.token=invite_token limit 1;
+$$;
+revoke all on function public.get_admin_transfer_invite(uuid) from public;
+grant execute on function public.get_admin_transfer_invite(uuid) to anon,authenticated;
+
+create or replace function public.accept_admin_transfer_invite(invite_token uuid)
+returns text
+language plpgsql security definer set search_path=public,auth
+as $$
+declare inv public.admin_transfer_invites%rowtype; signed_email text;
+begin
+ if auth.uid() is null then raise exception 'Sign in with the invited email first'; end if;
+ select * into inv from public.admin_transfer_invites where token=invite_token and expires_at>now() limit 1;
+ if inv.id is null then raise exception 'This ownership invitation is invalid or expired'; end if;
+ select lower(email) into signed_email from auth.users where id=auth.uid();
+ if signed_email<>lower(inv.email) then raise exception 'This invitation belongs to a different email address'; end if;
+ delete from public.admin_users;
+ insert into public.admin_users(user_id) values(auth.uid());
+ delete from public.admin_transfer_invites;
+ return signed_email;
+end; $$;
+revoke all on function public.accept_admin_transfer_invite(uuid) from public;
+grant execute on function public.accept_admin_transfer_invite(uuid) to authenticated;
+
+create or replace function public.cancel_admin_transfer_invite()
+returns boolean
+language plpgsql security definer set search_path=public,auth
+as $$
+begin
+ if not exists(select 1 from public.admin_users where user_id=auth.uid()) then raise exception 'Only the current owner can cancel an invitation'; end if;
+ delete from public.admin_transfer_invites;
+ return true;
+end; $$;
+revoke all on function public.cancel_admin_transfer_invite() from public;
+grant execute on function public.cancel_admin_transfer_invite() to authenticated;
+
+create or replace function public.current_admin_transfer_invite()
+returns table(email text,token uuid,expires_at timestamptz)
+language sql security definer set search_path=public,auth
+as $$
+ select i.email,i.token,i.expires_at from public.admin_transfer_invites i
+ where exists(select 1 from public.admin_users a where a.user_id=auth.uid())
+ order by i.created_at desc limit 1;
+$$;
+revoke all on function public.current_admin_transfer_invite() from public;
+grant execute on function public.current_admin_transfer_invite() to authenticated;
