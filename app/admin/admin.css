@@ -385,3 +385,32 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
 .transfer-btn{min-height:48px;border:0;background:#8a2f25;color:#fff8ed;padding:0 18px;font:10px monospace;letter-spacing:.11em;cursor:pointer}.transfer-btn:hover{background:#6f241d}
 .ownership-warning{font-size:11px;line-height:1.55;color:#8a2f25;margin:14px 0 0}
 @media(max-width:700px){.transfer-form{grid-template-columns:1fr}.transfer-btn{width:100%}}
+
+
+/* ADMIN OWNERSHIP — FINAL LAYOUT FIX. Scoped only to ownership card. */
+.ownership-panel{padding:34px 36px!important;overflow:hidden!important}
+.ownership-panel .panel-heading{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:24px!important;margin-bottom:24px!important}
+.ownership-panel .panel-heading>div{min-width:0!important}
+.ownership-panel .panel-heading h3{margin:5px 0 7px!important}
+.ownership-panel .panel-heading p{max-width:620px!important;margin:0!important}
+.ownership-panel .panel-heading>span{flex:0 0 auto!important;padding:7px 10px!important;border:1px solid #59714355!important;background:#d5df8d30!important;color:#36512f!important;font:9px monospace!important;letter-spacing:.12em!important}
+.owner-current{display:grid!important;grid-template-columns:150px minmax(0,1fr)!important;align-items:center!important;gap:18px!important;padding:17px 18px!important;margin:0 0 18px!important;background:#f2eee4!important;border:1px solid #1732261f!important}
+.owner-current small{display:block!important;margin:0!important;font:10px monospace!important;letter-spacing:.12em!important;color:#1732268c!important}
+.owner-current b{display:block!important;min-width:0!important;margin:0!important;font:400 18px/1.25 Georgia!important;color:#173226!important;overflow-wrap:anywhere!important}
+.ownership-panel .transfer-form{display:grid!important;grid-template-columns:minmax(0,1fr) 220px!important;gap:12px!important;align-items:end!important;margin:0!important}
+.ownership-panel .transfer-form label{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;margin:0!important}
+.ownership-panel .transfer-form label>span{display:block!important;font:10px monospace!important;letter-spacing:.12em!important;color:#173226!important}
+.ownership-panel .transfer-form input{display:block!important;width:100%!important;box-sizing:border-box!important;min-height:50px!important;border:1px solid #17322635!important;background:#ebe7dc!important;padding:13px 15px!important;font-size:14px!important;color:#173226!important;outline:0!important}
+.ownership-panel .transfer-form input:focus{border-color:#173226!important;box-shadow:0 0 0 1px #17322612!important}
+.ownership-panel .transfer-btn{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;width:100%!important;min-height:50px!important;padding:0 16px!important;border:1px solid #8a2f25!important;background:#8a2f25!important;color:#fff8ed!important;font:10px monospace!important;letter-spacing:.1em!important;cursor:pointer!important;white-space:nowrap!important}
+.ownership-panel .transfer-btn:hover{background:#6f241d!important;border-color:#6f241d!important}
+.ownership-panel .ownership-warning{display:block!important;margin:15px 0 0!important;padding:12px 14px!important;border-left:2px solid #8a2f25!important;background:#8a2f2508!important;color:#73372f!important;font-size:11px!important;line-height:1.55!important}
+.ownership-panel .admin-notice{margin-top:12px!important}
+@media(max-width:760px){
+ .ownership-panel{padding:24px 20px!important}
+ .ownership-panel .panel-heading{display:grid!important;gap:12px!important}
+ .ownership-panel .panel-heading>span{width:max-content!important}
+ .owner-current{grid-template-columns:1fr!important;gap:6px!important}
+ .ownership-panel .transfer-form{grid-template-columns:1fr!important}
+ .ownership-panel .transfer-btn{min-height:48px!important}
+}
