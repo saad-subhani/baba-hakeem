@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Lenis from '@studio-freight/lenis';
+import { supabase } from '../lib/supabase';
 
 const ALOE='/aloe-hero.png.png';
 const BOTTLE='/products/hero-premium-bottle.png.png';
@@ -25,9 +26,10 @@ export default function Home(){
  const root=useRef(null);
  const [adminProducts,setAdminProducts]=useState([]);
  useEffect(()=>{
-  const load=()=>{try{setAdminProducts(JSON.parse(localStorage.getItem('baba-hakeem-admin-products-v1')||'[]').filter(p=>p.status==='Published'));}catch{setAdminProducts([])}};
-  load(); window.addEventListener('baba-products-updated',load); window.addEventListener('storage',load);
-  return()=>{window.removeEventListener('baba-products-updated',load);window.removeEventListener('storage',load)};
+  let mounted=true;
+  const load=async()=>{const {data,error}=await supabase.from('products').select('*').eq('status','Published').order('created_at',{ascending:false});if(mounted&&!error)setAdminProducts(data||[]);};
+  load();
+  return()=>{mounted=false};
  },[]);
  useEffect(()=>{
   let ctx,lenis,raf,dead=false;
