@@ -20,6 +20,8 @@ export default function AdminPage(){
   const [login,setLogin]=useState({email:'',password:''});
   const [loginError,setLoginError]=useState('');
   const [showPassword,setShowPassword]=useState(false);
+  const [passwordForm,setPasswordForm]=useState({current:'',next:'',confirm:''});
+  const [securityNotice,setSecurityNotice]=useState('');
 
   useEffect(()=>{
     let mounted=true;
@@ -100,6 +102,7 @@ export default function AdminPage(){
   const cancelEdit=()=>{setEditingId(null);setForm(empty);setNotice('');};
   const signIn=async(e)=>{e.preventDefault();setLoginError('');const {error}=await supabase.auth.signInWithPassword({email:login.email.trim(),password:login.password});if(error)setLoginError(error.message);};
   const signOut=async()=>{await supabase.auth.signOut();setAuthenticated(false);};
+  const changePassword=async(e)=>{e.preventDefault();setSecurityNotice('');if(passwordForm.next.length<8){setSecurityNotice('New password must be at least 8 characters.');return;}if(passwordForm.next!==passwordForm.confirm){setSecurityNotice('New passwords do not match.');return;}const {data:{user}}=await supabase.auth.getUser();if(!user?.email){setSecurityNotice('Could not verify the signed-in admin.');return;}const {error:verifyError}=await supabase.auth.signInWithPassword({email:user.email,password:passwordForm.current});if(verifyError){setSecurityNotice('Current password is incorrect.');return;}const {error}=await supabase.auth.updateUser({password:passwordForm.next});if(error){setSecurityNotice(error.message);return;}setPasswordForm({current:'',next:'',confirm:''});setSecurityNotice('Password changed successfully.');};
 
   if(!authReady)return <main className="admin-auth-screen"/>;
   if(!authenticated)return <main className="admin-auth-screen"><section className="login-visual"><div className="login-brand"><span className="login-mark">BH</span><small>PRIVATE ADMINISTRATION</small><h1>Baba Hakeem<br/><em>Herbal Products</em></h1><p>Secure catalogue management for the Baba Hakeem product collection.</p></div><div className="login-quote"><span>EST. / HERBAL TRADITION</span><p>Rooted in nature.<br/>Managed with care.</p></div></section><section className="login-panel"><div className="login-card"><div className="login-card-top"><span className="secure-icon">⌾</span><small>AUTHORIZED ACCESS ONLY</small></div><h2>Welcome back.</h2><p>Sign in to access product management.</p><form onSubmit={signIn}><label><span>EMAIL</span><input autoFocus autoComplete="username" value={login.email} onChange={e=>setLogin({...login,email:e.target.value})} placeholder="admin@company.com"/></label><label><span>PASSWORD</span><div className="password-field"><input type={showPassword?'text':'password'} autoComplete="current-password" value={login.password} onChange={e=>setLogin({...login,password:e.target.value})} placeholder="Enter password"/><button type="button" onClick={()=>setShowPassword(!showPassword)}>{showPassword?'HIDE':'SHOW'}</button></div></label>{loginError&&<div className="login-error">{loginError}</div>}<button className="login-submit" type="submit"><span>SIGN IN TO DASHBOARD</span><b>→</b></button></form><div className="login-footer"><span>SECURE ADMIN PORTAL</span><Link href="/">← Return to storefront</Link></div></div></section></main>;
@@ -107,7 +110,7 @@ export default function AdminPage(){
   return <main className="admin-shell">
     <aside className="admin-side">
       <div><span className="admin-mark">BH</span><h1>BABA HAKEEM</h1><small>HERBAL PRODUCTS / ADMIN</small></div>
-      <nav><a className="active" href="#dashboard">Dashboard</a><a href="#add-product">Add Product</a><a href="#products">Products</a></nav>
+      <nav><a className="active" href="#dashboard">Dashboard</a><a href="#add-product">Add Product</a><a href="#products">Products</a><a href="#security">Security</a></nav>
       <div className="side-bottom"><button className="logout-btn" onClick={signOut}>↪ Sign out</button><Link href="/">← View storefront</Link></div>
     </aside>
 
@@ -157,6 +160,8 @@ export default function AdminPage(){
           <div className="row-actions"><button className="edit-product" onClick={()=>edit(p)} aria-label={'Edit '+p.name}>EDIT</button><button className="delete-product" onClick={()=>remove(p.id)} aria-label={'Delete '+p.name}>×</button></div>
         </article>)}</div>}
       </section>
+
+      <section className="admin-panel security-panel" id="security"><div className="panel-heading"><div><small>ACCOUNT / SECURITY</small><h3>Change password</h3><p>Update the password for the currently signed-in Supabase administrator.</p></div></div><form className="security-form" onSubmit={changePassword}><label><span>CURRENT PASSWORD</span><input type="password" value={passwordForm.current} onChange={e=>setPasswordForm({...passwordForm,current:e.target.value})} required/></label><label><span>NEW PASSWORD</span><input type="password" value={passwordForm.next} onChange={e=>setPasswordForm({...passwordForm,next:e.target.value})} minLength="8" required/></label><label><span>CONFIRM NEW PASSWORD</span><input type="password" value={passwordForm.confirm} onChange={e=>setPasswordForm({...passwordForm,confirm:e.target.value})} minLength="8" required/></label><button className="publish-btn" type="submit">CHANGE PASSWORD <span>→</span></button>{securityNotice&&<p className="admin-notice">{securityNotice}</p>}</form></section>
 
       <p className="storage-note"><b>Live storage:</b> products are stored in Supabase Database and product images in Supabase Storage. Changes made here are shared across devices and the live storefront.</p>
     </section>
