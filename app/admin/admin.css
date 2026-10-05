@@ -414,3 +414,7 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
  .ownership-panel .transfer-form{grid-template-columns:1fr!important}
  .ownership-panel .transfer-btn{min-height:48px!important}
 }
+
+
+/* PENDING OWNERSHIP INVITATION — admin only. */
+.pending-transfer{display:grid;gap:7px;padding:18px 20px;background:#f2eee4;border:1px solid #8ca05055}.pending-transfer small{font:10px monospace;letter-spacing:.13em;color:#597143}.pending-transfer b{font:400 20px Georgia;overflow-wrap:anywhere}.pending-transfer>span{font-size:11px;color:#1732269c}.pending-transfer>div{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}.pending-transfer button{border:1px solid #17322640;background:#173226;color:#f8f5ec;padding:9px 12px;font:9px monospace;letter-spacing:.09em;cursor:pointer}.pending-transfer .cancel-invite{background:transparent;color:#8a2f25;border-color:#8a2f2555}.pending-transfer .cancel-invite:hover{background:#8a2f25;color:#fff}
