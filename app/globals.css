@@ -1396,3 +1396,13 @@ body:has(.static-reference-site),
     max-width:none;
   }
 }
+
+
+/* Catalogue-only correction: Herbal Phakki fit. No hero/feature/admin changes. */
+@media(min-width:761px){
+  .static-reference-site .ref-product-grid article:nth-child(4) img{
+    width:76%;
+    height:76%;
+    object-fit:contain;
+  }
+}
