@@ -92,7 +92,6 @@ export default function Home(){
      <a href="#reel-products">Shop now</a>
     </div>
     <div className="ref-feature-visual">
-     <div className="ref-arch"/>
      <img className="ref-feature-hands" src={HANDS} alt="Hands presenting Baba Hakeem product"/>
      <img className="ref-feature-product" src={HAIR_OIL} alt="Baba Hakeem Hair Oil"/>
     </div>
