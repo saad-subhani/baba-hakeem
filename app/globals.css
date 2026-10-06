@@ -1179,3 +1179,29 @@ body:has(.static-reference-site),
    height:57vh;
  }
 }
+
+
+/* Uploaded concrete texture applied to hero only */
+.static-reference-site .ref-hero{
+  background-color:#bdbcB6;
+  background-image:
+    linear-gradient(rgba(190,189,183,.22),rgba(190,189,183,.22)),
+    url('/hero-concrete.svg');
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+}
+.static-reference-site .ref-hero:before{
+  background-image:
+    linear-gradient(rgba(15,15,14,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(15,15,14,.045) 1px,transparent 1px);
+  background-size:56px 56px;
+}
+@media(max-width:760px){
+ .static-reference-site .ref-hero{
+   background-position:center center;
+ }
+ .static-reference-site .ref-hero:before{
+   background-size:36px 36px;
+ }
+}
