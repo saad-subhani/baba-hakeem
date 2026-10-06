@@ -1488,8 +1488,8 @@ body:has(.static-reference-site),
 }
 
 @media(hover:hover) and (pointer:fine){
-  .static-reference-site .ref-product-grid article:not(:nth-child(2)):hover>div,
-  .static-reference-site .ref-product-grid article:not(:nth-child(2)):hover>a>div{
+  .static-reference-site .ref-product-grid article:not(:nth-child(2)):not(.ref-mens-source):hover>div,
+  .static-reference-site .ref-product-grid article:not(:nth-child(2)):not(.ref-mens-source):hover>a>div{
     transform:translateY(-8px);
     box-shadow:0 20px 42px rgba(0,0,0,.26);
   }
@@ -1498,7 +1498,7 @@ body:has(.static-reference-site),
     box-shadow:0 20px 42px rgba(0,0,0,.24);
   }
 
-  .static-reference-site .ref-product-grid article:not(:nth-child(2)):hover img{
+  .static-reference-site .ref-product-grid article:not(:nth-child(2)):not(.ref-mens-source):hover img{
     transform:scale(1.055);
     filter:drop-shadow(0 10px 14px rgba(0,0,0,.14));
   }
@@ -1516,4 +1516,31 @@ body:has(.static-reference-site),
   .static-reference-site .ref-product-grid h3{
     transition:none!important;
   }
+}
+
+
+/* Men's Oil second-stage scroll journey only.
+   Joint Oil hero journey is intentionally untouched. */
+.static-reference-site .ref-product-grid .ref-mens-source{
+  position:relative;
+  z-index:30;
+}
+.static-reference-site .ref-product-grid .ref-mens-source>div{
+  overflow:visible;
+}
+.static-reference-site .ref-mens-moving{
+  position:relative;
+  z-index:31;
+  will-change:transform;
+  transform-origin:center center;
+  pointer-events:none;
+}
+.static-reference-site .ref-mens-hands-target{
+  position:absolute;
+  left:51%;
+  top:62%;
+  width:1px;
+  height:1px;
+  pointer-events:none;
+  z-index:1;
 }
