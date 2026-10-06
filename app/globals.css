@@ -1291,6 +1291,11 @@ body:has(.static-reference-site),
   }
 }
 
+/* Remove hero grid lines completely */
+.static-reference-site .ref-hero::before{
+  display:none !important;
+}
+
 
 /* Final bottle-only reference match */
 @media(min-width:761px){
