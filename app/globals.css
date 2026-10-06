@@ -1309,3 +1309,76 @@ body:has(.static-reference-site),
     transform-origin:center center;
   }
 }
+
+
+/* Catalogue + featured showcase refinement — hero intentionally untouched */
+@media(min-width:761px){
+  .static-reference-site .ref-product-grid img{
+    width:92%;
+    height:92%;
+    object-fit:contain;
+  }
+  .static-reference-site .ref-product-grid .ref-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .static-reference-site .ref-feature{
+    width:100%;
+    height:78vh;
+    min-height:560px;
+    padding:6vh 7vw;
+    background:#050505;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .static-reference-site .ref-feature-copy,
+  .static-reference-site .ref-feature-visual{
+    height:72%;
+    min-height:390px;
+  }
+  .static-reference-site .ref-feature-copy{
+    width:56%;
+    max-width:none;
+    padding:7vh 6vw;
+    justify-content:center;
+    background:#efeee9;
+    border-radius:72px 0 0 72px;
+  }
+  .static-reference-site .ref-feature-copy h2{
+    font-size:clamp(48px,5vw,78px);
+  }
+  .static-reference-site .ref-feature-visual{
+    position:relative;
+    width:44%;
+    background:#efeee9;
+    border-radius:0 72px 72px 0;
+    overflow:hidden;
+  }
+  .static-reference-site .ref-feature-hands{
+    width:108%;
+    height:108%;
+    right:-8%;
+    bottom:-10%;
+    object-fit:contain;
+    object-position:right bottom;
+  }
+  .static-reference-site .ref-feature-product{
+    right:36%;
+    top:27%;
+    width:130px;
+    height:270px;
+  }
+}
+@media(max-width:760px){
+  .static-reference-site .ref-product-grid img{
+    width:90%;
+    height:90%;
+  }
+  .static-reference-site .ref-product-grid .ref-cover img{
+    width:100%;
+    height:100%;
+  }
+}
