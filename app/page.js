@@ -38,8 +38,8 @@ export default function Home(){
   (async()=>{
    const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(dead)return;
    gsap.registerPlugin(ScrollTrigger);
-   lenis=new Lenis({duration:1.08,smoothWheel:true}); lenis.on('scroll',ScrollTrigger.update);
-   raf=t=>lenis.raf(t*1000); gsap.ticker.add(raf); gsap.ticker.lagSmoothing(0);
+   lenis=new Lenis({duration:1.42,smoothWheel:true,wheelMultiplier:.82,touchMultiplier:1.05}); lenis.on('scroll',ScrollTrigger.update);
+   raf=t=>lenis.raf(t*1000); gsap.ticker.add(raf); gsap.ticker.lagSmoothing(500,33);
    ctx=gsap.context(()=>{
     gsap.from('.intro-ui',{opacity:0,y:18,stagger:.08,duration:1,ease:'power3.out'});
     gsap.set('.hero-photo',{opacity:1});
@@ -52,7 +52,7 @@ export default function Home(){
     const eggBottleLeft=mobileHero?'47%':'47%';
     const handBottleLeft=mobileHero?'70.5%':'72.8%';
     const handBottleTop=mobileHero?'88%':'64.5%';
-    const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:.75,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
+    const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:1.18,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
     tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
       .to('.hero-bg-photo',{scale:1.2,filter:'brightness(.68) saturate(1.12)',duration:1.4},0)
       .to('.hero-aloe',{scale:1.18,opacity:.18,duration:.75},.12)
@@ -84,9 +84,9 @@ export default function Home(){
     gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
  const visual=card.querySelector('.ingredient-visual');
  const art=card.querySelector('.ingredient-art');
- gsap.fromTo(visual,{y:110,scale:.78,rotation:i===1?-7:7},{y:0,scale:1,rotation:0,ease:'none',scrollTrigger:{trigger:card,start:'top 98%',end:'center 58%',scrub:1}});
- gsap.fromTo(art,{scale:1.18,yPercent:10},{scale:1,yPercent:-4,ease:'none',scrollTrigger:{trigger:card,start:'top bottom',end:'bottom 35%',scrub:1}});
- gsap.from(card.querySelectorAll('b,h3,p'),{opacity:0,y:35,stagger:.08,scrollTrigger:{trigger:card,start:'top 82%',end:'center 62%',scrub:1}});
+ gsap.fromTo(visual,{y:110,scale:.78,rotation:i===1?-7:7},{y:0,scale:1,rotation:0,ease:'none',scrollTrigger:{trigger:card,start:'top 98%',end:'center 58%',scrub:1.28}});
+ gsap.fromTo(art,{scale:1.18,yPercent:10},{scale:1,yPercent:-4,ease:'none',scrollTrigger:{trigger:card,start:'top bottom',end:'bottom 35%',scrub:1.28}});
+ gsap.from(card.querySelectorAll('b,h3,p'),{opacity:0,y:35,stagger:.08,scrollTrigger:{trigger:card,start:'top 82%',end:'center 62%',scrub:1.18}});
 });
 
 
@@ -165,7 +165,7 @@ export default function Home(){
     /* Gentle image parallax adds motion without changing layout or product sizing. */
     gsap.utils.toArray('.range-panels img,.zafran-photo img,.journal-visual img').forEach(img=>{
       gsap.fromTo(img,{yPercent:-4},{yPercent:4,ease:'none',
-        scrollTrigger:{trigger:img,start:'top bottom',end:'bottom top',scrub:.8}
+        scrollTrigger:{trigger:img,start:'top bottom',end:'bottom top',scrub:1.2}
       });
     });
 
@@ -198,7 +198,7 @@ export default function Home(){
         start:'top bottom',
         endTrigger:destination,
         end:'center center',
-        scrub:.65,
+        scrub:1.08,
         invalidateOnRefresh:true,
         onUpdate:self=>{
           const p=clamp(self.progress,0,1);
