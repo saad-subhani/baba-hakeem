@@ -146,7 +146,6 @@ export default function Home(){
     </div>
     <div className="ref-feature-visual">
      <img className="ref-feature-hands" src={HANDS} alt="Hands presenting Baba Hakeem product"/>
-     <img className="ref-feature-product" src={HAIR_OIL} alt="Baba Hakeem Hair Oil"/>
     </div>
    </section>
   </div>
