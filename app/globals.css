@@ -1296,7 +1296,7 @@ body:has(.static-reference-site),
 @media(min-width:761px){
   .static-reference-site .ref-hero-bottle{
     left:50%;
-    top:46.8%;
+    top:37%;
     width: clamp(500px, 42vw, 650px);
     height: 88vh;
     object-fit:contain;
