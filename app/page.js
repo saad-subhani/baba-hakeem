@@ -129,9 +129,9 @@ export default function Home(){
     <div className="ref-product-grid">
      <article><div><img src={HAIR_OIL} alt="Hair Oil"/></div><h3>Hair Oil</h3></article>
      <article><div ref={jointTargetRef} className="ref-joint-target">{/* Animated hero bottle destination — intentionally empty */}</div><h3>Joint Oil</h3></article>
-     <article><div><img src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3></article>
-     <article><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki"/></div><h3>Herbal Phakki</h3></article>
      <article><div><img src={STOMACH_PHAKKI} alt="Stomach Phakki"/></div><h3>Stomach Phakki</h3></article>
+     <article><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki"/></div><h3>Herbal Phakki</h3></article>
+     <article><div><img src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3></article>
      <article><div className="ref-cover"><img src={ZAFRAN} alt="Zafran"/></div><h3>Zafran</h3></article>
      {adminProducts.map(p=><article key={p.id}><Link href={'/products/'+p.slug}><div>{p.image_url&&<img src={p.image_url} alt={p.name}/>}</div><h3>{p.name}</h3></Link></article>)}
     </div>
