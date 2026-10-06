@@ -1414,3 +1414,11 @@ body:has(.static-reference-site),
     width:340px;
   }
 }
+
+
+/* Allow the approved hero bottle path to continue into the catalogue.
+   No bottle geometry, sizing, positioning or animation values changed. */
+.static-reference-site,
+.static-reference-site .ref-hero{
+  overflow:visible;
+}
