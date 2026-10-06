@@ -1030,3 +1030,24 @@ body:has(.static-reference-site)>main>.final-cta{display:none!important}
  .ref-feature{height:auto;min-height:100svh;grid-template-columns:1fr;grid-template-rows:44% 56%}.ref-feature-copy{padding:8vh 22px 3vh;justify-content:end}.ref-feature-copy h2{font-size:58px}.ref-feature-copy p{font-size:11px}
  .ref-feature-visual{min-height:52vh}.ref-arch{width:120%;height:88%;right:-34%}.ref-feature-hands{width:115%;height:78%;right:-14%}.ref-feature-product{right:28%;top:28%;width:100px;height:230px}
 }
+
+
+/* Hero proportion correction from approved static reference */
+@media(min-width:761px){
+  .static-reference-site .ref-hero-copy h1{
+    font-size:clamp(88px,12.5vw,190px);
+  }
+  .static-reference-site .ref-hero-bottle{
+    width:clamp(175px,17vw,265px);
+    height:58vh;
+  }
+}
+@media(max-width:760px){
+  .static-reference-site .ref-hero-copy h1{
+    font-size:clamp(58px,17vw,82px);
+  }
+  .static-reference-site .ref-hero-bottle{
+    width:42vw;
+    height:46vh;
+  }
+}
