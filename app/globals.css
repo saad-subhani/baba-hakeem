@@ -1143,3 +1143,39 @@ body:has(.static-reference-site),
    padding:15px;
  }
 }
+
+
+/* Hero focal scale + lower callout alignment refinement */
+.static-reference-site .ref-hero-bottom{
+  bottom:10.5vh;
+}
+.static-reference-site .ref-note{
+  bottom:10.5vh;
+  box-shadow:
+    0 0 18px rgba(0,0,0,.20),
+    0 8px 22px rgba(0,0,0,.25),
+    0 24px 55px rgba(0,0,0,.32),
+    0 38px 80px rgba(0,0,0,.18);
+}
+@media(min-width:761px){
+ .static-reference-site .ref-hero-bottle{
+   width:clamp(310px,27vw,420px);
+   height:72vh;
+ }
+}
+@media(max-width:760px){
+ .static-reference-site .ref-hero-bottom{
+   bottom:52px;
+ }
+ .static-reference-site .ref-note{
+   bottom:52px;
+   box-shadow:
+     0 0 15px rgba(0,0,0,.18),
+     0 12px 28px rgba(0,0,0,.28),
+     0 24px 48px rgba(0,0,0,.24);
+ }
+ .static-reference-site .ref-hero-bottle{
+   width:59vw;
+   height:57vh;
+ }
+}
