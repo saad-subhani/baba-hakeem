@@ -133,8 +133,8 @@ export default function Home(){
     scrollTrigger:{
      trigger:sourceCard,
      start:'center 58%',
-     endTrigger:target,
-     end:'center center',
+     endTrigger:'.ref-feature',
+     end:'bottom bottom',
      scrub:1.15,
      invalidateOnRefresh:true
     }
