@@ -89,21 +89,7 @@ export default function Home(){
      endTrigger:target,
      end:'center center',
      scrub:1.15,
-     invalidateOnRefresh:true,
-     onUpdate:self=>{
-      const moving=self.progress>0.001;
-      bottle.style.position=moving?'fixed':'absolute';
-      bottle.style.zIndex=moving?'30':'4';
-      if(moving){
-       bottle.style.left=bottleRect.left+'px';
-       bottle.style.top=bottleRect.top+'px';
-       bottle.style.margin='0';
-      }else{
-       bottle.style.left='';
-       bottle.style.top='';
-       bottle.style.margin='';
-      }
-     }
+     invalidateOnRefresh:true
     }
    });
   };
