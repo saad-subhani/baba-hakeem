@@ -1051,3 +1051,29 @@ body:has(.static-reference-site)>main>.final-cta{display:none!important}
     height:46vh;
   }
 }
+
+
+/* Approved hero tuning + opening motion proportions */
+body:has(.static-reference-site),
+.static-reference-site,
+.static-reference-site .ref-hero{background:#deddd7}
+.static-reference-site .ref-hero:before{
+  background-image:linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px);
+}
+.static-reference-site .ref-hero-copy,
+.static-reference-site .ref-hero-bottom,
+.static-reference-site .ref-note,
+.static-reference-site .ref-hero-subline,
+.static-reference-site .ref-hero-bottle{will-change:transform,opacity}
+@media(min-width:761px){
+ .static-reference-site .ref-hero-bottle{
+   width:clamp(235px,21vw,330px);
+   height:66vh;
+ }
+}
+@media(max-width:760px){
+ .static-reference-site .ref-hero-bottle{
+   width:49vw;
+   height:52vh;
+ }
+}
