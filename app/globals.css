@@ -1537,8 +1537,8 @@ body:has(.static-reference-site),
 }
 .static-reference-site .ref-mens-hands-target{
   position:absolute;
-  left:51%;
-  top:62%;
+  left:69%;
+  top:79%;
   width:1px;
   height:1px;
   pointer-events:none;
