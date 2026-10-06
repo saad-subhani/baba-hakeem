@@ -1220,3 +1220,22 @@ body:has(.static-reference-site),
     height:62vh;
   }
 }
+
+
+/* Hero note alignment refinement */
+.static-reference-site .ref-note{
+  text-align:center;
+}
+.static-reference-site .ref-note b{
+  display:block;
+  width:100%;
+  text-align:center;
+}
+.static-reference-site .ref-note p{
+  text-align:left;
+}
+.static-reference-site .ref-note span{
+  display:table;
+  margin-left:auto;
+  margin-right:auto;
+}
