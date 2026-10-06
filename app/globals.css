@@ -1300,7 +1300,7 @@ body:has(.static-reference-site),
 /* Final bottle-only reference match */
 @media(min-width:761px){
   .static-reference-site .ref-hero-bottle{
-    left:60%;
+    left:55%;
     top:60%;
     width: clamp(600px, 50vw, 750px);
     height: 100vh;
