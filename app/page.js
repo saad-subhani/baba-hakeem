@@ -35,17 +35,17 @@ export default function Home(){
  useEffect(()=>{
   // Opening choreography only. Scroll/product-to-hand motion remains intentionally deferred.
   const ctx=gsap.context(()=>{
-   const tl=gsap.timeline({defaults:{ease:'power4.out'}});
+   const tl=gsap.timeline({defaults:{ease:'power3.out'}});
    gsap.set('.ref-hero-copy',{opacity:0,y:52});
    gsap.set('.ref-hero-bottom',{opacity:0,x:-54});
    gsap.set('.ref-note',{opacity:0,x:54});
    gsap.set('.ref-hero-subline',{opacity:0,y:10});
    gsap.set('.ref-hero-bottle',{opacity:0,y:26,scale:.94});
-   tl.to('.ref-hero-copy',{opacity:1,y:0,duration:1.05},.12)
-     .to('.ref-hero-bottom',{opacity:1,x:0,duration:.9},.48)
-     .to('.ref-note',{opacity:1,x:0,duration:.9},.48)
-     .to('.ref-hero-subline',{opacity:1,y:0,duration:.72},.72)
-     .to('.ref-hero-bottle',{opacity:1,y:0,scale:1,duration:.82},.82);
+   tl.to('.ref-hero-copy',{opacity:1,y:0,duration:1.75},.18)
+     .to('.ref-hero-bottom',{opacity:1,x:0,duration:1.45},.72)
+     .to('.ref-note',{opacity:1,x:0,duration:1.45},.72)
+     .to('.ref-hero-subline',{opacity:1,y:0,duration:1.2},1.05)
+     .to('.ref-hero-bottle',{opacity:1,y:0,scale:1,duration:1.35},1.22);
   },root);
   return()=>ctx.revert();
  },[]);
