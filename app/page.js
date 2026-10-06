@@ -70,8 +70,8 @@ export default function Home(){
    const bottleRect=bottle.getBoundingClientRect();
    const targetRect=target.getBoundingClientRect();
    const targetScale=Math.min(
-    (targetRect.width*.72)/bottleRect.width,
-    (targetRect.height*.78)/bottleRect.height
+    (targetRect.width*.90)/bottleRect.width,
+    (targetRect.height*.94)/bottleRect.height
    );
 
    const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
