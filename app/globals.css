@@ -880,3 +880,93 @@ footer,footer a{font-size:11px!important}
 @media(min-width:761px){
   .hands-stage{top:82%!important}
 }
+
+
+/* =========================================================
+   REEL-REFERENCE STOREFRONT — 2026-10-06
+   Minimal hero -> catalogue -> product-to-hands scroll story.
+   Storefront only. /admin styles and authentication are untouched.
+   ========================================================= */
+body:has(.reel-site){background:#f1eee5;color:#113326}
+body:has(.reel-site)>main>section:not(.reel-handoff):not(.reel-products):not(.reel-closing),
+body:has(.reel-site)>main>.bottle-journey,
+body:has(.reel-site)>main>.benefit-strip,
+body:has(.reel-site)>main>.collection,
+body:has(.reel-site)>main>.ritual-section,
+body:has(.reel-site)>main>.promise-section,
+body:has(.reel-site)>main>.shop-section,
+body:has(.reel-site)>main>.range-section,
+body:has(.reel-site)>main>.zafran-feature,
+body:has(.reel-site)>main>.brand-manifesto,
+body:has(.reel-site)>main>.journal-section,
+body:has(.reel-site)>main>.newsletter-section,
+body:has(.reel-site)>main>.final-cta{display:none!important}
+
+.reel-site{position:relative;width:100%;overflow:clip;background:#f1eee5;color:#12382a}
+.reel-topline{position:absolute;z-index:20;top:0;left:0;width:100%;height:88px;padding:0 clamp(22px,4vw,68px);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid rgba(18,56,42,.15);font:600 9px/1 "DM Mono","Courier New",monospace;letter-spacing:.18em;color:#12382a}
+.reel-topline a{color:inherit;text-decoration:none}.reel-topline>a:last-child{text-align:right}
+.reel-mini-logo{width:40px;height:40px;border:1px solid #12382a;border-radius:50%;display:grid;place-items:center;font:500 13px Georgia,serif;letter-spacing:0}
+
+.reel-hero{position:relative;height:145vh;background:#f1eee5}
+.reel-hero-inner{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center;padding-top:72px}
+.reel-brand-word{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-52%);margin:0;width:100%;text-align:center;font:400 clamp(96px,17vw,260px)/.69 Georgia,"Times New Roman",serif;letter-spacing:-.075em;color:#12382a;white-space:nowrap}
+.reel-brand-word em{font-weight:400;color:#12382a}
+.reel-hero-bottle{position:relative;z-index:3;width:clamp(170px,17vw,280px);height:min(65vh,610px);object-fit:contain;filter:drop-shadow(0 28px 30px rgba(10,35,24,.14));will-change:transform}
+.reel-hero-note{position:absolute;left:clamp(22px,4vw,68px);right:clamp(22px,4vw,68px);bottom:42px;display:flex;justify-content:space-between;font:600 8px/1 "DM Mono","Courier New",monospace;letter-spacing:.18em}
+.reel-scroll-cue{position:absolute;z-index:4;bottom:42px;left:50%;transform:translateX(-50%);font:600 8px/1 "DM Mono","Courier New",monospace;letter-spacing:.18em}.reel-scroll-cue b{margin-left:12px;font-size:13px}
+
+.reel-products{position:relative;z-index:5;background:#0c291e;color:#f4f0e5;padding:12vh clamp(20px,4vw,68px) 15vh}
+.reel-products-head{display:grid;grid-template-columns:1fr 2fr 1fr;gap:32px;align-items:end;padding-bottom:8vh;border-bottom:1px solid rgba(244,240,229,.18)}
+.reel-products-head small{align-self:start;font:600 9px/1 "DM Mono","Courier New",monospace;letter-spacing:.18em;color:#d7e977}
+.reel-products-head h2{margin:0;font:400 clamp(62px,8vw,128px)/.76 Georgia,serif;letter-spacing:-.055em}.reel-products-head h2 em{font-weight:400;color:#d7e977}
+.reel-products-head p{margin:0 0 8px;max-width:330px;font:400 13px/1.65 Arial,sans-serif;color:rgba(244,240,229,.68)}
+.reel-grid{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid rgba(244,240,229,.18);margin-top:0}
+.reel-card{position:relative;min-width:0;padding:26px;border-right:1px solid rgba(244,240,229,.18);border-bottom:1px solid rgba(244,240,229,.18);background:#0c291e;will-change:transform,opacity}
+.reel-card>span{display:block;font:600 8px/1 "DM Mono","Courier New",monospace;letter-spacing:.16em;color:#d7e977}
+.reel-card>div{height:clamp(320px,40vw,520px);display:grid;place-items:center;overflow:hidden}
+.reel-card img{width:78%;height:78%;object-fit:contain;filter:drop-shadow(0 26px 24px rgba(0,0,0,.2));will-change:transform}
+.reel-card .reel-zafran img{width:100%;height:100%;object-fit:cover;filter:none;opacity:.86}
+.reel-card h3{margin:12px 0 6px;font:400 clamp(30px,3vw,48px)/.95 Georgia,serif;letter-spacing:-.035em}
+.reel-card p{margin:0;font:600 8px/1.4 "DM Mono","Courier New",monospace;letter-spacing:.14em;color:rgba(244,240,229,.52)}
+.reel-card>a{display:inline-block;margin-top:16px;color:#d7e977;text-decoration:none;font:600 8px/1 "DM Mono","Courier New",monospace;letter-spacing:.15em}
+
+.reel-handoff{position:relative!important;display:grid!important;grid-template-columns:42% 58%;min-height:135vh;background:#f1eee5!important;color:#12382a!important;overflow:hidden!important}
+.reel-hand-copy{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:10vh 6vw}
+.reel-hand-copy small{font:600 9px/1 "DM Mono","Courier New",monospace;letter-spacing:.18em;color:#667b35}
+.reel-hand-copy h2{margin:28px 0 28px;font:400 clamp(64px,8vw,128px)/.75 Georgia,serif;letter-spacing:-.06em}.reel-hand-copy h2 em{font-weight:400;color:#667b35}
+.reel-hand-copy p{max-width:410px;margin:0 0 34px;font:400 14px/1.7 Arial,sans-serif;color:rgba(18,56,42,.66)}
+.reel-hand-copy a{width:max-content;color:#12382a;text-decoration:none;border-bottom:1px solid #12382a;padding-bottom:8px;font:600 9px/1 "DM Mono","Courier New",monospace;letter-spacing:.15em}
+.reel-hand-target{position:sticky;top:0;height:100vh;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 58%,rgba(105,137,71,.12),transparent 40%)}
+.reel-hands{width:min(760px,92%);height:62vh;object-fit:contain;object-position:center bottom;transform-origin:center bottom;will-change:transform,opacity}
+.reel-product-flight{position:fixed;z-index:50;pointer-events:none;display:grid;place-items:center;will-change:left,top,width,height,transform,opacity}.reel-product-flight img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 22px 25px rgba(11,37,26,.18))}
+
+.reel-closing{min-height:92vh;background:#0c291e;color:#f4f0e5;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10vh 20px}
+.reel-closing small{font:600 9px/1 "DM Mono","Courier New",monospace;letter-spacing:.18em;color:#d7e977}
+.reel-closing h2{margin:28px 0 42px;font:400 clamp(72px,12vw,180px)/.72 Georgia,serif;letter-spacing:-.065em}.reel-closing h2 em{font-weight:400;color:#d7e977}
+.reel-closing a{color:#f4f0e5;text-decoration:none;border:1px solid rgba(244,240,229,.5);padding:17px 24px;font:600 9px/1 "DM Mono","Courier New",monospace;letter-spacing:.16em;transition:background .3s ease,color .3s ease}.reel-closing a:hover{background:#d7e977;color:#0c291e}
+
+@media(max-width:900px){
+ .reel-topline{grid-template-columns:1fr 1fr}.reel-topline>span{display:none}
+ .reel-brand-word{font-size:clamp(78px,21vw,150px)}
+ .reel-hero-bottle{width:clamp(145px,29vw,220px);height:55vh}
+ .reel-products-head{grid-template-columns:1fr}.reel-products-head h2{font-size:clamp(58px,14vw,96px)}.reel-products-head p{max-width:520px}
+ .reel-grid{grid-template-columns:repeat(2,1fr)}
+ .reel-handoff{grid-template-columns:1fr;min-height:180vh}
+ .reel-hand-copy{position:relative;height:80vh;padding:10vh 7vw}
+ .reel-hand-target{height:100vh}
+}
+@media(max-width:600px){
+ .reel-topline{height:68px;padding:0 18px}.reel-mini-logo{width:34px;height:34px}
+ .reel-hero{height:130vh}.reel-hero-inner{padding-top:54px}
+ .reel-brand-word{font-size:clamp(68px,23vw,104px);line-height:.73}
+ .reel-hero-bottle{width:42vw;height:50vh}
+ .reel-hero-note{left:18px;right:18px;bottom:28px}.reel-hero-note span:last-child{display:none}
+ .reel-scroll-cue{bottom:28px;left:auto;right:18px;transform:none;font-size:7px}
+ .reel-products{padding:10vh 14px 12vh}.reel-products-head{padding:0 4px 7vh}.reel-products-head h2{font-size:clamp(52px,16vw,76px)}
+ .reel-grid{grid-template-columns:1fr;border-left:0}.reel-card{padding:18px;border-left:1px solid rgba(244,240,229,.18)}
+ .reel-card>div{height:clamp(300px,92vw,410px)}.reel-card img{width:74%;height:74%}.reel-card h3{font-size:38px}
+ .reel-hand-copy{height:72vh;padding:9vh 20px}.reel-hand-copy h2{font-size:clamp(58px,17vw,82px)}
+ .reel-hands{width:110%;height:55vh}
+ .reel-closing h2{font-size:clamp(64px,20vw,100px)}
+}
+@media(prefers-reduced-motion:reduce){.reel-site *{scroll-behavior:auto!important}}
