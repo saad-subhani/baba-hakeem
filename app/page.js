@@ -43,12 +43,12 @@ export default function Home(){
    gsap.set('.ref-hero-bottom',{opacity:0,x:-54});
    gsap.set('.ref-note',{opacity:0,x:54});
    gsap.set('.ref-hero-subline',{opacity:0,y:10});
-   gsap.set('.ref-hero-bottle',{opacity:0,y:26,scale:.94});
+   gsap.set('.ref-hero-bottle',{opacity:0,y:58,scale:.94});
    tl.to('.ref-hero-copy',{opacity:1,y:0,duration:1.75},.18)
      .to('.ref-hero-bottom',{opacity:1,x:0,duration:1.45},.72)
      .to('.ref-note',{opacity:1,x:0,duration:1.45},.72)
      .to('.ref-hero-subline',{opacity:1,y:0,duration:1.2},1.05)
-     .to('.ref-hero-bottle',{opacity:1,y:0,scale:1,duration:1.35},1.22);
+     .to('.ref-hero-bottle',{opacity:1,y:0,scale:1,duration:1.6,ease:'power3.out'},1.22);
   },root);
   return()=>ctx.revert();
  },[]);
