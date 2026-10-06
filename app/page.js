@@ -63,7 +63,7 @@ export default function Home(){
      <h1>Baba Hakeem</h1>
      <p className="ref-hero-subline">Traditional herbal care, refined into a clean and considered everyday ritual.</p>
     </div>
-    <img className="ref-hero-bottle" src={BOTTLE} alt="Baba Hakeem Herbal Products bottle"/>
+    <img className="ref-hero-bottle" src="/joint-oil-4k.png" alt="Baba Hakeem Herbal Products bottle"/>
     <div className="ref-hero-bottom">
      <p>Discover a focused collection of herbal oils, traditional blends and premium saffron — thoughtfully selected for simple everyday care.<br/>Rooted in herbal tradition, refined for modern routines, and presented with a clean, considered approach.<br/>Explore the Baba Hakeem collection and find a ritual that fits naturally into your day.</p>
      <a href="#reel-products">Shop now</a>
