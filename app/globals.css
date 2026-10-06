@@ -1357,14 +1357,14 @@ body:has(.static-reference-site),
     border-radius:0 72px 72px 0;
     overflow:hidden;
   }
-  .static-reference-site .ref-feature-hands{
-    width:108%;
-    height:108%;
-    right:-8%;
-    bottom:-10%;
+ .static-reference-site .ref-feature-hands{
+    width:85%;
+    height:85%;
+    right:0%;
+    bottom:-5%;
     object-fit:contain;
     object-position:right bottom;
-  }
+}
   .static-reference-site .ref-feature-product{
     right:36%;
     top:27%;
