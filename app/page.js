@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
 import { supabase } from '../lib/supabase';
 import Link from 'next/link';
@@ -25,6 +26,8 @@ const ZAFRAN='/products/zafran/IMG_20241002_133345.webp';
 
 export default function Home(){
  const root=useRef(null);
+ const heroBottleRef=useRef(null);
+ const jointTargetRef=useRef(null);
  const [adminProducts,setAdminProducts]=useState([]);
  useEffect(()=>{
   let mounted=true;
@@ -50,6 +53,56 @@ export default function Home(){
   return()=>ctx.revert();
  },[]);
 
+ useEffect(()=>{
+  if(typeof window==='undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const bottle=heroBottleRef.current;
+  const target=jointTargetRef.current;
+  const hero=root.current?.querySelector('.ref-hero');
+  if(!bottle||!target||!hero) return;
+
+  let tween;
+  const buildMovement=()=>{
+   if(tween){tween.scrollTrigger?.kill();tween.kill();}
+   gsap.set(bottle,{clearProps:'x,y,scale,rotation'});
+
+   const bottleRect=bottle.getBoundingClientRect();
+   const targetRect=target.getBoundingClientRect();
+   const targetScale=Math.min(
+    (targetRect.width*.72)/bottleRect.width,
+    (targetRect.height*.78)/bottleRect.height
+   );
+
+   const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
+   const dy=(targetRect.top+targetRect.height/2)-(bottleRect.top+bottleRect.height/2);
+
+   tween=gsap.to(bottle,{
+    x:dx,
+    y:dy,
+    scale:targetScale,
+    rotation:0,
+    ease:'none',
+    scrollTrigger:{
+     trigger:hero,
+     start:'bottom bottom',
+     endTrigger:target,
+     end:'center center',
+     scrub:1.15,
+     invalidateOnRefresh:true
+    }
+   });
+  };
+
+  const delayed=window.setTimeout(()=>{buildMovement();ScrollTrigger.refresh();},80);
+  window.addEventListener('resize',buildMovement);
+  return()=>{
+   window.clearTimeout(delayed);
+   window.removeEventListener('resize',buildMovement);
+   if(tween){tween.scrollTrigger?.kill();tween.kill();}
+  };
+ },[]);
+
  return <main ref={root}>
   <div className="reel-site static-reference-site">
    <header className="ref-nav">
@@ -63,7 +116,7 @@ export default function Home(){
      <h1>Baba Hakeem</h1>
      <p className="ref-hero-subline">Traditional herbal care, refined into a clean and considered everyday ritual.</p>
     </div>
-    <img className="ref-hero-bottle" src="/joint-oil-4k.png" alt="Baba Hakeem Herbal Products bottle"/>
+    <img ref={heroBottleRef} className="ref-hero-bottle" src="/joint-oil-4k.png" alt="Baba Hakeem Herbal Products bottle"/>
     <div className="ref-hero-bottom">
      <p>Discover a focused collection of herbal oils, traditional blends and premium saffron — thoughtfully selected for simple everyday care.<br/>Rooted in herbal tradition, refined for modern routines, and presented with a clean, considered approach.<br/>Explore the Baba Hakeem collection and find a ritual that fits naturally into your day.</p>
      <a href="#reel-products">Shop now</a>
@@ -75,7 +128,7 @@ export default function Home(){
     <h2>Our Products</h2>
     <div className="ref-product-grid">
      <article><div><img src={HAIR_OIL} alt="Hair Oil"/></div><h3>Hair Oil</h3></article>
-     <article><div><img src={JOINT_OIL} alt="Joint Oil"/></div><h3>Joint Oil</h3></article>
+     <article><div ref={jointTargetRef} className="ref-joint-target"><img src={JOINT_OIL} alt="Joint Oil"/></div><h3>Joint Oil</h3></article>
      <article><div><img src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3></article>
      <article><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki"/></div><h3>Herbal Phakki</h3></article>
      <article><div><img src={STOMACH_PHAKKI} alt="Stomach Phakki"/></div><h3>Stomach Phakki</h3></article>
