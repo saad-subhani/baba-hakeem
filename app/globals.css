@@ -1259,3 +1259,34 @@ body:has(.static-reference-site),
     height:66vh;
   }
 }
+
+
+/* Tighten hero composition to the reel reference */
+@media(min-width:761px){
+  .static-reference-site .ref-hero-bottom{
+    left:5%;
+    bottom:7.5%;
+    width:285px;
+  }
+  .static-reference-site .ref-hero-bottom p{
+    line-height:1.55;
+  }
+  .static-reference-site .ref-note{
+    right:5.2%;
+    bottom:7.2%;
+    width:250px;
+    min-height:154px;
+    padding:22px 22px 18px;
+  }
+  .static-reference-site .ref-note p{
+    margin:14px 0 18px;
+    line-height:1.48;
+  }
+  .static-reference-site .ref-hero-bottle{
+    left:50%;
+    top:49.2%;
+    width:clamp(500px,40vw,620px);
+    height:88vh;
+    transform:translate(-50%,-50%) rotate(7deg);
+  }
+}
