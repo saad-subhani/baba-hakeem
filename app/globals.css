@@ -1297,8 +1297,8 @@ body:has(.static-reference-site),
   .static-reference-site .ref-hero-bottle{
     left:50%;
     top:46.8%;
-    width:clamp(260px,22vw,340px);
-    height:54vh;
+    width:clamp(380px,31vw,480px);
+    height:72vh;
     object-fit:contain;
     transform:translate(-50%,-50%) rotate(7deg);
     transform-origin:center center;
