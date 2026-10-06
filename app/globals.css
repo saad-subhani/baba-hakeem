@@ -1382,3 +1382,17 @@ body:has(.static-reference-site),
     height:100%;
   }
 }
+
+
+/* Requested catalogue-only spacing + Men's Oil image scale. Nothing else changed. */
+@media(min-width:761px){
+  .static-reference-site .ref-product-grid{
+    width:min(1040px,100%);
+    column-gap:9vw;
+  }
+  .static-reference-site .ref-product-grid article:nth-child(3) img{
+    width:112%;
+    height:112%;
+    max-width:none;
+  }
+}
