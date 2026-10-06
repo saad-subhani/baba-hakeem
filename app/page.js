@@ -28,6 +28,8 @@ export default function Home(){
  const root=useRef(null);
  const heroBottleRef=useRef(null);
  const jointTargetRef=useRef(null);
+ const mensOilRef=useRef(null);
+ const mensHandsTargetRef=useRef(null);
  const [adminProducts,setAdminProducts]=useState([]);
  useEffect(()=>{
   let mounted=true;
@@ -107,6 +109,51 @@ export default function Home(){
   if(typeof window==='undefined') return;
   gsap.registerPlugin(ScrollTrigger);
 
+  const mensBottle=mensOilRef.current;
+  const target=mensHandsTargetRef.current;
+  const sourceCard=mensBottle?.closest('article');
+  if(!mensBottle||!target||!sourceCard) return;
+
+  let tween;
+  const buildMensMovement=()=>{
+   if(tween){tween.scrollTrigger?.kill();tween.kill();}
+   gsap.set(mensBottle,{clearProps:'x,y,scale,rotation'});
+
+   const bottleRect=mensBottle.getBoundingClientRect();
+   const targetRect=target.getBoundingClientRect();
+   const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
+   const dy=(targetRect.top+targetRect.height/2)-(bottleRect.top+bottleRect.height/2);
+
+   tween=gsap.to(mensBottle,{
+    x:dx,
+    y:dy,
+    scale:1.55,
+    rotation:0,
+    ease:'none',
+    scrollTrigger:{
+     trigger:sourceCard,
+     start:'center 58%',
+     endTrigger:target,
+     end:'center center',
+     scrub:1.15,
+     invalidateOnRefresh:true
+    }
+   });
+  };
+
+  const delayed=window.setTimeout(()=>{buildMensMovement();ScrollTrigger.refresh();},120);
+  window.addEventListener('resize',buildMensMovement);
+  return()=>{
+   window.clearTimeout(delayed);
+   window.removeEventListener('resize',buildMensMovement);
+   if(tween){tween.scrollTrigger?.kill();tween.kill();}
+  };
+ },[]);
+
+ useEffect(()=>{
+  if(typeof window==='undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
   const ctx=gsap.context(()=>{
    gsap.from('.ref-catalogue h2',{
     opacity:0,
@@ -138,7 +185,7 @@ export default function Home(){
     });
 
     const image=card.querySelector('img');
-    if(image){
+    if(image && index!==4){
      gsap.from(image,{
       opacity:.35,
       scale:.90,
@@ -199,7 +246,7 @@ export default function Home(){
      <article><div ref={jointTargetRef} className="ref-joint-target">{/* Animated hero bottle destination — intentionally empty */}</div><h3>Joint Oil</h3></article>
      <article><div><img src={STOMACH_PHAKKI} alt="Stomach Phakki"/></div><h3>Stomach Phakki</h3></article>
      <article><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki"/></div><h3>Herbal Phakki</h3></article>
-     <article><div><img src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3></article>
+     <article className="ref-mens-source"><div><img ref={mensOilRef} className="ref-mens-moving" src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3></article>
      <article><div className="ref-cover"><img src={ZAFRAN} alt="Zafran"/></div><h3>Zafran</h3></article>
      {adminProducts.map(p=><article key={p.id}><Link href={'/products/'+p.slug}><div>{p.image_url&&<img src={p.image_url} alt={p.name}/>}</div><h3>{p.name}</h3></Link></article>)}
     </div>
@@ -213,6 +260,7 @@ export default function Home(){
      <a href="#reel-products">Shop now</a>
     </div>
     <div className="ref-feature-visual">
+     <span ref={mensHandsTargetRef} className="ref-mens-hands-target" aria-hidden="true"/>
      <img className="ref-feature-hands" src={HANDS} alt="Hands presenting Baba Hakeem product"/>
     </div>
    </section>
