@@ -1451,3 +1451,24 @@ body:has(.static-reference-site),
     object-fit:contain;
   }
 }
+
+
+/* Restore hero callout stacking only — bottle and its animation remain untouched */
+@media(min-width:761px){
+  .static-reference-site .ref-hero-bottom{
+    position:absolute;
+    left:5%;
+    right:auto;
+    bottom:7.5%;
+    width:285px;
+    z-index:2;
+  }
+  .static-reference-site .ref-note{
+    position:absolute;
+    left:auto;
+    right:5.2%;
+    bottom:7.2%;
+    width:340px;
+    z-index:2;
+  }
+}
