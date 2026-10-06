@@ -34,242 +34,104 @@ export default function Home(){
  },[]);
  useEffect(()=>{
   let ctx,lenis,raf,dead=false;
-  if('scrollRestoration' in history) history.scrollRestoration='manual';
   (async()=>{
-   const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(dead)return;
-   gsap.registerPlugin(ScrollTrigger);
-   lenis=new Lenis({duration:1.42,smoothWheel:true,wheelMultiplier:.82,touchMultiplier:1.05}); lenis.on('scroll',ScrollTrigger.update);
-   raf=t=>lenis.raf(t*1000); gsap.ticker.add(raf); gsap.ticker.lagSmoothing(500,33);
-   ctx=gsap.context(()=>{
-    gsap.from('.intro-ui',{opacity:0,y:18,stagger:.08,duration:1,ease:'power3.out'});
-    gsap.set('.hero-photo',{opacity:1});
-    gsap.set('.hero-bottle',{xPercent:-50,yPercent:-50,rotation:7,transformOrigin:'50% 50%'});
-    gsap.set('.hero-bg-photo',{opacity:1});
-    gsap.set('.hero-aloe',{opacity:1});
-    gsap.set('.hands-stage',{opacity:0,yPercent:18,scale:.86});
-    gsap.from('.hero-photo',{scale:1.025,duration:1.35,ease:'power3.out'});
-    const mobileHero=window.matchMedia('(max-width: 760px)').matches;
-    const eggBottleLeft=mobileHero?'47%':'47%';
-    const handBottleLeft=mobileHero?'70.5%':'72.8%';
-    const handBottleTop=mobileHero?'88%':'64.5%';
-    const tl=gsap.timeline({scrollTrigger:{trigger:'.film',start:'top top',end:'bottom bottom',scrub:1.18,pin:'.screen',anticipatePin:1,invalidateOnRefresh:true}});
-    tl.to('.intro-title',{opacity:0,y:-80,duration:.55},0)
-      .to('.hero-bg-photo',{scale:1.2,filter:'brightness(.68) saturate(1.12)',duration:1.4},0)
-      .to('.hero-aloe',{scale:1.18,opacity:.18,duration:.75},.12)
-      .fromTo('.reveal-leaf',{opacity:0,scale:.78,yPercent:8},{opacity:1,scale:1.08,yPercent:0,duration:1.25,ease:'power1.out'},.18)
-      .to('.reveal-leaf',{scale:1.28,yPercent:2,duration:1.15,ease:'none'},1.15)
-      .to('.drop',{opacity:(i)=>.34+(i%4)*.13,scale:(i)=>.42+(i%5)*.12,stagger:.018,duration:.42},.45)
-      .to('.drop',{x:(i)=>(i-9.5)*44,y:(i)=>150+(i%5)*68,rotation:(i)=>(i%2?1:-1)*(10+i*5),duration:1.45,ease:'power1.in'},.7)
-      .to('.gel-core',{opacity:1,scale:1,duration:.7},1.15)
-      .to('.reveal-leaf',{opacity:.38,scale:1.42,duration:.8},1.7)
-      .fromTo('.hero-bottle',{opacity:0,left:eggBottleLeft,top:'50%',y:85,scale:.55,rotation:4},{opacity:1,left:eggBottleLeft,top:'50%',y:0,scale:.82,rotation:2,duration:.85,ease:'power2.out'},1.55)
-      .to('.halo',{opacity:.75,scale:.82,duration:.7},1.55)
-      .to('.hero-bottle',{rotation:2,scale:.88,duration:.65,ease:'none'},2.18)
-      .to('.hero-bottle',{rotation:-1,scale:.92,duration:.65,ease:'none'},2.78)
-      .to('.hero-bottle',{rotation:-9,scale:.94,duration:.8,ease:'none'},3.38)
-      .to('.drop',{y:(i)=>310+(i%5)*76,opacity:0,duration:.9},2.45)
-      .to('.product-copy',{opacity:1,y:0,duration:.7},2.55)
-      .to('.gel-core',{opacity:.35,scale:1.12,duration:.65},3.35)
-      .to('.product-copy',{opacity:0,y:-30,duration:.45},3.75)
-      .to('.reveal-leaf',{opacity:0,scale:1.5,duration:.65},3.72)
-      .to('.hero-aloe',{opacity:0,duration:.5},3.72)
-      .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',scale:1.28,duration:.75},3.72)
-      .to('.gel-core',{opacity:0,duration:.45},3.82)
-      .to('.hands-stage',{opacity:1,yPercent:0,scale:1,duration:.72,ease:'power2.out'},4.05)
-      .to('.hero-bottle',{left:handBottleLeft,top:handBottleTop,y:0,rotation:0,scale:0.78,duration:1.05,ease:'power1.inOut'},4.08)
-      .to('.hands-stage',{scale:1.02,duration:.55,ease:'none'},4.78)
-      .to('.hero-bottle',{top:handBottleTop,left:handBottleLeft,y:0,rotation:0,scale:0.78,duration:.85,ease:'none'},5.35)
-      .to('.hands-stage',{opacity:1,yPercent:0,scale:1.02,duration:.85,ease:'none'},5.35)
-      .to('.hero-bg-photo',{filter:'brightness(.52) saturate(.95)',duration:.85,ease:'none'},5.35);
-    gsap.utils.toArray('.ingredient-card').forEach((card,i)=>{
- const visual=card.querySelector('.ingredient-visual');
- const art=card.querySelector('.ingredient-art');
- gsap.fromTo(visual,{y:110,scale:.78,rotation:i===1?-7:7},{y:0,scale:1,rotation:0,ease:'none',scrollTrigger:{trigger:card,start:'top 98%',end:'center 58%',scrub:1.28}});
- gsap.fromTo(art,{scale:1.18,yPercent:10},{scale:1,yPercent:-4,ease:'none',scrollTrigger:{trigger:card,start:'top bottom',end:'bottom 35%',scrub:1.28}});
- gsap.from(card.querySelectorAll('b,h3,p'),{opacity:0,y:35,stagger:.08,scrollTrigger:{trigger:card,start:'top 82%',end:'center 62%',scrub:1.18}});
-});
+    const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(dead)return;
+    gsap.registerPlugin(ScrollTrigger);
+    lenis=new Lenis({duration:1.5,smoothWheel:true,wheelMultiplier:.78,touchMultiplier:1.05});
+    lenis.on('scroll',ScrollTrigger.update);
+    raf=t=>lenis.raf(t*1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(500,33);
+    ctx=gsap.context(()=>{
+      const mm=gsap.matchMedia();
+      gsap.set('.reel-product-flight',{autoAlpha:0});
+      gsap.from('.reel-brand-word',{opacity:0,y:42,scale:.985,duration:1.35,ease:'power4.out'});
+      gsap.from('.reel-hero-bottle',{opacity:0,y:70,rotation:-7,scale:.86,duration:1.5,delay:.12,ease:'power4.out'});
+      gsap.from('.reel-topline',{opacity:0,y:-16,duration:.9,delay:.25,ease:'power3.out'});
 
+      gsap.timeline({scrollTrigger:{trigger:'.reel-hero',start:'top top',end:'bottom top',scrub:1.35}})
+        .to('.reel-brand-word',{yPercent:-18,scale:.92,opacity:.14,ease:'none'},0)
+        .to('.reel-hero-bottle',{yPercent:34,scale:.72,rotation:5,ease:'none'},0)
+        .to('.reel-scroll-cue',{opacity:0,y:18,ease:'none'},0);
 
-    /* Premium lower-page scroll choreography.
-       IMPORTANT: intentionally starts AFTER the locked cinematic system and never
-       targets film, bottle, hands, gel, journey or ritual-destination elements. */
-    const reveal=(target,trigger=target,vars={})=>{
-      gsap.from(target,{
-        opacity:0,y:58,duration:1.05,ease:'power3.out',
-        ...vars,
-        scrollTrigger:{trigger,start:'top 84%',toggleActions:'play none none reverse'}
+      gsap.from('.reel-products-head > *',{opacity:0,y:46,stagger:.08,duration:1.05,ease:'power4.out',
+        scrollTrigger:{trigger:'.reel-products-head',start:'top 86%',toggleActions:'play none none reverse'}});
+      gsap.from('.reel-card',{opacity:0,y:72,scale:.97,stagger:.07,duration:1.05,ease:'power4.out',
+        scrollTrigger:{trigger:'.reel-grid',start:'top 84%',toggleActions:'play none none reverse'}});
+
+      const source=document.querySelector('.reel-card-flight');
+      const flight=document.querySelector('.reel-product-flight');
+      const target=document.querySelector('.reel-hand-target');
+      if(source&&flight&&target){
+        ScrollTrigger.create({
+          trigger:'.reel-handoff',
+          start:'top 92%',
+          end:'bottom 58%',
+          scrub:1.35,
+          invalidateOnRefresh:true,
+          onUpdate:self=>{
+            const p=self.progress;
+            const sr=source.getBoundingClientRect();
+            const tr=target.getBoundingClientRect();
+            const ease=p*p*(3-2*p);
+            const sw=Math.min(sr.width*.56,230), sh=Math.min(sr.height*.72,360);
+            const sx=sr.left+(sr.width-sw)/2, sy=sr.top+(sr.height-sh)/2;
+            const tw=Math.min(tr.width*.34,220), th=Math.min(tr.height*.58,360);
+            const tx=tr.left+tr.width*.56-tw/2, ty=tr.top+tr.height*.52-th/2;
+            gsap.set(flight,{autoAlpha:p>.015&&p<.995?1:0,left:sx+(tx-sx)*ease,top:sy+(ty-sy)*ease,width:sw+(tw-sw)*ease,height:sh+(th-sh)*ease,rotation:-3+3*ease});
+            gsap.set(source,{opacity:p>.02?.08:1});
+          },
+          onLeave:()=>{gsap.set(flight,{autoAlpha:0});gsap.set(source,{opacity:.08});},
+          onLeaveBack:()=>{gsap.set(flight,{autoAlpha:0});gsap.set(source,{opacity:1});}
+        });
+      }
+
+      gsap.from('.reel-hand-copy > *',{opacity:0,y:48,stagger:.1,duration:1,ease:'power4.out',
+        scrollTrigger:{trigger:'.reel-handoff',start:'top 72%',toggleActions:'play none none reverse'}});
+      gsap.from('.reel-hands',{opacity:0,y:90,scale:.94,duration:1.2,ease:'power4.out',
+        scrollTrigger:{trigger:'.reel-handoff',start:'top 76%',toggleActions:'play none none reverse'}});
+      gsap.utils.toArray('.reel-card img').forEach(img=>{
+        gsap.fromTo(img,{yPercent:-3},{yPercent:3,ease:'none',scrollTrigger:{trigger:img,start:'top bottom',end:'bottom top',scrub:1.4}});
       });
-    };
-
-    /* Editorial headings open like printed spreads. */
-    [
-      '.promise-section > h2',
-      '.shop-head h2',
-      '.range-heading h2',
-      '.zafran-copy h2',
-      '.brand-manifesto .manifesto-kicker',
-      '.journal-head h2',
-      '.newsletter-section h2',
-      '.final-cta h2'
-    ].forEach(sel=>{
-      const el=document.querySelector(sel);
-      if(el) gsap.from(el,{
-        opacity:0,y:52,clipPath:'inset(0 0 100% 0)',duration:1.15,ease:'power4.out',
-        scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none reverse'}
-      });
-    });
-
-    /* Approach principles arrive in a measured sequence. */
-    gsap.from('.promise-grid article',{
-      opacity:0,y:52,stagger:.13,duration:.9,ease:'power3.out',
-      scrollTrigger:{trigger:'.promise-grid',start:'top 84%',toggleActions:'play none none reverse'}
-    });
-
-    /* Product collection opens as a staggered luxury catalogue. */
-    gsap.from('.category-tabs button',{
-      opacity:0,y:18,stagger:.07,duration:.55,ease:'power2.out',
-      scrollTrigger:{trigger:'.category-tabs',start:'top 88%',toggleActions:'play none none reverse'}
-    });
-    gsap.from('.real-product-grid .shop-card',{
-      opacity:0,y:72,scale:.965,stagger:.09,duration:1,ease:'power3.out',
-      scrollTrigger:{trigger:'.real-product-grid',start:'top 86%',toggleActions:'play none none reverse'}
-    });
-
-    /* Dark range section: copy and product panels enter from opposite directions. */
-    reveal('.range-heading','.range-section',{x:-42,y:0});
-    gsap.from('.range-panels article',{
-      opacity:0,x:64,stagger:.16,duration:1.05,ease:'power3.out',
-      scrollTrigger:{trigger:'.range-panels',start:'top 84%',toggleActions:'play none none reverse'}
-    });
-
-    /* Zafran feature behaves like a cinematic split-screen reveal. */
-    gsap.from('.zafran-photo',{
-      opacity:0,x:-70,clipPath:'inset(0 100% 0 0)',duration:1.2,ease:'power4.out',
-      scrollTrigger:{trigger:'.zafran-feature',start:'top 82%',toggleActions:'play none none reverse'}
-    });
-    gsap.from('.zafran-copy > *',{
-      opacity:0,x:42,stagger:.09,duration:.8,ease:'power3.out',
-      scrollTrigger:{trigger:'.zafran-feature',start:'top 78%',toggleActions:'play none none reverse'}
-    });
-
-    /* Manifesto lines and journal stories unfold instead of simply appearing. */
-    gsap.from('.manifesto-grid > *',{
-      opacity:0,y:42,stagger:.11,duration:.85,ease:'power3.out',
-      scrollTrigger:{trigger:'.manifesto-grid',start:'top 84%',toggleActions:'play none none reverse'}
-    });
-    gsap.from('.journal-grid article',{
-      opacity:0,y:68,stagger:.13,duration:1,ease:'power3.out',
-      scrollTrigger:{trigger:'.journal-grid',start:'top 84%',toggleActions:'play none none reverse'}
-    });
-
-    /* Gentle image parallax adds motion without changing layout or product sizing. */
-    gsap.utils.toArray('.range-panels img,.zafran-photo img,.journal-visual img').forEach(img=>{
-      gsap.fromTo(img,{yPercent:-4},{yPercent:4,ease:'none',
-        scrollTrigger:{trigger:img,start:'top bottom',end:'bottom top',scrub:1.2}
-      });
-    });
-
-    /* Closing sections finish with a restrained upward reveal. */
-    gsap.from('.newsletter-section > small,.newsletter-section > p,.newsletter-section form,.newsletter-meta',{
-      opacity:0,y:34,stagger:.09,duration:.8,ease:'power3.out',
-      scrollTrigger:{trigger:'.newsletter-section',start:'top 82%',toggleActions:'play none none reverse'}
-    });
-    gsap.from('.final-cta > small,.final-cta > a',{
-      opacity:0,y:28,stagger:.12,duration:.8,ease:'power3.out',
-      scrollTrigger:{trigger:'.final-cta',start:'top 82%',toggleActions:'play none none reverse'}
-    });
-
-    /* Continue the SAME product story after the approved handoff.
-       A fixed duplicate leaves the hands, follows scroll, then hands off invisibly
-       to the bottle already living inside THE HERBAL METHOD. */
-    const journey=document.querySelector('.bottle-journey');
-    const journeyArt=journey?.querySelector('img');
-    const destination=document.querySelector('.ritual-destination-bottle');
-    const benefit=document.querySelector('.benefit-strip');
-    if(journey && journeyArt && destination && benefit){
-      gsap.set(journey,{autoAlpha:0});
-      gsap.set(destination,{opacity:0});
-
-      const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
-      const lerp=(a,b,t)=>a+(b-a)*t;
-
-      ScrollTrigger.create({
-        trigger:benefit,
-        start:'top bottom',
-        endTrigger:destination,
-        end:'center center',
-        scrub:1.08,
-        invalidateOnRefresh:true,
-        onUpdate:self=>{
-          const p=clamp(self.progress,0,1);
-          const rect=destination.getBoundingClientRect();
-
-          /* Keep the travelling product elegant and out of the content:
-             it follows a slim right-side rail, then only approaches/grows
-             into the Herbal Method orbit near the end. */
-          const approach=clamp((p-.88)/.12,0,1);
-          const ease=approach*approach*(3-2*approach);
-
-          /* Stable visible size while travelling. The PNG itself has transparent
-             padding, so this wrapper is intentionally generous and stays constant
-             until the final orbit approach. */
-          const railW=window.innerWidth<760 ? 180 : 270;
-          const railH=window.innerWidth<760 ? 320 : 480;
-          const railX=window.innerWidth-(window.innerWidth<760 ? 218 : 330);
-          const railY=window.innerHeight*.30;
-
-          /* Match the new transparent bottle to its actual visual footprint.
-             Start from the exact rendered hero bottle rectangle so there is no
-             size jump when the fixed travelling copy takes over. */
-          const depart=clamp(p/.22,0,1);
-          const departEase=depart*depart*(3-2*depart);
-          const handW=window.innerWidth<760 ? 155 : 220;
-          const handH=window.innerWidth<760 ? 280 : 390;
-          const handX=window.innerWidth*.752-handW/2;
-          const handY=window.innerHeight*.645-handH/2;
-
-          const travelX=lerp(handX,railX,departEase);
-          const travelY=lerp(handY,railY,departEase);
-          const travelW=lerp(handW,railW,departEase);
-          const travelH=lerp(handH,railH,departEase);
-
-          const targetW=window.innerWidth<760 ? 150 : 220;
-          const targetH=window.innerWidth<760 ? 270 : 390;
-          const targetX=rect.left+(rect.width-targetW)/2;
-          const targetY=rect.top+(rect.height-targetH)/2;
-
-          const x=lerp(travelX,targetX,ease);
-          const y=lerp(travelY,targetY,ease);
-          const w=lerp(travelW,targetW,ease);
-          const h=lerp(travelH,targetH,ease);
-
-          gsap.set('.hero-bottle',{autoAlpha:p>.02?0:1});
-          gsap.set(journey,{
-            autoAlpha:(p>.02 && p<.995)?1:0,
-            left:x,
-            top:y,
-            width:w,
-            height:h,
-            rotation:lerp(-4,0,ease)
-          });
-
-          /* Handoff before the section is fully centered, preventing the
-             oversized/cropped travelling bottle seen in the recording. */
-          const handoff=clamp((p-.965)/.03,0,1);
-          gsap.set(journey,{opacity:1-handoff});
-          gsap.set(destination,{opacity:handoff});
-        },
-        onLeave:()=>{gsap.set('.hero-bottle',{autoAlpha:0});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:1});},
-        onLeaveBack:()=>{gsap.set('.hero-bottle',{autoAlpha:1});gsap.set(journey,{autoAlpha:0});gsap.set(destination,{opacity:0});}
-      });;
-    }
-    ScrollTrigger.refresh();
-    requestAnimationFrame(()=>{ScrollTrigger.refresh();window.scrollTo(0,0);lenis?.scrollTo(0,{immediate:true});});
-   },root);
+      mm.add('(prefers-reduced-motion: reduce)',()=>{ScrollTrigger.getAll().forEach(t=>t.kill());});
+      ScrollTrigger.refresh();
+    },root);
   })();
   return()=>{dead=true;if(ctx)ctx.revert();if(raf)gsap.ticker.remove(raf);if(lenis)lenis.destroy()};
- },[]);
+
  return <main ref={root}>
+  <div className="reel-site">
+   <header className="reel-topline"><a href="#" className="reel-mini-logo">BH</a><span>HERBAL PRODUCTS / FAISALABAD</span><a href="#reel-products">SHOP</a></header>
+   <section className="reel-hero">
+    <div className="reel-hero-inner">
+     <h1 className="reel-brand-word">BABA<br/><em>HAKEEM</em></h1>
+     <img className="reel-hero-bottle" src={BOTTLE} alt="Baba Hakeem Herbal Products bottle"/>
+     <div className="reel-hero-note"><span>BOTANICAL CARE</span><span>EST. / HERBAL TRADITION</span></div>
+     <div className="reel-scroll-cue">SCROLL TO EXPLORE <b>↓</b></div>
+    </div>
+   </section>
+
+   <section className="reel-products" id="reel-products">
+    <div className="reel-products-head"><small>01 / OUR PRODUCTS</small><h2>THE HERBAL<br/><em>COLLECTION.</em></h2><p>Focused formulas. Familiar botanicals. A quieter way to discover everyday herbal care.</p></div>
+    <div className="reel-grid">
+     <article className="reel-card reel-card-flight"><span>01 / HAIR CARE</span><div><img src={HAIR_OIL} alt="Hair Oil"/></div><h3>Hair Oil</h3><p>BOTANICAL HAIR RITUAL</p></article>
+     <article className="reel-card"><span>02 / BODY CARE</span><div><img src={JOINT_OIL} alt="Joint Oil"/></div><h3>Joint Oil</h3><p>HERBAL MASSAGE RITUAL</p></article>
+     <article className="reel-card"><span>03 / MEN'S CARE</span><div><img src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3><p>FOCUSED HERBAL CARE</p></article>
+     <article className="reel-card"><span>04 / HERBAL BLEND</span><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki"/></div><h3>Herbal Phakki</h3><p>TRADITIONAL BLEND</p></article>
+     <article className="reel-card"><span>05 / HERBAL BLEND</span><div><img src={STOMACH_PHAKKI} alt="Stomach Phakki"/></div><h3>Stomach Phakki</h3><p>TRADITIONAL BLEND</p></article>
+     <article className="reel-card"><span>06 / PREMIUM</span><div className="reel-zafran"><img src={ZAFRAN} alt="Zafran"/></div><h3>Zafran</h3><p>PREMIUM SAFFRON</p></article>
+     {adminProducts.map((p,i)=><article className="reel-card" key={p.id}><span>{String(i+7).padStart(2,'0')} / {p.category||'HERBAL CARE'}</span><div>{p.image_url&&<img src={p.image_url} alt={p.name}/>}</div><h3>{p.name}</h3><p>{p.type||p.description||'BABA HAKEEM HERBAL PRODUCTS'}</p><Link href={'/products/'+p.slug}>VIEW PRODUCT ↗</Link></article>)}
+    </div>
+   </section>
+
+   <section className="reel-handoff">
+    <div className="reel-hand-copy"><small>02 / FROM SHELF TO RITUAL</small><h2>MADE TO<br/><em>be held.</em></h2><p>One product leaves the collection and becomes part of the ritual — carried by the scroll, not by a cut.</p><a href="#reel-products">EXPLORE COLLECTION ↗</a></div>
+    <div className="reel-hand-target"><img className="reel-hands" src={HANDS} alt="Hands receiving Baba Hakeem product"/></div>
+   </section>
+   <div className="reel-product-flight" aria-hidden="true"><img src={HAIR_OIL} alt=""/></div>
+
+   <section className="reel-closing"><small>BABA HAKEEM / HERBAL PRODUCTS</small><h2>ROOTED IN<br/><em>NATURE.</em></h2><a href="#reel-products">SHOP THE COLLECTION →</a></section>
+  </div>
   <section className="film"><div className="screen">
    <header className="intro-ui"><a href="#" className="logo">BABA HAKEEM<span>HERBAL PRODUCTS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
    <div className="night cinematic-bg"/>
