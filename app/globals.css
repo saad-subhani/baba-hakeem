@@ -1422,3 +1422,21 @@ body:has(.static-reference-site),
 .static-reference-site .ref-hero{
   overflow:visible;
 }
+
+
+/* Hero background brightness refinement only — bottle/layout/motion untouched */
+.static-reference-site .ref-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.20);
+  pointer-events:none;
+  z-index:0;
+}
+.static-reference-site .ref-hero > *{
+  position:relative;
+  z-index:1;
+}
+.static-reference-site .ref-hero > .ref-hero-bottle{
+  position:absolute;
+}
