@@ -33,104 +33,57 @@ export default function Home(){
   return()=>{mounted=false};
  },[]);
  useEffect(()=>{
-  let ctx,lenis,raf,dead=false;
-  (async()=>{
-    const {ScrollTrigger}=await import('gsap/ScrollTrigger'); if(dead)return;
-    gsap.registerPlugin(ScrollTrigger);
-    lenis=new Lenis({duration:1.5,smoothWheel:true,wheelMultiplier:.78,touchMultiplier:1.05});
-    lenis.on('scroll',ScrollTrigger.update);
-    raf=t=>lenis.raf(t*1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(500,33);
-    ctx=gsap.context(()=>{
-      const mm=gsap.matchMedia();
-      gsap.set('.reel-product-flight',{autoAlpha:0});
-      gsap.from('.reel-brand-word',{opacity:0,y:42,scale:.985,duration:1.35,ease:'power4.out'});
-      gsap.from('.reel-hero-bottle',{opacity:0,y:70,rotation:-7,scale:.86,duration:1.5,delay:.12,ease:'power4.out'});
-      gsap.from('.reel-topline',{opacity:0,y:-16,duration:.9,delay:.25,ease:'power3.out'});
-
-      gsap.timeline({scrollTrigger:{trigger:'.reel-hero',start:'top top',end:'bottom top',scrub:1.35}})
-        .to('.reel-brand-word',{yPercent:-18,scale:.92,opacity:.14,ease:'none'},0)
-        .to('.reel-hero-bottle',{yPercent:34,scale:.72,rotation:5,ease:'none'},0)
-        .to('.reel-scroll-cue',{opacity:0,y:18,ease:'none'},0);
-
-      gsap.from('.reel-products-head > *',{opacity:0,y:46,stagger:.08,duration:1.05,ease:'power4.out',
-        scrollTrigger:{trigger:'.reel-products-head',start:'top 86%',toggleActions:'play none none reverse'}});
-      gsap.from('.reel-card',{opacity:0,y:72,scale:.97,stagger:.07,duration:1.05,ease:'power4.out',
-        scrollTrigger:{trigger:'.reel-grid',start:'top 84%',toggleActions:'play none none reverse'}});
-
-      const source=document.querySelector('.reel-card-flight');
-      const flight=document.querySelector('.reel-product-flight');
-      const target=document.querySelector('.reel-hand-target');
-      if(source&&flight&&target){
-        ScrollTrigger.create({
-          trigger:'.reel-handoff',
-          start:'top 92%',
-          end:'bottom 58%',
-          scrub:1.35,
-          invalidateOnRefresh:true,
-          onUpdate:self=>{
-            const p=self.progress;
-            const sr=source.getBoundingClientRect();
-            const tr=target.getBoundingClientRect();
-            const ease=p*p*(3-2*p);
-            const sw=Math.min(sr.width*.56,230), sh=Math.min(sr.height*.72,360);
-            const sx=sr.left+(sr.width-sw)/2, sy=sr.top+(sr.height-sh)/2;
-            const tw=Math.min(tr.width*.34,220), th=Math.min(tr.height*.58,360);
-            const tx=tr.left+tr.width*.56-tw/2, ty=tr.top+tr.height*.52-th/2;
-            gsap.set(flight,{autoAlpha:p>.015&&p<.995?1:0,left:sx+(tx-sx)*ease,top:sy+(ty-sy)*ease,width:sw+(tw-sw)*ease,height:sh+(th-sh)*ease,rotation:-3+3*ease});
-            gsap.set(source,{opacity:p>.02?.08:1});
-          },
-          onLeave:()=>{gsap.set(flight,{autoAlpha:0});gsap.set(source,{opacity:.08});},
-          onLeaveBack:()=>{gsap.set(flight,{autoAlpha:0});gsap.set(source,{opacity:1});}
-        });
-      }
-
-      gsap.from('.reel-hand-copy > *',{opacity:0,y:48,stagger:.1,duration:1,ease:'power4.out',
-        scrollTrigger:{trigger:'.reel-handoff',start:'top 72%',toggleActions:'play none none reverse'}});
-      gsap.from('.reel-hands',{opacity:0,y:90,scale:.94,duration:1.2,ease:'power4.out',
-        scrollTrigger:{trigger:'.reel-handoff',start:'top 76%',toggleActions:'play none none reverse'}});
-      gsap.utils.toArray('.reel-card img').forEach(img=>{
-        gsap.fromTo(img,{yPercent:-3},{yPercent:3,ease:'none',scrollTrigger:{trigger:img,start:'top bottom',end:'bottom top',scrub:1.4}});
-      });
-      mm.add('(prefers-reduced-motion: reduce)',()=>{ScrollTrigger.getAll().forEach(t=>t.kill());});
-      ScrollTrigger.refresh();
-    },root);
-  })();
-  return()=>{dead=true;if(ctx)ctx.revert();if(raf)gsap.ticker.remove(raf);if(lenis)lenis.destroy()};
+  // Static reference-matched storefront for this phase.
+  // Bottle/hand scroll choreography is intentionally deferred.
+ },[]);
 
  return <main ref={root}>
-  <div className="reel-site">
-   <header className="reel-topline"><a href="#" className="reel-mini-logo">BH</a><span>HERBAL PRODUCTS / FAISALABAD</span><a href="#reel-products">SHOP</a></header>
-   <section className="reel-hero">
-    <div className="reel-hero-inner">
-     <h1 className="reel-brand-word">BABA<br/><em>HAKEEM</em></h1>
-     <img className="reel-hero-bottle" src={BOTTLE} alt="Baba Hakeem Herbal Products bottle"/>
-     <div className="reel-hero-note"><span>BOTANICAL CARE</span><span>EST. / HERBAL TRADITION</span></div>
-     <div className="reel-scroll-cue">SCROLL TO EXPLORE <b>↓</b></div>
+  <div className="reel-site static-reference-site">
+   <header className="ref-nav">
+    <a className="ref-logo" href="#">Baba Hakeem</a>
+    <nav><a href="#">Home</a><a href="#reel-products">Products</a><a href="#featured-product">Contact</a></nav>
+    <a className="ref-shop" href="#reel-products">Shop <span>↗</span></a>
+   </header>
+
+   <section className="ref-hero">
+    <div className="ref-hero-copy">
+     <h1>Baba Hakeem</h1>
+     <p>Traditional herbal care, refined into a clean and considered everyday ritual.</p>
+    </div>
+    <img className="ref-hero-bottle" src={BOTTLE} alt="Baba Hakeem Herbal Products bottle"/>
+    <div className="ref-hero-bottom">
+     <p>Discover a focused collection of oils, herbal blends and premium saffron — presented with simplicity.</p>
+     <a href="#reel-products">Shop now</a>
+    </div>
+    <aside className="ref-note"><b>Pure Herbal Care</b><p>Rooted in tradition.<br/>Made for everyday rituals.</p><span>Explore</span></aside>
+   </section>
+
+   <section className="ref-catalogue" id="reel-products">
+    <h2>Our Products</h2>
+    <div className="ref-product-grid">
+     <article><div><img src={HAIR_OIL} alt="Hair Oil"/></div><h3>Hair Oil</h3></article>
+     <article><div><img src={JOINT_OIL} alt="Joint Oil"/></div><h3>Joint Oil</h3></article>
+     <article><div><img src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3></article>
+     <article><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki"/></div><h3>Herbal Phakki</h3></article>
+     <article><div><img src={STOMACH_PHAKKI} alt="Stomach Phakki"/></div><h3>Stomach Phakki</h3></article>
+     <article><div className="ref-cover"><img src={ZAFRAN} alt="Zafran"/></div><h3>Zafran</h3></article>
+     {adminProducts.map(p=><article key={p.id}><Link href={'/products/'+p.slug}><div>{p.image_url&&<img src={p.image_url} alt={p.name}/>}</div><h3>{p.name}</h3></Link></article>)}
     </div>
    </section>
 
-   <section className="reel-products" id="reel-products">
-    <div className="reel-products-head"><small>01 / OUR PRODUCTS</small><h2>THE HERBAL<br/><em>COLLECTION.</em></h2><p>Focused formulas. Familiar botanicals. A quieter way to discover everyday herbal care.</p></div>
-    <div className="reel-grid">
-     <article className="reel-card reel-card-flight"><span>01 / HAIR CARE</span><div><img src={HAIR_OIL} alt="Hair Oil"/></div><h3>Hair Oil</h3><p>BOTANICAL HAIR RITUAL</p></article>
-     <article className="reel-card"><span>02 / BODY CARE</span><div><img src={JOINT_OIL} alt="Joint Oil"/></div><h3>Joint Oil</h3><p>HERBAL MASSAGE RITUAL</p></article>
-     <article className="reel-card"><span>03 / MEN'S CARE</span><div><img src={MENS_OIL} alt="Men's Oil"/></div><h3>Men's Oil</h3><p>FOCUSED HERBAL CARE</p></article>
-     <article className="reel-card"><span>04 / HERBAL BLEND</span><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki"/></div><h3>Herbal Phakki</h3><p>TRADITIONAL BLEND</p></article>
-     <article className="reel-card"><span>05 / HERBAL BLEND</span><div><img src={STOMACH_PHAKKI} alt="Stomach Phakki"/></div><h3>Stomach Phakki</h3><p>TRADITIONAL BLEND</p></article>
-     <article className="reel-card"><span>06 / PREMIUM</span><div className="reel-zafran"><img src={ZAFRAN} alt="Zafran"/></div><h3>Zafran</h3><p>PREMIUM SAFFRON</p></article>
-     {adminProducts.map((p,i)=><article className="reel-card" key={p.id}><span>{String(i+7).padStart(2,'0')} / {p.category||'HERBAL CARE'}</span><div>{p.image_url&&<img src={p.image_url} alt={p.name}/>}</div><h3>{p.name}</h3><p>{p.type||p.description||'BABA HAKEEM HERBAL PRODUCTS'}</p><Link href={'/products/'+p.slug}>VIEW PRODUCT ↗</Link></article>)}
+   <section className="ref-feature" id="featured-product">
+    <div className="ref-feature-copy">
+     <small>FEATURED PRODUCT</small>
+     <h2>Hair Oil</h2>
+     <p>A considered herbal oil from the Baba Hakeem collection, presented as a simple everyday ritual.</p>
+     <a href="#reel-products">Shop now</a>
+    </div>
+    <div className="ref-feature-visual">
+     <div className="ref-arch"/>
+     <img className="ref-feature-hands" src={HANDS} alt="Hands presenting Baba Hakeem product"/>
+     <img className="ref-feature-product" src={HAIR_OIL} alt="Baba Hakeem Hair Oil"/>
     </div>
    </section>
-
-   <section className="reel-handoff">
-    <div className="reel-hand-copy"><small>02 / FROM SHELF TO RITUAL</small><h2>MADE TO<br/><em>be held.</em></h2><p>One product leaves the collection and becomes part of the ritual — carried by the scroll, not by a cut.</p><a href="#reel-products">EXPLORE COLLECTION ↗</a></div>
-    <div className="reel-hand-target"><img className="reel-hands" src={HANDS} alt="Hands receiving Baba Hakeem product"/></div>
-   </section>
-   <div className="reel-product-flight" aria-hidden="true"><img src={HAIR_OIL} alt=""/></div>
-
-   <section className="reel-closing"><small>BABA HAKEEM / HERBAL PRODUCTS</small><h2>ROOTED IN<br/><em>NATURE.</em></h2><a href="#reel-products">SHOP THE COLLECTION →</a></section>
   </div>
   <section className="film"><div className="screen">
    <header className="intro-ui"><a href="#" className="logo">BABA HAKEEM<span>HERBAL PRODUCTS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
