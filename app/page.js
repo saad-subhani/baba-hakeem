@@ -65,7 +65,7 @@ export default function Home(){
     </div>
     <img className="ref-hero-bottle" src={BOTTLE} alt="Baba Hakeem Herbal Products bottle"/>
     <div className="ref-hero-bottom">
-     <p>Discover a focused collection of oils, herbal blends and premium saffron — presented with simplicity.</p>
+     <p>Discover a focused collection of oils, herbal blends and premium saffron — presented with simplicity.<br/>Thoughtfully made for everyday herbal rituals.</p>
      <a href="#reel-products">Shop now</a>
     </div>
     <aside className="ref-note"><b>Pure Herbal Care</b><p>Rooted in tradition.<br/>Made for everyday rituals.</p><span>Explore</span></aside>
