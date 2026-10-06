@@ -1305,7 +1305,7 @@ body:has(.static-reference-site),
     width: clamp(600px, 50vw, 750px);
     height: 100vh;
     object-fit:contain;
-    transform:translate(-50%,-50%) rotate(12deg);
+    transform:translate(-50%,-50%) rotate(15deg);
     transform-origin:center center;
   }
 }
