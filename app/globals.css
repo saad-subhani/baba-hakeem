@@ -1205,3 +1205,18 @@ body:has(.static-reference-site),
    background-size:36px 36px;
  }
 }
+
+
+/* Reel-paced hero product scale — entrance timing lives in page.js. */
+@media(min-width:761px){
+  .static-reference-site .ref-hero-bottle{
+    width:clamp(370px,31vw,480px);
+    height:78vh;
+  }
+}
+@media(max-width:760px){
+  .static-reference-site .ref-hero-bottle{
+    width:64vw;
+    height:62vh;
+  }
+}
