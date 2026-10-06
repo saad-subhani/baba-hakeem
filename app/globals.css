@@ -1406,3 +1406,11 @@ body:has(.static-reference-site),
     object-fit:contain;
   }
 }
+
+
+/* Requested desktop hero note width only */
+@media(min-width:761px){
+  .static-reference-site .ref-note{
+    width:340px;
+  }
+}
