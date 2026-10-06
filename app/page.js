@@ -33,8 +33,21 @@ export default function Home(){
   return()=>{mounted=false};
  },[]);
  useEffect(()=>{
-  // Static reference-matched storefront for this phase.
-  // Bottle/hand scroll choreography is intentionally deferred.
+  // Opening choreography only. Scroll/product-to-hand motion remains intentionally deferred.
+  const ctx=gsap.context(()=>{
+   const tl=gsap.timeline({defaults:{ease:'power4.out'}});
+   gsap.set('.ref-hero-copy',{opacity:0,y:52});
+   gsap.set('.ref-hero-bottom',{opacity:0,x:-54});
+   gsap.set('.ref-note',{opacity:0,x:54});
+   gsap.set('.ref-hero-subline',{opacity:0,y:10});
+   gsap.set('.ref-hero-bottle',{opacity:0,y:26,scale:.94});
+   tl.to('.ref-hero-copy',{opacity:1,y:0,duration:1.05},.12)
+     .to('.ref-hero-bottom',{opacity:1,x:0,duration:.9},.48)
+     .to('.ref-note',{opacity:1,x:0,duration:.9},.48)
+     .to('.ref-hero-subline',{opacity:1,y:0,duration:.72},.72)
+     .to('.ref-hero-bottle',{opacity:1,y:0,scale:1,duration:.82},.82);
+  },root);
+  return()=>ctx.revert();
  },[]);
 
  return <main ref={root}>
@@ -48,7 +61,7 @@ export default function Home(){
    <section className="ref-hero">
     <div className="ref-hero-copy">
      <h1>Baba Hakeem</h1>
-     <p>Traditional herbal care, refined into a clean and considered everyday ritual.</p>
+     <p className="ref-hero-subline">Traditional herbal care, refined into a clean and considered everyday ritual.</p>
     </div>
     <img className="ref-hero-bottle" src={BOTTLE} alt="Baba Hakeem Herbal Products bottle"/>
     <div className="ref-hero-bottom">
