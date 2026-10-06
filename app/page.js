@@ -103,6 +103,74 @@ export default function Home(){
   };
  },[]);
 
+ useEffect(()=>{
+  if(typeof window==='undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const ctx=gsap.context(()=>{
+   gsap.from('.ref-catalogue h2',{
+    opacity:0,
+    y:34,
+    duration:1.05,
+    ease:'power3.out',
+    scrollTrigger:{trigger:'.ref-catalogue h2',start:'top 88%',once:true}
+   });
+
+   const cards=gsap.utils.toArray('.ref-product-grid article');
+   cards.forEach((card,index)=>{
+    if(index===1){
+     gsap.from(card.querySelector('h3'),{
+      opacity:0,
+      duration:.75,
+      ease:'power2.out',
+      scrollTrigger:{trigger:card,start:'top 88%',once:true}
+     });
+     return;
+    }
+
+    gsap.from(card,{
+     opacity:0,
+     y:42,
+     duration:.95,
+     ease:'power3.out',
+     delay:(index%3)*.06,
+     scrollTrigger:{trigger:card,start:'top 90%',once:true}
+    });
+
+    const image=card.querySelector('img');
+    if(image){
+     gsap.from(image,{
+      opacity:.35,
+      scale:.90,
+      duration:1.15,
+      ease:'power3.out',
+      scrollTrigger:{trigger:card,start:'top 90%',once:true}
+     });
+    }
+   });
+
+   gsap.from('.ref-feature-copy > *',{
+    opacity:0,
+    x:-32,
+    duration:.9,
+    stagger:.09,
+    ease:'power3.out',
+    scrollTrigger:{trigger:'.ref-feature',start:'top 78%',once:true}
+   });
+
+   gsap.from('.ref-feature-hands',{
+    opacity:0,
+    x:46,
+    scale:.96,
+    duration:1.15,
+    ease:'power3.out',
+    scrollTrigger:{trigger:'.ref-feature',start:'top 78%',once:true}
+   });
+  },root);
+
+  return()=>ctx.revert();
+ },[]);
+
  return <main ref={root}>
   <div className="reel-site static-reference-site">
    <header className="ref-nav">
