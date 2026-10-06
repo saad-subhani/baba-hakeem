@@ -1239,3 +1239,23 @@ body:has(.static-reference-site),
   margin-left:auto;
   margin-right:auto;
 }
+
+
+/* Reference-match bottle framing: body hangs below title, only dropper rises above it. */
+@media(min-width:761px){
+  .static-reference-site .ref-hero-bottle{
+    left:50%;
+    top:51%;
+    width:clamp(430px,36vw,560px);
+    height:82vh;
+    transform:translate(-50%,-50%) rotate(7deg);
+  }
+}
+@media(max-width:760px){
+  .static-reference-site .ref-hero-bottle{
+    left:50%;
+    top:50%;
+    width:72vw;
+    height:66vh;
+  }
+}
