@@ -1440,3 +1440,14 @@ body:has(.static-reference-site),
 .static-reference-site .ref-hero > .ref-hero-bottle{
   position:absolute;
 }
+
+
+/* Stomach Phakki catalogue fit only */
+@media(min-width:761px){
+  .static-reference-site .ref-product-grid article:nth-child(3) img{
+    width:76%;
+    height:76%;
+    max-width:76%;
+    object-fit:contain;
+  }
+}
