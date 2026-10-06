@@ -19,7 +19,7 @@ const HANDS='/hands-removebg-preview.png';
 /* Real Baba Hakeem Herbal Products catalogue assets — hero/cinematic assets above stay untouched. */
 const HAIR_OIL='/products/hair%20oil%20mockup%20png.png';
 const JOINT_OIL='/products/30ml%20mockup.png';
-const MENS_OIL="/products/men's%20oil%2010%20ml%20label%20M%20png.png";
+const MENS_OIL='/products/mens-oil-new.png';
 const HERBAL_PHAKKI='/products/phakii.png';
 const STOMACH_PHAKKI='/products/stomach%20phakki-03.png';
 const ZAFRAN='/products/zafran/IMG_20241002_133345.webp';
