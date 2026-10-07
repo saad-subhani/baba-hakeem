@@ -303,7 +303,7 @@ export default function BestProductReveal(){
       <div className={styles.heading}>
         <div className={styles.kicker}><span/>THE SIGNATURE REVEAL<span/></div>
         <h2 id="best-product-title">OUR <em>BEST</em> PRODUCT</h2>
-        <p>Scroll slowly to explore the chest from every angle.</p>
+        <p>Scroll slowly</p>
       </div>
 
       <div className={styles.stage}>
