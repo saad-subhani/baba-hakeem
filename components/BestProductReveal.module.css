@@ -142,7 +142,7 @@
 }
 
 .chestFrame{
-  width:390px;
+  width:380px;
   height:400px;
   overflow:hidden;
   display:flex;
@@ -152,7 +152,7 @@
 
 .chestImage{
   display:block;
-  width:88%;
+  width:80%;
   height:auto;
   object-fit:contain;
   object-position:center top;
