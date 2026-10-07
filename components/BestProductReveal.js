@@ -227,11 +227,15 @@ export default function BestProductReveal(){
     };
     render();
 
-    root.rotation.y=-Math.PI*.16;
+    const initialRotation=-Math.PI*.16;
+    const finalRotation=(Math.PI*2)-(Math.PI*.16);
+    const spinEnd=.68;
+
+    root.rotation.y=initialRotation;
     lidPivot.rotation.x=0;
 
     const spinTween=gsap.to(root.rotation,{
-      y:(Math.PI*2)-(Math.PI*.16),
+      y:finalRotation,
       ease:'none',
       scrollTrigger:{
         trigger:section,
@@ -246,10 +250,16 @@ export default function BestProductReveal(){
             progressRef.current.style.setProperty('--progress',String(self.progress));
           }
 
-          /* Keep the existing 360° spin untouched. After the chest reaches
-             its final angle, use the remaining scroll to open the lid slowly. */
-          const lidStart=.68;
-          const lidProgress=gsap.utils.clamp(0,1,(self.progress-lidStart)/(1-lidStart));
+          /* Phase 1: complete the full 360° turn.
+             Phase 2: HOLD that final angle while the lid opens. */
+          const spinProgress=gsap.utils.clamp(0,1,self.progress/spinEnd);
+          root.rotation.y=initialRotation+(finalRotation-initialRotation)*spinProgress;
+
+          const lidProgress=gsap.utils.clamp(
+            0,
+            1,
+            (self.progress-spinEnd)/(1-spinEnd)
+          );
           const easedLid=gsap.parseEase('power2.out')(lidProgress);
           lidPivot.rotation.x=-Math.PI*.58*easedLid;
         }
