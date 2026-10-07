@@ -994,7 +994,7 @@ body:has(.static-reference-site)>main>.final-cta{display:none!important}
 .static-reference-site{background:#e9e8e3;color:#080808;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
 .ref-nav{height:70px;padding:0 5vw;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid rgba(0,0,0,.18);position:absolute;z-index:10;width:100%;top:0;left:0}
 .ref-logo{font:700 17px/1 Arial,sans-serif;color:#080808;text-decoration:none;letter-spacing:-.04em}
-.ref-nav nav{display:flex;gap:42px}.ref-nav nav a,.ref-shop{font:500 11px/1 Arial,sans-serif;color:#080808;text-decoration:none}.ref-shop{justify-self:end;border:1px solid #111;border-radius:999px;padding:10px 15px}.ref-shop span{margin-left:12px}
+.ref-nav nav{display:flex;gap:42px}.ref-nav nav a,.ref-shop{font:500 11px/1 Arial,sans-serif;text-decoration:none}.ref-nav nav a{color:#6b8e23}.ref-shop{color:#080808}.ref-shop{justify-self:end;border:1px solid #111;border-radius:999px;padding:10px 15px}.ref-shop span{margin-left:12px}
 .ref-hero{height:100vh;min-height:650px;position:relative;background:#e9e8e3;overflow:hidden;padding-top:70px}
 .ref-hero:before{content:"";position:absolute;inset:70px 0 0;background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
 .ref-hero-copy{position:absolute;z-index:2;left:50%;top:43%;transform:translate(-50%,-50%);text-align:center;width:100%}
