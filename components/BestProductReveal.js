@@ -31,7 +31,7 @@ export default function BestProductReveal(){
         <div className={styles.pedestal}>
           <div className={styles.chestFrame}>
             <img
-              src="/best-product-chest.jpg"
+              src="/best-product-chest.png"
               alt="Ornate handcrafted wooden chest"
               className={styles.chestImage}
             />
