@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
 import { supabase } from '../lib/supabase';
 import Link from 'next/link';
+import BestProductReveal from '../components/BestProductReveal';
 
 const ALOE='/aloe-hero.png.png';
 const BOTTLE='/products/hero-premium-bottle.png.png';
@@ -264,6 +265,7 @@ export default function Home(){
      <img className="ref-feature-hands" src={HANDS} alt="Hands presenting Baba Hakeem product"/>
     </div>
    </section>
+   <BestProductReveal/>
   </div>
   <section className="film"><div className="screen">
    <header className="intro-ui"><a href="#" className="logo">BABA HAKEEM<span>HERBAL PRODUCTS</span></a><nav><a href="#collection">PRODUCTS</a><a href="#story">OUR STORY</a><a href="#ingredients">INGREDIENTS</a></nav><button>MENU <i/><i/></button></header>
