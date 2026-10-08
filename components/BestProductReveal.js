@@ -199,30 +199,34 @@ export default function BestProductReveal(){
     const revealDustGeometry=new THREE.BufferGeometry();const revealDustPositions=new Float32Array(revealCount*3);for(let i=0;i<revealCount;i++){const a=i*2.12;const r=.18+(i%9)*.055;revealDustPositions[i*3]=Math.cos(a)*r;revealDustPositions[i*3+1]=(i%16)*.11;revealDustPositions[i*3+2]=Math.sin(a)*r;}revealDustGeometry.setAttribute('position',new THREE.BufferAttribute(revealDustPositions,3));
     const revealDustMaterial=new THREE.PointsMaterial({color:0xffd990,size:.024,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});const revealDust=new THREE.Points(revealDustGeometry,revealDustMaterial);revealDust.position.set(0,.55,.08);root.add(revealDust);
 
-    const product=new THREE.Group();product.position.set(0,-.22,.08);product.scale.setScalar(.02);product.visible=false;root.add(product);
+    const product=new THREE.Group();product.position.set(0,-.22,.18);product.scale.setScalar(.02);product.visible=false;root.add(product);
     let productImage=null;
     const productTexture=new THREE.TextureLoader().load('/products/mens-oil-new.png',(texture)=>{
       texture.colorSpace=THREE.SRGBColorSpace;
       texture.anisotropy=renderer.capabilities.getMaxAnisotropy();
+      texture.minFilter=THREE.LinearFilter;
+      texture.magFilter=THREE.LinearFilter;
+      texture.generateMipmaps=false;
+      texture.needsUpdate=true;
       const image=texture.image;
       if(productImage&&image?.width&&image?.height){
-        const height=2.55;
+        const height=3.45;
         productImage.scale.set(height*(image.width/image.height),height,1);
       }
     });
     productTexture.colorSpace=THREE.SRGBColorSpace;
     productTexture.anisotropy=renderer.capabilities.getMaxAnisotropy();
-    productTexture.minFilter=THREE.LinearMipmapLinearFilter;
+    productTexture.minFilter=THREE.LinearFilter;
     productTexture.magFilter=THREE.LinearFilter;
-    productTexture.generateMipmaps=true;
-    const productImageMaterial=new THREE.MeshBasicMaterial({map:productTexture,transparent:true,alphaTest:.015,depthWrite:false,toneMapped:false,side:THREE.DoubleSide});
-    productImage=new THREE.Mesh(new THREE.PlaneGeometry(1,1),productImageMaterial);productImage.scale.set(1.05,2.55,1);productImage.position.y=1.15;product.add(productImage);
-    const productGlow=new THREE.PointLight(0xffc46b,0,4.8,2);productGlow.position.set(0,.8,.2);root.add(productGlow);
+    productTexture.generateMipmaps=false;
+    const productImageMaterial=new THREE.SpriteMaterial({map:productTexture,transparent:true,alphaTest:.01,depthWrite:false,toneMapped:false});
+    productImage=new THREE.Sprite(productImageMaterial);productImage.scale.set(1.45,3.45,1);productImage.position.y=1.33;product.add(productImage);
+    const productGlow=new THREE.PointLight(0xffc46b,0,5.2,2);productGlow.position.set(0,1.05,.35);root.add(productGlow);
 
     root.traverse(obj=>{if(obj.isMesh){obj.castShadow=true;obj.receiveShadow=true;}});lightBeam.castShadow=false;revealDust.castShadow=false;lidInside.castShadow=false;lidInside.receiveShadow=false;productImage.castShadow=false;productImage.receiveShadow=false;
 
     const initialRotation=-Math.PI*.16;const finalRotation=(Math.PI*2)-(Math.PI*.16);const spinEnd=.68;
-    let targetRotation=initialRotation;let targetLid=0;let targetBottleReveal=0;let bottleReveal=0;let targetRevealLight=0;let targetProductGlow=0;let targetHaloScale=1;let targetCameraZ=8.72;let targetCameraY=1.26;
+    let targetRotation=initialRotation;let targetLid=0;let targetBottleReveal=0;let bottleReveal=0;let targetRevealLight=0;let targetProductGlow=0;let targetHaloScale=1;let targetCameraZ=8.72;let targetCameraY=1.26;let scrollTarget=0;let scrollProgress=0;
     root.rotation.y=initialRotation;lidPivot.rotation.x=0;
 
     const resize=()=>{const rect=canvas.getBoundingClientRect();const w=Math.max(1,rect.width);const h=Math.max(1,rect.height);const mobile=w<700;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,mobile?1.35:(lowPower?1.3:1.75)));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();targetCameraZ=mobile?9.72:8.72;targetCameraY=mobile?1.08:1.26;if(!product.visible){camera.position.z=targetCameraZ;camera.position.y=targetCameraY;}};
@@ -231,19 +235,19 @@ export default function BestProductReveal(){
     let raf=0;let previousTime=performance.now();let sectionVisible=true;
     const observer=new IntersectionObserver(entries=>{sectionVisible=entries[0]?.isIntersecting??true;},{rootMargin:'200px 0px'});observer.observe(section);
     const render=(now=performance.now())=>{const dt=Math.min(.05,Math.max(.001,(now-previousTime)/1000));previousTime=now;if(document.hidden||!sectionVisible){raf=requestAnimationFrame(render);return;}const t=now*.00035;
-      root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,14.5,dt);lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,13.5,dt);bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,11.5,dt);revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,12,dt);productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,11.5,dt);const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,11.5,dt);halo.scale.setScalar(smoothHalo);innerHalo.scale.setScalar(.96+(smoothHalo-1)*.72);camera.position.z=THREE.MathUtils.damp(camera.position.z,targetCameraZ,6.8,dt);camera.position.y=THREE.MathUtils.damp(camera.position.y,targetCameraY,6.8,dt);
+      scrollProgress=THREE.MathUtils.damp(scrollProgress,scrollTarget,5.2,dt);
+      if(progressRef.current){progressRef.current.style.setProperty('--progress',String(scrollProgress));progressRef.current.style.setProperty('--open',String(gsap.utils.clamp(0,1,(scrollProgress-spinEnd)/(1-spinEnd))));}
+      const spinProgress=gsap.utils.clamp(0,1,scrollProgress/spinEnd);targetRotation=initialRotation+(finalRotation-initialRotation)*spinProgress;
+      const lidProgress=gsap.utils.clamp(0,1,(scrollProgress-spinEnd)/(1-spinEnd));const easedLid=gsap.parseEase('power3.out')(lidProgress);targetLid=-Math.PI*.58*easedLid;targetRevealLight=10.5*easedLid;targetHaloScale=1+.15*easedLid;
+      const bottleProgress=gsap.utils.clamp(0,1,(lidProgress-.24)/.76);targetBottleReveal=gsap.parseEase('power4.out')(bottleProgress);targetProductGlow=28*targetBottleReveal;
+      const mobile=canvas.clientWidth<700;const baseZ=mobile?9.72:8.72;const baseY=mobile?1.08:1.26;targetCameraZ=baseZ-(mobile?.36:.58)*targetBottleReveal;targetCameraY=baseY+.16*targetBottleReveal;
+      root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,9.5,dt);lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,8.2,dt);bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,6.8,dt);revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,7.8,dt);productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,6.8,dt);const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,7.2,dt);halo.scale.setScalar(smoothHalo);innerHalo.scale.setScalar(.96+(smoothHalo-1)*.72);camera.position.z=THREE.MathUtils.damp(camera.position.z,targetCameraZ,4.8,dt);camera.position.y=THREE.MathUtils.damp(camera.position.y,targetCameraY,4.8,dt);
       dust.rotation.y=t*.1;dust.position.y=Math.sin(t*.75)*.035;halo.material.opacity=.075+Math.sin(t*2)*.022;innerHalo.material.opacity=.038+Math.sin(t*2.35)*.016;pedestalRing.material.opacity=.48+Math.sin(t*1.7)*.08;
-      const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.02+.1*opening;lightBeam.material.opacity=.008+.04*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=.2*bottleReveal;revealDust.rotation.y=-t*.85;revealDust.position.y=.45+1.25*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
-      product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.78*bottleReveal);product.scale.setScalar(bottleScale);product.rotation.y=.075*Math.sin(t*1.35);product.rotation.z=.012*Math.sin(t*.95);product.position.y=(-.22)+(2.2*bottleReveal)+(Math.sin(t*2.4)*.028*bottleReveal);}renderer.render(scene,camera);raf=requestAnimationFrame(render);};
+      const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.02+.1*opening;lightBeam.material.opacity=.008+.04*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=.2*bottleReveal;revealDust.rotation.y=-t*.6;revealDust.position.y=.45+1.1*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
+      product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.98*bottleReveal);product.scale.setScalar(bottleScale);product.rotation.z=.004*Math.sin(t*.55);product.position.y=(-.22)+(.92*bottleReveal)+(Math.sin(t*1.1)*.012*bottleReveal);product.position.z=.18+(.16*bottleReveal);productImageMaterial.rotation=.003*Math.sin(t*.5);}renderer.render(scene,camera);raf=requestAnimationFrame(render);};
     raf=requestAnimationFrame(render);
 
-    const scrollControl=ScrollTrigger.create({trigger:section,start:'top top',end:'+=1800',pin:true,pinType:'fixed',pinSpacing:true,anticipatePin:0,invalidateOnRefresh:true,onUpdate:self=>{
-      if(progressRef.current){progressRef.current.style.setProperty('--progress',String(self.progress));progressRef.current.style.setProperty('--open',String(gsap.utils.clamp(0,1,(self.progress-spinEnd)/(1-spinEnd))));}
-      const spinProgress=gsap.utils.clamp(0,1,self.progress/spinEnd);targetRotation=initialRotation+(finalRotation-initialRotation)*spinProgress;
-      const lidProgress=gsap.utils.clamp(0,1,(self.progress-spinEnd)/(1-spinEnd));const easedLid=gsap.parseEase('power2.out')(lidProgress);targetLid=-Math.PI*.58*easedLid;targetRevealLight=10*easedLid;targetHaloScale=1+.15*easedLid;
-      const bottleProgress=gsap.utils.clamp(0,1,(lidProgress-.38)/.62);targetBottleReveal=gsap.parseEase('power3.out')(bottleProgress);targetProductGlow=26*targetBottleReveal;
-      const mobile=canvas.clientWidth<700;const baseZ=mobile?9.72:8.72;const baseY=mobile?1.08:1.26;targetCameraZ=baseZ-(mobile ? .34 : .52)*targetBottleReveal;targetCameraY=baseY+.15*targetBottleReveal;
-    }});
+    const scrollControl=ScrollTrigger.create({trigger:section,start:'top top',end:'+=2400',pin:true,pinType:'fixed',pinSpacing:true,anticipatePin:1,invalidateOnRefresh:true,onUpdate:self=>{scrollTarget=self.progress;}});
 
     const intro=gsap.fromTo(root.scale,{x:.93,y:.93,z:.93},{x:1,y:1,z:1,duration:1.25,ease:'power3.out'});
     window.addEventListener('resize',resize);const delayed=window.setTimeout(()=>ScrollTrigger.refresh(),120);
