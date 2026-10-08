@@ -25,6 +25,7 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+      # Fresh push after Cloudflare credentials were configured.
       - name: Build and deploy
         run: npm run deploy
         env:
