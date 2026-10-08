@@ -294,14 +294,14 @@ export default function BestProductReveal(){
       previousTime=now;
       const t=now*.00035;
 
-      // Frame-rate independent damping makes mouse-wheel and touchpad scroll input
-      // feel continuous instead of stepping from one ScrollTrigger update to the next.
-      root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,7.2,dt);
-      lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,8.5,dt);
-      bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,7.4,dt);
-      revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,8,dt);
-      productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,7.5,dt);
-      const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,7.5,dt);
+      // A faster critical-feeling chase keeps the 3D object buttery without the
+      // visible lag/rebound that happened after releasing the scrollbar thumb.
+      root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,14.5,dt);
+      lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,13.5,dt);
+      bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,11.5,dt);
+      revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,12,dt);
+      productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,11.5,dt);
+      const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,11.5,dt);
       halo.scale.setScalar(smoothHalo);
 
       dust.rotation.y=t*.12;
@@ -325,7 +325,9 @@ export default function BestProductReveal(){
       start:'top top',
       end:'+=1800',
       pin:true,
-      anticipatePin:1,
+      pinType:'fixed',
+      pinSpacing:true,
+      anticipatePin:0,
       invalidateOnRefresh:true,
       onUpdate:self=>{
         if(progressRef.current){
