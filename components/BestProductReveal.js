@@ -583,7 +583,7 @@ export default function BestProductReveal(){
         const mobile=canvas.getBoundingClientRect().width<700;
         const baseZ=mobile?9.72:8.72;
         const baseY=mobile?1.08:1.26;
-        targetCameraZ=baseZ-(mobile?.34:.52)*targetBottleReveal;
+        targetCameraZ=baseZ-(mobile ? .34 : .52)*targetBottleReveal;
         targetCameraY=baseY+.15*targetBottleReveal;
       }
     });
