@@ -194,7 +194,7 @@ export default function BestProductReveal(){
       const spinProgress=gsap.utils.clamp(0,1,self.progress/spinEnd);targetRotation=initialRotation+(finalRotation-initialRotation)*spinProgress;
       const lidProgress=gsap.utils.clamp(0,1,(self.progress-spinEnd)/(1-spinEnd));const easedLid=gsap.parseEase('power2.out')(lidProgress);targetLid=-Math.PI*.58*easedLid;targetRevealLight=11*easedLid;targetHaloScale=1+.15*easedLid;
       const bottleProgress=gsap.utils.clamp(0,1,(lidProgress-.38)/.62);targetBottleReveal=gsap.parseEase('power3.out')(bottleProgress);targetProductGlow=28*targetBottleReveal;
-      const mobile=canvas.clientWidth<700;const baseZ=mobile?9.72:8.72;const baseY=mobile?1.08:1.26;targetCameraZ=baseZ-(mobile?.34:.52)*targetBottleReveal;targetCameraY=baseY+.15*targetBottleReveal;
+      const mobile=canvas.clientWidth<700;const baseZ=mobile?9.72:8.72;const baseY=mobile?1.08:1.26;targetCameraZ=baseZ-(mobile ? .34 : .52)*targetBottleReveal;targetCameraY=baseY+.15*targetBottleReveal;
     }});
 
     const intro=gsap.fromTo(root.scale,{x:.93,y:.93,z:.93},{x:1,y:1,z:1,duration:1.25,ease:'power3.out'});
