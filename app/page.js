@@ -120,26 +120,34 @@ export default function Home(){
    if(tween){tween.scrollTrigger?.kill();tween.kill();}
    gsap.set(mensBottle,{clearProps:'x,y,scale,rotation'});
 
-   const bottleRect=mensBottle.getBoundingClientRect();
-   const targetRect=target.getBoundingClientRect();
-   const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
-   const dy=(targetRect.top+targetRect.height/2)-(bottleRect.top+bottleRect.height/2);
+  const bottleRect=mensBottle.getBoundingClientRect();
+  const targetRect=target.getBoundingClientRect();
 
-   tween=gsap.to(mensBottle,{
-    x:dx,
-    y:dy,
-    scale:1.55,
-    rotation:0,
-    ease:'none',
-    scrollTrigger:{
-     trigger:sourceCard,
-     start:'center 58%',
-     endTrigger:'.ref-feature',
-     end:'bottom bottom',
-     scrub:1.15,
-     invalidateOnRefresh:true
-    }
-   });
+  const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
+  const dy=(targetRect.top+targetRect.height/2)-(bottleRect.top+bottleRect.height/2);
+
+  // make it scale progressively like the first hero bottle
+  const targetScale=Math.min(
+  (targetRect.width*0.72)/bottleRect.width,
+  (targetRect.height*0.78)/bottleRect.height
+  );
+
+  tween=gsap.to(mensBottle,{
+  x:dx,
+  y:dy,
+  scale:targetScale,
+  rotation:0,
+  ease:'none',
+  transformOrigin:'50% 50%',
+  scrollTrigger:{
+    trigger:sourceCard,
+    start:'center 58%',
+    endTrigger:'.ref-feature',
+    end:'bottom bottom',
+    scrub:1.2,
+    invalidateOnRefresh:true
+  }
+  });
   };
 
   const delayed=window.setTimeout(()=>{buildMensMovement();ScrollTrigger.refresh();},120);
