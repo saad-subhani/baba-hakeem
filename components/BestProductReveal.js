@@ -19,12 +19,7 @@ export default function BestProductReveal(){
     const canvas=canvasRef.current;
     if(!section||!canvas) return;
 
-    const renderer=new THREE.WebGLRenderer({
-      canvas,
-      antialias:true,
-      alpha:true,
-      powerPreference:'high-performance'
-    });
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
     renderer.outputColorSpace=THREE.SRGBColorSpace;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -39,89 +34,48 @@ export default function BestProductReveal(){
     root.rotation.x=-0.05;
     scene.add(root);
 
-    const wood=new THREE.MeshStandardMaterial({
-      color:0x6f3519,
-      roughness:.34,
-      metalness:.12
-    });
-    const woodDark=new THREE.MeshStandardMaterial({
-      color:0x32170d,
-      roughness:.58,
-      metalness:.02
-    });
-    const gold=new THREE.MeshStandardMaterial({
-      color:0xb8843c,
-      roughness:.19,
-      metalness:.84
-    });
-    const inner=new THREE.MeshStandardMaterial({
-      color:0x17100c,
-      roughness:.87,
-      metalness:.02
-    });
+    const wood=new THREE.MeshStandardMaterial({color:0x6f3519,roughness:.34,metalness:.12});
+    const woodDark=new THREE.MeshStandardMaterial({color:0x32170d,roughness:.58,metalness:.02});
+    const gold=new THREE.MeshStandardMaterial({color:0xb8843c,roughness:.19,metalness:.84});
+    const inner=new THREE.MeshStandardMaterial({color:0x17100c,roughness:.87,metalness:.02});
 
     const body=new THREE.Group();
     root.add(body);
 
-    const bodyShell=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.65,1.78,1.7,8,1,false),
-      wood
-    );
+    const bodyShell=new THREE.Mesh(new THREE.CylinderGeometry(1.65,1.78,1.7,8,1,false),wood);
     bodyShell.position.y=-.15;
     body.add(bodyShell);
 
-    const innerWell=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.34,1.42,1.14,8,1,false),
-      inner
-    );
+    const innerWell=new THREE.Mesh(new THREE.CylinderGeometry(1.34,1.42,1.14,8,1,false),inner);
     innerWell.position.y=.18;
     body.add(innerWell);
 
-    const bottomBand=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.86,1.9,.16,8),
-      gold
-    );
+    const bottomBand=new THREE.Mesh(new THREE.CylinderGeometry(1.86,1.9,.16,8),gold);
     bottomBand.position.y=-1.01;
     body.add(bottomBand);
 
-    const topBand=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.77,1.79,.12,8),
-      gold
-    );
+    const topBand=new THREE.Mesh(new THREE.CylinderGeometry(1.77,1.79,.12,8),gold);
     topBand.position.y=.69;
     body.add(topBand);
 
-    const midBand=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.8,1.82,.055,8),
-      gold
-    );
+    const midBand=new THREE.Mesh(new THREE.CylinderGeometry(1.8,1.82,.055,8),gold);
     midBand.position.y=-.46;
     body.add(midBand);
 
     const panelRing=new THREE.Mesh(
       new THREE.CylinderGeometry(1.79,1.79,.92,8,1,true),
-      new THREE.MeshStandardMaterial({
-        color:0x81502b,
-        roughness:.46,
-        metalness:.06,
-        side:THREE.DoubleSide
-      })
+      new THREE.MeshStandardMaterial({color:0x81502b,roughness:.46,metalness:.06,side:THREE.DoubleSide})
     );
     panelRing.position.y=.07;
     body.add(panelRing);
 
     for(let i=0;i<8;i++){
       const a=(i/8)*Math.PI*2;
-      const stud=new THREE.Mesh(
-        new THREE.SphereGeometry(.055,12,12),
-        gold
-      );
+      const stud=new THREE.Mesh(new THREE.SphereGeometry(.055,12,12),gold);
       stud.position.set(Math.cos(a)*1.81,-.43,Math.sin(a)*1.81);
       body.add(stud);
     }
 
-    // Fine engraved inlays, inset panels and metallic rivets turn the placeholder
-    // into a crafted presentation chest without changing its existing silhouette.
     const brassDetail=new THREE.MeshStandardMaterial({color:0xe5bf79,metalness:.86,roughness:.22});
     const velvet=new THREE.MeshStandardMaterial({color:0x17352a,roughness:.94,metalness:0,side:THREE.DoubleSide});
     const trimDark=new THREE.MeshStandardMaterial({color:0x2b2117,roughness:.38,metalness:.45});
@@ -131,9 +85,9 @@ export default function BestProductReveal(){
         const a=(i/8)*Math.PI*2;
         points.push(new THREE.Vector3(Math.sin(a)*radius,y,Math.cos(a)*radius));
       }
-      const mesh=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),64,tube,5,false),material);
-      return mesh;
+      return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),64,tube,5,false),material);
     };
+
     body.add(octagon(1.66,.69,brassDetail,.024));
     body.add(octagon(1.76,-.91,brassDetail,.018));
     for(let i=0;i<8;i++){
@@ -150,11 +104,11 @@ export default function BestProductReveal(){
       jewel.position.set(Math.sin(angle)*1.74,.19,Math.cos(angle)*1.74);
       body.add(jewel);
     }
+
     const velvetBase=new THREE.Mesh(new THREE.CylinderGeometry(1.28,1.3,.08,8),velvet);
     velvetBase.position.y=.65;
     body.add(velvetBase);
-    const innerRim=octagon(1.35,.73,brassDetail,.035);
-    body.add(innerRim);
+    body.add(octagon(1.35,.73,brassDetail,.035));
 
     const lidPivot=new THREE.Group();
     lidPivot.position.set(0,.81,-1.36);
@@ -164,30 +118,18 @@ export default function BestProductReveal(){
     lid.position.set(0,.31,1.36);
     lidPivot.add(lid);
 
-    const lidBase=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.77,1.77,.42,8),
-      wood
-    );
+    const lidBase=new THREE.Mesh(new THREE.CylinderGeometry(1.77,1.77,.42,8),wood);
     lid.add(lidBase);
 
-    const lidTop=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.57,1.74,.44,8),
-      woodDark
-    );
+    const lidTop=new THREE.Mesh(new THREE.CylinderGeometry(1.57,1.74,.44,8),woodDark);
     lidTop.position.y=.34;
     lid.add(lidTop);
 
-    const lidBand=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.82,1.82,.09,8),
-      gold
-    );
+    const lidBand=new THREE.Mesh(new THREE.CylinderGeometry(1.82,1.82,.09,8),gold);
     lidBand.position.y=-.16;
     lid.add(lidBand);
 
-    const lidCrown=new THREE.Mesh(
-      new THREE.CylinderGeometry(1.62,1.62,.07,8),
-      gold
-    );
+    const lidCrown=new THREE.Mesh(new THREE.CylinderGeometry(1.62,1.62,.07,8),gold);
     lidCrown.position.y=.58;
     lid.add(lidCrown);
 
@@ -203,23 +145,16 @@ export default function BestProductReveal(){
     botanicalMark.position.y=.68;
     lid.add(botanicalMark);
 
-    const latch=new THREE.Mesh(
-      new THREE.BoxGeometry(.28,.38,.12),
-      gold
-    );
+    const latch=new THREE.Mesh(new THREE.BoxGeometry(.28,.38,.12),gold);
     latch.position.set(0,-.02,1.78);
     lid.add(latch);
 
-    const latchBase=new THREE.Mesh(
-      new THREE.BoxGeometry(.36,.2,.12),
-      gold
-    );
+    const latchBase=new THREE.Mesh(new THREE.BoxGeometry(.36,.2,.12),gold);
     latchBase.position.set(0,.62,1.79);
     body.add(latchBase);
 
     const edgeMaterial=new THREE.LineBasicMaterial({color:0xd6a257});
-    const edgeTargets=[bodyShell,topBand,bottomBand,lidBase,lidTop];
-    edgeTargets.forEach(mesh=>{
+    [bodyShell,topBand,bottomBand,lidBase,lidTop].forEach(mesh=>{
       const edges=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),edgeMaterial);
       edges.position.copy(mesh.position);
       edges.rotation.copy(mesh.rotation);
@@ -228,11 +163,7 @@ export default function BestProductReveal(){
 
     const floor=new THREE.Mesh(
       new THREE.CircleGeometry(3.15,64),
-      new THREE.MeshStandardMaterial({
-        color:0x161613,
-        roughness:.86,
-        metalness:.02
-      })
+      new THREE.MeshStandardMaterial({color:0x161613,roughness:.86,metalness:.02})
     );
     floor.rotation.x=-Math.PI/2;
     floor.position.y=-1.12;
@@ -240,22 +171,18 @@ export default function BestProductReveal(){
 
     const ambient=new THREE.HemisphereLight(0xf1d7ad,0x090b09,1.45);
     scene.add(ambient);
-
     const key=new THREE.SpotLight(0xffd08b,85,18,Math.PI/5,.55,1.4);
     key.position.set(-3.8,6.2,5.6);
     key.target.position.set(0,.2,0);
     scene.add(key,key.target);
-
     const rim=new THREE.SpotLight(0xb56f2e,52,15,Math.PI/4,.7,1.5);
     rim.position.set(4.5,3.5,-4.5);
     rim.target.position.set(0,.5,0);
     scene.add(rim,rim.target);
-
     const soft=new THREE.PointLight(0xffe0b0,18,9,2);
     soft.position.set(0,1.6,3.8);
     scene.add(soft);
 
-    // Stage glow follows the opening, with no extra scroll listeners or timelines.
     const revealLight=new THREE.PointLight(0xffd89b,0,5,2);
     revealLight.position.set(0,1.12,0);
     root.add(revealLight);
@@ -266,6 +193,7 @@ export default function BestProductReveal(){
     halo.rotation.x=-Math.PI/2;
     halo.position.y=-1.085;
     scene.add(halo);
+
     const dustGeometry=new THREE.BufferGeometry();
     const dustPositions=new Float32Array(90*3);
     for(let i=0;i<90;i++){
@@ -276,8 +204,79 @@ export default function BestProductReveal(){
       dustPositions[i*3+2]=Math.sin(a)*r;
     }
     dustGeometry.setAttribute('position',new THREE.BufferAttribute(dustPositions,3));
-    const dust=new THREE.Points(dustGeometry,new THREE.PointsMaterial({color:0xe2b77b,size:.018,transparent:true,opacity:.42,depthWrite:false}));
+    const dust=new THREE.Points(
+      dustGeometry,
+      new THREE.PointsMaterial({color:0xe2b77b,size:.018,transparent:true,opacity:.42,depthWrite:false})
+    );
     scene.add(dust);
+
+    // Product reveal: a premium amber dropper bottle lives inside the chest and
+    // rises only after the lid has opened far enough. It is intentionally kept
+    // procedural for now so we can later swap in the final real product model/art.
+    const product=new THREE.Group();
+    product.position.set(0,-.22,.08);
+    product.scale.setScalar(.02);
+    product.visible=false;
+    root.add(product);
+
+    const amberGlass=new THREE.MeshPhysicalMaterial({
+      color:0x7d2f0c,
+      roughness:.14,
+      metalness:.02,
+      transmission:.16,
+      thickness:.22,
+      transparent:true,
+      opacity:.96
+    });
+    const bottleBody=new THREE.Mesh(new THREE.CylinderGeometry(.31,.34,1.24,48),amberGlass);
+    bottleBody.position.y=.59;
+    product.add(bottleBody);
+    const shoulder=new THREE.Mesh(new THREE.CylinderGeometry(.21,.31,.24,48),amberGlass);
+    shoulder.position.y=1.33;
+    product.add(shoulder);
+    const neck=new THREE.Mesh(new THREE.CylinderGeometry(.15,.17,.32,40),amberGlass);
+    neck.position.y=1.6;
+    product.add(neck);
+
+    const capMaterial=new THREE.MeshStandardMaterial({color:0x181512,roughness:.32,metalness:.42});
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.42,40),capMaterial);
+    cap.position.y=1.93;
+    product.add(cap);
+    for(let i=0;i<16;i++){
+      const a=(i/16)*Math.PI*2;
+      const ridge=new THREE.Mesh(new THREE.BoxGeometry(.012,.3,.028),capMaterial);
+      ridge.position.set(Math.sin(a)*.222,1.93,Math.cos(a)*.222);
+      ridge.rotation.y=a;
+      product.add(ridge);
+    }
+    const bulb=new THREE.Mesh(
+      new THREE.SphereGeometry(.22,32,20),
+      new THREE.MeshStandardMaterial({color:0x11100f,roughness:.62,metalness:.02})
+    );
+    bulb.scale.y=1.35;
+    bulb.position.y=2.27;
+    product.add(bulb);
+
+    const labelMaterial=new THREE.MeshStandardMaterial({color:0xefe8d5,roughness:.7,metalness:0});
+    const label=new THREE.Mesh(new THREE.CylinderGeometry(.345,.345,.62,48,1,true),labelMaterial);
+    label.position.y=.63;
+    product.add(label);
+    const labelBand=new THREE.Mesh(
+      new THREE.CylinderGeometry(.349,.349,.055,48,1,true),
+      new THREE.MeshStandardMaterial({color:0x7d9a3a,roughness:.5})
+    );
+    labelBand.position.y=.82;
+    product.add(labelBand);
+    const labelMark=new THREE.Mesh(
+      new THREE.BoxGeometry(.19,.055,.012),
+      new THREE.MeshBasicMaterial({color:0x567b2d})
+    );
+    labelMark.position.set(0,.57,.346);
+    product.add(labelMark);
+
+    const productGlow=new THREE.PointLight(0xffc46b,0,4.5,2);
+    productGlow.position.set(0,.8,.1);
+    root.add(productGlow);
 
     const resize=()=>{
       const rect=canvas.getBoundingClientRect();
@@ -294,11 +293,15 @@ export default function BestProductReveal(){
     resize();
 
     let raf=0;
+    let bottleReveal=0;
     const render=()=>{
-      // Small ambient shimmer; the box rotation remains controlled only by scroll.
       const t=performance.now()*.00035;
       dust.rotation.y=t*.12;
       halo.material.opacity=.095+Math.sin(t*2)*.025;
+      if(product.visible){
+        product.rotation.y=.12*Math.sin(t*1.45);
+        product.position.y=(-.22)+(2.15*bottleReveal)+(Math.sin(t*2.6)*.035*bottleReveal);
+      }
       renderer.render(scene,camera);
       raf=requestAnimationFrame(render);
     };
@@ -327,29 +330,26 @@ export default function BestProductReveal(){
             progressRef.current.style.setProperty('--progress',String(self.progress));
           }
 
-          /* Phase 1: complete the full 360° turn.
-             Phase 2: HOLD that final angle while the lid opens. */
           const spinProgress=gsap.utils.clamp(0,1,self.progress/spinEnd);
           root.rotation.y=initialRotation+(finalRotation-initialRotation)*spinProgress;
 
-          const lidProgress=gsap.utils.clamp(
-            0,
-            1,
-            (self.progress-spinEnd)/(1-spinEnd)
-          );
+          const lidProgress=gsap.utils.clamp(0,1,(self.progress-spinEnd)/(1-spinEnd));
           const easedLid=gsap.parseEase('power2.out')(lidProgress);
           lidPivot.rotation.x=-Math.PI*.58*easedLid;
           revealLight.intensity=10*easedLid;
           halo.scale.setScalar(1+.12*easedLid);
+
+          const bottleProgress=gsap.utils.clamp(0,1,(lidProgress-.46)/.54);
+          bottleReveal=gsap.parseEase('power3.out')(bottleProgress);
+          product.visible=bottleProgress>.005;
+          const bottleScale=.02+(.72*bottleReveal);
+          product.scale.setScalar(bottleScale);
+          productGlow.intensity=24*bottleReveal;
         }
       }
     });
 
-    const intro=gsap.fromTo(
-      root.scale,
-      {x:.94,y:.94,z:.94},
-      {x:1,y:1,z:1,duration:1.15,ease:'power3.out'}
-    );
+    const intro=gsap.fromTo(root.scale,{x:.94,y:.94,z:.94},{x:1,y:1,z:1,duration:1.15,ease:'power3.out'});
 
     window.addEventListener('resize',resize);
     const delayed=window.setTimeout(()=>ScrollTrigger.refresh(),120);
@@ -363,12 +363,6 @@ export default function BestProductReveal(){
       intro.kill();
       renderer.dispose();
       dustGeometry.dispose();
-      dust.material.dispose();
-      halo.geometry.dispose();
-      halo.material.dispose();
-      brassDetail.dispose();
-      velvet.dispose();
-      trimDark.dispose();
       scene.traverse(obj=>{
         if(obj.geometry) obj.geometry.dispose?.();
         if(obj.material){
