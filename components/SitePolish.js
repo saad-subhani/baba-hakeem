@@ -1,14 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Lenis from '@studio-freight/lenis';
 import styles from './SitePolish.module.css';
-
-const chapters=[
-  {label:'Home',selector:'.ref-hero',href:'#'},
-  {label:'Products',selector:'.ref-catalogue',href:'#reel-products'},
-  {label:'Featured',selector:'.ref-feature',href:'#featured-product'},
-  {label:'Signature',selector:'#best-product',href:'#best-product'}
-];
 
 export default function SitePolish(){
   const glowRef=useRef(null);
@@ -28,6 +22,27 @@ export default function SitePolish(){
     const coarse=window.matchMedia?.('(pointer: coarse)')?.matches??false;
     const lowPower=(navigator.hardwareConcurrency||4)<=4||(navigator.deviceMemory||4)<=4;
     setLite(reduced||lowPower);
+
+    let lenis=null;
+    let lenisFrame=0;
+    if(!reduced&&!coarse){
+      lenis=new Lenis({
+        duration:1.18,
+        easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),
+        orientation:'vertical',
+        gestureOrientation:'vertical',
+        smoothWheel:true,
+        smoothTouch:false,
+        wheelMultiplier:.88,
+        touchMultiplier:1,
+        infinite:false
+      });
+      const raf=time=>{
+        lenis?.raf(time);
+        lenisFrame=requestAnimationFrame(raf);
+      };
+      lenisFrame=requestAnimationFrame(raf);
+    }
 
     const updateProgress=()=>{
       scrollFrame.current=0;
@@ -70,6 +85,8 @@ export default function SitePolish(){
       if(onPointer) window.removeEventListener('pointermove',onPointer);
       if(pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
       if(scrollFrame.current) cancelAnimationFrame(scrollFrame.current);
+      if(lenisFrame) cancelAnimationFrame(lenisFrame);
+      lenis?.destroy();
       quietObserver?.disconnect();
     };
   },[]);
