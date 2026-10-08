@@ -28,7 +28,8 @@ export default function BestProductReveal(){
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
     renderer.outputColorSpace=THREE.SRGBColorSpace;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=1.12;
+    renderer.toneMappingExposure=1.18;
+    renderer.physicallyCorrectLights=true;
 
     const scene=new THREE.Scene();
     const camera=new THREE.PerspectiveCamera(34,1,.1,100);
@@ -40,8 +41,8 @@ export default function BestProductReveal(){
 
     const wood=new THREE.MeshStandardMaterial({
       color:0x6f3519,
-      roughness:.48,
-      metalness:.04
+      roughness:.34,
+      metalness:.12
     });
     const woodDark=new THREE.MeshStandardMaterial({
       color:0x32170d,
@@ -50,13 +51,13 @@ export default function BestProductReveal(){
     });
     const gold=new THREE.MeshStandardMaterial({
       color:0xb8843c,
-      roughness:.28,
-      metalness:.72
+      roughness:.19,
+      metalness:.84
     });
     const inner=new THREE.MeshStandardMaterial({
       color:0x17100c,
-      roughness:.72,
-      metalness:.03
+      roughness:.87,
+      metalness:.02
     });
 
     const body=new THREE.Group();
@@ -119,6 +120,42 @@ export default function BestProductReveal(){
       body.add(stud);
     }
 
+    // Fine engraved inlays, inset panels and metallic rivets turn the placeholder
+    // into a crafted presentation chest without changing its existing silhouette.
+    const brassDetail=new THREE.MeshStandardMaterial({color:0xe5bf79,metalness:.86,roughness:.22});
+    const velvet=new THREE.MeshStandardMaterial({color:0x17352a,roughness:.94,metalness:0,side:THREE.DoubleSide});
+    const trimDark=new THREE.MeshStandardMaterial({color:0x2b2117,roughness:.38,metalness:.45});
+    const octagon=(radius,y,material,tube=.018)=>{
+      const points=[];
+      for(let i=0;i<=8;i++){
+        const a=(i/8)*Math.PI*2;
+        points.push(new THREE.Vector3(Math.sin(a)*radius,y,Math.cos(a)*radius));
+      }
+      const mesh=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),64,tube,5,false),material);
+      return mesh;
+    };
+    body.add(octagon(1.66,.69,brassDetail,.024));
+    body.add(octagon(1.76,-.91,brassDetail,.018));
+    for(let i=0;i<8;i++){
+      const angle=(i+.5)*Math.PI/4;
+      const panel=new THREE.Mesh(new THREE.BoxGeometry(.55,.78,.025),trimDark);
+      panel.position.set(Math.sin(angle)*1.69,-.05,Math.cos(angle)*1.69);
+      panel.rotation.y=angle;
+      body.add(panel);
+      const line=new THREE.Mesh(new THREE.BoxGeometry(.43,.015,.033),brassDetail);
+      line.position.set(Math.sin(angle)*1.72,-.37,Math.cos(angle)*1.72);
+      line.rotation.y=angle;
+      body.add(line);
+      const jewel=new THREE.Mesh(new THREE.OctahedronGeometry(.045),brassDetail);
+      jewel.position.set(Math.sin(angle)*1.74,.19,Math.cos(angle)*1.74);
+      body.add(jewel);
+    }
+    const velvetBase=new THREE.Mesh(new THREE.CylinderGeometry(1.28,1.3,.08,8),velvet);
+    velvetBase.position.y=.65;
+    body.add(velvetBase);
+    const innerRim=octagon(1.35,.73,brassDetail,.035);
+    body.add(innerRim);
+
     const lidPivot=new THREE.Group();
     lidPivot.position.set(0,.81,-1.36);
     root.add(lidPivot);
@@ -153,6 +190,18 @@ export default function BestProductReveal(){
     );
     lidCrown.position.y=.58;
     lid.add(lidCrown);
+
+    lid.add(octagon(1.55,.63,brassDetail,.024));
+    const lidMedallion=new THREE.Mesh(new THREE.CylinderGeometry(.34,.34,.035,48),brassDetail);
+    lidMedallion.position.y=.64;
+    lid.add(lidMedallion);
+    const medallionInset=new THREE.Mesh(new THREE.TorusGeometry(.23,.018,8,48),trimDark);
+    medallionInset.rotation.x=Math.PI/2;
+    medallionInset.position.y=.67;
+    lid.add(medallionInset);
+    const botanicalMark=new THREE.Mesh(new THREE.SphereGeometry(.065,16,12),velvet);
+    botanicalMark.position.y=.68;
+    lid.add(botanicalMark);
 
     const latch=new THREE.Mesh(
       new THREE.BoxGeometry(.28,.38,.12),
@@ -206,6 +255,30 @@ export default function BestProductReveal(){
     soft.position.set(0,1.6,3.8);
     scene.add(soft);
 
+    // Stage glow follows the opening, with no extra scroll listeners or timelines.
+    const revealLight=new THREE.PointLight(0xffd89b,0,5,2);
+    revealLight.position.set(0,1.12,0);
+    root.add(revealLight);
+    const halo=new THREE.Mesh(
+      new THREE.RingGeometry(2.05,2.75,80),
+      new THREE.MeshBasicMaterial({color:0xc58b4c,transparent:true,opacity:.12,side:THREE.DoubleSide,depthWrite:false})
+    );
+    halo.rotation.x=-Math.PI/2;
+    halo.position.y=-1.085;
+    scene.add(halo);
+    const dustGeometry=new THREE.BufferGeometry();
+    const dustPositions=new Float32Array(90*3);
+    for(let i=0;i<90;i++){
+      const a=i*2.39996323;
+      const r=2.3+(i%13)*.17;
+      dustPositions[i*3]=Math.cos(a)*r;
+      dustPositions[i*3+1]=-.65+(i%19)*.18;
+      dustPositions[i*3+2]=Math.sin(a)*r;
+    }
+    dustGeometry.setAttribute('position',new THREE.BufferAttribute(dustPositions,3));
+    const dust=new THREE.Points(dustGeometry,new THREE.PointsMaterial({color:0xe2b77b,size:.018,transparent:true,opacity:.42,depthWrite:false}));
+    scene.add(dust);
+
     const resize=()=>{
       const rect=canvas.getBoundingClientRect();
       const w=Math.max(1,rect.width);
@@ -222,6 +295,10 @@ export default function BestProductReveal(){
 
     let raf=0;
     const render=()=>{
+      // Small ambient shimmer; the box rotation remains controlled only by scroll.
+      const t=performance.now()*.00035;
+      dust.rotation.y=t*.12;
+      halo.material.opacity=.095+Math.sin(t*2)*.025;
       renderer.render(scene,camera);
       raf=requestAnimationFrame(render);
     };
@@ -262,6 +339,8 @@ export default function BestProductReveal(){
           );
           const easedLid=gsap.parseEase('power2.out')(lidProgress);
           lidPivot.rotation.x=-Math.PI*.58*easedLid;
+          revealLight.intensity=10*easedLid;
+          halo.scale.setScalar(1+.12*easedLid);
         }
       }
     });
@@ -283,6 +362,13 @@ export default function BestProductReveal(){
       spinTween.kill();
       intro.kill();
       renderer.dispose();
+      dustGeometry.dispose();
+      dust.material.dispose();
+      halo.geometry.dispose();
+      halo.material.dispose();
+      brassDetail.dispose();
+      velvet.dispose();
+      trimDark.dispose();
       scene.traverse(obj=>{
         if(obj.geometry) obj.geometry.dispose?.();
         if(obj.material){
