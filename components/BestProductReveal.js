@@ -200,22 +200,26 @@ export default function BestProductReveal(){
     const revealDustMaterial=new THREE.PointsMaterial({color:0xffd990,size:.024,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});const revealDust=new THREE.Points(revealDustGeometry,revealDustMaterial);revealDust.position.set(0,.55,.08);root.add(revealDust);
 
     const product=new THREE.Group();product.position.set(0,-.22,.08);product.scale.setScalar(.02);product.visible=false;root.add(product);
-    const amberGlass=new THREE.MeshPhysicalMaterial({color:0x74260b,roughness:.08,metalness:.01,transmission:.17,thickness:.24,transparent:true,opacity:.98,clearcoat:.7,clearcoatRoughness:.08});
-    const bottleBody=new THREE.Mesh(new THREE.CylinderGeometry(.31,.34,1.24,64),amberGlass);bottleBody.position.y=.59;product.add(bottleBody);
-    const shoulder=new THREE.Mesh(new THREE.CylinderGeometry(.21,.31,.24,64),amberGlass);shoulder.position.y=1.33;product.add(shoulder);
-    const neck=new THREE.Mesh(new THREE.CylinderGeometry(.15,.17,.32,48),amberGlass);neck.position.y=1.6;product.add(neck);
-    const glassHighlight=new THREE.Mesh(new THREE.BoxGeometry(.035,.95,.01),new THREE.MeshBasicMaterial({color:0xffdeb0,transparent:true,opacity:.34}));glassHighlight.position.set(-.18,.68,.335);product.add(glassHighlight);
-    const capMaterial=new THREE.MeshPhysicalMaterial({color:0x0f0e0d,roughness:.2,metalness:.62,clearcoat:.48,clearcoatRoughness:.12});
-    const cap=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.42,48),capMaterial);cap.position.y=1.93;product.add(cap);
-    for(let i=0;i<18;i++){const a=(i/18)*Math.PI*2;const ridge=new THREE.Mesh(new THREE.BoxGeometry(.01,.31,.027),capMaterial);ridge.position.set(Math.sin(a)*.222,1.93,Math.cos(a)*.222);ridge.rotation.y=a;product.add(ridge);}
-    const bulb=new THREE.Mesh(new THREE.SphereGeometry(.22,40,28),new THREE.MeshPhysicalMaterial({color:0x0b0b0a,roughness:.48,metalness:.02,clearcoat:.3}));bulb.scale.y=1.35;bulb.position.y=2.27;product.add(bulb);
-    const labelMaterial=new THREE.MeshStandardMaterial({color:0xf1ead8,roughness:.5,metalness:0});const label=new THREE.Mesh(new THREE.CylinderGeometry(.345,.345,.64,64,1,true),labelMaterial);label.position.y=.64;product.add(label);
-    const labelBand=new THREE.Mesh(new THREE.CylinderGeometry(.349,.349,.06,64,1,true),new THREE.MeshStandardMaterial({color:0x456b3e,roughness:.38}));labelBand.position.y=.84;product.add(labelBand);
-    const bottleLabelTexture=makeBrandTexture(true);const bottleFace=new THREE.Mesh(new THREE.PlaneGeometry(.43,.27),new THREE.MeshBasicMaterial({map:bottleLabelTexture,transparent:false,toneMapped:false}));bottleFace.position.set(0,.62,.348);product.add(bottleFace);
-    const collar=new THREE.Mesh(new THREE.TorusGeometry(.17,.025,10,48),brassDetail);collar.rotation.x=Math.PI/2;collar.position.y=1.51;product.add(collar);
+    let productImage=null;
+    const productTexture=new THREE.TextureLoader().load('/products/mens-oil-new.png',(texture)=>{
+      texture.colorSpace=THREE.SRGBColorSpace;
+      texture.anisotropy=renderer.capabilities.getMaxAnisotropy();
+      const image=texture.image;
+      if(productImage&&image?.width&&image?.height){
+        const height=2.55;
+        productImage.scale.set(height*(image.width/image.height),height,1);
+      }
+    });
+    productTexture.colorSpace=THREE.SRGBColorSpace;
+    productTexture.anisotropy=renderer.capabilities.getMaxAnisotropy();
+    productTexture.minFilter=THREE.LinearMipmapLinearFilter;
+    productTexture.magFilter=THREE.LinearFilter;
+    productTexture.generateMipmaps=true;
+    const productImageMaterial=new THREE.MeshBasicMaterial({map:productTexture,transparent:true,alphaTest:.015,depthWrite:false,toneMapped:false,side:THREE.DoubleSide});
+    productImage=new THREE.Mesh(new THREE.PlaneGeometry(1,1),productImageMaterial);productImage.scale.set(1.05,2.55,1);productImage.position.y=1.15;product.add(productImage);
     const productGlow=new THREE.PointLight(0xffc46b,0,4.8,2);productGlow.position.set(0,.8,.2);root.add(productGlow);
 
-    root.traverse(obj=>{if(obj.isMesh){obj.castShadow=true;obj.receiveShadow=true;}});lightBeam.castShadow=false;revealDust.castShadow=false;lidInside.castShadow=false;lidInside.receiveShadow=false;
+    root.traverse(obj=>{if(obj.isMesh){obj.castShadow=true;obj.receiveShadow=true;}});lightBeam.castShadow=false;revealDust.castShadow=false;lidInside.castShadow=false;lidInside.receiveShadow=false;productImage.castShadow=false;productImage.receiveShadow=false;
 
     const initialRotation=-Math.PI*.16;const finalRotation=(Math.PI*2)-(Math.PI*.16);const spinEnd=.68;
     let targetRotation=initialRotation;let targetLid=0;let targetBottleReveal=0;let bottleReveal=0;let targetRevealLight=0;let targetProductGlow=0;let targetHaloScale=1;let targetCameraZ=8.72;let targetCameraY=1.26;
@@ -243,7 +247,7 @@ export default function BestProductReveal(){
 
     const intro=gsap.fromTo(root.scale,{x:.93,y:.93,z:.93},{x:1,y:1,z:1,duration:1.25,ease:'power3.out'});
     window.addEventListener('resize',resize);const delayed=window.setTimeout(()=>ScrollTrigger.refresh(),120);
-    return()=>{window.clearTimeout(delayed);window.removeEventListener('resize',resize);observer.disconnect();cancelAnimationFrame(raf);scrollControl.kill();intro.kill();renderer.dispose();outerBrandTexture.dispose();innerBrandTexture.dispose();bottleLabelTexture.dispose();glowTexture.dispose();dustGeometry.dispose();revealDustGeometry.dispose();scene.traverse(obj=>{if(obj.geometry)obj.geometry.dispose?.();if(obj.material){const mats=Array.isArray(obj.material)?obj.material:[obj.material];mats.forEach(m=>m.dispose?.());}});};
+    return()=>{window.clearTimeout(delayed);window.removeEventListener('resize',resize);observer.disconnect();cancelAnimationFrame(raf);scrollControl.kill();intro.kill();renderer.dispose();outerBrandTexture.dispose();innerBrandTexture.dispose();productTexture.dispose();glowTexture.dispose();dustGeometry.dispose();revealDustGeometry.dispose();scene.traverse(obj=>{if(obj.geometry)obj.geometry.dispose?.();if(obj.material){const mats=Array.isArray(obj.material)?obj.material:[obj.material];mats.forEach(m=>m.dispose?.());}});};
   },[]);
 
   return (
