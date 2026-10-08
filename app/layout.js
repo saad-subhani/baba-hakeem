@@ -1,4 +1,5 @@
 import './globals.css';
+import SitePolish from '../components/SitePolish';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -8,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>{children}<SitePolish/></body>
     </html>
   );
 }
