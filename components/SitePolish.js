@@ -25,42 +25,64 @@ export default function SitePolish(){
 
     let lenis=null;
     let lenisFrame=0;
+    let lenisRunning=false;
+    const runLenis=time=>{
+      if(!lenisRunning||document.hidden) return;
+      lenis?.raf(time);
+      lenisFrame=requestAnimationFrame(runLenis);
+    };
+    const startLenis=()=>{
+      if(!lenis||lenisRunning||document.hidden) return;
+      lenisRunning=true;
+      lenisFrame=requestAnimationFrame(runLenis);
+    };
+    const stopLenis=()=>{
+      lenisRunning=false;
+      if(lenisFrame){cancelAnimationFrame(lenisFrame);lenisFrame=0;}
+    };
+
     if(!reduced&&!coarse){
       lenis=new Lenis({
-        duration:1.18,
+        duration:lowPower?1.02:1.12,
         easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),
         orientation:'vertical',
         gestureOrientation:'vertical',
         smoothWheel:true,
         smoothTouch:false,
-        wheelMultiplier:.88,
+        wheelMultiplier:lowPower?.94:.9,
         touchMultiplier:1,
         infinite:false
       });
-      const raf=time=>{
-        lenis?.raf(time);
-        lenisFrame=requestAnimationFrame(raf);
-      };
-      lenisFrame=requestAnimationFrame(raf);
+      startLenis();
     }
 
+    let siteTop=0;
+    let scrollDistance=1;
+    const measure=()=>{
+      const rect=site.getBoundingClientRect();
+      siteTop=window.scrollY+rect.top;
+      scrollDistance=Math.max(1,site.offsetHeight-window.innerHeight);
+    };
     const updateProgress=()=>{
       scrollFrame.current=0;
-      if(!progressRef.current||!site) return;
-      const rect=site.getBoundingClientRect();
-      const distance=Math.max(1,rect.height-window.innerHeight);
-      const value=Math.min(1,Math.max(0,-rect.top/distance));
+      if(!progressRef.current) return;
+      const value=Math.min(1,Math.max(0,(window.scrollY-siteTop)/scrollDistance));
       progressRef.current.style.transform=`scaleX(${value})`;
     };
     const onScroll=()=>{
       if(!scrollFrame.current) scrollFrame.current=requestAnimationFrame(updateProgress);
     };
+    const onResize=()=>{
+      measure();
+      onScroll();
+    };
+    measure();
     updateProgress();
     window.addEventListener('scroll',onScroll,{passive:true});
-    window.addEventListener('resize',onScroll,{passive:true});
+    window.addEventListener('resize',onResize,{passive:true});
 
     let onPointer;
-    if(!coarse&&!reduced){
+    if(!coarse&&!reduced&&!lowPower){
       onPointer=(event)=>{
         if(pointerFrame.current) return;
         const x=event.clientX;
@@ -76,16 +98,23 @@ export default function SitePolish(){
     const signature=document.querySelector('#best-product');
     const quietObserver=signature?new IntersectionObserver(entries=>{
       setQuiet(entries[0]?.isIntersecting??false);
-    },{threshold:.05}):null;
+    },{threshold:.04}):null;
     if(signature&&quietObserver) quietObserver.observe(signature);
+
+    const onVisibility=()=>{
+      if(document.hidden) stopLenis();
+      else startLenis();
+    };
+    document.addEventListener('visibilitychange',onVisibility);
 
     return()=>{
       window.removeEventListener('scroll',onScroll);
-      window.removeEventListener('resize',onScroll);
+      window.removeEventListener('resize',onResize);
       if(onPointer) window.removeEventListener('pointermove',onPointer);
+      document.removeEventListener('visibilitychange',onVisibility);
       if(pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
       if(scrollFrame.current) cancelAnimationFrame(scrollFrame.current);
-      if(lenisFrame) cancelAnimationFrame(lenisFrame);
+      stopLenis();
       lenis?.destroy();
       quietObserver?.disconnect();
     };
