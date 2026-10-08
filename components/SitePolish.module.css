@@ -1,0 +1,39 @@
+.effects{position:fixed;inset:0;z-index:120;pointer-events:none;overflow:hidden;isolation:isolate}
+.progressTrack{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(222,185,112,.08)}
+.progressTrack span{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#7b5b2d,#e1ba70 45%,#fff0bd);box-shadow:0 0 16px rgba(218,173,92,.5);will-change:transform}
+.cursorGlow{position:absolute;left:-190px;top:-190px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(218,177,103,.12) 0,rgba(218,177,103,.055) 30%,rgba(218,177,103,0) 72%);mix-blend-mode:screen;transition:transform .16s cubic-bezier(.22,1,.36,1),opacity .45s ease;will-change:transform;opacity:.88}
+.grain{position:absolute;inset:0;opacity:.055;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.22) 0 .55px,transparent .7px),radial-gradient(circle at 70% 68%,rgba(255,255,255,.18) 0 .45px,transparent .65px);background-size:4px 4px,5px 5px;mix-blend-mode:soft-light}
+.edgeGlowLeft,.edgeGlowRight{position:absolute;width:230px;height:230px;border-radius:50%;filter:blur(10px);opacity:.13;background:radial-gradient(circle,rgba(167,116,51,.6),transparent 68%);animation:breathe 8s ease-in-out infinite}
+.edgeGlowLeft{left:-135px;top:18vh}.edgeGlowRight{right:-145px;bottom:16vh;animation-delay:-4s}
+.specks i{position:absolute;width:2px;height:2px;border-radius:50%;background:#d9b36d;box-shadow:0 0 8px rgba(217,179,109,.75);opacity:.35;animation:drift 9s ease-in-out infinite}
+.specks i:nth-child(1){left:8%;top:22%;animation-duration:10s}.specks i:nth-child(2){left:26%;top:74%;animation-duration:12s;animation-delay:-3s}.specks i:nth-child(3){left:71%;top:19%;animation-duration:11s;animation-delay:-6s}.specks i:nth-child(4){left:84%;top:62%;animation-duration:13s;animation-delay:-2s}.specks i:nth-child(5){left:54%;top:86%;animation-duration:9s;animation-delay:-4s}
+.quiet .specks,.quiet .edgeGlowLeft,.quiet .edgeGlowRight{opacity:0;animation-play-state:paused}
+.quiet .cursorGlow{opacity:.28}
+.lite .specks,.lite .edgeGlowLeft,.lite .edgeGlowRight{display:none}
+.chapterRail{position:fixed;right:22px;top:50%;z-index:121;display:flex;flex-direction:column;gap:13px;transform:translateY(-50%);font:500 9px/1 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.chapterRail a{display:flex;align-items:center;justify-content:flex-end;gap:8px;color:rgba(237,218,176,.28);transition:color .35s ease,filter .35s ease;white-space:nowrap}
+.chapterRail a span{width:18px;height:1px;background:currentColor;transform-origin:right center;transition:transform .35s cubic-bezier(.22,1,.36,1),width .35s ease,box-shadow .35s ease}
+.chapterRail a:not(.active){font-size:0}
+.chapterRail a:hover,.chapterRail .active{color:#d5ad65;filter:drop-shadow(0 0 8px rgba(213,173,101,.22))}
+.chapterRail .active span{width:38px;box-shadow:0 0 10px rgba(213,173,101,.38)}
+
+:global(.static-reference-site .ref-nav nav a){position:relative;transition:color .32s ease,opacity .32s ease}
+:global(.static-reference-site .ref-nav nav a)::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right center;transition:transform .42s cubic-bezier(.22,1,.36,1)}
+:global(.static-reference-site .ref-nav nav a:hover)::after{transform:scaleX(1);transform-origin:left center}
+:global(.static-reference-site .ref-shop),:global(.static-reference-site .ref-hero-bottom>a),:global(.static-reference-site .ref-feature-copy>a){position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .35s ease,border-color .35s ease,filter .35s ease}
+:global(.static-reference-site .ref-shop)::before,:global(.static-reference-site .ref-hero-bottom>a)::before,:global(.static-reference-site .ref-feature-copy>a)::before{content:"";position:absolute;inset:-2px auto -2px -38%;width:28%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-18deg);transition:left .65s cubic-bezier(.22,1,.36,1);z-index:-1}
+:global(.static-reference-site .ref-shop:hover)::before,:global(.static-reference-site .ref-hero-bottom>a:hover)::before,:global(.static-reference-site .ref-feature-copy>a:hover)::before{left:118%}
+:global(.static-reference-site .ref-shop:hover),:global(.static-reference-site .ref-hero-bottom>a:hover),:global(.static-reference-site .ref-feature-copy>a:hover){box-shadow:0 10px 30px rgba(185,139,73,.15);filter:brightness(1.06)}
+:global(.static-reference-site .ref-product-grid article){transition:box-shadow .45s ease,background-color .45s ease,border-color .45s ease,filter .45s ease}
+:global(.static-reference-site .ref-product-grid article:hover){box-shadow:0 22px 55px rgba(0,0,0,.16),inset 0 0 0 1px rgba(211,173,103,.16);filter:brightness(1.025)}
+:global(.static-reference-site .ref-note){transition:box-shadow .5s ease,border-color .5s ease,filter .5s ease}
+:global(.static-reference-site .ref-note:hover){box-shadow:0 24px 70px rgba(0,0,0,.28),0 0 0 1px rgba(211,173,103,.16);filter:brightness(1.035)}
+:global(.static-reference-site .ref-feature){position:relative;isolation:isolate}
+:global(.static-reference-site .ref-feature)::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,transparent 28%,rgba(255,255,255,.07) 48%,transparent 68%);background-size:220% 100%;background-position:160% 0;transition:background-position 1.15s cubic-bezier(.22,1,.36,1)}
+:global(.static-reference-site .ref-feature:hover)::after{background-position:-60% 0}
+
+@keyframes breathe{0%,100%{transform:scale(.92);opacity:.09}50%{transform:scale(1.08);opacity:.16}}
+@keyframes drift{0%,100%{transform:translate3d(0,0,0);opacity:.18}50%{transform:translate3d(8px,-22px,0);opacity:.5}}
+
+@media(max-width:900px){.chapterRail{display:none}.cursorGlow{display:none}.edgeGlowLeft,.edgeGlowRight{opacity:.08}.grain{opacity:.035}}
+@media(prefers-reduced-motion:reduce){.cursorGlow,.edgeGlowLeft,.edgeGlowRight,.specks i{animation:none!important;transition:none!important}.progressTrack span{transition:none}.chapterRail a,.chapterRail a span{transition:none}:global(.static-reference-site .ref-shop)::before,:global(.static-reference-site .ref-hero-bottom>a)::before,:global(.static-reference-site .ref-feature-copy>a)::before{display:none}}
