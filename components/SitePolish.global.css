@@ -44,6 +44,10 @@ html.lenis,html.lenis body{height:auto}
 .static-reference-site .ref-feature-copy h2{transition:letter-spacing .68s cubic-bezier(.16,1,.3,1),text-shadow .68s ease}
 .static-reference-site .ref-feature:hover .ref-feature-copy h2{letter-spacing:-.025em;text-shadow:0 10px 30px rgba(0,0,0,.09)}
 
+/* Final Men's Oil landing refinement: keep the current scale, only lift the destination onto the palms. */
+.static-reference-site .ref-mens-hands-target{top:53%!important}
+@media(max-width:760px){.static-reference-site .ref-mens-hands-target{top:55%!important}}
+
 @media(hover:none){
  .static-reference-site .ref-product-grid article::before,.static-reference-site .ref-product-grid article::after,.static-reference-site .ref-product-grid article>div::after{display:none}
  .static-reference-site .ref-product-grid article img:not(.ref-mens-moving),.static-reference-site .ref-product-grid article h3,.static-reference-site .ref-note,.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{transition:none}
