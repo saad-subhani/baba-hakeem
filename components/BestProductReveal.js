@@ -210,24 +210,13 @@ export default function BestProductReveal(){
     );
     scene.add(dust);
 
-    // Product reveal: a premium amber dropper bottle lives inside the chest and
-    // rises only after the lid has opened far enough. It is intentionally kept
-    // procedural for now so we can later swap in the final real product model/art.
     const product=new THREE.Group();
     product.position.set(0,-.22,.08);
     product.scale.setScalar(.02);
     product.visible=false;
     root.add(product);
 
-    const amberGlass=new THREE.MeshPhysicalMaterial({
-      color:0x7d2f0c,
-      roughness:.14,
-      metalness:.02,
-      transmission:.16,
-      thickness:.22,
-      transparent:true,
-      opacity:.96
-    });
+    const amberGlass=new THREE.MeshPhysicalMaterial({color:0x7d2f0c,roughness:.14,metalness:.02,transmission:.16,thickness:.22,transparent:true,opacity:.96});
     const bottleBody=new THREE.Mesh(new THREE.CylinderGeometry(.31,.34,1.24,48),amberGlass);
     bottleBody.position.y=.59;
     product.add(bottleBody);
@@ -249,10 +238,7 @@ export default function BestProductReveal(){
       ridge.rotation.y=a;
       product.add(ridge);
     }
-    const bulb=new THREE.Mesh(
-      new THREE.SphereGeometry(.22,32,20),
-      new THREE.MeshStandardMaterial({color:0x11100f,roughness:.62,metalness:.02})
-    );
+    const bulb=new THREE.Mesh(new THREE.SphereGeometry(.22,32,20),new THREE.MeshStandardMaterial({color:0x11100f,roughness:.62,metalness:.02}));
     bulb.scale.y=1.35;
     bulb.position.y=2.27;
     product.add(bulb);
@@ -261,22 +247,31 @@ export default function BestProductReveal(){
     const label=new THREE.Mesh(new THREE.CylinderGeometry(.345,.345,.62,48,1,true),labelMaterial);
     label.position.y=.63;
     product.add(label);
-    const labelBand=new THREE.Mesh(
-      new THREE.CylinderGeometry(.349,.349,.055,48,1,true),
-      new THREE.MeshStandardMaterial({color:0x7d9a3a,roughness:.5})
-    );
+    const labelBand=new THREE.Mesh(new THREE.CylinderGeometry(.349,.349,.055,48,1,true),new THREE.MeshStandardMaterial({color:0x7d9a3a,roughness:.5}));
     labelBand.position.y=.82;
     product.add(labelBand);
-    const labelMark=new THREE.Mesh(
-      new THREE.BoxGeometry(.19,.055,.012),
-      new THREE.MeshBasicMaterial({color:0x567b2d})
-    );
+    const labelMark=new THREE.Mesh(new THREE.BoxGeometry(.19,.055,.012),new THREE.MeshBasicMaterial({color:0x567b2d}));
     labelMark.position.set(0,.57,.346);
     product.add(labelMark);
 
     const productGlow=new THREE.PointLight(0xffc46b,0,4.5,2);
     productGlow.position.set(0,.8,.1);
     root.add(productGlow);
+
+    const initialRotation=-Math.PI*.16;
+    const finalRotation=(Math.PI*2)-(Math.PI*.16);
+    const spinEnd=.68;
+
+    let targetRotation=initialRotation;
+    let targetLid=0;
+    let targetBottleReveal=0;
+    let bottleReveal=0;
+    let targetRevealLight=0;
+    let targetProductGlow=0;
+    let targetHaloScale=1;
+
+    root.rotation.y=initialRotation;
+    lidPivot.rotation.x=0;
 
     const resize=()=>{
       const rect=canvas.getBoundingClientRect();
@@ -293,59 +288,62 @@ export default function BestProductReveal(){
     resize();
 
     let raf=0;
-    let bottleReveal=0;
-    const render=()=>{
-      const t=performance.now()*.00035;
+    let previousTime=performance.now();
+    const render=(now=performance.now())=>{
+      const dt=Math.min(.05,Math.max(.001,(now-previousTime)/1000));
+      previousTime=now;
+      const t=now*.00035;
+
+      // Frame-rate independent damping makes mouse-wheel and touchpad scroll input
+      // feel continuous instead of stepping from one ScrollTrigger update to the next.
+      root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,7.2,dt);
+      lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,8.5,dt);
+      bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,7.4,dt);
+      revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,8,dt);
+      productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,7.5,dt);
+      const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,7.5,dt);
+      halo.scale.setScalar(smoothHalo);
+
       dust.rotation.y=t*.12;
       halo.material.opacity=.095+Math.sin(t*2)*.025;
+
+      product.visible=bottleReveal>.004||targetBottleReveal>.004;
       if(product.visible){
+        const bottleScale=.02+(.72*bottleReveal);
+        product.scale.setScalar(bottleScale);
         product.rotation.y=.12*Math.sin(t*1.45);
         product.position.y=(-.22)+(2.15*bottleReveal)+(Math.sin(t*2.6)*.035*bottleReveal);
       }
+
       renderer.render(scene,camera);
       raf=requestAnimationFrame(render);
     };
-    render();
+    raf=requestAnimationFrame(render);
 
-    const initialRotation=-Math.PI*.16;
-    const finalRotation=(Math.PI*2)-(Math.PI*.16);
-    const spinEnd=.68;
-
-    root.rotation.y=initialRotation;
-    lidPivot.rotation.x=0;
-
-    const spinTween=gsap.to(root.rotation,{
-      y:finalRotation,
-      ease:'none',
-      scrollTrigger:{
-        trigger:section,
-        start:'top top',
-        end:'+=1800',
-        pin:true,
-        scrub:1.15,
-        anticipatePin:1,
-        invalidateOnRefresh:true,
-        onUpdate:self=>{
-          if(progressRef.current){
-            progressRef.current.style.setProperty('--progress',String(self.progress));
-          }
-
-          const spinProgress=gsap.utils.clamp(0,1,self.progress/spinEnd);
-          root.rotation.y=initialRotation+(finalRotation-initialRotation)*spinProgress;
-
-          const lidProgress=gsap.utils.clamp(0,1,(self.progress-spinEnd)/(1-spinEnd));
-          const easedLid=gsap.parseEase('power2.out')(lidProgress);
-          lidPivot.rotation.x=-Math.PI*.58*easedLid;
-          revealLight.intensity=10*easedLid;
-          halo.scale.setScalar(1+.12*easedLid);
-
-          const bottleProgress=gsap.utils.clamp(0,1,(lidProgress-.46)/.54);
-          bottleReveal=gsap.parseEase('power3.out')(bottleProgress);
-          product.visible=bottleProgress>.005;
-          const bottleScale=.02+(.72*bottleReveal);
-          product.scale.setScalar(bottleScale);
-          productGlow.intensity=24*bottleReveal;
+    const scrollControl=ScrollTrigger.create({
+      trigger:section,
+      start:'top top',
+      end:'+=1800',
+      pin:true,
+      anticipatePin:1,
+      invalidateOnRefresh:true,
+      onUpdate:self=>{
+        if(progressRef.current){
+          progressRef.current.style.setProperty('--progress',String(self.progress));
         }
+
+        const spinProgress=gsap.utils.clamp(0,1,self.progress/spinEnd);
+        targetRotation=initialRotation+(finalRotation-initialRotation)*spinProgress;
+
+        const lidProgress=gsap.utils.clamp(0,1,(self.progress-spinEnd)/(1-spinEnd));
+        const easedLid=gsap.parseEase('power2.out')(lidProgress);
+        targetLid=-Math.PI*.58*easedLid;
+        targetRevealLight=10*easedLid;
+        targetHaloScale=1+.12*easedLid;
+
+        const bottleProgress=gsap.utils.clamp(0,1,(lidProgress-.46)/.54);
+        targetBottleReveal=gsap.parseEase('power3.out')(bottleProgress);
+        targetProductGlow=24*targetBottleReveal;
       }
     });
 
@@ -358,8 +356,7 @@ export default function BestProductReveal(){
       window.clearTimeout(delayed);
       window.removeEventListener('resize',resize);
       cancelAnimationFrame(raf);
-      spinTween.scrollTrigger?.kill();
-      spinTween.kill();
+      scrollControl.kill();
       intro.kill();
       renderer.dispose();
       dustGeometry.dispose();
