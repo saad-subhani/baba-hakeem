@@ -1,15 +1,48 @@
 .static-reference-site .ref-nav nav a{position:relative;transition:color .32s ease,opacity .32s ease}
 .static-reference-site .ref-nav nav a::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right center;transition:transform .42s cubic-bezier(.22,1,.36,1)}
 .static-reference-site .ref-nav nav a:hover::after{transform:scaleX(1);transform-origin:left center}
-.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .35s ease,border-color .35s ease,filter .35s ease}
+
+.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .35s ease,border-color .35s ease,filter .35s ease,transform .35s cubic-bezier(.22,1,.36,1)}
 .static-reference-site .ref-shop::before,.static-reference-site .ref-hero-bottom>a::before,.static-reference-site .ref-feature-copy>a::before{content:"";position:absolute;inset:-2px auto -2px -38%;width:28%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-18deg);transition:left .65s cubic-bezier(.22,1,.36,1);z-index:-1}
 .static-reference-site .ref-shop:hover::before,.static-reference-site .ref-hero-bottom>a:hover::before,.static-reference-site .ref-feature-copy>a:hover::before{left:118%}
-.static-reference-site .ref-shop:hover,.static-reference-site .ref-hero-bottom>a:hover,.static-reference-site .ref-feature-copy>a:hover{box-shadow:0 10px 30px rgba(185,139,73,.15);filter:brightness(1.06)}
-.static-reference-site .ref-product-grid article{transition:box-shadow .45s ease,background-color .45s ease,border-color .45s ease,filter .45s ease}
-.static-reference-site .ref-product-grid article:hover{box-shadow:0 22px 55px rgba(0,0,0,.16),inset 0 0 0 1px rgba(211,173,103,.16);filter:brightness(1.025)}
-.static-reference-site .ref-note{transition:box-shadow .5s ease,border-color .5s ease,filter .5s ease}
-.static-reference-site .ref-note:hover{box-shadow:0 24px 70px rgba(0,0,0,.28),0 0 0 1px rgba(211,173,103,.16);filter:brightness(1.035)}
+.static-reference-site .ref-shop:hover,.static-reference-site .ref-hero-bottom>a:hover,.static-reference-site .ref-feature-copy>a:hover{box-shadow:0 12px 32px rgba(185,139,73,.18);filter:brightness(1.06);transform:translateY(-2px)}
+
+/* Premium catalogue hover polish. These effects stay visual-only so the existing bottle scroll paths remain untouched. */
+.static-reference-site .ref-product-grid article{position:relative;isolation:isolate;transition:box-shadow .48s cubic-bezier(.22,1,.36,1),background-color .48s ease,border-color .48s ease,filter .48s ease;cursor:pointer}
+.static-reference-site .ref-product-grid article::before{content:"";position:absolute;z-index:0;inset:-10px;border-radius:28px;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 38%,rgba(213,173,101,.15),rgba(213,173,101,.045) 42%,transparent 70%);box-shadow:inset 0 0 0 1px rgba(213,173,101,0);transition:opacity .48s ease,box-shadow .48s ease}
+.static-reference-site .ref-product-grid article::after{content:"";position:absolute;z-index:3;left:14%;right:14%;bottom:-7px;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(225,187,112,.78),transparent);opacity:0;transform:scaleX(.35);transition:opacity .45s ease,transform .55s cubic-bezier(.22,1,.36,1)}
+.static-reference-site .ref-product-grid article:hover{box-shadow:0 24px 58px rgba(0,0,0,.18),inset 0 0 0 1px rgba(211,173,103,.16);filter:brightness(1.025)}
+.static-reference-site .ref-product-grid article:hover::before{opacity:1;box-shadow:inset 0 0 0 1px rgba(213,173,101,.14)}
+.static-reference-site .ref-product-grid article:hover::after{opacity:1;transform:scaleX(1)}
+.static-reference-site .ref-product-grid article>div{position:relative;z-index:1;overflow:hidden;transition:box-shadow .48s ease,border-color .48s ease}
+.static-reference-site .ref-product-grid article>div::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.16) 48%,transparent 66%);background-size:230% 100%;background-position:155% 0;opacity:.65;transition:background-position .9s cubic-bezier(.22,1,.36,1),opacity .45s ease}
+.static-reference-site .ref-product-grid article:hover>div{box-shadow:0 16px 40px rgba(0,0,0,.12),inset 0 0 0 1px rgba(214,178,106,.18)}
+.static-reference-site .ref-product-grid article:hover>div::after{background-position:-65% 0;opacity:1}
+.static-reference-site .ref-product-grid article img:not(.ref-mens-moving){transition:transform .7s cubic-bezier(.16,1,.3,1),filter .55s ease;transform-origin:50% 58%;will-change:transform}
+.static-reference-site .ref-product-grid article:hover img:not(.ref-mens-moving){transform:scale(1.055);filter:drop-shadow(0 14px 22px rgba(0,0,0,.16))}
+.static-reference-site .ref-product-grid article h3{position:relative;z-index:2;transition:transform .5s cubic-bezier(.22,1,.36,1),letter-spacing .5s ease,color .45s ease,text-shadow .45s ease}
+.static-reference-site .ref-product-grid article:hover h3{transform:translateY(-3px);letter-spacing:.035em;color:#e5c987;text-shadow:0 0 18px rgba(213,173,101,.18)}
+
+/* The moving Men's Oil asset keeps GSAP's transform ownership; only its surrounding card receives hover polish. */
+.static-reference-site .ref-mens-source:hover .ref-mens-moving{filter:drop-shadow(0 12px 20px rgba(0,0,0,.17))}
+
+.static-reference-site .ref-note{position:relative;overflow:hidden;transition:box-shadow .5s ease,border-color .5s ease,filter .5s ease,transform .5s cubic-bezier(.22,1,.36,1)}
+.static-reference-site .ref-note::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 34%,rgba(216,180,110,.08) 50%,transparent 66%);background-size:220% 100%;background-position:150% 0;transition:background-position 1s cubic-bezier(.22,1,.36,1)}
+.static-reference-site .ref-note:hover{box-shadow:0 26px 72px rgba(0,0,0,.3),0 0 0 1px rgba(211,173,103,.18);filter:brightness(1.04);transform:translateY(-3px)}
+.static-reference-site .ref-note:hover::after{background-position:-55% 0}
+
 .static-reference-site .ref-feature{position:relative;isolation:isolate}
 .static-reference-site .ref-feature::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,transparent 28%,rgba(255,255,255,.07) 48%,transparent 68%);background-size:220% 100%;background-position:160% 0;transition:background-position 1.15s cubic-bezier(.22,1,.36,1)}
 .static-reference-site .ref-feature:hover::after{background-position:-60% 0}
-@media(prefers-reduced-motion:reduce){.static-reference-site .ref-shop::before,.static-reference-site .ref-hero-bottom>a::before,.static-reference-site .ref-feature-copy>a::before{display:none}}
+.static-reference-site .ref-feature-copy h2{transition:letter-spacing .55s cubic-bezier(.22,1,.36,1),text-shadow .55s ease}
+.static-reference-site .ref-feature:hover .ref-feature-copy h2{letter-spacing:-.025em;text-shadow:0 10px 30px rgba(0,0,0,.09)}
+
+@media(hover:none){
+ .static-reference-site .ref-product-grid article::before,.static-reference-site .ref-product-grid article::after,.static-reference-site .ref-product-grid article>div::after{display:none}
+ .static-reference-site .ref-product-grid article img:not(.ref-mens-moving),.static-reference-site .ref-product-grid article h3,.static-reference-site .ref-note,.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{transition:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .static-reference-site .ref-shop::before,.static-reference-site .ref-hero-bottom>a::before,.static-reference-site .ref-feature-copy>a::before,.static-reference-site .ref-product-grid article>div::after{display:none}
+ .static-reference-site .ref-product-grid article img:not(.ref-mens-moving),.static-reference-site .ref-product-grid article h3,.static-reference-site .ref-note,.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{transition:none!important;transform:none!important}
+}
