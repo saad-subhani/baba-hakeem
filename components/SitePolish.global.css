@@ -26,9 +26,10 @@
 /* The moving Men's Oil asset keeps GSAP's transform ownership; only its surrounding card receives hover polish. */
 .static-reference-site .ref-mens-source:hover .ref-mens-moving{filter:drop-shadow(0 12px 20px rgba(0,0,0,.17))}
 
-.static-reference-site .ref-note{position:relative;overflow:hidden;transition:box-shadow .5s ease,border-color .5s ease,filter .5s ease,transform .5s cubic-bezier(.22,1,.36,1)}
+/* Keep the locked hero note's original absolute positioning and GSAP transform ownership. */
+.static-reference-site .ref-note{overflow:hidden;transition:box-shadow .5s ease,border-color .5s ease,filter .5s ease}
 .static-reference-site .ref-note::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 34%,rgba(216,180,110,.08) 50%,transparent 66%);background-size:220% 100%;background-position:150% 0;transition:background-position 1s cubic-bezier(.22,1,.36,1)}
-.static-reference-site .ref-note:hover{box-shadow:0 26px 72px rgba(0,0,0,.3),0 0 0 1px rgba(211,173,103,.18);filter:brightness(1.04);transform:translateY(-3px)}
+.static-reference-site .ref-note:hover{box-shadow:0 26px 72px rgba(0,0,0,.3),0 0 0 1px rgba(211,173,103,.18);filter:brightness(1.04)}
 .static-reference-site .ref-note:hover::after{background-position:-55% 0}
 
 .static-reference-site .ref-feature{position:relative;isolation:isolate}
@@ -44,5 +45,5 @@
 
 @media(prefers-reduced-motion:reduce){
  .static-reference-site .ref-shop::before,.static-reference-site .ref-hero-bottom>a::before,.static-reference-site .ref-feature-copy>a::before,.static-reference-site .ref-product-grid article>div::after{display:none}
- .static-reference-site .ref-product-grid article img:not(.ref-mens-moving),.static-reference-site .ref-product-grid article h3,.static-reference-site .ref-note,.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{transition:none!important;transform:none!important}
+ .static-reference-site .ref-product-grid article img:not(.ref-mens-moving),.static-reference-site .ref-product-grid article h3,.static-reference-site .ref-note,.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{transition:none!important}
 }
