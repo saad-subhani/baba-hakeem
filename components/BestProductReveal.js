@@ -22,14 +22,20 @@ export default function BestProductReveal(){
     const cores=navigator.hardwareConcurrency||4;
     const memory=navigator.deviceMemory||4;
     const lowPower=cores<=4||memory<=4;
+    const coarsePointer=window.matchMedia?.('(pointer: coarse)')?.matches??false;
+    const mobileGPU=coarsePointer&&window.innerWidth<900;
+    const shadowsEnabled=!mobileGPU;
     const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?1.3:1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,mobileGPU?1.15:(lowPower?1.3:1.75)));
     renderer.outputColorSpace=THREE.SRGBColorSpace;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure=1.22;
     renderer.physicallyCorrectLights=true;
-    renderer.shadowMap.enabled=true;
+    renderer.shadowMap.enabled=shadowsEnabled;
     renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    canvas.style.willChange='transform';
+    canvas.style.transform='translateZ(0)';
+    canvas.style.backfaceVisibility='hidden';
 
     const scene=new THREE.Scene();
     const camera=new THREE.PerspectiveCamera(33,1,.1,100);
@@ -173,29 +179,29 @@ export default function BestProductReveal(){
     const edgeMaterial=new THREE.LineBasicMaterial({color:0xd1a355,transparent:true,opacity:.72});
     [bodyShell,topBand,bottomBand,lidBase,lidTop].forEach(mesh=>{const edges=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),edgeMaterial);edges.position.copy(mesh.position);edges.rotation.copy(mesh.rotation);if(mesh.parent===body) body.add(edges);else lid.add(edges);});
 
-    const floor=new THREE.Mesh(new THREE.CircleGeometry(3.45,72),new THREE.MeshStandardMaterial({color:0x080a08,roughness:.9,metalness:.03}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.205;floor.receiveShadow=true;scene.add(floor);
-    const pedestal=new THREE.Mesh(new THREE.CylinderGeometry(2.28,2.58,.12,72),new THREE.MeshPhysicalMaterial({color:0x110d09,roughness:.23,metalness:.72,clearcoat:.5,clearcoatRoughness:.1}));pedestal.position.y=-1.14;pedestal.receiveShadow=true;scene.add(pedestal);
+    const floor=new THREE.Mesh(new THREE.CircleGeometry(3.45,72),new THREE.MeshStandardMaterial({color:0x080a08,roughness:.9,metalness:.03}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.205;floor.receiveShadow=shadowsEnabled;scene.add(floor);
+    const pedestal=new THREE.Mesh(new THREE.CylinderGeometry(2.28,2.58,.12,72),new THREE.MeshPhysicalMaterial({color:0x110d09,roughness:.23,metalness:.72,clearcoat:.5,clearcoatRoughness:.1}));pedestal.position.y=-1.14;pedestal.receiveShadow=shadowsEnabled;scene.add(pedestal);
     const pedestalRing=new THREE.Mesh(new THREE.TorusGeometry(2.3,.022,10,72),new THREE.MeshBasicMaterial({color:0xc7964d,transparent:true,opacity:.62}));pedestalRing.rotation.x=Math.PI/2;pedestalRing.position.y=-1.065;scene.add(pedestalRing);
     const contactShadow=new THREE.Mesh(new THREE.CircleGeometry(1.7,64),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.46,depthWrite:false}));contactShadow.rotation.x=-Math.PI/2;contactShadow.position.y=-1.055;contactShadow.scale.set(1.35,.52,1);scene.add(contactShadow);
 
     const ambient=new THREE.HemisphereLight(0xf6dfba,0x04100b,.9);scene.add(ambient);
-    const key=new THREE.SpotLight(0xffdba2,84,18,Math.PI/5,.56,1.4);key.position.set(-4.4,6.3,5.4);key.target.position.set(0,.1,0);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.bias=-.00035;scene.add(key,key.target);
+    const key=new THREE.SpotLight(0xffdba2,84,18,Math.PI/5,.56,1.4);key.position.set(-4.4,6.3,5.4);key.target.position.set(0,.1,0);key.castShadow=shadowsEnabled;if(shadowsEnabled){key.shadow.mapSize.set(1024,1024);key.shadow.bias=-.00035;}scene.add(key,key.target);
     const rim=new THREE.SpotLight(0xe39a50,56,15,Math.PI/4,.68,1.45);rim.position.set(4.6,3.9,-4.8);rim.target.position.set(0,.45,0);scene.add(rim,rim.target);
     const emeraldRim=new THREE.PointLight(0x3d7354,18,7,2);emeraldRim.position.set(-3.2,.8,-2.2);scene.add(emeraldRim);
     const soft=new THREE.PointLight(0xffe8c0,16,9,2);soft.position.set(0,2.3,4.1);scene.add(soft);
     const lidAccent=new THREE.SpotLight(0xffedc6,30,9,Math.PI/6,.5,1.35);lidAccent.position.set(0,3.5,4.25);lidAccent.target.position.set(0,1.35,-.15);scene.add(lidAccent,lidAccent.target);
     const revealLight=new THREE.PointLight(0xffd89b,0,5.4,2);revealLight.position.set(0,1.08,.08);root.add(revealLight);
 
-    const halo=new THREE.Mesh(new THREE.RingGeometry(2.05,2.82,72),new THREE.MeshBasicMaterial({color:0xc58b4c,transparent:true,opacity:.1,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));halo.rotation.x=-Math.PI/2;halo.position.y=-1.045;scene.add(halo);
-    const innerHalo=new THREE.Mesh(new THREE.RingGeometry(1.34,1.82,72),new THREE.MeshBasicMaterial({color:0xefd191,transparent:true,opacity:.055,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));innerHalo.rotation.x=-Math.PI/2;innerHalo.position.y=-1.04;scene.add(innerHalo);
+    const halo=new THREE.Mesh(new THREE.RingGeometry(2.05,2.82,72),new THREE.MeshBasicMaterial({color:0xc58b4c,transparent:true,opacity:.085,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));halo.rotation.x=-Math.PI/2;halo.position.y=-1.045;scene.add(halo);
+    const innerHalo=new THREE.Mesh(new THREE.RingGeometry(1.34,1.82,72),new THREE.MeshBasicMaterial({color:0xefd191,transparent:true,opacity:.045,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));innerHalo.rotation.x=-Math.PI/2;innerHalo.position.y=-1.04;scene.add(innerHalo);
     const glowCanvas=document.createElement('canvas');glowCanvas.width=256;glowCanvas.height=256;const gctx=glowCanvas.getContext('2d');const gg=gctx.createRadialGradient(128,128,0,128,128,128);gg.addColorStop(0,'rgba(255,229,178,.95)');gg.addColorStop(.25,'rgba(225,168,85,.5)');gg.addColorStop(.68,'rgba(128,79,28,.1)');gg.addColorStop(1,'rgba(0,0,0,0)');gctx.fillStyle=gg;gctx.fillRect(0,0,256,256);
     const glowTexture=new THREE.CanvasTexture(glowCanvas);const glowSprite=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTexture,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));glowSprite.scale.set(5.1,5.1,1);glowSprite.position.set(0,1.25,-.65);scene.add(glowSprite);
-    const lightBeam=new THREE.Mesh(new THREE.CylinderGeometry(1.2,.22,3.6,36,1,true),new THREE.MeshBasicMaterial({color:0xe9b766,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));lightBeam.position.set(0,2.2,.03);root.add(lightBeam);
+    const lightBeam=new THREE.Mesh(new THREE.CylinderGeometry(1.2,.22,3.6,mobileGPU?16:36,1,true),new THREE.MeshBasicMaterial({color:0xe9b766,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));lightBeam.position.set(0,2.2,.03);root.add(lightBeam);
 
-    const dustCount=80;
+    const dustCount=mobileGPU?24:80;
     const dustGeometry=new THREE.BufferGeometry();const dustPositions=new Float32Array(dustCount*3);for(let i=0;i<dustCount;i++){const a=i*2.39996323;const r=2.2+(i%15)*.15;dustPositions[i*3]=Math.cos(a)*r;dustPositions[i*3+1]=-.6+(i%21)*.16;dustPositions[i*3+2]=Math.sin(a)*r;}dustGeometry.setAttribute('position',new THREE.BufferAttribute(dustPositions,3));
-    const dustMaterial=new THREE.PointsMaterial({color:0xe5bd79,size:.018,transparent:true,opacity:.28,depthWrite:false,blending:THREE.AdditiveBlending});const dust=new THREE.Points(dustGeometry,dustMaterial);scene.add(dust);
-    const revealCount=56;
+    const dustMaterial=new THREE.PointsMaterial({color:0xe5bd79,size:.018,transparent:true,opacity:mobileGPU?.18:.28,depthWrite:false,blending:THREE.AdditiveBlending});const dust=new THREE.Points(dustGeometry,dustMaterial);scene.add(dust);
+    const revealCount=mobileGPU?20:56;
     const revealDustGeometry=new THREE.BufferGeometry();const revealDustPositions=new Float32Array(revealCount*3);for(let i=0;i<revealCount;i++){const a=i*2.12;const r=.18+(i%9)*.055;revealDustPositions[i*3]=Math.cos(a)*r;revealDustPositions[i*3+1]=(i%16)*.11;revealDustPositions[i*3+2]=Math.sin(a)*r;}revealDustGeometry.setAttribute('position',new THREE.BufferAttribute(revealDustPositions,3));
     const revealDustMaterial=new THREE.PointsMaterial({color:0xffd990,size:.024,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});const revealDust=new THREE.Points(revealDustGeometry,revealDustMaterial);revealDust.position.set(0,.55,.08);root.add(revealDust);
 
@@ -223,31 +229,30 @@ export default function BestProductReveal(){
     productImage=new THREE.Sprite(productImageMaterial);productImage.scale.set(1.45,3.45,1);productImage.position.y=1.33;product.add(productImage);
     const productGlow=new THREE.PointLight(0xffc46b,0,5.2,2);productGlow.position.set(0,1.05,.35);root.add(productGlow);
 
-    root.traverse(obj=>{if(obj.isMesh){obj.castShadow=true;obj.receiveShadow=true;}});lightBeam.castShadow=false;revealDust.castShadow=false;lidInside.castShadow=false;lidInside.receiveShadow=false;productImage.castShadow=false;productImage.receiveShadow=false;
+    root.traverse(obj=>{if(obj.isMesh){obj.castShadow=shadowsEnabled;obj.receiveShadow=shadowsEnabled;}});lightBeam.castShadow=false;revealDust.castShadow=false;lidInside.castShadow=false;lidInside.receiveShadow=false;productImage.castShadow=false;productImage.receiveShadow=false;
 
     const initialRotation=-Math.PI*.16;const finalRotation=(Math.PI*2)-(Math.PI*.16);const spinEnd=.68;
     let targetRotation=initialRotation;let targetLid=0;let targetBottleReveal=0;let bottleReveal=0;let targetRevealLight=0;let targetProductGlow=0;let targetHaloScale=1;let targetCameraZ=8.72;let targetCameraY=1.26;let scrollTarget=0;let scrollProgress=0;
     root.rotation.y=initialRotation;lidPivot.rotation.x=0;
 
-    const resize=()=>{const rect=canvas.getBoundingClientRect();const w=Math.max(1,rect.width);const h=Math.max(1,rect.height);const mobile=w<700;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,mobile?1.35:(lowPower?1.3:1.75)));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();targetCameraZ=mobile?9.72:8.72;targetCameraY=mobile?1.08:1.26;if(!product.visible){camera.position.z=targetCameraZ;camera.position.y=targetCameraY;}};
+    const resize=()=>{const rect=canvas.getBoundingClientRect();const w=Math.max(1,rect.width);const h=Math.max(1,rect.height);const mobile=w<700;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,mobileGPU?1.15:(mobile?1.25:(lowPower?1.3:1.75))));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();targetCameraZ=mobile?9.72:8.72;targetCameraY=mobile?1.08:1.26;if(!product.visible){camera.position.z=targetCameraZ;camera.position.y=targetCameraY;}};
     resize();
 
     let raf=0;let previousTime=performance.now();let sectionVisible=true;
     const observer=new IntersectionObserver(entries=>{sectionVisible=entries[0]?.isIntersecting??true;},{rootMargin:'200px 0px'});observer.observe(section);
-    const render=(now=performance.now())=>{const dt=Math.min(.05,Math.max(.001,(now-previousTime)/1000));previousTime=now;if(document.hidden||!sectionVisible){raf=requestAnimationFrame(render);return;}const t=now*.00035;
-      scrollProgress=THREE.MathUtils.damp(scrollProgress,scrollTarget,5.2,dt);
+    const render=(now=performance.now())=>{const dt=Math.min(.04,Math.max(.001,(now-previousTime)/1000));previousTime=now;if(document.hidden||!sectionVisible){raf=requestAnimationFrame(render);return;}const t=now*.00035;
+      scrollProgress=THREE.MathUtils.damp(scrollProgress,scrollTarget,7.2,dt);
       if(progressRef.current){progressRef.current.style.setProperty('--progress',String(scrollProgress));progressRef.current.style.setProperty('--open',String(gsap.utils.clamp(0,1,(scrollProgress-spinEnd)/(1-spinEnd))));}
       const spinProgress=gsap.utils.clamp(0,1,scrollProgress/spinEnd);targetRotation=initialRotation+(finalRotation-initialRotation)*spinProgress;
       const lidProgress=gsap.utils.clamp(0,1,(scrollProgress-spinEnd)/(1-spinEnd));const easedLid=gsap.parseEase('power3.out')(lidProgress);targetLid=-Math.PI*.58*easedLid;targetRevealLight=10.5*easedLid;targetHaloScale=1+.15*easedLid;
       const bottleProgress=gsap.utils.clamp(0,1,(lidProgress-.24)/.76);targetBottleReveal=gsap.parseEase('power4.out')(bottleProgress);targetProductGlow=28*targetBottleReveal;
       const mobile=canvas.clientWidth<700;const baseZ=mobile?9.72:8.72;const baseY=mobile?1.08:1.26;targetCameraZ=baseZ-(mobile?.36:.58)*targetBottleReveal;targetCameraY=baseY+.16*targetBottleReveal;
-      root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,9.5,dt);lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,8.2,dt);bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,6.8,dt);revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,7.8,dt);productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,6.8,dt);const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,7.2,dt);halo.scale.setScalar(smoothHalo);innerHalo.scale.setScalar(.96+(smoothHalo-1)*.72);camera.position.z=THREE.MathUtils.damp(camera.position.z,targetCameraZ,4.8,dt);camera.position.y=THREE.MathUtils.damp(camera.position.y,targetCameraY,4.8,dt);
-      dust.rotation.y=t*.1;dust.position.y=Math.sin(t*.75)*.035;halo.material.opacity=.075+Math.sin(t*2)*.022;innerHalo.material.opacity=.038+Math.sin(t*2.35)*.016;pedestalRing.material.opacity=.48+Math.sin(t*1.7)*.08;
-      const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.02+.1*opening;lightBeam.material.opacity=.008+.04*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=.2*bottleReveal;revealDust.rotation.y=-t*.6;revealDust.position.y=.45+1.1*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
-      product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.98*bottleReveal);product.scale.setScalar(bottleScale);product.rotation.z=.004*Math.sin(t*.55);product.position.y=(-.22)+(1.1*bottleReveal)+(Math.sin(t*1.1)*.012*bottleReveal);product.position.z=.18+(.16*bottleReveal);productImageMaterial.rotation=.003*Math.sin(t*.5);}renderer.render(scene,camera);raf=requestAnimationFrame(render);};
+      root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,12.5,dt);lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,10.8,dt);bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,8.8,dt);revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,9.4,dt);productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,8.8,dt);const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,9,dt);halo.scale.setScalar(smoothHalo);innerHalo.scale.setScalar(.96+(smoothHalo-1)*.72);camera.position.z=THREE.MathUtils.damp(camera.position.z,targetCameraZ,6.4,dt);camera.position.y=THREE.MathUtils.damp(camera.position.y,targetCameraY,6.4,dt);
+      if(!mobileGPU){dust.rotation.y=t*.06;dust.position.y=Math.sin(t*.45)*.02;}const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.018+.085*opening;lightBeam.material.opacity=.006+.032*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=(mobileGPU?.12:.2)*bottleReveal;revealDust.rotation.y=-t*.35;revealDust.position.y=.45+1.1*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
+      product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.98*bottleReveal);product.scale.setScalar(bottleScale);product.position.y=(-.22)+(1.1*bottleReveal);product.position.z=.18+(.16*bottleReveal);productImageMaterial.rotation=0;}renderer.render(scene,camera);raf=requestAnimationFrame(render);};
     raf=requestAnimationFrame(render);
 
-    const scrollControl=ScrollTrigger.create({trigger:section,start:'top top',end:'+=2400',pin:true,pinType:'fixed',pinSpacing:true,anticipatePin:1,invalidateOnRefresh:true,onUpdate:self=>{scrollTarget=self.progress;}});
+    const scrollControl=ScrollTrigger.create({trigger:section,start:'top top',end:'+=2600',pin:true,pinType:mobileGPU?'transform':'fixed',pinSpacing:true,anticipatePin:1,invalidateOnRefresh:true,onUpdate:self=>{scrollTarget=self.progress;}});
 
     const intro=gsap.fromTo(root.scale,{x:.93,y:.93,z:.93},{x:1,y:1,z:1,duration:1.25,ease:'power3.out'});
     window.addEventListener('resize',resize);const delayed=window.setTimeout(()=>ScrollTrigger.refresh(),120);
