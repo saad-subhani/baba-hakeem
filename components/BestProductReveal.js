@@ -23,7 +23,7 @@ export default function BestProductReveal(){
     const memory=navigator.deviceMemory||4;
     const lowPower=cores<=4||memory<=4;
     const renderer=new THREE.WebGLRenderer({canvas,antialias:!lowPower,alpha:true,powerPreference:lowPower?'low-power':'high-performance'});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?1:1.35));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?.9:1.2));
     renderer.outputColorSpace=THREE.SRGBColorSpace;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure=1.14;
@@ -84,8 +84,37 @@ export default function BestProductReveal(){
       return texture;
     };
 
+    const makeLidTexture=()=>{
+      const c=document.createElement('canvas');
+      const size=lowPower?1024:1536;
+      c.width=size;c.height=size;
+      const ctx=c.getContext('2d');
+      const scale=size/1024;
+      ctx.scale(scale,scale);
+      const bg=ctx.createRadialGradient(512,420,60,512,512,500);
+      bg.addColorStop(0,'#1d4737');bg.addColorStop(.58,'#102c22');bg.addColorStop(1,'#071710');
+      ctx.fillStyle=bg;ctx.fillRect(0,0,1024,1024);
+      const ring=(radius,width,alpha)=>{ctx.beginPath();ctx.arc(512,512,radius,0,Math.PI*2);ctx.strokeStyle=`rgba(232,194,112,${alpha})`;ctx.lineWidth=width;ctx.stroke();};
+      ring(430,14,.95);ring(396,3,.55);ring(348,1.5,.28);
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(240,214,157,.72)';ctx.font='600 19px Arial';drawSpacedText(ctx,'SIGNATURE HERBAL CARE',512,326,4);
+      ctx.fillStyle='#f2d99d';ctx.font='700 64px Georgia';drawSpacedText(ctx,'BABA HAKEEM',512,420,5);
+      ctx.fillStyle='rgba(238,221,183,.82)';ctx.font='600 23px Arial';drawSpacedText(ctx,'PREMIUM HERBAL OILS',512,477,3);
+      ctx.beginPath();ctx.moveTo(350,535);ctx.lineTo(674,535);ctx.strokeStyle='rgba(232,194,112,.68)';ctx.lineWidth=2;ctx.stroke();
+      ctx.fillStyle='#f1d494';ctx.font='700 112px Georgia';ctx.fillText('BH',512,646);
+      ctx.fillStyle='rgba(236,211,153,.72)';ctx.font='500 18px Arial';ctx.fillText('TRADITION • PURITY • CRAFT',512,730);
+      const texture=new THREE.CanvasTexture(c);
+      texture.colorSpace=THREE.SRGBColorSpace;
+      texture.anisotropy=Math.min(lowPower?4:8,renderer.capabilities.getMaxAnisotropy());
+      texture.minFilter=THREE.LinearMipmapLinearFilter;
+      texture.magFilter=THREE.LinearFilter;
+      texture.generateMipmaps=true;
+      texture.needsUpdate=true;
+      return texture;
+    };
+
     const outerBrandTexture=makeBrandTexture(false);
-    const innerBrandTexture=makeBrandTexture(true);
+    const innerBrandTexture=makeLidTexture();
 
     const body=new THREE.Group();
     root.add(body);
@@ -122,7 +151,15 @@ export default function BestProductReveal(){
     const lidMedallion=new THREE.Mesh(new THREE.CylinderGeometry(.38,.38,.045,32),gold);lidMedallion.position.y=.64;lid.add(lidMedallion);
     const medallionInset=new THREE.Mesh(new THREE.TorusGeometry(.27,.022,8,32),trimDark);medallionInset.rotation.x=Math.PI/2;medallionInset.position.y=.672;lid.add(medallionInset);
     const botanicalMark=new THREE.Mesh(new THREE.OctahedronGeometry(.085),velvet);botanicalMark.position.y=.695;lid.add(botanicalMark);
-    const lidInside=new THREE.Mesh(new THREE.CircleGeometry(1.3,8),new THREE.MeshStandardMaterial({map:innerBrandTexture,roughness:.76,metalness:.01,side:THREE.DoubleSide}));lidInside.rotation.x=-Math.PI/2;lidInside.position.y=-.222;lid.add(lidInside);lid.add(octagon(1.36,-.246,brassDetail,.028));
+
+    const lidInsert=new THREE.Group();
+    lidInsert.position.y=-.226;lidInsert.rotation.x=-Math.PI/2;lidInsert.rotation.z=Math.PI;
+    const insertBacking=new THREE.Mesh(new THREE.CircleGeometry(1.31,64),new THREE.MeshBasicMaterial({color:0xb8893f,side:THREE.FrontSide}));insertBacking.position.z=-.012;lidInsert.add(insertBacking);
+    const insertVelvet=new THREE.Mesh(new THREE.CircleGeometry(1.255,64),new THREE.MeshBasicMaterial({color:0x0b241b,side:THREE.FrontSide}));insertVelvet.position.z=-.006;lidInsert.add(insertVelvet);
+    const lidInside=new THREE.Mesh(new THREE.CircleGeometry(1.19,64),new THREE.MeshBasicMaterial({map:innerBrandTexture,side:THREE.FrontSide,toneMapped:false}));lidInside.position.z=.004;lidInsert.add(lidInside);
+    const insertRing=new THREE.Mesh(new THREE.RingGeometry(1.205,1.235,64),new THREE.MeshBasicMaterial({color:0xe1b96c,side:THREE.FrontSide}));insertRing.position.z=.008;lidInsert.add(insertRing);
+    lid.add(lidInsert);lid.add(octagon(1.36,-.246,brassDetail,.028));
+
     const latch=new THREE.Mesh(new THREE.BoxGeometry(.3,.4,.13),gold);latch.position.set(0,-.02,1.79);lid.add(latch);
     const latchGem=new THREE.Mesh(new THREE.OctahedronGeometry(.09),velvet);latchGem.position.set(0,-.02,1.865);lid.add(latchGem);
     const latchBase=new THREE.Mesh(new THREE.BoxGeometry(.38,.22,.13),gold);latchBase.position.set(0,.62,1.8);body.add(latchBase);
@@ -140,6 +177,7 @@ export default function BestProductReveal(){
     const rim=new THREE.SpotLight(0xd68a3e,48,15,Math.PI/4,.72,1.5);rim.position.set(4.6,3.9,-4.8);rim.target.position.set(0,.45,0);scene.add(rim,rim.target);
     const emeraldRim=new THREE.PointLight(0x335d45,14,7,2);emeraldRim.position.set(-3.2,.8,-2.2);scene.add(emeraldRim);
     const soft=new THREE.PointLight(0xffe3b1,12,9,2);soft.position.set(0,2.3,4.1);scene.add(soft);
+    const lidAccent=new THREE.SpotLight(0xffe4b0,18,8,Math.PI/7,.55,1.5);lidAccent.position.set(0,3.6,3.2);lidAccent.target.position.set(0,1.15,.15);scene.add(lidAccent,lidAccent.target);
     const revealLight=new THREE.PointLight(0xffd89b,0,5.4,2);revealLight.position.set(0,1.08,.08);root.add(revealLight);
 
     const halo=new THREE.Mesh(new THREE.RingGeometry(2.05,2.82,48),new THREE.MeshBasicMaterial({color:0xc58b4c,transparent:true,opacity:.1,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));halo.rotation.x=-Math.PI/2;halo.position.y=-1.045;scene.add(halo);
@@ -177,7 +215,7 @@ export default function BestProductReveal(){
     let targetRotation=initialRotation;let targetLid=0;let targetBottleReveal=0;let bottleReveal=0;let targetRevealLight=0;let targetProductGlow=0;let targetHaloScale=1;let targetCameraZ=8.72;let targetCameraY=1.26;
     root.rotation.y=initialRotation;lidPivot.rotation.x=0;
 
-    const resize=()=>{const rect=canvas.getBoundingClientRect();const w=Math.max(1,rect.width);const h=Math.max(1,rect.height);const mobile=w<700;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,mobile||lowPower?1:1.35));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();targetCameraZ=mobile?9.72:8.72;targetCameraY=mobile?1.08:1.26;if(!product.visible){camera.position.z=targetCameraZ;camera.position.y=targetCameraY;}};
+    const resize=()=>{const rect=canvas.getBoundingClientRect();const w=Math.max(1,rect.width);const h=Math.max(1,rect.height);const mobile=w<700;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,mobile||lowPower?.9:1.2));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();targetCameraZ=mobile?9.72:8.72;targetCameraY=mobile?1.08:1.26;if(!product.visible){camera.position.z=targetCameraZ;camera.position.y=targetCameraY;}};
     resize();
 
     let raf=0;let previousTime=performance.now();let sectionVisible=true;
@@ -185,7 +223,7 @@ export default function BestProductReveal(){
     const render=(now=performance.now())=>{const dt=Math.min(.05,Math.max(.001,(now-previousTime)/1000));previousTime=now;if(document.hidden||!sectionVisible){raf=requestAnimationFrame(render);return;}const t=now*.00035;
       root.rotation.y=THREE.MathUtils.damp(root.rotation.y,targetRotation,14.5,dt);lidPivot.rotation.x=THREE.MathUtils.damp(lidPivot.rotation.x,targetLid,13.5,dt);bottleReveal=THREE.MathUtils.damp(bottleReveal,targetBottleReveal,11.5,dt);revealLight.intensity=THREE.MathUtils.damp(revealLight.intensity,targetRevealLight,12,dt);productGlow.intensity=THREE.MathUtils.damp(productGlow.intensity,targetProductGlow,11.5,dt);const smoothHalo=THREE.MathUtils.damp(halo.scale.x,targetHaloScale,11.5,dt);halo.scale.setScalar(smoothHalo);innerHalo.scale.setScalar(.96+(smoothHalo-1)*.72);camera.position.z=THREE.MathUtils.damp(camera.position.z,targetCameraZ,6.8,dt);camera.position.y=THREE.MathUtils.damp(camera.position.y,targetCameraY,6.8,dt);
       dust.rotation.y=t*.1;dust.position.y=Math.sin(t*.75)*.035;halo.material.opacity=.075+Math.sin(t*2)*.022;innerHalo.material.opacity=.038+Math.sin(t*2.35)*.016;pedestalRing.material.opacity=.43+Math.sin(t*1.7)*.08;
-      const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.06+.24*opening;lightBeam.material.opacity=.025+.115*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=.58*bottleReveal;revealDust.rotation.y=-t*.85;revealDust.position.y=.45+1.25*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
+      const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.025+.12*opening;lightBeam.material.opacity=.01+.05*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=.22*bottleReveal;revealDust.rotation.y=-t*.85;revealDust.position.y=.45+1.25*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
       product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.78*bottleReveal);product.scale.setScalar(bottleScale);product.rotation.y=.075*Math.sin(t*1.35);product.rotation.z=.012*Math.sin(t*.95);product.position.y=(-.22)+(2.2*bottleReveal)+(Math.sin(t*2.4)*.028*bottleReveal);}renderer.render(scene,camera);raf=requestAnimationFrame(render);};
     raf=requestAnimationFrame(render);
 
