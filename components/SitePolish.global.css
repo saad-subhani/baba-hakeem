@@ -1,0 +1,15 @@
+.static-reference-site .ref-nav nav a{position:relative;transition:color .32s ease,opacity .32s ease}
+.static-reference-site .ref-nav nav a::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right center;transition:transform .42s cubic-bezier(.22,1,.36,1)}
+.static-reference-site .ref-nav nav a:hover::after{transform:scaleX(1);transform-origin:left center}
+.static-reference-site .ref-shop,.static-reference-site .ref-hero-bottom>a,.static-reference-site .ref-feature-copy>a{position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .35s ease,border-color .35s ease,filter .35s ease}
+.static-reference-site .ref-shop::before,.static-reference-site .ref-hero-bottom>a::before,.static-reference-site .ref-feature-copy>a::before{content:"";position:absolute;inset:-2px auto -2px -38%;width:28%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-18deg);transition:left .65s cubic-bezier(.22,1,.36,1);z-index:-1}
+.static-reference-site .ref-shop:hover::before,.static-reference-site .ref-hero-bottom>a:hover::before,.static-reference-site .ref-feature-copy>a:hover::before{left:118%}
+.static-reference-site .ref-shop:hover,.static-reference-site .ref-hero-bottom>a:hover,.static-reference-site .ref-feature-copy>a:hover{box-shadow:0 10px 30px rgba(185,139,73,.15);filter:brightness(1.06)}
+.static-reference-site .ref-product-grid article{transition:box-shadow .45s ease,background-color .45s ease,border-color .45s ease,filter .45s ease}
+.static-reference-site .ref-product-grid article:hover{box-shadow:0 22px 55px rgba(0,0,0,.16),inset 0 0 0 1px rgba(211,173,103,.16);filter:brightness(1.025)}
+.static-reference-site .ref-note{transition:box-shadow .5s ease,border-color .5s ease,filter .5s ease}
+.static-reference-site .ref-note:hover{box-shadow:0 24px 70px rgba(0,0,0,.28),0 0 0 1px rgba(211,173,103,.16);filter:brightness(1.035)}
+.static-reference-site .ref-feature{position:relative;isolation:isolate}
+.static-reference-site .ref-feature::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,transparent 28%,rgba(255,255,255,.07) 48%,transparent 68%);background-size:220% 100%;background-position:160% 0;transition:background-position 1.15s cubic-bezier(.22,1,.36,1)}
+.static-reference-site .ref-feature:hover::after{background-position:-60% 0}
+@media(prefers-reduced-motion:reduce){.static-reference-site .ref-shop::before,.static-reference-site .ref-hero-bottom>a::before,.static-reference-site .ref-feature-copy>a::before{display:none}}
