@@ -122,7 +122,7 @@ export default function BestProductReveal(){
     const lidMedallion=new THREE.Mesh(new THREE.CylinderGeometry(.38,.38,.045,48),gold);lidMedallion.position.y=.64;lid.add(lidMedallion);
     const medallionInset=new THREE.Mesh(new THREE.TorusGeometry(.27,.022,10,64),trimDark);medallionInset.rotation.x=Math.PI/2;medallionInset.position.y=.672;lid.add(medallionInset);
     const botanicalMark=new THREE.Mesh(new THREE.OctahedronGeometry(.085),velvet);botanicalMark.position.y=.695;lid.add(botanicalMark);
-    const lidInside=new THREE.Mesh(new THREE.CircleGeometry(1.3,8),new THREE.MeshStandardMaterial({map:innerBrandTexture,roughness:.76,metalness:.01,side:THREE.DoubleSide}));lidInside.rotation.x=-Math.PI/2;lidInside.position.y=-.222;lid.add(lidInside);lid.add(octagon(1.36,-.246,brassDetail,.028));
+    const lidInside=new THREE.Mesh(new THREE.CircleGeometry(1.3,8),new THREE.MeshStandardMaterial({map:innerBrandTexture,roughness:.76,metalness:.01,side:THREE.DoubleSide}));lidInside.rotation.x=-Math.PI/2;lidInside.rotation.z=Math.PI;lidInside.position.y=-.222;lid.add(lidInside);lid.add(octagon(1.36,-.246,brassDetail,.028));
     const latch=new THREE.Mesh(new THREE.BoxGeometry(.3,.4,.13),gold);latch.position.set(0,-.02,1.79);lid.add(latch);
     const latchGem=new THREE.Mesh(new THREE.OctahedronGeometry(.09),velvet);latchGem.position.set(0,-.02,1.865);lid.add(latchGem);
     const latchBase=new THREE.Mesh(new THREE.BoxGeometry(.38,.22,.13),gold);latchBase.position.set(0,.62,1.8);body.add(latchBase);
