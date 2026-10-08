@@ -16,7 +16,6 @@ export default function SitePolish(){
   const pointerFrame=useRef(0);
   const scrollFrame=useRef(0);
   const [enabled,setEnabled]=useState(false);
-  const [active,setActive]=useState(0);
   const [quiet,setQuiet]=useState(false);
   const [lite,setLite]=useState(false);
 
@@ -59,17 +58,6 @@ export default function SitePolish(){
       window.addEventListener('pointermove',onPointer,{passive:true});
     }
 
-    const sectionNodes=chapters.map(item=>document.querySelector(item.selector));
-    const chapterObserver=new IntersectionObserver(entries=>{
-      const visible=entries
-        .filter(entry=>entry.isIntersecting)
-        .sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
-      if(!visible) return;
-      const index=sectionNodes.indexOf(visible.target);
-      if(index>=0) setActive(index);
-    },{threshold:[.18,.35,.55],rootMargin:'-18% 0px -28%'});
-    sectionNodes.forEach(node=>node&&chapterObserver.observe(node));
-
     const signature=document.querySelector('#best-product');
     const quietObserver=signature?new IntersectionObserver(entries=>{
       setQuiet(entries[0]?.isIntersecting??false);
@@ -82,31 +70,20 @@ export default function SitePolish(){
       if(onPointer) window.removeEventListener('pointermove',onPointer);
       if(pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
       if(scrollFrame.current) cancelAnimationFrame(scrollFrame.current);
-      chapterObserver.disconnect();
       quietObserver?.disconnect();
     };
   },[]);
 
   if(!enabled) return null;
 
-  return <>
-    <div className={`${styles.effects} ${quiet?styles.quiet:''} ${lite?styles.lite:''}`} aria-hidden="true">
-      <div className={styles.progressTrack}><span ref={progressRef}/></div>
-      <div ref={glowRef} className={styles.cursorGlow}/>
-      <div className={styles.grain}/>
-      <div className={styles.edgeGlowLeft}/>
-      <div className={styles.edgeGlowRight}/>
-      <div className={styles.specks}>
-        <i/><i/><i/><i/><i/>
-      </div>
+  return <div className={`${styles.effects} ${quiet?styles.quiet:''} ${lite?styles.lite:''}`} aria-hidden="true">
+    <div className={styles.progressTrack}><span ref={progressRef}/></div>
+    <div ref={glowRef} className={styles.cursorGlow}/>
+    <div className={styles.grain}/>
+    <div className={styles.edgeGlowLeft}/>
+    <div className={styles.edgeGlowRight}/>
+    <div className={styles.specks}>
+      <i/><i/><i/><i/><i/>
     </div>
-    <nav className={styles.chapterRail} aria-label="Page sections">
-      {chapters.map((chapter,index)=><a
-        key={chapter.label}
-        href={chapter.href}
-        className={index===active?styles.active:''}
-        aria-label={`Go to ${chapter.label}`}
-      ><span/>{chapter.label}</a>)}
-    </nav>
-  </>;
+  </div>;
 }
