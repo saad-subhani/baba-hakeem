@@ -29,7 +29,6 @@ export default function BestProductReveal(){
     const roundSegments=performanceMode?48:96;
     const baseSegments=performanceMode?36:72;
     const detailSegments=performanceMode?28:48;
-    const textureAnisotropy=performanceMode?Math.min(4,rendererCapsPlaceholder):rendererCapsPlaceholder;
     section.dataset.renderMode=performanceMode?'lite':'full';
 
     const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
