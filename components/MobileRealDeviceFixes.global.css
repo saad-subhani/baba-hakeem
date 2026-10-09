@@ -1,8 +1,7 @@
-/* Real-device mobile corrections derived from Safari + Chrome recordings.
+/* Real-device mobile corrections derived from Safari + Chrome phone recordings.
    Desktop/tablet >= 761px is intentionally untouched. */
 
 @media (max-width:760px){
-  /* Re-assert the intended mobile absolute composition only on phones. */
   .static-reference-site .ref-hero-copy{
     position:absolute!important;
     left:50%!important;
@@ -23,8 +22,6 @@
     margin-top:14px!important;
   }
 
-  /* Keep both lower hero callouts present without letting them climb into the
-     title/bottle area on real 384px Safari/Chrome viewports. */
   .static-reference-site .ref-hero-bottom,
   .static-reference-site .ref-note{
     position:absolute!important;
@@ -90,7 +87,6 @@
     font-size:7.5px!important;
   }
 
-  /* Stable phone viewport framing. */
   .static-reference-site .ref-hero{
     height:100svh!important;
     min-height:680px!important;
@@ -103,7 +99,6 @@
     max-height:365px!important;
   }
 
-  /* Mobile catalogue geometry stays fixed while browser chrome collapses. */
   .static-reference-site .ref-catalogue{
     min-height:auto!important;
     justify-content:flex-start!important;
@@ -114,28 +109,28 @@
     min-height:142px;
   }
 
-  /* Joint Oil destination copy. It is hidden until the moving hero bottle is
-     almost fully inside the card, then takes ownership so the finished bottle
-     can scroll with the card instead of drifting through later rows. */
   .static-reference-site .ref-joint-target{
     position:relative!important;
+    overflow:hidden!important;
   }
 
-  .static-reference-site .mobile-joint-landing{
-    display:block!important;
+  .static-reference-site .mobile-joint-landed{
+    position:absolute!important;
+    inset:6% 6% 7%!important;
     width:88%!important;
-    height:88%!important;
-    max-width:100%!important;
-    max-height:100%!important;
+    height:87%!important;
+    max-width:none!important;
+    max-height:none!important;
     object-fit:contain!important;
-    object-position:center!important;
+    transform:none!important;
+    filter:drop-shadow(0 10px 12px rgba(0,0,0,.14))!important;
     opacity:0;
+    visibility:visible!important;
     pointer-events:none!important;
-    filter:drop-shadow(0 10px 14px rgba(0,0,0,.16));
-    will-change:opacity;
+    transition:opacity .12s linear!important;
+    z-index:2!important;
   }
 
-  /* Tight, intentional stacked featured section. */
   .static-reference-site .ref-feature{
     grid-template-rows:minmax(250px,34svh) minmax(420px,66svh)!important;
   }
@@ -150,33 +145,30 @@
     margin-bottom:12px!important;
   }
 
-  /* Real phone showed Men's Oil finishing above the cupped palms. Desktop
-     target remains untouched; this marker is phone-only. */
+  .static-reference-site .ref-feature-visual{
+    position:relative!important;
+  }
+
   .static-reference-site .ref-mens-hands-target{
     left:50%!important;
     top:78%!important;
   }
 
-  /* Final Men's Oil copy lives inside the feature visual. The moving source
-     cross-fades into this copy at the very end, preventing Safari/Chrome from
-     carrying the old catalogue DOM node across the Hair Oil heading or into
-     the Best Product section. */
-  .static-reference-site .mobile-mens-landing{
+  .static-reference-site .mobile-mens-landed{
     position:absolute!important;
-    z-index:4!important;
     left:50%!important;
-    top:78%!important;
-    width:min(38vw,150px)!important;
-    height:min(31vh,245px)!important;
-    max-height:245px!important;
+    top:74%!important;
+    width:112px!important;
+    height:230px!important;
     object-fit:contain!important;
-    object-position:center!important;
-    transform:translate3d(-50%,-50%,0)!important;
-    transform-origin:center center!important;
+    transform:translate(-50%,-50%)!important;
+    transform-origin:50% 50%!important;
+    filter:drop-shadow(8px 16px 14px rgba(0,0,0,.16))!important;
     opacity:0;
+    visibility:visible!important;
     pointer-events:none!important;
-    filter:drop-shadow(0 12px 18px rgba(0,0,0,.18));
-    will-change:opacity;
+    transition:opacity .12s linear!important;
+    z-index:4!important;
   }
 
   #best-product{
@@ -213,8 +205,9 @@
     grid-template-rows:245px minmax(405px,66svh)!important;
   }
 
-  .static-reference-site .mobile-mens-landing{
-    width:min(40vw,146px)!important;
-    height:min(30vh,230px)!important;
+  .static-reference-site .mobile-mens-landed{
+    width:104px!important;
+    height:214px!important;
+    top:75%!important;
   }
 }
