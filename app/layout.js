@@ -1,6 +1,7 @@
 import './globals.css';
 import '../components/SitePolish.global.css';
 import '../components/MobileResponsive.global.css';
+import '../components/MobileRealDeviceFixes.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 
