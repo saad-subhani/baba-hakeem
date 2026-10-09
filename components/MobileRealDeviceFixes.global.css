@@ -2,12 +2,20 @@
    Desktop/tablet >= 761px is intentionally untouched. */
 
 @media (max-width:760px){
-  /* Compact the phone hero so it keeps the desktop composition without the
-     oversized dead zones above the title and below the bottle. */
+  /* Keep the hero at least one real small viewport tall. The bottle journey
+     starts at `hero bottom = viewport bottom`; making the hero shorter than
+     the viewport pre-advances the ScrollTrigger at page load and pulls the
+     bottle down before the user scrolls. */
+  .static-reference-site .ref-hero{
+    height:100svh!important;
+    min-height:680px!important;
+    max-height:none!important;
+  }
+
   .static-reference-site .ref-hero-copy{
     position:absolute!important;
     left:50%!important;
-    top:28.5%!important;
+    top:31%!important;
     width:100%!important;
     transform:translate(-50%,-50%)!important;
     z-index:2!important;
@@ -26,10 +34,24 @@
     margin-top:14px!important;
   }
 
+  /* Opening bottle: start directly across the Baba Hakeem wordmark. Only the
+     starting composition changes; MobileMotionStabilizer still owns its path
+     and final Joint Oil destination. */
+  .static-reference-site .ref-hero-bottle{
+    left:51%!important;
+    top:29%!important;
+    width:min(70vw,276px)!important;
+    height:46svh!important;
+    max-height:390px!important;
+    z-index:4!important;
+    object-fit:contain!important;
+    visibility:visible!important;
+  }
+
   .static-reference-site .ref-hero-bottom,
   .static-reference-site .ref-note{
     position:absolute!important;
-    bottom:max(12px,env(safe-area-inset-bottom))!important;
+    bottom:max(14px,env(safe-area-inset-bottom))!important;
     width:calc(50% - 20px)!important;
     max-width:174px!important;
     height:108px!important;
@@ -91,29 +113,16 @@
     font-size:7.5px!important;
   }
 
-  .static-reference-site .ref-hero{
-    height:82svh!important;
-    min-height:610px!important;
-    max-height:720px!important;
-  }
-
-  /* Front-page placement only. The same real bottle now starts higher and
-     directly over the Baba Hakeem wordmark; its already-correct scroll route
-     to the Joint Oil card remains owned by the mobile stabilizer. */
-  .static-reference-site .ref-hero-bottle{
-    left:51%!important;
-    top:25.5%!important;
-    width:min(72vw,280px)!important;
-    height:44svh!important;
-    max-height:350px!important;
-    z-index:4!important;
-    object-fit:contain!important;
-    visibility:visible!important;
-  }
-
+  /* Make the transition into Products feel compact without shortening the hero
+     itself (shortening the hero breaks the bottle trigger geometry). */
   .static-reference-site .ref-catalogue{
     min-height:auto!important;
     justify-content:flex-start!important;
+    padding-top:44px!important;
+  }
+
+  .static-reference-site .ref-catalogue h2{
+    margin-bottom:30px!important;
   }
 
   .static-reference-site .ref-product-grid article>div,
@@ -173,17 +182,24 @@
 
 @media (max-width:390px){
   .static-reference-site .ref-hero{
-    height:80svh!important;
-    min-height:590px!important;
-    max-height:690px!important;
+    height:100svh!important;
+    min-height:680px!important;
+    max-height:none!important;
   }
 
   .static-reference-site .ref-hero-copy{
-    top:27.5%!important;
+    top:30.5%!important;
   }
 
   .static-reference-site .ref-hero-copy h1{
     font-size:clamp(50px,16.5vw,64px)!important;
+  }
+
+  .static-reference-site .ref-hero-bottle{
+    top:28.5%!important;
+    width:min(68vw,266px)!important;
+    height:45svh!important;
+    max-height:378px!important;
   }
 
   .static-reference-site .ref-hero-bottom,
@@ -201,11 +217,12 @@
     right:8px!important;
   }
 
-  .static-reference-site .ref-hero-bottle{
-    top:24.5%!important;
-    width:min(70vw,270px)!important;
-    height:42svh!important;
-    max-height:330px!important;
+  .static-reference-site .ref-catalogue{
+    padding-top:38px!important;
+  }
+
+  .static-reference-site .ref-catalogue h2{
+    margin-bottom:26px!important;
   }
 
   .static-reference-site .ref-feature{
