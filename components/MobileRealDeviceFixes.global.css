@@ -2,60 +2,109 @@
    Desktop/tablet >= 761px is intentionally untouched. */
 
 @media (max-width:760px){
-  /* A later global stacking rule changed these hero children to position:relative.
-     Re-assert the intended mobile absolute composition only on phones. */
+  /* Re-assert the intended mobile absolute composition only on phones. */
   .static-reference-site .ref-hero-copy{
     position:absolute!important;
     left:50%!important;
-    top:27.5%!important;
+    top:24%!important;
     width:100%!important;
     transform:translate(-50%,-50%)!important;
     z-index:2!important;
     padding:0 14px!important;
   }
 
-  .static-reference-site .ref-hero-bottom{
+  .static-reference-site .ref-hero-copy h1{
+    font-size:clamp(48px,15.5vw,64px)!important;
+    line-height:.84!important;
+  }
+
+  .static-reference-site .ref-hero-copy p{
+    width:min(78vw,300px)!important;
+    margin-top:14px!important;
+  }
+
+  /* The original desktop copy becomes very tall at 384px wide. Keep both
+     lower callouts present, but clamp their copy so they form a clean pair
+     instead of climbing into the title/bottle area. */
+  .static-reference-site .ref-hero-bottom,
+  .static-reference-site .ref-note{
     position:absolute!important;
-    left:14px!important;
-    right:auto!important;
-    bottom:max(20px,env(safe-area-inset-bottom))!important;
-    width:calc(50% - 22px)!important;
-    max-width:170px!important;
+    bottom:max(16px,env(safe-area-inset-bottom))!important;
+    width:calc(50% - 20px)!important;
+    max-width:174px!important;
+    height:118px!important;
+    max-height:118px!important;
+    overflow:hidden!important;
     z-index:3!important;
+  }
+
+  .static-reference-site .ref-hero-bottom{
+    left:12px!important;
+    right:auto!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:flex-end!important;
   }
 
   .static-reference-site .ref-note{
-    position:absolute!important;
     left:auto!important;
-    right:14px!important;
-    bottom:max(20px,env(safe-area-inset-bottom))!important;
-    width:calc(50% - 22px)!important;
-    max-width:170px!important;
-    z-index:3!important;
+    right:12px!important;
+    padding:12px 11px 10px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:flex-start!important;
+  }
+
+  .static-reference-site .ref-hero-bottom p,
+  .static-reference-site .ref-note p{
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
   }
 
   .static-reference-site .ref-hero-bottom p{
-    font-size:8px!important;
-    line-height:1.42!important;
+    -webkit-line-clamp:5!important;
+    margin:0 0 7px!important;
+    font-size:7.5px!important;
+    line-height:1.34!important;
+  }
+
+  .static-reference-site .ref-note b{
+    font-size:9px!important;
+    line-height:1.15!important;
   }
 
   .static-reference-site .ref-note p{
-    font-size:7.5px!important;
-    line-height:1.42!important;
+    -webkit-line-clamp:4!important;
+    margin:7px 0 7px!important;
+    font-size:7px!important;
+    line-height:1.34!important;
   }
 
-  /* Keep the hero tall enough for the real mobile browser chrome without
-     allowing the address bar to continuously recompose the section. */
+  .static-reference-site .ref-hero-bottom a,
+  .static-reference-site .ref-note span{
+    flex:0 0 auto!important;
+    margin-top:0!important;
+    padding:7px 11px!important;
+    font-size:7.5px!important;
+  }
+
+  /* Stable phone viewport framing. */
   .static-reference-site .ref-hero{
     height:100svh!important;
     min-height:680px!important;
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:48%!important;
+    top:49%!important;
+    width:min(58vw,245px)!important;
+    height:43vh!important;
+    max-height:365px!important;
   }
 
-  /* Mobile catalogue geometry stays fixed while the browser toolbar collapses. */
+  /* Mobile catalogue geometry stays fixed while browser chrome collapses. */
   .static-reference-site .ref-catalogue{
     min-height:auto!important;
     justify-content:flex-start!important;
@@ -66,14 +115,13 @@
     min-height:142px;
   }
 
-  /* The stacked mobile feature had a large empty lead-in in the recording.
-     Tighten the copy block without changing its desktop composition. */
+  /* Tight, intentional stacked featured section. */
   .static-reference-site .ref-feature{
-    grid-template-rows:minmax(265px,36svh) minmax(415px,64svh)!important;
+    grid-template-rows:minmax(250px,34svh) minmax(420px,66svh)!important;
   }
 
   .static-reference-site .ref-feature-copy{
-    padding:48px 20px 24px!important;
+    padding:42px 20px 22px!important;
     justify-content:center!important;
   }
 
@@ -82,15 +130,13 @@
     margin-bottom:12px!important;
   }
 
-  /* Mobile hands are centered; give the moving Men's Oil a mobile-specific
-     landing point on the palms. Desktop 51.5% target remains untouched. */
+  /* Real phone showed Men's Oil finishing visibly above the cupped palms.
+     Move ONLY the mobile landing marker lower; desktop 51.5% is untouched. */
   .static-reference-site .ref-mens-hands-target{
     left:50%!important;
-    top:69%!important;
+    top:78%!important;
   }
 
-  /* Keep the signature reveal framed to the stable small viewport height.
-     Its internal Three.js choreography is not changed. */
   #best-product{
     min-height:100svh!important;
   }
@@ -98,23 +144,30 @@
 
 @media (max-width:390px){
   .static-reference-site .ref-hero-copy{
-    top:26.5%!important;
+    top:23.5%!important;
   }
 
   .static-reference-site .ref-hero-bottom,
   .static-reference-site .ref-note{
-    width:calc(50% - 18px)!important;
+    width:calc(50% - 16px)!important;
+    height:112px!important;
+    max-height:112px!important;
   }
 
   .static-reference-site .ref-hero-bottom{
-    left:10px!important;
+    left:8px!important;
   }
 
   .static-reference-site .ref-note{
-    right:10px!important;
+    right:8px!important;
+  }
+
+  .static-reference-site .ref-hero-bottle{
+    width:min(56vw,225px)!important;
+    height:41vh!important;
   }
 
   .static-reference-site .ref-feature{
-    grid-template-rows:255px minmax(405px,64svh)!important;
+    grid-template-rows:245px minmax(405px,66svh)!important;
   }
 }
