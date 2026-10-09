@@ -56,7 +56,7 @@ export default function MobileMotionStabilizer(){
     };
 
     const syncMensHandoff=(progress)=>{
-      const landed=progress>=.985;
+      const landed=progress>=.992;
       mensBottle.style.visibility=landed?'hidden':'visible';
       mensClone.style.opacity=landed?'1':'0';
     };
@@ -114,28 +114,67 @@ export default function MobileMotionStabilizer(){
       mensBottle.style.visibility='visible';
       mensClone.style.opacity='0';
       gsap.set(mensBottle,{clearProps:'x,y,scale,rotation'});
+
       const mensRect=center(mensBottle);
       const handsRect=center(handsTarget);
+      const featureRect=featureVisual.getBoundingClientRect();
+      const mensTargetScale=2.15;
 
-      mensTween=gsap.to(mensBottle,{
-        x:handsRect.x-mensRect.x,
-        y:handsRect.y-mensRect.y,
-        scale:2.45,
-        rotation:0,
-        transformOrigin:'50% 50%',
-        ease:'none',
-        overwrite:true,
+      /* Mirror the desktop visual idea on the stacked mobile layout: leave the
+         catalogue through a clear right-side lane, then move inward onto the
+         palms. This keeps the moving bottle away from the Hair Oil heading. */
+      const laneX=featureRect.right-Math.min(52,featureRect.width*.11);
+      const featureGap=Math.max(120,featureRect.top-mensRect.y);
+      const laneEntryY=mensRect.y+(featureGap*.56);
+      const laneVisualY=featureRect.top+(featureRect.height*.16);
+
+      /* The landed clone is sized from the real source element at the exact
+         final animation scale, so there is no tiny-bottle snap at handoff. */
+      mensClone.style.setProperty('--mens-landed-left',`${handsRect.x-featureRect.left}px`);
+      mensClone.style.setProperty('--mens-landed-top',`${handsRect.y-featureRect.top}px`);
+      mensClone.style.setProperty('--mens-landed-width',`${mensRect.width*mensTargetScale}px`);
+      mensClone.style.setProperty('--mens-landed-height',`${mensRect.height*mensTargetScale}px`);
+
+      mensTween=gsap.timeline({
+        defaults:{ease:'none'},
         scrollTrigger:{
           trigger:mensSource,
-          start:'center 66%',
+          start:'center 58%',
           endTrigger:featureVisual,
-          end:'center 58%',
-          scrub:.5,
+          end:'center 54%',
+          scrub:.72,
           invalidateOnRefresh:false,
           onUpdate:self=>syncMensHandoff(self.progress),
           onRefresh:self=>syncMensHandoff(self.progress)
         }
       });
+
+      mensTween
+        .to(mensBottle,{
+          x:laneX-mensRect.x,
+          y:laneEntryY-mensRect.y,
+          scale:1.28,
+          rotation:0,
+          transformOrigin:'50% 50%',
+          overwrite:true,
+          duration:.28
+        })
+        .to(mensBottle,{
+          x:laneX-mensRect.x,
+          y:laneVisualY-mensRect.y,
+          scale:1.62,
+          rotation:0,
+          transformOrigin:'50% 50%',
+          duration:.40
+        })
+        .to(mensBottle,{
+          x:handsRect.x-mensRect.x,
+          y:handsRect.y-mensRect.y,
+          scale:mensTargetScale,
+          rotation:0,
+          transformOrigin:'50% 50%',
+          duration:.32
+        });
 
       ScrollTrigger.refresh();
       killCompetingJourneys();
