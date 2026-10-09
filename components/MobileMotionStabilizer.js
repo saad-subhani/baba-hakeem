@@ -1,11 +1,11 @@
 'use client';
 
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function MobileMotionStabilizer(){
-  useLayoutEffect(()=>{
+  useEffect(()=>{
     if(typeof window==='undefined') return;
     const mobile=window.matchMedia?.('(max-width: 760px)')?.matches??false;
     if(!mobile) return;
@@ -25,23 +25,12 @@ export default function MobileMotionStabilizer(){
     const handsTarget=site.querySelector('.ref-mens-hands-target');
     if(!hero||!heroBottle||!jointTarget||!mensBottle||!mensSource||!featureVisual||!handsTarget) return;
 
-    /* Claim the mobile hero before the first paint. page.js still contains the
-       approved desktop intro/scroll effects; on phones we temporarily pin the
-       bottle to its CSS start position so those effects cannot make it jump
-       during reload/hydration. */
-    site.classList.add('mobile-hero-preflight');
-    heroBottle.style.visibility='visible';
-    heroBottle.style.removeProperty('transform');
-    heroBottle.style.removeProperty('margin-top');
-
     let heroTween=null;
     let mensTween=null;
     let buildTimer=0;
     let resizeTimer=0;
     let sweepTimer=0;
-    let preflightTimer=0;
     let destroyed=false;
-    let heroReady=false;
     let lastWidth=window.innerWidth;
 
     const mensClone=mensBottle.cloneNode(true);
@@ -80,29 +69,14 @@ export default function MobileMotionStabilizer(){
       mensTween=null;
     };
 
-    /* During the first few hundred ms React/GSAP effects mount in different
-       phases. Keep removing any transform written by the old mobile tween until
-       this stabilizer has measured and installed the one authoritative journey. */
-    preflightTimer=window.setInterval(()=>{
-      if(destroyed||heroReady){
-        window.clearInterval(preflightTimer);
-        preflightTimer=0;
-        return;
-      }
-      killCompetingJourneys();
-      heroBottle.style.removeProperty('transform');
-      heroBottle.style.removeProperty('margin-top');
-      heroBottle.style.visibility='visible';
-    },16);
-
     const build=()=>{
       if(destroyed) return;
       clearOwnedTweens();
       killCompetingJourneys();
 
       heroBottle.style.visibility='visible';
-      heroBottle.style.removeProperty('transform');
-      heroBottle.style.removeProperty('margin-top');
+      heroBottle.style.opacity='1';
+      gsap.set(heroBottle,{clearProps:'x,y,scale,rotation'});
 
       const bottleRect=heroBottle.getBoundingClientRect();
       const jointRect=jointTarget.getBoundingClientRect();
@@ -159,12 +133,9 @@ export default function MobileMotionStabilizer(){
 
       ScrollTrigger.refresh();
       killCompetingJourneys();
-      heroReady=true;
-      site.classList.remove('mobile-hero-preflight');
-      if(preflightTimer){window.clearInterval(preflightTimer);preflightTimer=0;}
     };
 
-    const scheduleBuild=(delay=80)=>{
+    const scheduleBuild=(delay=520)=>{
       window.clearTimeout(buildTimer);
       buildTimer=window.setTimeout(build,delay);
     };
@@ -177,7 +148,7 @@ export default function MobileMotionStabilizer(){
         img.addEventListener('error',resolve,{once:true});
       });
     });
-    Promise.all(waits).finally(()=>scheduleBuild(32));
+    Promise.all(waits).finally(()=>scheduleBuild(520));
 
     let sweeps=0;
     sweepTimer=window.setInterval(()=>{
@@ -195,14 +166,12 @@ export default function MobileMotionStabilizer(){
       lastWidth=width;
       event.stopImmediatePropagation();
       window.clearTimeout(resizeTimer);
-      resizeTimer=window.setTimeout(()=>scheduleBuild(180),140);
+      resizeTimer=window.setTimeout(()=>scheduleBuild(380),180);
     };
 
     const onOrientation=()=>{
       lastWidth=window.innerWidth;
-      heroReady=false;
-      site.classList.add('mobile-hero-preflight');
-      scheduleBuild(260);
+      scheduleBuild(520);
     };
 
     window.addEventListener('resize',guardToolbarResize,true);
@@ -213,15 +182,12 @@ export default function MobileMotionStabilizer(){
       window.clearTimeout(buildTimer);
       window.clearTimeout(resizeTimer);
       if(sweepTimer) window.clearInterval(sweepTimer);
-      if(preflightTimer) window.clearInterval(preflightTimer);
       window.removeEventListener('resize',guardToolbarResize,true);
       window.removeEventListener('orientationchange',onOrientation);
       clearOwnedTweens();
       mensClone.remove();
-      site.classList.remove('mobile-hero-preflight');
       heroBottle.style.visibility='';
       heroBottle.style.opacity='';
-      heroBottle.style.removeProperty('margin-top');
       mensBottle.style.visibility='';
     };
   },[]);
