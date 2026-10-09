@@ -1,0 +1,120 @@
+/* Real-device mobile corrections derived from the 384x832 phone recording.
+   Desktop/tablet >= 761px is intentionally untouched. */
+
+@media (max-width:760px){
+  /* A later global stacking rule changed these hero children to position:relative.
+     Re-assert the intended mobile absolute composition only on phones. */
+  .static-reference-site .ref-hero-copy{
+    position:absolute!important;
+    left:50%!important;
+    top:27.5%!important;
+    width:100%!important;
+    transform:translate(-50%,-50%)!important;
+    z-index:2!important;
+    padding:0 14px!important;
+  }
+
+  .static-reference-site .ref-hero-bottom{
+    position:absolute!important;
+    left:14px!important;
+    right:auto!important;
+    bottom:max(20px,env(safe-area-inset-bottom))!important;
+    width:calc(50% - 22px)!important;
+    max-width:170px!important;
+    z-index:3!important;
+  }
+
+  .static-reference-site .ref-note{
+    position:absolute!important;
+    left:auto!important;
+    right:14px!important;
+    bottom:max(20px,env(safe-area-inset-bottom))!important;
+    width:calc(50% - 22px)!important;
+    max-width:170px!important;
+    z-index:3!important;
+  }
+
+  .static-reference-site .ref-hero-bottom p{
+    font-size:8px!important;
+    line-height:1.42!important;
+  }
+
+  .static-reference-site .ref-note p{
+    font-size:7.5px!important;
+    line-height:1.42!important;
+  }
+
+  /* Keep the hero tall enough for the real mobile browser chrome without
+     allowing the address bar to continuously recompose the section. */
+  .static-reference-site .ref-hero{
+    height:100svh!important;
+    min-height:680px!important;
+  }
+
+  .static-reference-site .ref-hero-bottle{
+    top:48%!important;
+  }
+
+  /* Mobile catalogue geometry stays fixed while the browser toolbar collapses. */
+  .static-reference-site .ref-catalogue{
+    min-height:auto!important;
+    justify-content:flex-start!important;
+  }
+
+  .static-reference-site .ref-product-grid article>div,
+  .static-reference-site .ref-product-grid article>a>div{
+    min-height:142px;
+  }
+
+  /* The stacked mobile feature had a large empty lead-in in the recording.
+     Tighten the copy block without changing its desktop composition. */
+  .static-reference-site .ref-feature{
+    grid-template-rows:minmax(265px,36svh) minmax(415px,64svh)!important;
+  }
+
+  .static-reference-site .ref-feature-copy{
+    padding:48px 20px 24px!important;
+    justify-content:center!important;
+  }
+
+  .static-reference-site .ref-feature-copy h2{
+    margin-top:10px!important;
+    margin-bottom:12px!important;
+  }
+
+  /* Mobile hands are centered; give the moving Men's Oil a mobile-specific
+     landing point on the palms. Desktop 51.5% target remains untouched. */
+  .static-reference-site .ref-mens-hands-target{
+    left:50%!important;
+    top:69%!important;
+  }
+
+  /* Keep the signature reveal framed to the stable small viewport height.
+     Its internal Three.js choreography is not changed. */
+  #best-product{
+    min-height:100svh!important;
+  }
+}
+
+@media (max-width:390px){
+  .static-reference-site .ref-hero-copy{
+    top:26.5%!important;
+  }
+
+  .static-reference-site .ref-hero-bottom,
+  .static-reference-site .ref-note{
+    width:calc(50% - 18px)!important;
+  }
+
+  .static-reference-site .ref-hero-bottom{
+    left:10px!important;
+  }
+
+  .static-reference-site .ref-note{
+    right:10px!important;
+  }
+
+  .static-reference-site .ref-feature{
+    grid-template-rows:255px minmax(405px,64svh)!important;
+  }
+}
