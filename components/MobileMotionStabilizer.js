@@ -21,12 +21,11 @@ export default function MobileMotionStabilizer(){
     const jointTarget=site.querySelector('.ref-joint-target');
     const mensBottle=site.querySelector('.ref-mens-moving');
     const mensSource=mensBottle?.closest('article');
-    const feature=site.querySelector('.ref-feature');
     const featureVisual=site.querySelector('.ref-feature-visual');
     const handsTarget=site.querySelector('.ref-mens-hands-target');
-    if(!hero||!heroBottle||!jointTarget||!mensBottle||!mensSource||!feature||!featureVisual||!handsTarget) return;
+    if(!hero||!heroBottle||!jointTarget||!mensBottle||!mensSource||!featureVisual||!handsTarget) return;
 
-    let jointTween=null;
+    let heroTween=null;
     let mensTween=null;
     let buildTimer=0;
     let resizeTimer=0;
@@ -34,14 +33,7 @@ export default function MobileMotionStabilizer(){
     let destroyed=false;
     let lastWidth=window.innerWidth;
 
-    const jointClone=heroBottle.cloneNode(true);
-    jointClone.removeAttribute('ref');
-    jointClone.className='mobile-joint-landed';
-    jointClone.setAttribute('aria-hidden','true');
-    jointTarget.appendChild(jointClone);
-
     const mensClone=mensBottle.cloneNode(true);
-    mensClone.removeAttribute('ref');
     mensClone.className='mobile-mens-landed';
     mensClone.setAttribute('aria-hidden','true');
     featureVisual.appendChild(mensClone);
@@ -50,11 +42,9 @@ export default function MobileMotionStabilizer(){
       ScrollTrigger.getAll().forEach(trigger=>{
         const sameHero=trigger.trigger===hero&&Boolean(trigger.vars?.scrub);
         const sameMens=trigger.trigger===mensSource&&Boolean(trigger.vars?.scrub);
-        if(sameHero||sameMens){
-          if(trigger!==jointTween?.scrollTrigger&&trigger!==mensTween?.scrollTrigger){
-            trigger.animation?.kill?.();
-            trigger.kill();
-          }
+        if((sameHero||sameMens) && trigger!==heroTween?.scrollTrigger && trigger!==mensTween?.scrollTrigger){
+          trigger.animation?.kill?.();
+          trigger.kill();
         }
       });
     };
@@ -64,12 +54,6 @@ export default function MobileMotionStabilizer(){
       return {x:r.left+r.width/2,y:r.top+r.height/2,width:r.width,height:r.height};
     };
 
-    const syncJointHandoff=(progress)=>{
-      const landed=progress>=.985;
-      heroBottle.style.visibility=landed?'hidden':'visible';
-      jointClone.style.opacity=landed?'1':'0';
-    };
-
     const syncMensHandoff=(progress)=>{
       const landed=progress>=.985;
       mensBottle.style.visibility=landed?'hidden':'visible';
@@ -77,11 +61,11 @@ export default function MobileMotionStabilizer(){
     };
 
     const clearOwnedTweens=()=>{
-      jointTween?.scrollTrigger?.kill();
+      heroTween?.scrollTrigger?.kill();
       mensTween?.scrollTrigger?.kill();
-      jointTween?.kill();
+      heroTween?.kill();
       mensTween?.kill();
-      jointTween=null;
+      heroTween=null;
       mensTween=null;
     };
 
@@ -90,49 +74,49 @@ export default function MobileMotionStabilizer(){
       clearOwnedTweens();
       killCompetingJourneys();
 
+      /* The hero bottle itself owns the complete mobile journey. No clone,
+         no visibility handoff: it starts over the Baba Hakeem wordmark and
+         remains the same element all the way into the Joint Oil card. */
       heroBottle.style.visibility='visible';
-      mensBottle.style.visibility='visible';
-      jointClone.style.opacity='0';
-      mensClone.style.opacity='0';
+      heroBottle.style.opacity='1';
       gsap.set(heroBottle,{clearProps:'x,y,scale,rotation'});
-      gsap.set(mensBottle,{clearProps:'x,y,scale,rotation'});
 
       const bottleRect=heroBottle.getBoundingClientRect();
       const jointRect=jointTarget.getBoundingClientRect();
-      const jointScale=Math.min(
-        (jointRect.width*.82)/Math.max(1,bottleRect.width),
-        (jointRect.height*.86)/Math.max(1,bottleRect.height)
+      const targetScale=Math.min(
+        (jointRect.width*.88)/Math.max(1,bottleRect.width),
+        (jointRect.height*.91)/Math.max(1,bottleRect.height)
       );
-      const jointDx=(jointRect.left+jointRect.width/2)-(bottleRect.left+bottleRect.width/2);
-      const jointDy=(jointRect.top+jointRect.height/2)-(bottleRect.top+bottleRect.height/2);
+      const dx=(jointRect.left+jointRect.width/2)-(bottleRect.left+bottleRect.width/2);
+      const dy=(jointRect.top+jointRect.height/2)-(bottleRect.top+bottleRect.height/2);
 
-      jointTween=gsap.to(heroBottle,{
-        x:jointDx,
-        y:jointDy,
-        scale:jointScale,
+      heroTween=gsap.to(heroBottle,{
+        x:dx,
+        y:dy,
+        scale:targetScale,
         rotation:0,
         ease:'none',
         overwrite:true,
+        transformOrigin:'50% 50%',
         scrollTrigger:{
           trigger:hero,
           start:'bottom bottom',
           endTrigger:jointTarget,
-          end:'center 62%',
-          scrub:.45,
-          invalidateOnRefresh:false,
-          onUpdate:self=>syncJointHandoff(self.progress),
-          onRefresh:self=>syncJointHandoff(self.progress)
+          end:'center center',
+          scrub:.72,
+          invalidateOnRefresh:false
         }
       });
 
-      const mensRect=mensBottle.getBoundingClientRect();
-      const handsRect=handsTarget.getBoundingClientRect();
-      const mensDx=(handsRect.left+handsRect.width/2)-(mensRect.left+mensRect.width/2);
-      const mensDy=(handsRect.top+handsRect.height/2)-(mensRect.top+mensRect.height/2);
+      mensBottle.style.visibility='visible';
+      mensClone.style.opacity='0';
+      gsap.set(mensBottle,{clearProps:'x,y,scale,rotation'});
+      const mensRect=center(mensBottle);
+      const handsRect=center(handsTarget);
 
       mensTween=gsap.to(mensBottle,{
-        x:mensDx,
-        y:mensDy,
+        x:handsRect.x-mensRect.x,
+        y:handsRect.y-mensRect.y,
         scale:2.45,
         rotation:0,
         transformOrigin:'50% 50%',
@@ -167,10 +151,8 @@ export default function MobileMotionStabilizer(){
         img.addEventListener('error',resolve,{once:true});
       });
     });
-    Promise.all(waits).finally(()=>scheduleBuild(620));
+    Promise.all(waits).finally(()=>scheduleBuild(520));
 
-    /* A few delayed sweeps guarantee that the original page.js mobile
-       ScrollTriggers cannot re-claim these two transforms after mount. */
     let sweeps=0;
     sweepTimer=window.setInterval(()=>{
       killCompetingJourneys();
@@ -187,12 +169,12 @@ export default function MobileMotionStabilizer(){
       lastWidth=width;
       event.stopImmediatePropagation();
       window.clearTimeout(resizeTimer);
-      resizeTimer=window.setTimeout(()=>scheduleBuild(420),180);
+      resizeTimer=window.setTimeout(()=>scheduleBuild(380),180);
     };
 
     const onOrientation=()=>{
       lastWidth=window.innerWidth;
-      scheduleBuild(560);
+      scheduleBuild(520);
     };
 
     window.addEventListener('resize',guardToolbarResize,true);
@@ -206,9 +188,9 @@ export default function MobileMotionStabilizer(){
       window.removeEventListener('resize',guardToolbarResize,true);
       window.removeEventListener('orientationchange',onOrientation);
       clearOwnedTweens();
-      jointClone.remove();
       mensClone.remove();
       heroBottle.style.visibility='';
+      heroBottle.style.opacity='';
       mensBottle.style.visibility='';
     };
   },[]);
