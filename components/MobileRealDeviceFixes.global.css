@@ -34,28 +34,20 @@
     margin-top:14px!important;
   }
 
-  /* Opening bottle: start directly across the Baba Hakeem wordmark. Only the
-     starting composition changes; MobileMotionStabilizer still owns its path
-     and final Joint Oil destination. */
+  /* Mobile opening position is fixed in CSS so the desktop intro tween cannot
+     nudge the bottle during pull-to-refresh/reload. Scroll movement still owns
+     transform only, so the existing journey into the Joint Oil card is intact. */
   .static-reference-site .ref-hero-bottle{
     left:51%!important;
-    top:21.5%!important;
+    top:18.5%!important;
     width:min(70vw,276px)!important;
     height:46svh!important;
     max-height:390px!important;
     z-index:4!important;
     object-fit:contain!important;
     visibility:visible!important;
-  }
-
-  /* During mobile reload/hydration, page.js briefly mounts the desktop intro
-     animation before the mobile motion owner is ready. Hold the bottle at its
-     exact CSS start position during that tiny window so it never drifts, fades,
-     or drops when the user is touching/pulling the page while reloading. */
-  .static-reference-site.mobile-hero-preflight .ref-hero-bottle{
     opacity:1!important;
     margin-top:0!important;
-    visibility:visible!important;
   }
 
   .static-reference-site .ref-hero-bottom,
@@ -206,7 +198,7 @@
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:20.5%!important;
+    top:17.5%!important;
     width:min(68vw,266px)!important;
     height:45svh!important;
     max-height:378px!important;
