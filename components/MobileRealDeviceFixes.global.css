@@ -2,13 +2,12 @@
    Desktop/tablet >= 761px is intentionally untouched. */
 
 @media (max-width:760px){
-  /* Mirror the approved desktop hero composition on real phones: the title and
-     bottle occupy the same visual zone, with the bottle sitting over the
-     Baba Hakeem wordmark rather than far below it. */
+  /* Compact the phone hero so it keeps the desktop composition without the
+     oversized dead zones above the title and below the bottle. */
   .static-reference-site .ref-hero-copy{
     position:absolute!important;
     left:50%!important;
-    top:35%!important;
+    top:28.5%!important;
     width:100%!important;
     transform:translate(-50%,-50%)!important;
     z-index:2!important;
@@ -24,17 +23,17 @@
 
   .static-reference-site .ref-hero-copy p{
     width:min(78vw,300px)!important;
-    margin-top:16px!important;
+    margin-top:14px!important;
   }
 
   .static-reference-site .ref-hero-bottom,
   .static-reference-site .ref-note{
     position:absolute!important;
-    bottom:max(16px,env(safe-area-inset-bottom))!important;
+    bottom:max(12px,env(safe-area-inset-bottom))!important;
     width:calc(50% - 20px)!important;
     max-width:174px!important;
-    height:118px!important;
-    max-height:118px!important;
+    height:108px!important;
+    max-height:108px!important;
     overflow:hidden!important;
     z-index:3!important;
   }
@@ -51,7 +50,7 @@
   .static-reference-site .ref-note{
     left:auto!important;
     right:12px!important;
-    padding:12px 11px 10px!important;
+    padding:11px 10px 9px!important;
     display:flex!important;
     flex-direction:column!important;
     justify-content:flex-start!important;
@@ -66,10 +65,10 @@
   }
 
   .static-reference-site .ref-hero-bottom p{
-    -webkit-line-clamp:5!important;
-    margin:0 0 7px!important;
-    font-size:7.5px!important;
-    line-height:1.34!important;
+    -webkit-line-clamp:4!important;
+    margin:0 0 6px!important;
+    font-size:7.3px!important;
+    line-height:1.3!important;
   }
 
   .static-reference-site .ref-note b{
@@ -78,10 +77,10 @@
   }
 
   .static-reference-site .ref-note p{
-    -webkit-line-clamp:4!important;
-    margin:7px 0 7px!important;
+    -webkit-line-clamp:3!important;
+    margin:6px 0!important;
     font-size:7px!important;
-    line-height:1.34!important;
+    line-height:1.3!important;
   }
 
   .static-reference-site .ref-hero-bottom a,
@@ -93,19 +92,20 @@
   }
 
   .static-reference-site .ref-hero{
-    height:100svh!important;
-    min-height:680px!important;
+    height:82svh!important;
+    min-height:610px!important;
+    max-height:720px!important;
   }
 
-  /* Front-page placement only. Keep the already-correct scroll journey intact,
-     but start the same bottle directly on top of the Baba Hakeem wordmark like
-     the approved desktop composition. */
+  /* Front-page placement only. The same real bottle now starts higher and
+     directly over the Baba Hakeem wordmark; its already-correct scroll route
+     to the Joint Oil card remains owned by the mobile stabilizer. */
   .static-reference-site .ref-hero-bottle{
     left:51%!important;
-    top:34.5%!important;
+    top:25.5%!important;
     width:min(72vw,280px)!important;
-    height:48svh!important;
-    max-height:410px!important;
+    height:44svh!important;
+    max-height:350px!important;
     z-index:4!important;
     object-fit:contain!important;
     visibility:visible!important;
@@ -172,8 +172,14 @@
 }
 
 @media (max-width:390px){
+  .static-reference-site .ref-hero{
+    height:80svh!important;
+    min-height:590px!important;
+    max-height:690px!important;
+  }
+
   .static-reference-site .ref-hero-copy{
-    top:34%!important;
+    top:27.5%!important;
   }
 
   .static-reference-site .ref-hero-copy h1{
@@ -183,8 +189,8 @@
   .static-reference-site .ref-hero-bottom,
   .static-reference-site .ref-note{
     width:calc(50% - 16px)!important;
-    height:112px!important;
-    max-height:112px!important;
+    height:102px!important;
+    max-height:102px!important;
   }
 
   .static-reference-site .ref-hero-bottom{
@@ -196,10 +202,10 @@
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:33.5%!important;
+    top:24.5%!important;
     width:min(70vw,270px)!important;
-    height:46svh!important;
-    max-height:395px!important;
+    height:42svh!important;
+    max-height:330px!important;
   }
 
   .static-reference-site .ref-feature{
