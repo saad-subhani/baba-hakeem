@@ -39,7 +39,7 @@
      and final Joint Oil destination. */
   .static-reference-site .ref-hero-bottle{
     left:51%!important;
-    top:29%!important;
+    top:21.5%!important;
     width:min(70vw,276px)!important;
     height:46svh!important;
     max-height:390px!important;
@@ -196,7 +196,7 @@
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:28.5%!important;
+    top:20.5%!important;
     width:min(68vw,266px)!important;
     height:45svh!important;
     max-height:378px!important;
