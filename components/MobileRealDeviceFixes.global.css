@@ -39,7 +39,7 @@
      transform only, so the existing journey into the Joint Oil card is intact. */
   .static-reference-site .ref-hero-bottle{
     left:51%!important;
-    top:12.5%!important;
+    top:18.5%!important;
     width:min(70vw,276px)!important;
     height:46svh!important;
     max-height:390px!important;
@@ -198,7 +198,7 @@
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:11.5%!important;
+    top:17.5%!important;
     width:min(68vw,266px)!important;
     height:45svh!important;
     max-height:378px!important;
