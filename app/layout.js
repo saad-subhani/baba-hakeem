@@ -1,5 +1,6 @@
 import './globals.css';
 import '../components/SitePolish.global.css';
+import '../components/MobileResponsive.global.css';
 import SitePolish from '../components/SitePolish';
 
 export const metadata = {
