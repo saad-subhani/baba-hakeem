@@ -32,6 +32,7 @@ export default function MobileMotionStabilizer(){
     let sweepTimer=0;
     let destroyed=false;
     let lastWidth=window.innerWidth;
+    const heroStartRotation=7;
 
     const mensClone=mensBottle.cloneNode(true);
     mensClone.className='mobile-mens-landed';
@@ -77,6 +78,7 @@ export default function MobileMotionStabilizer(){
       heroBottle.style.visibility='visible';
       heroBottle.style.opacity='1';
       gsap.set(heroBottle,{clearProps:'x,y,scale,rotation'});
+      gsap.set(heroBottle,{rotation:heroStartRotation,transformOrigin:'50% 50%'});
 
       const bottleRect=heroBottle.getBoundingClientRect();
       const jointRect=jointTarget.getBoundingClientRect();
