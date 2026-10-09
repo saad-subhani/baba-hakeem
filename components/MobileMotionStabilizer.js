@@ -97,7 +97,11 @@ export default function MobileMotionStabilizer(){
         transformOrigin:'50% 50%',
         scrollTrigger:{
           trigger:hero,
-          start:'bottom bottom',
+          /* On phones the hero can be shorter than the browser's layout viewport.
+             `bottom bottom` then produces a negative start, so pull-to-refresh
+             viewport changes visibly scrub the bottle backwards. Anchoring the
+             mobile journey to page top keeps progress exactly 0 while overscrolling. */
+          start:'top top',
           endTrigger:jointTarget,
           end:'center center',
           scrub:.72,
@@ -135,10 +139,16 @@ export default function MobileMotionStabilizer(){
       killCompetingJourneys();
     };
 
-    const scheduleBuild=(delay=520)=>{
+    const scheduleBuild=(delay=80)=>{
       window.clearTimeout(buildTimer);
       buildTimer=window.setTimeout(build,delay);
     };
+
+    /* Install the mobile-owned journey immediately. The old page-level mobile
+       tween is created shortly after mount, so keep sweeping briefly and kill
+       it as soon as it appears. This removes the reload race without touching
+       any desktop choreography. */
+    scheduleBuild(0);
 
     const relevantImages=[heroBottle,mensBottle,site.querySelector('.ref-feature-hands')].filter(Boolean);
     const waits=relevantImages.map(img=>{
@@ -148,14 +158,14 @@ export default function MobileMotionStabilizer(){
         img.addEventListener('error',resolve,{once:true});
       });
     });
-    Promise.all(waits).finally(()=>scheduleBuild(520));
+    Promise.all(waits).finally(()=>scheduleBuild(80));
 
     let sweeps=0;
     sweepTimer=window.setInterval(()=>{
       killCompetingJourneys();
       sweeps+=1;
-      if(sweeps>=8){window.clearInterval(sweepTimer);sweepTimer=0;}
-    },250);
+      if(sweeps>=30){window.clearInterval(sweepTimer);sweepTimer=0;}
+    },50);
 
     const guardToolbarResize=(event)=>{
       const width=window.innerWidth;
@@ -166,12 +176,12 @@ export default function MobileMotionStabilizer(){
       lastWidth=width;
       event.stopImmediatePropagation();
       window.clearTimeout(resizeTimer);
-      resizeTimer=window.setTimeout(()=>scheduleBuild(380),180);
+      resizeTimer=window.setTimeout(()=>scheduleBuild(180),140);
     };
 
     const onOrientation=()=>{
       lastWidth=window.innerWidth;
-      scheduleBuild(520);
+      scheduleBuild(260);
     };
 
     window.addEventListener('resize',guardToolbarResize,true);
