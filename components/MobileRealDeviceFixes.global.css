@@ -48,6 +48,16 @@
     visibility:visible!important;
   }
 
+  /* During mobile reload/hydration, page.js briefly mounts the desktop intro
+     animation before the mobile motion owner is ready. Hold the bottle at its
+     exact CSS start position during that tiny window so it never drifts, fades,
+     or drops when the user is touching/pulling the page while reloading. */
+  .static-reference-site.mobile-hero-preflight .ref-hero-bottle{
+    opacity:1!important;
+    margin-top:0!important;
+    visibility:visible!important;
+  }
+
   .static-reference-site .ref-hero-bottom,
   .static-reference-site .ref-note{
     position:absolute!important;
