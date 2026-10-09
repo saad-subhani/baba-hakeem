@@ -2,6 +2,7 @@ import './globals.css';
 import '../components/SitePolish.global.css';
 import '../components/MobileResponsive.global.css';
 import SitePolish from '../components/SitePolish';
+import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -11,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}<SitePolish/></body>
+      <body>{children}<SitePolish/><MobileMotionStabilizer/></body>
     </html>
   );
 }
