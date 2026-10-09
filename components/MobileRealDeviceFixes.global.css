@@ -15,7 +15,7 @@
   .static-reference-site .ref-hero-copy{
     position:absolute!important;
     left:50%!important;
-    top:31%!important;
+    top:37%!important;
     width:100%!important;
     transform:translate(-50%,-50%)!important;
     z-index:2!important;
@@ -39,7 +39,7 @@
      transform only, so the existing journey into the Joint Oil card is intact. */
   .static-reference-site .ref-hero-bottle{
     left:51%!important;
-    top:35.5%!important;
+    top:41.5%!important;
     width:min(70vw,276px)!important;
     height:46svh!important;
     max-height:390px!important;
@@ -191,7 +191,7 @@
   }
 
   .static-reference-site .ref-hero-copy{
-    top:30.5%!important;
+    top:36.5%!important;
   }
 
   .static-reference-site .ref-hero-copy h1{
@@ -199,7 +199,7 @@
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:35%!important;
+    top:41%!important;
     width:min(68vw,266px)!important;
     height:45svh!important;
     max-height:378px!important;
