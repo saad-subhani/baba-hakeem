@@ -141,8 +141,10 @@ export default function MobileMotionStabilizer(){
           trigger:mensSource,
           start:'center 58%',
           endTrigger:featureVisual,
-          end:'center 54%',
-          scrub:.72,
+          /* Give the final approach much more real scroll distance so the
+             bottle settles into the palms instead of visually snapping there. */
+          end:'center 40%',
+          scrub:1.05,
           invalidateOnRefresh:false,
           onUpdate:self=>syncMensHandoff(self.progress),
           onRefresh:self=>syncMensHandoff(self.progress)
@@ -157,7 +159,7 @@ export default function MobileMotionStabilizer(){
           rotation:0,
           transformOrigin:'50% 50%',
           overwrite:true,
-          duration:.28
+          duration:.22
         })
         .to(mensBottle,{
           x:laneX-mensRect.x,
@@ -165,7 +167,7 @@ export default function MobileMotionStabilizer(){
           scale:1.62,
           rotation:0,
           transformOrigin:'50% 50%',
-          duration:.40
+          duration:.28
         })
         .to(mensBottle,{
           x:handsRect.x-mensRect.x,
@@ -173,7 +175,7 @@ export default function MobileMotionStabilizer(){
           scale:mensTargetScale,
           rotation:0,
           transformOrigin:'50% 50%',
-          duration:.32
+          duration:.50
         });
 
       ScrollTrigger.refresh();
