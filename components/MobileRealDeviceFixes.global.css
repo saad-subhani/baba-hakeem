@@ -97,12 +97,15 @@
     min-height:680px!important;
   }
 
+  /* Front-page placement only. Keep the already-correct scroll journey intact,
+     but start the same bottle directly on top of the Baba Hakeem wordmark like
+     the approved desktop composition. */
   .static-reference-site .ref-hero-bottle{
     left:51%!important;
-    top:42%!important;
-    width:min(58vw,245px)!important;
-    height:46svh!important;
-    max-height:390px!important;
+    top:34.5%!important;
+    width:min(72vw,280px)!important;
+    height:48svh!important;
+    max-height:410px!important;
     z-index:4!important;
     object-fit:contain!important;
     visibility:visible!important;
@@ -193,9 +196,10 @@
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:41%!important;
-    width:min(56vw,225px)!important;
-    height:44svh!important;
+    top:33.5%!important;
+    width:min(70vw,270px)!important;
+    height:46svh!important;
+    max-height:395px!important;
   }
 
   .static-reference-site .ref-feature{
