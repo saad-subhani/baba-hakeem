@@ -156,17 +156,21 @@
     position:relative!important;
   }
 
+  /* Match the desktop landing idea on mobile: destination sits over the palms,
+     not near the bottom wrists. */
   .static-reference-site .ref-mens-hands-target{
     left:50%!important;
-    top:78%!important;
+    top:53.5%!important;
   }
 
+  /* Geometry is supplied by MobileMotionStabilizer from the real moving image
+     so the handoff cannot snap into a tiny fixed-size bottle. */
   .static-reference-site .mobile-mens-landed{
     position:absolute!important;
-    left:50%!important;
-    top:74%!important;
-    width:112px!important;
-    height:230px!important;
+    left:var(--mens-landed-left,50%)!important;
+    top:var(--mens-landed-top,53.5%)!important;
+    width:var(--mens-landed-width,150px)!important;
+    height:var(--mens-landed-height,300px)!important;
     object-fit:contain!important;
     transform:translate(-50%,-50%)!important;
     transform-origin:50% 50%!important;
@@ -174,7 +178,7 @@
     opacity:0;
     visibility:visible!important;
     pointer-events:none!important;
-    transition:opacity .12s linear!important;
+    transition:opacity .1s linear!important;
     z-index:4!important;
   }
 
@@ -230,11 +234,5 @@
 
   .static-reference-site .ref-feature{
     grid-template-rows:245px minmax(405px,66svh)!important;
-  }
-
-  .static-reference-site .mobile-mens-landed{
-    width:104px!important;
-    height:214px!important;
-    top:75%!important;
   }
 }
