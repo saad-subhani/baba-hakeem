@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Lenis from '@studio-freight/lenis';
 import styles from './SitePolish.module.css';
 
 export default function SitePolish(){
@@ -20,42 +19,11 @@ export default function SitePolish(){
 
     const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches??false;
     const coarse=window.matchMedia?.('(pointer: coarse)')?.matches??false;
-    const lowPower=(navigator.hardwareConcurrency||4)<=4||(navigator.deviceMemory||4)<=4;
+    const lowPower=(navigator.hardwareConcurrency||4)<=6||(navigator.deviceMemory||4)<=6;
     setLite(reduced||lowPower);
 
-    let lenis=null;
-    let lenisFrame=0;
-    let lenisRunning=false;
-    const runLenis=time=>{
-      if(!lenisRunning||document.hidden) return;
-      lenis?.raf(time);
-      lenisFrame=requestAnimationFrame(runLenis);
-    };
-    const startLenis=()=>{
-      if(!lenis||lenisRunning||document.hidden) return;
-      lenisRunning=true;
-      lenisFrame=requestAnimationFrame(runLenis);
-    };
-    const stopLenis=()=>{
-      lenisRunning=false;
-      if(lenisFrame){cancelAnimationFrame(lenisFrame);lenisFrame=0;}
-    };
-
-    if(!reduced&&!coarse){
-      lenis=new Lenis({
-        duration:lowPower?1.02:1.12,
-        easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),
-        orientation:'vertical',
-        gestureOrientation:'vertical',
-        smoothWheel:true,
-        smoothTouch:false,
-        wheelMultiplier:lowPower?.94:.9,
-        touchMultiplier:1,
-        infinite:false
-      });
-      startLenis();
-    }
-
+    // Keep native browser scrolling. A permanent Lenis RAF was competing with
+    // GSAP + WebGL on lower-power laptops and made the whole page feel heavier.
     let siteTop=0;
     let scrollDistance=1;
     const measure=()=>{
@@ -101,21 +69,12 @@ export default function SitePolish(){
     },{threshold:.04}):null;
     if(signature&&quietObserver) quietObserver.observe(signature);
 
-    const onVisibility=()=>{
-      if(document.hidden) stopLenis();
-      else startLenis();
-    };
-    document.addEventListener('visibilitychange',onVisibility);
-
     return()=>{
       window.removeEventListener('scroll',onScroll);
       window.removeEventListener('resize',onResize);
       if(onPointer) window.removeEventListener('pointermove',onPointer);
-      document.removeEventListener('visibilitychange',onVisibility);
       if(pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
       if(scrollFrame.current) cancelAnimationFrame(scrollFrame.current);
-      stopLenis();
-      lenis?.destroy();
       quietObserver?.disconnect();
     };
   },[]);
