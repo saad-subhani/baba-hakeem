@@ -1,4 +1,4 @@
-/* Real-device mobile corrections derived from the 384x832 phone recording.
+/* Real-device mobile corrections derived from Safari + Chrome recordings.
    Desktop/tablet >= 761px is intentionally untouched. */
 
 @media (max-width:760px){
@@ -23,9 +23,8 @@
     margin-top:14px!important;
   }
 
-  /* The original desktop copy becomes very tall at 384px wide. Keep both
-     lower callouts present, but clamp their copy so they form a clean pair
-     instead of climbing into the title/bottle area. */
+  /* Keep both lower hero callouts present without letting them climb into the
+     title/bottle area on real 384px Safari/Chrome viewports. */
   .static-reference-site .ref-hero-bottom,
   .static-reference-site .ref-note{
     position:absolute!important;
@@ -115,6 +114,27 @@
     min-height:142px;
   }
 
+  /* Joint Oil destination copy. It is hidden until the moving hero bottle is
+     almost fully inside the card, then takes ownership so the finished bottle
+     can scroll with the card instead of drifting through later rows. */
+  .static-reference-site .ref-joint-target{
+    position:relative!important;
+  }
+
+  .static-reference-site .mobile-joint-landing{
+    display:block!important;
+    width:88%!important;
+    height:88%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    opacity:0;
+    pointer-events:none!important;
+    filter:drop-shadow(0 10px 14px rgba(0,0,0,.16));
+    will-change:opacity;
+  }
+
   /* Tight, intentional stacked featured section. */
   .static-reference-site .ref-feature{
     grid-template-rows:minmax(250px,34svh) minmax(420px,66svh)!important;
@@ -130,11 +150,33 @@
     margin-bottom:12px!important;
   }
 
-  /* Real phone showed Men's Oil finishing visibly above the cupped palms.
-     Move ONLY the mobile landing marker lower; desktop 51.5% is untouched. */
+  /* Real phone showed Men's Oil finishing above the cupped palms. Desktop
+     target remains untouched; this marker is phone-only. */
   .static-reference-site .ref-mens-hands-target{
     left:50%!important;
     top:78%!important;
+  }
+
+  /* Final Men's Oil copy lives inside the feature visual. The moving source
+     cross-fades into this copy at the very end, preventing Safari/Chrome from
+     carrying the old catalogue DOM node across the Hair Oil heading or into
+     the Best Product section. */
+  .static-reference-site .mobile-mens-landing{
+    position:absolute!important;
+    z-index:4!important;
+    left:50%!important;
+    top:78%!important;
+    width:min(38vw,150px)!important;
+    height:min(31vh,245px)!important;
+    max-height:245px!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    transform:translate3d(-50%,-50%,0)!important;
+    transform-origin:center center!important;
+    opacity:0;
+    pointer-events:none!important;
+    filter:drop-shadow(0 12px 18px rgba(0,0,0,.18));
+    will-change:opacity;
   }
 
   #best-product{
@@ -169,5 +211,10 @@
 
   .static-reference-site .ref-feature{
     grid-template-rows:245px minmax(405px,66svh)!important;
+  }
+
+  .static-reference-site .mobile-mens-landing{
+    width:min(40vw,146px)!important;
+    height:min(30vh,230px)!important;
   }
 }
