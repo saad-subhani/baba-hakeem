@@ -2,24 +2,29 @@
    Desktop/tablet >= 761px is intentionally untouched. */
 
 @media (max-width:760px){
+  /* Mirror the approved desktop hero composition on real phones: the title and
+     bottle occupy the same visual zone, with the bottle sitting over the
+     Baba Hakeem wordmark rather than far below it. */
   .static-reference-site .ref-hero-copy{
     position:absolute!important;
     left:50%!important;
-    top:24%!important;
+    top:35%!important;
     width:100%!important;
     transform:translate(-50%,-50%)!important;
     z-index:2!important;
-    padding:0 14px!important;
+    padding:0 12px!important;
   }
 
   .static-reference-site .ref-hero-copy h1{
-    font-size:clamp(48px,15.5vw,64px)!important;
-    line-height:.84!important;
+    font-size:clamp(54px,17vw,72px)!important;
+    line-height:.82!important;
+    letter-spacing:-.07em!important;
+    white-space:nowrap!important;
   }
 
   .static-reference-site .ref-hero-copy p{
     width:min(78vw,300px)!important;
-    margin-top:14px!important;
+    margin-top:16px!important;
   }
 
   .static-reference-site .ref-hero-bottom,
@@ -93,10 +98,14 @@
   }
 
   .static-reference-site .ref-hero-bottle{
-    top:49%!important;
+    left:51%!important;
+    top:42%!important;
     width:min(58vw,245px)!important;
-    height:43vh!important;
-    max-height:365px!important;
+    height:46svh!important;
+    max-height:390px!important;
+    z-index:4!important;
+    object-fit:contain!important;
+    visibility:visible!important;
   }
 
   .static-reference-site .ref-catalogue{
@@ -111,24 +120,7 @@
 
   .static-reference-site .ref-joint-target{
     position:relative!important;
-    overflow:hidden!important;
-  }
-
-  .static-reference-site .mobile-joint-landed{
-    position:absolute!important;
-    inset:6% 6% 7%!important;
-    width:88%!important;
-    height:87%!important;
-    max-width:none!important;
-    max-height:none!important;
-    object-fit:contain!important;
-    transform:none!important;
-    filter:drop-shadow(0 10px 12px rgba(0,0,0,.14))!important;
-    opacity:0;
-    visibility:visible!important;
-    pointer-events:none!important;
-    transition:opacity .12s linear!important;
-    z-index:2!important;
+    overflow:visible!important;
   }
 
   .static-reference-site .ref-feature{
@@ -178,7 +170,11 @@
 
 @media (max-width:390px){
   .static-reference-site .ref-hero-copy{
-    top:23.5%!important;
+    top:34%!important;
+  }
+
+  .static-reference-site .ref-hero-copy h1{
+    font-size:clamp(50px,16.5vw,64px)!important;
   }
 
   .static-reference-site .ref-hero-bottom,
@@ -197,8 +193,9 @@
   }
 
   .static-reference-site .ref-hero-bottle{
+    top:41%!important;
     width:min(56vw,225px)!important;
-    height:41vh!important;
+    height:44svh!important;
   }
 
   .static-reference-site .ref-feature{
