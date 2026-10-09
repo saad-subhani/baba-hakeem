@@ -31,7 +31,7 @@ export default function MobileMotionStabilizer(){
     let destroyed=false;
     let lastWidth=window.innerWidth;
 
-    const killOriginalMobileJourneys=()=>{
+    const killMobileJourneys=()=>{
       ScrollTrigger.getAll().forEach(trigger=>{
         const isJoint=trigger.trigger===hero&&Boolean(trigger.vars?.scrub);
         const isMens=trigger.trigger===mensSource&&Boolean(trigger.vars?.scrub);
@@ -46,37 +46,29 @@ export default function MobileMotionStabilizer(){
       mensTween=null;
     };
 
-    const elementCenter=(element)=>{
-      const rect=element.getBoundingClientRect();
-      return {x:rect.left+rect.width/2,y:rect.top+rect.height/2,width:rect.width,height:rect.height};
-    };
-
-    const heroBaseCenter=()=>{
-      const heroRect=hero.getBoundingClientRect();
-      return {
-        x:heroRect.left+heroBottle.offsetLeft,
-        y:heroRect.top+heroBottle.offsetTop,
-        width:heroBottle.offsetWidth,
-        height:heroBottle.offsetHeight
-      };
-    };
-
     const build=()=>{
       if(destroyed) return;
-      killOriginalMobileJourneys();
+      killMobileJourneys();
+
       gsap.set(heroBottle,{clearProps:'x,y,scale,rotation'});
       gsap.set(mensBottle,{clearProps:'x,y,scale,rotation'});
 
-      const heroStart=heroBaseCenter();
-      const jointEnd=elementCenter(jointTarget);
+      /* Measure the actual painted boxes after all mobile CSS has settled.
+         Using getBoundingClientRect for BOTH endpoints avoids the half-height
+         offset that appeared on the real phone when offsetTop was mixed with
+         transformed artwork. */
+      const bottleRect=heroBottle.getBoundingClientRect();
+      const jointRect=jointTarget.getBoundingClientRect();
       const jointScale=Math.min(
-        (jointEnd.width*.88)/Math.max(1,heroStart.width),
-        (jointEnd.height*.92)/Math.max(1,heroStart.height)
+        (jointRect.width*.90)/Math.max(1,bottleRect.width),
+        (jointRect.height*.94)/Math.max(1,bottleRect.height)
       );
+      const jointDx=(jointRect.left+jointRect.width/2)-(bottleRect.left+bottleRect.width/2);
+      const jointDy=(jointRect.top+jointRect.height/2)-(bottleRect.top+bottleRect.height/2);
 
       jointTween=gsap.to(heroBottle,{
-        x:jointEnd.x-heroStart.x,
-        y:jointEnd.y-heroStart.y,
+        x:jointDx,
+        y:jointDy,
         scale:jointScale,
         rotation:0,
         ease:'none',
@@ -90,11 +82,14 @@ export default function MobileMotionStabilizer(){
         }
       });
 
-      const mensStart=elementCenter(mensBottle);
-      const handsEnd=elementCenter(handsTarget);
+      const mensRect=mensBottle.getBoundingClientRect();
+      const handsRect=handsTarget.getBoundingClientRect();
+      const mensDx=(handsRect.left+handsRect.width/2)-(mensRect.left+mensRect.width/2);
+      const mensDy=(handsRect.top+handsRect.height/2)-(mensRect.top+mensRect.height/2);
+
       mensTween=gsap.to(mensBottle,{
-        x:handsEnd.x-mensStart.x,
-        y:handsEnd.y-mensStart.y,
+        x:mensDx,
+        y:mensDy,
         scale:2.75,
         rotation:0,
         transformOrigin:'50% 50%',
@@ -112,11 +107,15 @@ export default function MobileMotionStabilizer(){
       ScrollTrigger.refresh();
     };
 
-    const scheduleBuild=(delay=120)=>{
+    const scheduleBuild=(delay=360)=>{
       window.clearTimeout(buildTimer);
       buildTimer=window.setTimeout(build,delay);
     };
 
+    /* page.js creates its original mobile tweens at 80/120ms. Wait until those
+       exist, then replace them once. This prevents two scrub tweens fighting
+       over the same bottle, which was the reason Joint Oil drifted down into
+       Herbal Phakki in the real-device recording. */
     const relevantImages=[heroBottle,mensBottle,site.querySelector('.ref-feature-hands')].filter(Boolean);
     const waits=relevantImages.map(img=>{
       if(img.complete) return img.decode?.().catch(()=>{})??Promise.resolve();
@@ -125,11 +124,11 @@ export default function MobileMotionStabilizer(){
         img.addEventListener('error',resolve,{once:true});
       });
     });
-    Promise.all(waits).finally(()=>scheduleBuild(80));
+    Promise.all(waits).finally(()=>scheduleBuild(420));
 
-    /* Mobile browser chrome repeatedly changes viewport height while scrolling.
-       Block those height-only resize events from rebuilding the original desktop
-       measurements; genuine width/orientation changes are still allowed. */
+    /* Real mobile browser chrome changes viewport HEIGHT while scrolling.
+       Capture those resize events before page.js sees them. Only a genuine
+       width/orientation change is allowed to rebuild the journeys. */
     const guardToolbarResize=(event)=>{
       const width=window.innerWidth;
       if(Math.abs(width-lastWidth)<2){
@@ -137,13 +136,14 @@ export default function MobileMotionStabilizer(){
         return;
       }
       lastWidth=width;
+      event.stopImmediatePropagation();
       window.clearTimeout(resizeTimer);
-      resizeTimer=window.setTimeout(()=>scheduleBuild(180),120);
+      resizeTimer=window.setTimeout(()=>scheduleBuild(260),140);
     };
 
     const onOrientation=()=>{
       lastWidth=window.innerWidth;
-      scheduleBuild(320);
+      scheduleBuild(420);
     };
 
     window.addEventListener('resize',guardToolbarResize,true);
