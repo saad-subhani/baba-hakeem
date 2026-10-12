@@ -22,7 +22,7 @@ export default function SitePolish(){
     const cores=navigator.hardwareConcurrency||8;
     const memory=navigator.deviceMemory||8;
     const dpr=window.devicePixelRatio||1;
-    const denseDesktop=window.innerWidth>=1100&&dpr>1.15;
+    const denseDesktop=window.innerWidth>=1600||(window.innerWidth>=1100&&dpr>1.15);
     const lowPower=cores<=6||memory<=4||denseDesktop;
     setLite(reduced||lowPower);
 
