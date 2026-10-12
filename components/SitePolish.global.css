@@ -61,6 +61,14 @@ html.lenis,html.lenis body{height:auto}
 .static-reference-site .ref-mens-source .ref-mens-moving{filter:drop-shadow(0 18px 24px rgba(0,0,0,.18))}
 .static-reference-site .ref-mens-source:hover .ref-mens-moving{filter:drop-shadow(0 0 16px rgba(255,255,255,.14)) drop-shadow(0 22px 28px rgba(0,0,0,.25))}
 
+/* Scroll-time performance guard: remove raster-heavy filters only while the page is actively moving. */
+.static-reference-site .ref-hero-bottle,.static-reference-site .ref-mens-moving{will-change:transform;backface-visibility:hidden;transform-style:preserve-3d}
+.static-reference-site.is-performance-scrolling .ref-hero-bottle,.static-reference-site.is-performance-scrolling .ref-mens-moving{filter:none!important}
+.static-reference-site.is-performance-scrolling .ref-product-grid article>div::before{filter:none!important;opacity:.18!important;transition:none!important}
+.static-reference-site.is-performance-scrolling .ref-product-grid article>div::after{opacity:.08!important;transition:none!important}
+.static-reference-site.is-performance-scrolling .ref-product-grid article,.static-reference-site.is-performance-scrolling .ref-product-grid article>div,.static-reference-site.is-performance-scrolling .ref-product-grid article img,.static-reference-site.is-performance-scrolling .ref-product-grid article h3{transition:none!important}
+.static-reference-site.is-performance-scrolling .ref-product-grid article img:not(.ref-mens-moving){filter:drop-shadow(0 10px 14px rgba(0,0,0,.14))!important}
+
 @media(hover:none){
  .static-reference-site .ref-product-grid article::before,.static-reference-site .ref-product-grid article::after,.static-reference-site .ref-product-grid article>div::after{display:none}
  .static-reference-site .ref-product-grid article>div::before{opacity:.4;filter:blur(10px)}

@@ -26,10 +26,11 @@ export default function SitePolish(){
     const lowPower=cores<=6||memory<=4||denseDesktop;
     setLite(reduced||lowPower);
 
-    // Keep native browser scrolling. A permanent Lenis RAF was competing with
-    // GSAP + WebGL on lower-power laptops and made the whole page feel heavier.
     let siteTop=0;
     let scrollDistance=1;
+    let scrollIdleTimer=0;
+    let scrolling=false;
+
     const measure=()=>{
       const rect=site.getBoundingClientRect();
       siteTop=window.scrollY+rect.top;
@@ -41,12 +42,24 @@ export default function SitePolish(){
       const value=Math.min(1,Math.max(0,(window.scrollY-siteTop)/scrollDistance));
       progressRef.current.style.transform=`scaleX(${value})`;
     };
+    const markScrolling=()=>{
+      if(!scrolling){
+        scrolling=true;
+        site.classList.add('is-performance-scrolling');
+      }
+      if(scrollIdleTimer) window.clearTimeout(scrollIdleTimer);
+      scrollIdleTimer=window.setTimeout(()=>{
+        scrolling=false;
+        site.classList.remove('is-performance-scrolling');
+      },140);
+    };
     const onScroll=()=>{
+      markScrolling();
       if(!scrollFrame.current) scrollFrame.current=requestAnimationFrame(updateProgress);
     };
     const onResize=()=>{
       measure();
-      onScroll();
+      if(!scrollFrame.current) scrollFrame.current=requestAnimationFrame(updateProgress);
     };
     measure();
     updateProgress();
@@ -57,7 +70,7 @@ export default function SitePolish(){
     let onPointer;
     if(!coarse&&!reduced&&!lowPower){
       onPointer=(event)=>{
-        if(signatureQuiet||document.hidden||pointerFrame.current) return;
+        if(scrolling||signatureQuiet||document.hidden||pointerFrame.current) return;
         const x=event.clientX;
         const y=event.clientY;
         pointerFrame.current=requestAnimationFrame(()=>{
@@ -82,6 +95,8 @@ export default function SitePolish(){
       if(onPointer) window.removeEventListener('pointermove',onPointer);
       if(pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
       if(scrollFrame.current) cancelAnimationFrame(scrollFrame.current);
+      if(scrollIdleTimer) window.clearTimeout(scrollIdleTimer);
+      site.classList.remove('is-performance-scrolling');
       quietObserver?.disconnect();
     };
   },[]);
