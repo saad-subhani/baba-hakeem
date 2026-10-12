@@ -19,7 +19,11 @@ export default function SitePolish(){
 
     const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches??false;
     const coarse=window.matchMedia?.('(pointer: coarse)')?.matches??false;
-    const lowPower=(navigator.hardwareConcurrency||4)<=6||(navigator.deviceMemory||4)<=6;
+    const cores=navigator.hardwareConcurrency||8;
+    const memory=navigator.deviceMemory||8;
+    const dpr=window.devicePixelRatio||1;
+    const denseDesktop=window.innerWidth>=1100&&dpr>1.15;
+    const lowPower=cores<=6||memory<=4||denseDesktop;
     setLite(reduced||lowPower);
 
     // Keep native browser scrolling. A permanent Lenis RAF was competing with
@@ -49,10 +53,11 @@ export default function SitePolish(){
     window.addEventListener('scroll',onScroll,{passive:true});
     window.addEventListener('resize',onResize,{passive:true});
 
+    let signatureQuiet=false;
     let onPointer;
     if(!coarse&&!reduced&&!lowPower){
       onPointer=(event)=>{
-        if(pointerFrame.current) return;
+        if(signatureQuiet||document.hidden||pointerFrame.current) return;
         const x=event.clientX;
         const y=event.clientY;
         pointerFrame.current=requestAnimationFrame(()=>{
@@ -65,7 +70,9 @@ export default function SitePolish(){
 
     const signature=document.querySelector('#best-product');
     const quietObserver=signature?new IntersectionObserver(entries=>{
-      setQuiet(entries[0]?.isIntersecting??false);
+      const next=entries[0]?.isIntersecting??false;
+      signatureQuiet=next;
+      setQuiet(next);
     },{threshold:.04}):null;
     if(signature&&quietObserver) quietObserver.observe(signature);
 
