@@ -14,6 +14,7 @@ const HERBAL='/products/phakii.png';
 const ZAFRAN='/products/zafran/IMG_20241002_133345.webp';
 const ZAFRAN_ALT='/products/zafran/IMG_20241002_133606.webp';
 const HANDS='/hands-removebg-preview.png';
+const CONTACT='/contact-premium.webp';
 
 const cards=(items)=>items.map((item,i)=><article className={styles.card} data-seq-card key={item[0]}><span>{String(i+1).padStart(2,'0')}</span><div><h3>{item[0]}</h3><p>{item[1]}</p></div></article>);
 
@@ -101,7 +102,7 @@ export default function HomeSequentialPages(){
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
    <div className={styles.index}>15 / Contact Us</div><h2 className={styles.title} data-seq-head>LET’S TALK.</h2><p className={styles.lead} data-seq-lead>Questions about products, availability, orders or partnerships can all begin here.</p>
-   <div className={styles.contactVisualLayout}><div className={styles.contactBox}><div data-seq-card><small>GENERAL ENQUIRIES</small><h3>PRODUCTS & SUPPORT</h3><p>Use this space for customer questions, product information and order-related communication.</p></div><div data-seq-card><small>BUSINESS ENQUIRIES</small><h3>BUSINESS & PARTNERSHIPS</h3><p>Use this space for collaboration requests and commercial conversations.</p></div></div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={HANDS} alt="Baba Hakeem contact and support" loading="lazy" decoding="async" fetchPriority="low"/></div></div>
+   <div className={styles.contactVisualLayout}><div className={styles.contactBox}><div data-seq-card><small>GENERAL ENQUIRIES</small><h3>PRODUCTS & SUPPORT</h3><p>Use this space for customer questions, product information and order-related communication.</p></div><div data-seq-card><small>BUSINESS ENQUIRIES</small><h3>BUSINESS & PARTNERSHIPS</h3><p>Use this space for collaboration requests and commercial conversations.</p></div></div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={CONTACT} alt="Premium contact, phone, email and chat artwork" loading="lazy" decoding="async" fetchPriority="low"/></div></div>
   </section>
 
   <section className={`${styles.section} ${styles.legal}`} data-seq-section>
