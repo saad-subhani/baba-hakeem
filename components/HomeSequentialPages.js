@@ -9,15 +9,11 @@ import styles from './HomeSequentialPages.module.css';
 const ALOE='/aloe.png.png';
 const NEEM='/neem.png-removebg-preview.png';
 const TURMERIC='/turmeric.png-removebg-preview.png';
-const HAIR='/products/hair%20oil%20mockup%20png.png';
 const JOINT='/products/30ml%20mockup.png';
-const MENS='/products/mens-oil-new.png';
 const HERBAL='/products/phakii.png';
-const STOMACH='/products/stomach%20phakki-03.png';
 const ZAFRAN='/products/zafran/IMG_20241002_133345.webp';
 const ZAFRAN_ALT='/products/zafran/IMG_20241002_133606.webp';
 const HANDS='/hands-removebg-preview.png';
-const PREMIUM='/products/hero-premium-bottle.png.png';
 
 const cards=(items)=>items.map((item,i)=><article className={styles.card} data-seq-card key={item[0]}><span>{String(i+1).padStart(2,'0')}</span><div><h3>{item[0]}</h3><p>{item[1]}</p></div></article>);
 
@@ -85,52 +81,26 @@ export default function HomeSequentialPages(){
   </section>
 
   <section className={styles.section} data-seq-section>
-   <div className={styles.index}>14 / Journal</div><h2 className={styles.title} data-seq-head>NOTES FROM THE HERBAL WORLD.</h2><p className={styles.lead} data-seq-lead>Editorial stories turn the site into more than a catalogue — product education, ingredient notes, routines and behind-the-scenes brand stories all have a place here.</p>
-   <div className={styles.visualGrid}>
-    <VisualCard src={HAIR} alt="Baba Hakeem Hair Oil" kicker="THE OIL COLLECTION" title="One family, distinct rituals" copy="Hair Oil, Joint Oil and Men’s Oil create a recognisable product family." contain/>
-    <VisualCard src={STOMACH} alt="Baba Hakeem traditional herbal blend" kicker="TRADITIONAL BLENDS" title="Powdered herbal formats" copy="A closer look at traditional blends and their place inside the collection." contain/>
-    <VisualCard src={ZAFRAN} alt="Baba Hakeem premium saffron" kicker="ZAFRAN IN FOCUS" title="A premium botanical story" copy="Saffron, photography and the thinking behind its presentation."/>
-   </div>
+   <div className={styles.index}>14 / FAQ</div><h2 className={styles.title} data-seq-head>COMMON QUESTIONS. CLEAR ANSWERS.</h2>
+   <div className={styles.faq}>{[['What kind of products does Baba Hakeem offer?','The range currently includes herbal oils, traditional powdered blends and premium saffron, with room for future additions.'],['Where can I learn how to use a product?','Product-specific guidance can be shown alongside each product and inside the care guide section.'],['Where can I ask a product question?','Use the contact section below for general product, order or business enquiries.']].map(x=><article data-seq-card key={x[0]}><h3>{x[0]}</h3><p>{x[1]}</p></article>)}</div>
   </section>
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
-   <div className={styles.index}>15 / Testimonials</div><div className={styles.split}><div><h2 className={styles.quote} data-seq-head>“A PREMIUM HERBAL EXPERIENCE SHOULD FEEL SIMPLE, TRUSTED AND MEMORABLE.”</h2><p className={styles.lead} data-seq-lead>This section is ready for real customer reviews, owner-approved quotes, retail feedback and future verified testimonials.</p><div className={styles.line} data-seq-line/></div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={PREMIUM} alt="Baba Hakeem premium bottle" loading="lazy" decoding="async"/></div></div>
-  </section>
-
-  <section className={styles.section} data-seq-section>
-   <div className={styles.index}>16 / Stockists</div><h2 className={styles.title} data-seq-head>FIND BABA HAKEEM.</h2><p className={styles.lead} data-seq-lead>A dedicated retail section for stores, pharmacies, resellers and future regional stockists.</p>
-   <div className={styles.stockistLayout}>
-    <div className={styles.productCluster} data-seq-visual><img src={HAIR} alt="Baba Hakeem Hair Oil" loading="lazy" decoding="async"/><img src={JOINT} alt="Baba Hakeem Joint Oil" loading="lazy" decoding="async"/><img src={MENS} alt="Baba Hakeem Men's Oil" loading="lazy" decoding="async"/></div>
-    <div className={styles.grid}>{cards([['Retail Partners','A place for approved physical retailers and authorised sellers.'],['City Coverage','Organise stockist information by city, area or region as the network grows.'],['Availability','Keep customers informed about where selected products can currently be found.']])}</div>
-   </div>
-  </section>
-
-  <section className={`${styles.section} ${styles.dark}`} data-seq-section>
-   <div className={styles.index}>17 / Wholesale</div><h2 className={styles.title} data-seq-head>GROW WITH THE BRAND.</h2><p className={styles.lead} data-seq-lead>For retailers, distributors and business buyers who want to bring Baba Hakeem products into their own stores or networks.</p>
-   <div className={styles.wholesaleSplit}><div className={styles.grid}>{cards([['Retail Enquiries','For shops and resellers interested in carrying the collection.'],['Distribution','For larger regional or channel-based partnership discussions.'],['Business Support','A clear route for catalogues, order information and wholesale communication.']])}</div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={ZAFRAN_ALT} alt="Baba Hakeem premium retail packaging" loading="lazy" decoding="async"/></div></div>
-  </section>
-
-  <section className={styles.section} data-seq-section>
-   <div className={styles.index}>18 / FAQ</div><h2 className={styles.title} data-seq-head>COMMON QUESTIONS. CLEAR ANSWERS.</h2>
-   <div className={styles.faq}>{[['What kind of products does Baba Hakeem offer?','The range currently includes herbal oils, traditional powdered blends and premium saffron, with room for future additions.'],['Where can I learn how to use a product?','Product-specific guidance can be shown alongside each product and inside the care guide section.'],['Do you offer wholesale or retail partnerships?','Yes. Business and wholesale enquiries have a dedicated section for future partner communication.'],['Where can I ask a product question?','Use the contact section below for general product, order or business enquiries.']].map(x=><article data-seq-card key={x[0]}><h3>{x[0]}</h3><p>{x[1]}</p></article>)}</div>
-  </section>
-
-  <section className={`${styles.section} ${styles.dark}`} data-seq-section>
-   <div className={styles.index}>19 / Contact Us</div><h2 className={styles.title} data-seq-head>LET’S TALK.</h2><p className={styles.lead} data-seq-lead>Questions about products, availability, orders or partnerships can all begin here.</p>
-   <div className={styles.contactVisualLayout}><div className={styles.contactBox}><div data-seq-card><small>GENERAL ENQUIRIES</small><h3>PRODUCTS & SUPPORT</h3><p>Use this space for customer questions, product information and order-related communication.</p></div><div data-seq-card><small>BUSINESS ENQUIRIES</small><h3>WHOLESALE & PARTNERSHIPS</h3><p>Use this space for retailers, distributors, collaboration requests and commercial conversations.</p></div></div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={HANDS} alt="Baba Hakeem contact and support" loading="lazy" decoding="async"/></div></div>
+   <div className={styles.index}>15 / Contact Us</div><h2 className={styles.title} data-seq-head>LET’S TALK.</h2><p className={styles.lead} data-seq-lead>Questions about products, availability, orders or partnerships can all begin here.</p>
+   <div className={styles.contactVisualLayout}><div className={styles.contactBox}><div data-seq-card><small>GENERAL ENQUIRIES</small><h3>PRODUCTS & SUPPORT</h3><p>Use this space for customer questions, product information and order-related communication.</p></div><div data-seq-card><small>BUSINESS ENQUIRIES</small><h3>BUSINESS & PARTNERSHIPS</h3><p>Use this space for collaboration requests and commercial conversations.</p></div></div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={HANDS} alt="Baba Hakeem contact and support" loading="lazy" decoding="async"/></div></div>
   </section>
 
   <section className={`${styles.section} ${styles.legal}`} data-seq-section>
-   <div className={styles.index}>20 / Shipping & Returns</div><h2 className={styles.title} data-seq-head>DELIVERY, MADE CLEAR.</h2><div className={styles.grid}>{cards([['Shipping','Delivery timing, service areas and dispatch information can be kept transparent here.'],['Returns','Return eligibility and product-condition requirements can be explained in one place.'],['Support','Order issues can be directed to the same contact channel for a cleaner experience.']])}</div>
+   <div className={styles.index}>16 / Shipping & Returns</div><h2 className={styles.title} data-seq-head>DELIVERY, MADE CLEAR.</h2><div className={styles.grid}>{cards([['Shipping','Delivery timing, service areas and dispatch information can be kept transparent here.'],['Returns','Return eligibility and product-condition requirements can be explained in one place.'],['Support','Order issues can be directed to the same contact channel for a cleaner experience.']])}</div>
   </section>
 
   <section className={`${styles.section} ${styles.dark} ${styles.legal}`} data-seq-section>
-   <div className={styles.index}>21 / Privacy</div><h2 className={styles.title} data-seq-head>YOUR DATA, TREATED WITH CARE.</h2><p className={styles.lead} data-seq-lead>A clear privacy area for explaining what information the website collects, why it is used and how customer information is handled.</p><div className={styles.line} data-seq-line/></section>
+   <div className={styles.index}>17 / Privacy</div><h2 className={styles.title} data-seq-head>YOUR DATA, TREATED WITH CARE.</h2><p className={styles.lead} data-seq-lead>A clear privacy area for explaining what information the website collects, why it is used and how customer information is handled.</p><div className={styles.line} data-seq-line/></section>
 
   <section className={`${styles.section} ${styles.legal}`} data-seq-section>
-   <div className={styles.index}>22 / Terms</div><h2 className={styles.title} data-seq-head>THE DETAILS THAT KEEP THINGS CLEAR.</h2><p className={styles.lead} data-seq-lead>Terms for website use, product information, orders, availability, intellectual property and future commerce can live here in a readable format.</p><div className={styles.line} data-seq-line/></section>
+   <div className={styles.index}>18 / Terms</div><h2 className={styles.title} data-seq-head>THE DETAILS THAT KEEP THINGS CLEAR.</h2><p className={styles.lead} data-seq-lead>Terms for website use, product information, orders, availability, intellectual property and future commerce can live here in a readable format.</p><div className={styles.line} data-seq-line/></section>
 
   <section className={`${styles.section} ${styles.dark} ${styles.closing}`} data-seq-section>
-   <div className={styles.index}>Baba Hakeem Herbal Products</div><h2 className={styles.title} data-seq-head>ONE WEBSITE. ONE CONTINUOUS BRAND STORY.</h2><p className={styles.lead} data-seq-lead>From the opening hero to products, best product reveal, brand story, care, trust, support and business information — everything now continues in one scroll.</p><div className={styles.line} data-seq-line/></section>
+   <div className={styles.index}>Baba Hakeem Herbal Products</div><h2 className={styles.title} data-seq-head>ONE WEBSITE. ONE CONTINUOUS BRAND STORY.</h2><p className={styles.lead} data-seq-lead>From the opening hero to products, best product reveal, brand story, care, support and essential information — everything continues in one scroll.</p><div className={styles.line} data-seq-line/></section>
  </div>;
 }
