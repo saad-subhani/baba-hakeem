@@ -33,6 +33,7 @@ export default function HomeSequentialPages(){
   if(reduce) return;
 
   let initFrame=0;
+  const triggers=[];
   const ctx=gsap.context(()=>{
    initFrame=requestAnimationFrame(()=>{
     gsap.utils.toArray('[data-seq-section]').forEach((section)=>{
@@ -42,22 +43,29 @@ export default function HomeSequentialPages(){
      const regular=[...section.querySelectorAll('[data-seq-card]:not([data-seq-visual])')];
      const visuals=[...section.querySelectorAll('[data-seq-visual]')];
 
-     const tl=gsap.timeline({
-      defaults:{ease:'power3.out'},
-      scrollTrigger:{trigger:section,start:'top 82%',once:true}
-     });
+     const playReveal=()=>{
+      const tl=gsap.timeline({defaults:{ease:'power3.out'}});
+      if(head) tl.from(head,{y:34,opacity:0,duration:.62,immediateRender:false},0);
+      if(lead) tl.from(lead,{y:16,opacity:0,duration:.48,immediateRender:false},.04);
+      if(regular.length) tl.from(regular,{y:20,opacity:0,duration:.48,stagger:.04,immediateRender:false},.08);
+      if(visuals.length) tl.from(visuals,{y:18,scale:.985,opacity:0,duration:.56,stagger:.045,immediateRender:false},.07);
+      if(line) tl.fromTo(line,{scaleX:0},{scaleX:1,duration:.52,immediateRender:false},.1);
+     };
 
-     if(head) tl.from(head,{y:46,opacity:0,duration:.82},0);
-     if(lead) tl.from(lead,{y:20,opacity:0,duration:.64},.06);
-     if(regular.length) tl.from(regular,{y:28,opacity:0,duration:.62,stagger:.055},.12);
-     if(visuals.length) tl.from(visuals,{y:24,scale:.975,opacity:0,duration:.72,stagger:.06},.1);
-     if(line) tl.fromTo(line,{scaleX:0},{scaleX:1,duration:.72},.16);
+     triggers.push(ScrollTrigger.create({
+      trigger:section,
+      start:'top 88%',
+      once:true,
+      onEnter:playReveal
+     }));
     });
+    ScrollTrigger.refresh();
    });
   },root);
 
   return()=>{
    if(initFrame) cancelAnimationFrame(initFrame);
+   triggers.forEach(trigger=>trigger.kill());
    ctx.revert();
   };
  },[pathname]);
