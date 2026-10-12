@@ -1,4 +1,5 @@
-import PremiumPageShell,{styles} from '../../components/PremiumPageShell';
+import PremiumPageShell from '../../components/PremiumPageShell';
+import styles from '../../components/PremiumPage.module.css';
 
 export const metadata={title:'Privacy | Baba Hakeem'};
 
