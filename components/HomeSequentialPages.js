@@ -18,7 +18,7 @@ const HANDS='/hands-removebg-preview.png';
 const cards=(items)=>items.map((item,i)=><article className={styles.card} data-seq-card key={item[0]}><span>{String(i+1).padStart(2,'0')}</span><div><h3>{item[0]}</h3><p>{item[1]}</p></div></article>);
 
 const VisualCard=({src,alt,kicker,title,copy,contain=false})=><article className={styles.visualCard} data-seq-card data-seq-visual>
- <div className={`${styles.visualMedia} ${contain?styles.contain:''}`}><img src={src} alt={alt} loading="lazy" decoding="async"/></div>
+ <div className={`${styles.visualMedia} ${contain?styles.contain:''}`}><img src={src} alt={alt} loading="lazy" decoding="async" fetchPriority="low"/></div>
  <div className={styles.visualCopy}>{kicker&&<small>{kicker}</small>}<h3>{title}</h3>{copy&&<p>{copy}</p>}</div>
 </article>;
 
@@ -30,21 +30,35 @@ export default function HomeSequentialPages(){
   gsap.registerPlugin(ScrollTrigger);
   const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   if(reduce) return;
+
+  let initFrame=0;
   const ctx=gsap.context(()=>{
-   gsap.utils.toArray('[data-seq-section]').forEach((section)=>{
-    const head=section.querySelector('[data-seq-head]');
-    const lead=section.querySelector('[data-seq-lead]');
-    const line=section.querySelector('[data-seq-line]');
-    if(head) gsap.from(head,{y:58,opacity:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:section,start:'top 80%',once:true}});
-    if(lead) gsap.from(lead,{y:24,opacity:0,duration:.78,delay:.05,ease:'power3.out',scrollTrigger:{trigger:section,start:'top 80%',once:true}});
-    if(line) gsap.fromTo(line,{scaleX:0},{scaleX:1,duration:1,ease:'power3.out',scrollTrigger:{trigger:section,start:'top 78%',once:true}});
-    const regular=[...section.querySelectorAll('[data-seq-card]:not([data-seq-visual])')];
-    if(regular.length) gsap.from(regular,{y:38,opacity:0,duration:.8,stagger:.075,ease:'power3.out',scrollTrigger:{trigger:regular[0],start:'top 89%',once:true}});
-    const visuals=[...section.querySelectorAll('[data-seq-visual]')];
-    if(visuals.length) gsap.from(visuals,{y:34,scale:.965,opacity:0,duration:1,stagger:.09,ease:'power3.out',clearProps:'willChange',scrollTrigger:{trigger:visuals[0],start:'top 88%',once:true}});
+   initFrame=requestAnimationFrame(()=>{
+    gsap.utils.toArray('[data-seq-section]').forEach((section)=>{
+     const head=section.querySelector('[data-seq-head]');
+     const lead=section.querySelector('[data-seq-lead]');
+     const line=section.querySelector('[data-seq-line]');
+     const regular=[...section.querySelectorAll('[data-seq-card]:not([data-seq-visual])')];
+     const visuals=[...section.querySelectorAll('[data-seq-visual]')];
+
+     const tl=gsap.timeline({
+      defaults:{ease:'power3.out'},
+      scrollTrigger:{trigger:section,start:'top 82%',once:true}
+     });
+
+     if(head) tl.from(head,{y:46,opacity:0,duration:.82},0);
+     if(lead) tl.from(lead,{y:20,opacity:0,duration:.64},.06);
+     if(regular.length) tl.from(regular,{y:28,opacity:0,duration:.62,stagger:.055},.12);
+     if(visuals.length) tl.from(visuals,{y:24,scale:.975,opacity:0,duration:.72,stagger:.06},.1);
+     if(line) tl.fromTo(line,{scaleX:0},{scaleX:1,duration:.72},.16);
+    });
    });
   },root);
-  return()=>ctx.revert();
+
+  return()=>{
+   if(initFrame) cancelAnimationFrame(initFrame);
+   ctx.revert();
+  };
  },[pathname]);
  if(pathname!=='/') return null;
  return <div ref={root} className={styles.sequence}>
@@ -52,14 +66,14 @@ export default function HomeSequentialPages(){
    <div className={styles.index}>10 / About Baba Hakeem</div>
    <div className={styles.heroVisualSplit}>
     <div><h2 className={styles.title} data-seq-head>ROOTED IN HERBAL TRADITION.</h2><p className={styles.lead} data-seq-lead>Baba Hakeem brings traditional herbal care into a cleaner, calmer and more considered modern experience — without losing the character that makes the brand familiar.</p></div>
-    <div className={styles.heroVisual} data-seq-visual><img src={ZAFRAN} alt="Baba Hakeem premium product presentation" loading="lazy" decoding="async"/></div>
+    <div className={styles.heroVisual} data-seq-visual><img src={ZAFRAN} alt="Baba Hakeem premium product presentation" loading="lazy" decoding="async" fetchPriority="low"/></div>
    </div>
    <div className={styles.grid}>{cards([['Heritage','A product world shaped by traditional herbal formats and everyday care.'],['Clarity','A simplified visual language that makes every product family easier to understand.'],['Consistency','One black-and-gray brand system across oils, blends, saffron and future launches.']])}</div>
   </section>
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
    <div className={styles.index}>11 / Care Guide</div>
-   <div className={styles.split}><div><h2 className={styles.title} data-seq-head>A CALMER DAILY RITUAL.</h2><p className={styles.lead} data-seq-lead>Simple guidance, thoughtful routines and product-first care designed to feel easy to follow.</p><div className={styles.singleVisual} data-seq-visual><img src={HANDS} alt="Hands presenting a simple herbal care ritual" loading="lazy" decoding="async"/></div></div><div className={styles.steps}>{[['01','Choose','Start with the product that matches the ritual you want to build.'],['02','Use','Follow the format and directions provided with the product.'],['03','Repeat','Keep routines simple and consistent rather than overcomplicating them.']].map(x=><div className={styles.step} data-seq-card key={x[0]}><b>{x[0]}</b><div><h3>{x[1]}</h3><p>{x[2]}</p></div></div>)}</div></div>
+   <div className={styles.split}><div><h2 className={styles.title} data-seq-head>A CALMER DAILY RITUAL.</h2><p className={styles.lead} data-seq-lead>Simple guidance, thoughtful routines and product-first care designed to feel easy to follow.</p><div className={styles.singleVisual} data-seq-visual><img src={HANDS} alt="Hands presenting a simple herbal care ritual" loading="lazy" decoding="async" fetchPriority="low"/></div></div><div className={styles.steps}>{[['01','Choose','Start with the product that matches the ritual you want to build.'],['02','Use','Follow the format and directions provided with the product.'],['03','Repeat','Keep routines simple and consistent rather than overcomplicating them.']].map(x=><div className={styles.step} data-seq-card key={x[0]}><b>{x[0]}</b><div><h3>{x[1]}</h3><p>{x[2]}</p></div></div>)}</div></div>
   </section>
 
   <section className={styles.section} data-seq-section>
@@ -87,7 +101,7 @@ export default function HomeSequentialPages(){
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
    <div className={styles.index}>15 / Contact Us</div><h2 className={styles.title} data-seq-head>LET’S TALK.</h2><p className={styles.lead} data-seq-lead>Questions about products, availability, orders or partnerships can all begin here.</p>
-   <div className={styles.contactVisualLayout}><div className={styles.contactBox}><div data-seq-card><small>GENERAL ENQUIRIES</small><h3>PRODUCTS & SUPPORT</h3><p>Use this space for customer questions, product information and order-related communication.</p></div><div data-seq-card><small>BUSINESS ENQUIRIES</small><h3>BUSINESS & PARTNERSHIPS</h3><p>Use this space for collaboration requests and commercial conversations.</p></div></div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={HANDS} alt="Baba Hakeem contact and support" loading="lazy" decoding="async"/></div></div>
+   <div className={styles.contactVisualLayout}><div className={styles.contactBox}><div data-seq-card><small>GENERAL ENQUIRIES</small><h3>PRODUCTS & SUPPORT</h3><p>Use this space for customer questions, product information and order-related communication.</p></div><div data-seq-card><small>BUSINESS ENQUIRIES</small><h3>BUSINESS & PARTNERSHIPS</h3><p>Use this space for collaboration requests and commercial conversations.</p></div></div><div className={`${styles.heroVisual} ${styles.darkVisual}`} data-seq-visual><img src={HANDS} alt="Baba Hakeem contact and support" loading="lazy" decoding="async" fetchPriority="low"/></div></div>
   </section>
 
   <section className={`${styles.section} ${styles.legal}`} data-seq-section>
