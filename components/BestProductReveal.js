@@ -19,23 +19,25 @@ export default function BestProductReveal(){
     const canvas=canvasRef.current;
     if(!section||!canvas) return;
 
-    const cores=navigator.hardwareConcurrency||4;
-    const memory=navigator.deviceMemory||4;
-    const lowPower=cores<=4||memory<=4;
+    const cores=navigator.hardwareConcurrency||8;
+    const memory=navigator.deviceMemory||8;
+    const dpr=window.devicePixelRatio||1;
     const coarsePointer=window.matchMedia?.('(pointer: coarse)')?.matches??false;
     const mobileGPU=coarsePointer&&window.innerWidth<900;
-    const performanceMode=mobileGPU||lowPower;
+    const highPixelLoad=(window.innerWidth*window.innerHeight*dpr*dpr)>=1900000;
+    const lowPower=cores<=6||memory<=4;
+    const performanceMode=mobileGPU||lowPower||highPixelLoad;
     const shadowsEnabled=!performanceMode;
     const roundSegments=performanceMode?48:96;
     const baseSegments=performanceMode?36:72;
     const detailSegments=performanceMode?28:48;
     section.dataset.renderMode=performanceMode?'lite':'full';
 
-    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:!performanceMode,alpha:true,powerPreference:'high-performance'});
     const maxAnisotropy=renderer.capabilities.getMaxAnisotropy();
     const anisotropy=performanceMode?Math.min(4,maxAnisotropy):maxAnisotropy;
-    const targetPixelRatio=mobileGPU?1.1:(lowPower?1.1:1.6);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,targetPixelRatio));
+    const targetPixelRatio=performanceMode?1:1.35;
+    renderer.setPixelRatio(Math.min(dpr,targetPixelRatio));
     renderer.outputColorSpace=THREE.SRGBColorSpace;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure=1.22;
@@ -246,7 +248,8 @@ export default function BestProductReveal(){
     let targetRotation=initialRotation;let targetLid=0;let targetBottleReveal=0;let bottleReveal=0;let targetRevealLight=0;let targetProductGlow=0;let targetHaloScale=1;let targetCameraZ=8.72;let targetCameraY=1.26;let scrollTarget=0;let scrollProgress=0;let compactCanvas=false;
     root.rotation.y=initialRotation;lidPivot.rotation.x=0;
 
-    const resize=()=>{const rect=canvas.getBoundingClientRect();const w=Math.max(1,rect.width);const h=Math.max(1,rect.height);compactCanvas=w<700;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,targetPixelRatio));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();targetCameraZ=compactCanvas?9.72:8.72;targetCameraY=compactCanvas?1.08:1.26;if(!product.visible){camera.position.z=targetCameraZ;camera.position.y=targetCameraY;}};
+    let lastCanvasW=0;let lastCanvasH=0;
+    const resize=()=>{const rect=canvas.getBoundingClientRect();const w=Math.max(1,Math.round(rect.width));const h=Math.max(1,Math.round(rect.height));compactCanvas=w<700;if(w!==lastCanvasW||h!==lastCanvasH){lastCanvasW=w;lastCanvasH=h;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,targetPixelRatio));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}targetCameraZ=compactCanvas?9.72:8.72;targetCameraY=compactCanvas?1.08:1.26;if(!product.visible){camera.position.z=targetCameraZ;camera.position.y=targetCameraY;}};
     resize();
 
     let raf=0;let resizeRaf=0;let previousTime=performance.now();let sectionVisible=false;let lastProgressPaint=-1;
@@ -265,12 +268,12 @@ export default function BestProductReveal(){
       product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.98*bottleReveal);product.scale.setScalar(bottleScale);product.position.y=(-.22)+(1.1*bottleReveal);product.position.z=.18+(.16*bottleReveal);}
       renderer.render(scene,camera);
       const settling=Math.abs(scrollProgress-scrollTarget)>.00008||Math.abs(root.rotation.y-targetRotation)>.00008||Math.abs(lidPivot.rotation.x-targetLid)>.00008||Math.abs(bottleReveal-targetBottleReveal)>.00008||Math.abs(revealLight.intensity-targetRevealLight)>.001||Math.abs(productGlow.intensity-targetProductGlow)>.001||Math.abs(camera.position.z-targetCameraZ)>.0001||Math.abs(camera.position.y-targetCameraY)>.0001;
-      if(sectionVisible&&!document.hidden&&(!performanceMode||settling)) raf=requestAnimationFrame(render);
+      if(sectionVisible&&!document.hidden&&settling) raf=requestAnimationFrame(render);
     };
     const requestRender=()=>{if(!raf&&sectionVisible&&!document.hidden){previousTime=performance.now();raf=requestAnimationFrame(render);}};
     const stopRender=()=>{if(raf){cancelAnimationFrame(raf);raf=0;}};
 
-    const observer=new IntersectionObserver(entries=>{sectionVisible=entries[0]?.isIntersecting??false;if(sectionVisible)requestRender();else stopRender();},{rootMargin:'180px 0px'});observer.observe(section);
+    const observer=new IntersectionObserver(entries=>{sectionVisible=entries[0]?.isIntersecting??false;if(sectionVisible)requestRender();else stopRender();},{rootMargin:'120px 0px'});observer.observe(section);
     const onVisibility=()=>{if(document.hidden)stopRender();else requestRender();};
     document.addEventListener('visibilitychange',onVisibility);
 
