@@ -7,10 +7,12 @@
   overflow:hidden;
   isolation:isolate;
   color:var(--ink);
-  background-color:#e9e8e3;
-  background-image:url('/hero-concrete.jpg.jpg');
+  background-color:#bdbcb6;
+  background-image:
+    linear-gradient(rgba(190,189,183,.22),rgba(190,189,183,.22)),
+    url('/hero-concrete.jpg.jpg');
   background-size:cover;
-  background-position:center;
+  background-position:center center;
   background-repeat:no-repeat;
   font-family:Arial,Helvetica,sans-serif;
 }
