@@ -30,7 +30,8 @@ export default function PremiumPageShell({eyebrow,title,intro,children}){
       <Link className={styles.logo} href="/">Baba Hakeem</Link>
       <nav>
         <Link href="/about">About</Link>
-        <Link href="/ingredients">Ingredients</Link>
+        <Link href="/care-guide">Care Guide</Link>
+        <Link href="/journal">Journal</Link>
         <Link href="/faq">FAQ</Link>
         <Link href="/contact">Contact</Link>
       </nav>
@@ -50,10 +51,18 @@ export default function PremiumPageShell({eyebrow,title,intro,children}){
       <div><strong>Baba Hakeem</strong><span>Traditional herbal care, refined for modern routines.</span></div>
       <nav>
         <Link href="/about">About</Link>
+        <Link href="/care-guide">Care Guide</Link>
+        <Link href="/journal">Journal</Link>
+        <Link href="/ingredients">Ingredients</Link>
+        <Link href="/testimonials">Testimonials</Link>
+        <Link href="/stockists">Stockists</Link>
+        <Link href="/process">Our Process</Link>
+        <Link href="/wholesale">Wholesale</Link>
         <Link href="/faq">FAQ</Link>
         <Link href="/contact">Contact</Link>
         <Link href="/shipping-returns">Shipping & Returns</Link>
         <Link href="/privacy">Privacy</Link>
+        <Link href="/terms">Terms</Link>
       </nav>
     </footer>
   </main>;
