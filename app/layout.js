@@ -4,7 +4,7 @@ import '../components/MobileResponsive.global.css';
 import '../components/MobileRealDeviceFixes.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
-import GlobalExploreNav from '../components/GlobalExploreNav';
+import HomeSequentialPages from '../components/HomeSequentialPages';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}<GlobalExploreNav/><SitePolish/><MobileMotionStabilizer/></body>
+      <body>{children}<HomeSequentialPages/><SitePolish/><MobileMotionStabilizer/></body>
     </html>
   );
 }
