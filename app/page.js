@@ -127,7 +127,8 @@ export default function Home(){
   const measureRefinement=()=>{
    const handsRect=hands.getBoundingClientRect();
    const targetRect=target.getBoundingClientRect();
-   finalX=(handsRect.left+handsRect.width/2)-(targetRect.left+targetRect.width/2);
+   const opticalCenterNudge=window.innerWidth<760?0:handsRect.width*.085;
+   finalX=(handsRect.left+handsRect.width/2)-(targetRect.left+targetRect.width/2)+opticalCenterNudge;
   };
   const applyRefinement=(progress)=>{
    const start=.68;
