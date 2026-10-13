@@ -1,0 +1,45 @@
+/* Zafran-only catalogue refinement. No bottle, hands, GSAP, or other product selectors. */
+.static-reference-site .ref-product-grid article:nth-child(6)>div{
+  transform:scale(.70)!important;
+  transform-origin:50% 50%!important;
+  border:0!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+  background:#080808!important;
+  box-shadow:0 20px 46px rgba(0,0,0,.34)!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>div::before{
+  opacity:.28!important;
+  background:radial-gradient(circle,rgba(255,255,255,.10) 0,rgba(255,255,255,.03) 38%,transparent 72%)!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>div::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:5!important;
+  pointer-events:none!important;
+  opacity:1!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.04),transparent 30%,transparent 68%,rgba(0,0,0,.24)),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.30) 100%)!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6) img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  display:block!important;
+  transform:none!important;
+  filter:saturate(.80) contrast(1.06) brightness(.90)!important;
+}
+@media(hover:hover) and (pointer:fine){
+  .static-reference-site .ref-product-grid article:nth-child(6):hover>div{
+    transform:scale(.73) translateY(-3px)!important;
+  }
+  .static-reference-site .ref-product-grid article:nth-child(6):hover img{
+    transform:none!important;
+  }
+}
+@media(max-width:760px){
+  .static-reference-site .ref-product-grid article:nth-child(6)>div{
+    transform:scale(.78)!important;
+    border-radius:16px!important;
+  }
+}
