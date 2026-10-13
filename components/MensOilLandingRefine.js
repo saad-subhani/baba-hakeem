@@ -25,7 +25,8 @@ export default function MensOilLandingRefine(){
       const scale=1+((finalScale-1)*eased);
       const lift=finalLift*eased;
       bottle.style.scale=String(scale);
-      bottle.style.translate=`0 ${lift}px`;
+      const finalX = 18;
+      bottle.style.translate=`${finalX}px ${lift}px`;
     };
 
     const trigger=ScrollTrigger.create({
