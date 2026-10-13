@@ -1,0 +1,17 @@
+.footer{padding-top:48px!important;padding-bottom:34px!important}
+.hero{grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr)!important;gap:5vw!important;align-items:center!important;padding:8vh 0 7vh!important}
+.hero h2{font-size:clamp(64px,7.2vw,118px)!important;line-height:.84!important;letter-spacing:-.065em!important;max-width:860px!important}
+.intro{max-width:470px!important;justify-self:end!important;align-self:center!important}
+.intro p{font-size:clamp(17px,1.25vw,20px)!important;line-height:1.6!important;color:rgba(255,255,255,.74)!important}
+.intro a{font-size:12px!important;letter-spacing:.11em!important;padding-bottom:10px!important}
+.links{grid-template-columns:1.35fr repeat(3,.78fr)!important;gap:36px!important;padding:48px 0 52px!important}
+.links nav{gap:16px!important}
+.links nav small{font-size:9px!important;color:rgba(255,255,255,.5)!important}
+.links nav a{font-size:15px!important;color:rgba(255,255,255,.82)!important}
+.brand strong{font-size:clamp(27px,2vw,34px)!important}
+.brand p{font-size:14px!important;line-height:1.65!important;color:rgba(255,255,255,.6)!important}
+.bottom{font-size:9px!important;letter-spacing:.16em!important;color:rgba(255,255,255,.5)!important}
+.wordmark{margin:5vh -1vw 0!important;font-size:clamp(88px,13.5vw,210px)!important;line-height:.82!important;color:rgba(255,255,255,.05)!important;transform:translateY(10%)!important}
+@media(max-width:1100px){.hero{grid-template-columns:1fr!important;gap:32px!important}.intro{justify-self:start!important}.links{grid-template-columns:1.25fr repeat(3,1fr)!important;gap:28px!important}}
+@media(max-width:900px){.footer{padding-top:36px!important}.hero{padding:6vh 0!important}.hero h2{font-size:clamp(58px,13vw,90px)!important;max-width:720px!important}.links{grid-template-columns:1fr 1fr!important;gap:34px 24px!important}.brand{grid-column:1/-1}.wordmark{font-size:clamp(74px,20vw,150px)!important;transform:none!important;margin-top:4vh!important}}
+@media(max-width:560px){.footer{padding-top:30px!important;padding-bottom:22px!important}.hero h2{font-size:clamp(54px,16vw,78px)!important;line-height:.86!important}.intro{max-width:none!important}.links{grid-template-columns:1fr 1fr!important;padding:38px 0 42px!important}.links nav:last-child{grid-column:1/-1}.wordmark{font-size:clamp(68px,21vw,118px)!important;margin-top:3vh!important;white-space:nowrap!important}}

@@ -4,6 +4,7 @@ import {useEffect,useRef} from 'react';
 import {usePathname} from 'next/navigation';
 import {gsap} from 'gsap';
 import styles from './HomeSequentialPages.module.css';
+import footerStyles from './FooterRefine.module.css';
 
 const JOINT='/products/30ml%20mockup.png';
 const HERBAL='/products/phakii.png';
@@ -104,18 +105,18 @@ export default function HomeSequentialPages(){
   <section className={`${styles.section} ${styles.legal}`} data-seq-section>
    <div className={styles.index}>18 / Terms</div><h2 className={styles.title} data-seq-head>THE DETAILS THAT KEEP THINGS CLEAR.</h2><p className={styles.lead} data-seq-lead>Terms for website use, product information, orders, availability, intellectual property and future commerce can live here in a readable format.</p><div className={styles.line} data-seq-line/></section>
 
-  <footer className={styles.footer} data-seq-section>
+  <footer className={`${styles.footer} ${footerStyles.footer}`} data-seq-section>
    <div className={styles.footerTop} data-seq-card>
     <span>BABA HAKEEM HERBAL PRODUCTS</span>
     <span>TRADITIONAL CARE / MODERN RITUAL</span>
    </div>
 
-   <div className={styles.footerHero}>
+   <div className={`${styles.footerHero} ${footerStyles.hero}`}>
     <div>
      <p className={styles.footerEyebrow}>THE HOUSE OF BABA HAKEEM</p>
      <h2 data-seq-head>HERBAL CARE,<br/>REFINED.</h2>
     </div>
-    <div className={styles.footerIntro} data-seq-lead>
+    <div className={`${styles.footerIntro} ${footerStyles.intro}`} data-seq-lead>
      <p>A considered herbal product world shaped by familiar traditions, clearer presentation and everyday rituals.</p>
      <a href="/contact">Start a conversation <span>↗</span></a>
     </div>
@@ -123,8 +124,8 @@ export default function HomeSequentialPages(){
 
    <div className={styles.footerDivider} data-seq-line/>
 
-   <div className={styles.footerLinks} data-seq-card>
-    <div className={styles.footerBrandBlock}>
+   <div className={`${styles.footerLinks} ${footerStyles.links}`} data-seq-card>
+    <div className={`${styles.footerBrandBlock} ${footerStyles.brand}`}>
      <strong>Baba Hakeem</strong>
      <p>Herbal products presented through one calm, monochrome and consistent brand system.</p>
     </div>
@@ -148,12 +149,12 @@ export default function HomeSequentialPages(){
     </nav>
    </div>
 
-   <div className={styles.footerBottom} data-seq-card>
+   <div className={`${styles.footerBottom} ${footerStyles.bottom}`} data-seq-card>
     <span>© 2026 BABA HAKEEM HERBAL PRODUCTS</span>
     <span>PAKISTAN</span>
     <span>HERBAL TRADITION / MODERN PRESENTATION</span>
    </div>
-   <div className={styles.footerWordmark} aria-hidden="true">BABA HAKEEM</div>
+   <div className={`${styles.footerWordmark} ${footerStyles.wordmark}`} aria-hidden="true">BABA HAKEEM</div>
   </footer>
  </div>;
 }
