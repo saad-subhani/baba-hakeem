@@ -12,11 +12,22 @@ export default function MensOilLandingRefine(){
     const bottle=document.querySelector('.static-reference-site .ref-mens-moving');
     const sourceCard=bottle?.closest('article');
     const feature=document.querySelector('.static-reference-site .ref-feature');
-    if(!bottle||!sourceCard||!feature) return;
+    const hands=document.querySelector('.static-reference-site .ref-feature-hands');
+    const target=document.querySelector('.static-reference-site .ref-mens-hands-target');
+    if(!bottle||!sourceCard||!feature||!hands||!target) return;
 
     const mobile=window.innerWidth<760;
     const finalScale=mobile?.90:.86;
     const finalLift=mobile?-12:-20;
+    let finalX=0;
+
+    const measureHorizontalCenter=()=>{
+      const handsRect=hands.getBoundingClientRect();
+      const targetRect=target.getBoundingClientRect();
+      const handsCenter=handsRect.left+(handsRect.width/2);
+      const targetCenter=targetRect.left+(targetRect.width/2);
+      finalX=handsCenter-targetCenter;
+    };
 
     const apply=(progress)=>{
       const start=.68;
@@ -24,10 +35,12 @@ export default function MensOilLandingRefine(){
       const eased=raw*raw*(3-2*raw);
       const scale=1+((finalScale-1)*eased);
       const lift=finalLift*eased;
+      const x=finalX*eased;
       bottle.style.scale=String(scale);
-      const finalX = 18;
-      bottle.style.translate=`${finalX}px ${lift}px`;
+      bottle.style.translate=`${x}px ${lift}px`;
     };
+
+    measureHorizontalCenter();
 
     const trigger=ScrollTrigger.create({
       trigger:sourceCard,
@@ -36,12 +49,22 @@ export default function MensOilLandingRefine(){
       end:'bottom bottom',
       invalidateOnRefresh:true,
       onUpdate:self=>apply(self.progress),
-      onRefresh:self=>apply(self.progress)
+      onRefresh:self=>{
+        measureHorizontalCenter();
+        apply(self.progress);
+      }
     });
+
+    const onResize=()=>{
+      measureHorizontalCenter();
+      apply(trigger.progress||0);
+    };
+    window.addEventListener('resize',onResize,{passive:true});
 
     apply(trigger.progress||0);
 
     return()=>{
+      window.removeEventListener('resize',onResize);
       trigger.kill();
       bottle.style.removeProperty('scale');
       bottle.style.removeProperty('translate');
