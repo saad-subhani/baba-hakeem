@@ -3,6 +3,7 @@ import '../components/SitePolish.global.css';
 import '../components/MobileResponsive.global.css';
 import '../components/MobileRealDeviceFixes.global.css';
 import '../components/PremiumCatalogue.global.css';
+import '../components/PremiumCatalogueRefine.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
