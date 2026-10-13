@@ -139,6 +139,7 @@ export default function HomeSequentialPages(){
      <small>SUPPORT</small>
      <a href="/faq">FAQ</a>
      <a href="/contact">Contact</a>
+     <a href="https://www.instagram.com/babahakeem_786/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
      <a href="/shipping-returns">Shipping & Returns</a>
     </nav>
     <nav aria-label="Footer legal navigation">
