@@ -1,0 +1,102 @@
+/* Performance-safe premium interaction layer. Transform/opacity only; no continuous scroll listeners. */
+[data-premium-page] [data-reveal],
+[data-premium-page] [data-line],
+[data-seq-section] [data-seq-card],
+[data-seq-section] [data-seq-visual]{backface-visibility:hidden;transform-style:preserve-3d}
+
+/* Standalone premium pages */
+[data-premium-page] article[data-reveal],
+[data-premium-page] details,
+[data-premium-page] .contactPanel,
+[data-premium-page] form{
+  position:relative;
+  overflow:hidden;
+  transform:translateZ(0);
+}
+[data-premium-page] article[data-reveal]::after,
+[data-premium-page] details::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  pointer-events:none;
+  background:linear-gradient(110deg,transparent 18%,rgba(255,255,255,.18) 42%,transparent 64%);
+  transform:translate3d(-120%,0,0);
+  transition:transform .72s cubic-bezier(.22,1,.36,1);
+}
+[data-premium-page] nav a,
+[data-premium-page] footer a{
+  position:relative;
+  transition:transform .26s cubic-bezier(.22,1,.36,1),opacity .26s ease;
+}
+[data-premium-page] nav a::after,
+[data-premium-page] footer a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-5px;
+  height:1px;
+  background:currentColor;
+  transform:scaleX(0);
+  transform-origin:right center;
+  transition:transform .3s cubic-bezier(.22,1,.36,1);
+}
+[data-premium-page] [data-premium-hero] h1,
+[data-premium-page] [data-premium-hero] p,
+[data-premium-page] [data-premium-hero] .scrollCue{
+  will-change:transform,opacity;
+}
+
+/* Homepage lower-section polish only — locked hero/bottle choreography is untouched. */
+[data-seq-section] article[data-seq-card],
+[data-seq-section] article[data-seq-visual]{
+  position:relative;
+  transform:translateZ(0);
+}
+[data-seq-section] article[data-seq-card]::after,
+[data-seq-section] article[data-seq-visual]::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(120deg,transparent 16%,rgba(255,255,255,.12) 42%,transparent 66%);
+  transform:translate3d(-125%,0,0);
+  transition:transform .78s cubic-bezier(.22,1,.36,1);
+}
+[data-seq-section] img{backface-visibility:hidden;transform:translateZ(0)}
+
+@media(hover:hover) and (pointer:fine){
+  [data-premium-page] article[data-reveal]:hover{
+    transform:translate3d(0,-8px,0) scale(1.008);
+  }
+  [data-premium-page] article[data-reveal]:hover::after,
+  [data-premium-page] details:hover::after{
+    transform:translate3d(120%,0,0);
+  }
+  [data-premium-page] details:hover{transform:translate3d(4px,0,0)}
+  [data-premium-page] nav a:hover,
+  [data-premium-page] footer a:hover{transform:translate3d(3px,-1px,0)}
+  [data-premium-page] nav a:hover::after,
+  [data-premium-page] footer a:hover::after{transform:scaleX(1);transform-origin:left center}
+
+  [data-seq-section] article[data-seq-card]:hover,
+  [data-seq-section] article[data-seq-visual]:hover{
+    transform:translate3d(0,-7px,0) scale(1.006);
+  }
+  [data-seq-section] article[data-seq-card]:hover::after,
+  [data-seq-section] article[data-seq-visual]:hover::after{
+    transform:translate3d(120%,0,0);
+  }
+}
+
+@media(max-width:900px){
+  [data-premium-page] article[data-reveal]::after,
+  [data-premium-page] details::after,
+  [data-seq-section] article[data-seq-card]::after,
+  [data-seq-section] article[data-seq-visual]::after{display:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  [data-premium-page] *,
+  [data-seq-section] *{transition-duration:.001ms!important;animation-duration:.001ms!important}
+}

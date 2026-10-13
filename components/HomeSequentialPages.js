@@ -33,6 +33,7 @@ export default function HomeSequentialPages(){
   const playReveal=(section)=>{
    if(played.has(section)) return;
    played.add(section);
+   const index=section.firstElementChild;
    const head=section.querySelector('[data-seq-head]');
    const lead=section.querySelector('[data-seq-lead]');
    const line=section.querySelector('[data-seq-line]');
@@ -40,11 +41,12 @@ export default function HomeSequentialPages(){
    const visuals=[...section.querySelectorAll('[data-seq-visual]')];
    const tl=gsap.timeline({defaults:{ease:'power3.out'},onComplete:()=>timelines.delete(tl)});
    timelines.add(tl);
-   if(head) tl.from(head,{y:30,opacity:0,duration:.5,immediateRender:false,force3D:true},0);
-   if(lead) tl.from(lead,{y:14,opacity:0,duration:.38,immediateRender:false,force3D:true},.03);
-   if(regular.length) tl.from(regular,{y:16,opacity:0,duration:.4,stagger:.025,immediateRender:false,force3D:true},.05);
-   if(visuals.length) tl.from(visuals,{y:14,scale:.99,opacity:0,duration:.44,stagger:.03,immediateRender:false,force3D:true},.05);
-   if(line) tl.fromTo(line,{scaleX:0},{scaleX:1,duration:.4,immediateRender:false,force3D:true},.08);
+   if(index) tl.from(index,{x:-12,opacity:0,duration:.34,immediateRender:false,force3D:true},0);
+   if(head) tl.from(head,{y:46,opacity:0,scale:.995,duration:.64,immediateRender:false,force3D:true},.02);
+   if(lead) tl.from(lead,{y:22,opacity:0,duration:.46,immediateRender:false,force3D:true},.08);
+   if(regular.length) tl.from(regular,{y:28,scale:.985,opacity:0,duration:.52,stagger:.055,immediateRender:false,force3D:true},.1);
+   if(visuals.length) tl.from(visuals,{y:30,scale:.975,opacity:0,duration:.58,stagger:.065,immediateRender:false,force3D:true},.1);
+   if(line) tl.fromTo(line,{scaleX:0,opacity:.35},{scaleX:1,opacity:1,duration:.55,immediateRender:false,force3D:true},.12);
   };
 
   const observer=new IntersectionObserver(entries=>{

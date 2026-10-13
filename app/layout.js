@@ -5,6 +5,7 @@ import '../components/MobileRealDeviceFixes.global.css';
 import '../components/PremiumCatalogue.global.css';
 import '../components/PremiumCatalogueRefine.global.css';
 import '../components/ZafranCatalogueFix.global.css';
+import '../components/PremiumEffects.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
