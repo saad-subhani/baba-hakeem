@@ -104,7 +104,56 @@ export default function HomeSequentialPages(){
   <section className={`${styles.section} ${styles.legal}`} data-seq-section>
    <div className={styles.index}>18 / Terms</div><h2 className={styles.title} data-seq-head>THE DETAILS THAT KEEP THINGS CLEAR.</h2><p className={styles.lead} data-seq-lead>Terms for website use, product information, orders, availability, intellectual property and future commerce can live here in a readable format.</p><div className={styles.line} data-seq-line/></section>
 
-  <section className={`${styles.section} ${styles.dark} ${styles.closing}`} data-seq-section>
-   <div className={styles.index}>Baba Hakeem Herbal Products</div><h2 className={styles.title} data-seq-head>ONE WEBSITE. ONE CONTINUOUS BRAND STORY.</h2><p className={styles.lead} data-seq-lead>From the opening hero to products, best product reveal, brand story, care, support and essential information — everything continues in one scroll.</p><div className={styles.line} data-seq-line/></section>
+  <footer className={styles.footer} data-seq-section>
+   <div className={styles.footerTop} data-seq-card>
+    <span>BABA HAKEEM HERBAL PRODUCTS</span>
+    <span>TRADITIONAL CARE / MODERN RITUAL</span>
+   </div>
+
+   <div className={styles.footerHero}>
+    <div>
+     <p className={styles.footerEyebrow}>THE HOUSE OF BABA HAKEEM</p>
+     <h2 data-seq-head>HERBAL CARE,<br/>REFINED.</h2>
+    </div>
+    <div className={styles.footerIntro} data-seq-lead>
+     <p>A considered herbal product world shaped by familiar traditions, clearer presentation and everyday rituals.</p>
+     <a href="/contact">Start a conversation <span>↗</span></a>
+    </div>
+   </div>
+
+   <div className={styles.footerDivider} data-seq-line/>
+
+   <div className={styles.footerLinks} data-seq-card>
+    <div className={styles.footerBrandBlock}>
+     <strong>Baba Hakeem</strong>
+     <p>Herbal products presented through one calm, monochrome and consistent brand system.</p>
+    </div>
+    <nav aria-label="Footer explore navigation">
+     <small>EXPLORE</small>
+     <a href="/about">About</a>
+     <a href="/care-guide">Care Guide</a>
+     <a href="/process">Our Process</a>
+    </nav>
+    <nav aria-label="Footer support navigation">
+     <small>SUPPORT</small>
+     <a href="/faq">FAQ</a>
+     <a href="/contact">Contact</a>
+     <a href="/shipping-returns">Shipping & Returns</a>
+    </nav>
+    <nav aria-label="Footer legal navigation">
+     <small>LEGAL</small>
+     <a href="/privacy">Privacy</a>
+     <a href="/terms">Terms</a>
+     <a href="#top">Back to top ↑</a>
+    </nav>
+   </div>
+
+   <div className={styles.footerBottom} data-seq-card>
+    <span>© 2026 BABA HAKEEM HERBAL PRODUCTS</span>
+    <span>PAKISTAN</span>
+    <span>HERBAL TRADITION / MODERN PRESENTATION</span>
+   </div>
+   <div className={styles.footerWordmark} aria-hidden="true">BABA HAKEEM</div>
+  </footer>
  </div>;
 }
