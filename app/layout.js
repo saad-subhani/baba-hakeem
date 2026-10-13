@@ -7,6 +7,7 @@ import '../components/PremiumCatalogueRefine.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
+import MensOilLandingRefine from '../components/MensOilLandingRefine';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -16,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}<HomeSequentialPages/><SitePolish/><MobileMotionStabilizer/></body>
+      <body>{children}<HomeSequentialPages/><SitePolish/><MobileMotionStabilizer/><MensOilLandingRefine/></body>
     </html>
   );
 }
