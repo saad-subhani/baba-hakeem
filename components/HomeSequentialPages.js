@@ -5,12 +5,8 @@ import {usePathname} from 'next/navigation';
 import {gsap} from 'gsap';
 import styles from './HomeSequentialPages.module.css';
 
-const ALOE='/aloe.png.png';
-const NEEM='/neem.png-removebg-preview.png';
-const TURMERIC='/turmeric.png-removebg-preview.png';
 const JOINT='/products/30ml%20mockup.png';
 const HERBAL='/products/phakii.png';
-const ZAFRAN='/products/zafran/IMG_20241002_133345.webp';
 const ZAFRAN_ALT='/products/zafran/IMG_20241002_133606.webp';
 const HANDS='/hands-removebg-preview.png';
 const CONTACT='/contact/let_s_talk_premium_contact_section.png.png';
@@ -69,25 +65,14 @@ export default function HomeSequentialPages(){
  return <div ref={root} className={styles.sequence}>
   <section className={styles.section} data-seq-section>
    <div className={styles.index}>10 / About Baba Hakeem</div>
-   <div className={styles.heroVisualSplit}>
-    <div><h2 className={styles.title} data-seq-head>ROOTED IN HERBAL TRADITION.</h2><p className={styles.lead} data-seq-lead>Baba Hakeem brings traditional herbal care into a cleaner, calmer and more considered modern experience — without losing the character that makes the brand familiar.</p></div>
-    <div className={styles.heroVisual} data-seq-visual><img src={ZAFRAN} alt="Baba Hakeem premium product presentation" loading="lazy" decoding="async" fetchPriority="low"/></div>
-   </div>
+   <h2 className={styles.title} data-seq-head>ROOTED IN HERBAL TRADITION.</h2>
+   <p className={styles.lead} data-seq-lead>Baba Hakeem brings traditional herbal care into a cleaner, calmer and more considered modern experience — without losing the character that makes the brand familiar.</p>
    <div className={styles.grid}>{cards([['Heritage','A product world shaped by traditional herbal formats and everyday care.'],['Clarity','A simplified visual language that makes every product family easier to understand.'],['Consistency','One black-and-gray brand system across oils, blends, saffron and future launches.']])}</div>
   </section>
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
    <div className={styles.index}>11 / Care Guide</div>
    <div className={styles.split}><div><h2 className={styles.title} data-seq-head>A CALMER DAILY RITUAL.</h2><p className={styles.lead} data-seq-lead>Simple guidance, thoughtful routines and product-first care designed to feel easy to follow.</p><div className={styles.singleVisual} data-seq-visual><img src={HANDS} alt="Hands presenting a simple herbal care ritual" loading="lazy" decoding="async" fetchPriority="low"/></div></div><div className={styles.steps}>{[['01','Choose','Start with the product that matches the ritual you want to build.'],['02','Use','Follow the format and directions provided with the product.'],['03','Repeat','Keep routines simple and consistent rather than overcomplicating them.']].map(x=><div className={styles.step} data-seq-card key={x[0]}><b>{x[0]}</b><div><h3>{x[1]}</h3><p>{x[2]}</p></div></div>)}</div></div>
-  </section>
-
-  <section className={styles.section} data-seq-section>
-   <div className={styles.index}>12 / Ingredients</div><h2 className={styles.title} data-seq-head>FAMILIAR BOTANICALS. CLEAR PURPOSE.</h2><p className={styles.lead} data-seq-lead>Explore the ingredient language behind the collection and how familiar herbal references shape the identity of the range.</p>
-   <div className={styles.visualGrid}>
-    <VisualCard src={ALOE} alt="Aloe vera botanical" kicker="01 / BOTANICAL" title="Aloe Vera" copy="A familiar botanical associated with soothing and hydration-led rituals." contain/>
-    <VisualCard src={NEEM} alt="Neem botanical" kicker="02 / BOTANICAL" title="Neem" copy="A traditional herbal reference frequently connected with balancing care." contain/>
-    <VisualCard src={TURMERIC} alt="Turmeric botanical" kicker="03 / BOTANICAL" title="Turmeric" copy="A widely recognised botanical with a strong place in traditional self-care." contain/>
-   </div>
   </section>
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
