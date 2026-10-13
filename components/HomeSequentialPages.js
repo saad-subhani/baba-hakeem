@@ -3,7 +3,6 @@
 import {useEffect,useRef} from 'react';
 import {usePathname} from 'next/navigation';
 import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import styles from './HomeSequentialPages.module.css';
 
 const ALOE='/aloe.png.png';
@@ -28,45 +27,42 @@ export default function HomeSequentialPages(){
  const root=useRef(null);
  useEffect(()=>{
   if(pathname!=='/'||typeof window==='undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
   const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   if(reduce) return;
 
-  let initFrame=0;
-  const triggers=[];
-  const ctx=gsap.context(()=>{
-   initFrame=requestAnimationFrame(()=>{
-    gsap.utils.toArray('[data-seq-section]').forEach((section)=>{
-     const head=section.querySelector('[data-seq-head]');
-     const lead=section.querySelector('[data-seq-lead]');
-     const line=section.querySelector('[data-seq-line]');
-     const regular=[...section.querySelectorAll('[data-seq-card]:not([data-seq-visual])')];
-     const visuals=[...section.querySelectorAll('[data-seq-visual]')];
+  const timelines=new Set();
+  const sections=[...root.current.querySelectorAll('[data-seq-section]')];
+  const played=new WeakSet();
+  const playReveal=(section)=>{
+   if(played.has(section)) return;
+   played.add(section);
+   const head=section.querySelector('[data-seq-head]');
+   const lead=section.querySelector('[data-seq-lead]');
+   const line=section.querySelector('[data-seq-line]');
+   const regular=[...section.querySelectorAll('[data-seq-card]:not([data-seq-visual])')];
+   const visuals=[...section.querySelectorAll('[data-seq-visual]')];
+   const tl=gsap.timeline({defaults:{ease:'power3.out'},onComplete:()=>timelines.delete(tl)});
+   timelines.add(tl);
+   if(head) tl.from(head,{y:30,opacity:0,duration:.5,immediateRender:false,force3D:true},0);
+   if(lead) tl.from(lead,{y:14,opacity:0,duration:.38,immediateRender:false,force3D:true},.03);
+   if(regular.length) tl.from(regular,{y:16,opacity:0,duration:.4,stagger:.025,immediateRender:false,force3D:true},.05);
+   if(visuals.length) tl.from(visuals,{y:14,scale:.99,opacity:0,duration:.44,stagger:.03,immediateRender:false,force3D:true},.05);
+   if(line) tl.fromTo(line,{scaleX:0},{scaleX:1,duration:.4,immediateRender:false,force3D:true},.08);
+  };
 
-     const playReveal=()=>{
-      const tl=gsap.timeline({defaults:{ease:'power3.out'}});
-      if(head) tl.from(head,{y:34,opacity:0,duration:.62,immediateRender:false},0);
-      if(lead) tl.from(lead,{y:16,opacity:0,duration:.48,immediateRender:false},.04);
-      if(regular.length) tl.from(regular,{y:20,opacity:0,duration:.48,stagger:.04,immediateRender:false},.08);
-      if(visuals.length) tl.from(visuals,{y:18,scale:.985,opacity:0,duration:.56,stagger:.045,immediateRender:false},.07);
-      if(line) tl.fromTo(line,{scaleX:0},{scaleX:1,duration:.52,immediateRender:false},.1);
-     };
-
-     triggers.push(ScrollTrigger.create({
-      trigger:section,
-      start:'top 88%',
-      once:true,
-      onEnter:playReveal
-     }));
-    });
-    ScrollTrigger.refresh();
+  const observer=new IntersectionObserver(entries=>{
+   entries.forEach(entry=>{
+    if(!entry.isIntersecting) return;
+    observer.unobserve(entry.target);
+    playReveal(entry.target);
    });
-  },root);
+  },{root:null,rootMargin:'0px 0px -8% 0px',threshold:.01});
 
+  sections.forEach(section=>observer.observe(section));
   return()=>{
-   if(initFrame) cancelAnimationFrame(initFrame);
-   triggers.forEach(trigger=>trigger.kill());
-   ctx.revert();
+   observer.disconnect();
+   timelines.forEach(tl=>tl.kill());
+   timelines.clear();
   };
  },[pathname]);
  if(pathname!=='/') return null;
