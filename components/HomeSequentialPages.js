@@ -9,7 +9,7 @@ import footerStyles from './FooterRefine.module.css';
 const JOINT='/products/30ml%20mockup.png';
 const HERBAL='/products/phakii.png';
 const ZAFRAN_ALT='/products/zafran/IMG_20241002_133606.webp';
-const HANDS='/hands-removebg-preview.png';
+const HANDS='/care-guide/care-guide-ritual.webp.png';
 const CONTACT='/contact/let_s_talk_premium_contact_section.png.png';
 
 const cards=(items)=>items.map((item,i)=><article className={styles.card} data-seq-card key={item[0]}><span>{String(i+1).padStart(2,'0')}</span><div><h3>{item[0]}</h3><p>{item[1]}</p></div></article>);
@@ -73,7 +73,7 @@ export default function HomeSequentialPages(){
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
    <div className={styles.index}>11 / Care Guide</div>
-   <div className={styles.split}><div><h2 className={styles.title} data-seq-head>A CALMER DAILY RITUAL.</h2><p className={styles.lead} data-seq-lead>Simple guidance, thoughtful routines and product-first care designed to feel easy to follow.</p><div className={styles.singleVisual} data-seq-visual><img src={HANDS} alt="Hands presenting a simple herbal care ritual" loading="lazy" decoding="async" fetchPriority="low"/></div></div><div className={styles.steps}>{[['01','Choose','Start with the product that matches the ritual you want to build.'],['02','Use','Follow the format and directions provided with the product.'],['03','Repeat','Keep routines simple and consistent rather than overcomplicating them.']].map(x=><div className={styles.step} data-seq-card key={x[0]}><b>{x[0]}</b><div><h3>{x[1]}</h3><p>{x[2]}</p></div></div>)}</div></div>
+   <div className={styles.split}><div><h2 className={styles.title} data-seq-head>A CALMER DAILY RITUAL.</h2><p className={styles.lead} data-seq-lead>Simple guidance, thoughtful routines and product-first care designed to feel easy to follow.</p><div className={styles.singleVisual} data-seq-visual><img src={HANDS} alt="Premium herbal self-care ritual with botanical oil" loading="lazy" decoding="async" fetchPriority="low"/></div></div><div className={styles.steps}>{[['01','Choose','Start with the product that matches the ritual you want to build.'],['02','Use','Follow the format and directions provided with the product.'],['03','Repeat','Keep routines simple and consistent rather than overcomplicating them.']].map(x=><div className={styles.step} data-seq-card key={x[0]}><b>{x[0]}</b><div><h3>{x[1]}</h3><p>{x[2]}</p></div></div>)}</div></div>
   </section>
 
   <section className={`${styles.section} ${styles.dark}`} data-seq-section>
