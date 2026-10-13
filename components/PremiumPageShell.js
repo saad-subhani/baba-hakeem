@@ -25,21 +25,6 @@ export default function PremiumPageShell({eyebrow,title,intro,children}){
     </section>
 
     <div className={styles.content}>{children}</div>
-
-    <footer className={styles.footer} data-reveal>
-      <div><strong>Baba Hakeem</strong><span>Traditional herbal care, refined for modern routines.</span></div>
-      <nav>
-        <Link href="/about">About</Link>
-        <Link href="/care-guide">Care Guide</Link>
-        <Link href="/ingredients">Ingredients</Link>
-        <Link href="/process">Our Process</Link>
-        <Link href="/faq">FAQ</Link>
-        <Link href="/contact">Contact</Link>
-        <Link href="/shipping-returns">Shipping & Returns</Link>
-        <Link href="/privacy">Privacy</Link>
-        <Link href="/terms">Terms</Link>
-      </nav>
-    </footer>
   </main>;
 }
 
