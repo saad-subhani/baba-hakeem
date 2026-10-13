@@ -4,9 +4,6 @@
 [data-seq-section] [data-seq-card],
 [data-seq-section] [data-seq-visual]{backface-visibility:hidden}
 
-/* Skip rendering deep off-screen homepage sections until they approach the viewport. */
-[data-seq-section]{content-visibility:auto;contain-intrinsic-size:900px}
-
 /* Standalone premium pages */
 [data-premium-page] article[data-reveal],
 [data-premium-page] details,
@@ -125,6 +122,9 @@ html.is-performance-scrolling [data-seq-section] img,
 html.is-performance-scrolling [data-premium-page] a,
 html.is-performance-scrolling [data-seq-section] a{
   transition:none!important;
+}
+html.is-performance-scrolling [data-seq-section] article[data-seq-visual] img{
+  transform:translateZ(0)!important;
 }
 
 @media(hover:hover) and (pointer:fine){
