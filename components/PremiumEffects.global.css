@@ -1,8 +1,11 @@
-/* Performance-safe premium interaction layer. Transform/opacity only; no continuous scroll listeners. */
+/* Performance-safe premium interaction layer. Transform/opacity only; no continuous heavy scroll work. */
 [data-premium-page] [data-reveal],
 [data-premium-page] [data-line],
 [data-seq-section] [data-seq-card],
-[data-seq-section] [data-seq-visual]{backface-visibility:hidden;transform-style:preserve-3d}
+[data-seq-section] [data-seq-visual]{backface-visibility:hidden}
+
+/* Skip rendering deep off-screen homepage sections until they approach the viewport. */
+[data-seq-section]{content-visibility:auto;contain-intrinsic-size:900px}
 
 /* Standalone premium pages */
 [data-premium-page] article[data-reveal],
@@ -40,11 +43,6 @@
   transform:scaleX(0);
   transform-origin:right center;
   transition:transform .3s cubic-bezier(.22,1,.36,1);
-}
-[data-premium-page] [data-premium-hero] h1,
-[data-premium-page] [data-premium-hero] p,
-[data-premium-page] [data-premium-hero] .scrollCue{
-  will-change:transform,opacity;
 }
 
 /* Richer depth without persistent animation. */
@@ -102,6 +100,33 @@
   transition:opacity .32s ease,border-color .32s ease;
 }
 
+/* While actively scrolling, strip compositor/raster work that causes micro-stutter. */
+html.is-performance-scrolling [data-premium-page] article[data-reveal],
+html.is-performance-scrolling [data-premium-page] details,
+html.is-performance-scrolling [data-premium-page] .card,
+html.is-performance-scrolling [data-seq-section] article[data-seq-card],
+html.is-performance-scrolling [data-seq-section] article[data-seq-visual]{
+  transition:none!important;
+  box-shadow:none!important;
+  outline-color:transparent!important;
+}
+html.is-performance-scrolling [data-premium-page] article[data-reveal]::before,
+html.is-performance-scrolling [data-premium-page] article[data-reveal]::after,
+html.is-performance-scrolling [data-premium-page] details::after,
+html.is-performance-scrolling [data-seq-section] article[data-seq-card]::before,
+html.is-performance-scrolling [data-seq-section] article[data-seq-card]::after,
+html.is-performance-scrolling [data-seq-section] article[data-seq-visual]::before,
+html.is-performance-scrolling [data-seq-section] article[data-seq-visual]::after{
+  opacity:0!important;
+  transition:none!important;
+}
+html.is-performance-scrolling [data-premium-page] img,
+html.is-performance-scrolling [data-seq-section] img,
+html.is-performance-scrolling [data-premium-page] a,
+html.is-performance-scrolling [data-seq-section] a{
+  transition:none!important;
+}
+
 @media(hover:hover) and (pointer:fine){
   [data-premium-page] article[data-reveal]:hover{
     transform:translate3d(0,-8px,0) scale(1.008);
@@ -109,26 +134,15 @@
     outline-color:rgba(0,0,0,.12);
   }
   [data-premium-page] article[data-reveal]:hover::after,
-  [data-premium-page] details:hover::after{
-    transform:translate3d(120%,0,0);
-  }
-  [data-premium-page] article[data-reveal]:hover::before{
-    opacity:1;
-    border-color:rgba(255,255,255,.2);
-  }
-  [data-premium-page] details:hover{
-    transform:translate3d(4px,0,0);
-    box-shadow:0 14px 34px rgba(0,0,0,.06);
-  }
+  [data-premium-page] details:hover::after{transform:translate3d(120%,0,0)}
+  [data-premium-page] article[data-reveal]:hover::before{opacity:1;border-color:rgba(255,255,255,.2)}
+  [data-premium-page] details:hover{transform:translate3d(4px,0,0);box-shadow:0 14px 34px rgba(0,0,0,.06)}
   [data-premium-page] nav a:hover,
   [data-premium-page] footer a:hover{transform:translate3d(3px,-1px,0)}
   [data-premium-page] nav a:hover::after,
   [data-premium-page] footer a:hover::after{transform:scaleX(1);transform-origin:left center}
   [data-premium-page] .button:hover,
-  [data-premium-page] .home:hover{
-    transform:translate3d(0,-2px,0);
-    box-shadow:0 10px 24px rgba(0,0,0,.14);
-  }
+  [data-premium-page] .home:hover{transform:translate3d(0,-2px,0);box-shadow:0 10px 24px rgba(0,0,0,.14)}
   [data-premium-page] .scrollCue:hover{transform:translate3d(0,3px,0);opacity:.72}
 
   [data-seq-section] article[data-seq-card]:hover,
@@ -138,17 +152,10 @@
     outline-color:rgba(255,255,255,.08);
   }
   [data-seq-section] article[data-seq-card]:hover::after,
-  [data-seq-section] article[data-seq-visual]:hover::after{
-    transform:translate3d(120%,0,0);
-  }
+  [data-seq-section] article[data-seq-visual]:hover::after{transform:translate3d(120%,0,0)}
   [data-seq-section] article[data-seq-card]:hover::before,
-  [data-seq-section] article[data-seq-visual]:hover::before{
-    opacity:1;
-    border-color:rgba(255,255,255,.14);
-  }
-  [data-seq-section] article[data-seq-visual]:hover img{
-    transform:translate3d(0,-2px,0) scale(1.025);
-  }
+  [data-seq-section] article[data-seq-visual]:hover::before{opacity:1;border-color:rgba(255,255,255,.14)}
+  [data-seq-section] article[data-seq-visual]:hover img{transform:translate3d(0,-2px,0) scale(1.025)}
 }
 
 @media(max-width:900px){

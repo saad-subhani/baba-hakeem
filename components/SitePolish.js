@@ -31,6 +31,13 @@ export default function SitePolish(){
     let scrollIdleTimer=0;
     let scrolling=false;
 
+    const setScrollState=(active)=>{
+      scrolling=active;
+      site.classList.toggle('is-performance-scrolling',active);
+      document.documentElement.classList.toggle('is-performance-scrolling',active);
+      document.body.classList.toggle('is-performance-scrolling',active);
+    };
+
     const measure=()=>{
       const rect=site.getBoundingClientRect();
       siteTop=window.scrollY+rect.top;
@@ -43,15 +50,9 @@ export default function SitePolish(){
       progressRef.current.style.transform=`scaleX(${value})`;
     };
     const markScrolling=()=>{
-      if(!scrolling){
-        scrolling=true;
-        site.classList.add('is-performance-scrolling');
-      }
+      if(!scrolling) setScrollState(true);
       if(scrollIdleTimer) window.clearTimeout(scrollIdleTimer);
-      scrollIdleTimer=window.setTimeout(()=>{
-        scrolling=false;
-        site.classList.remove('is-performance-scrolling');
-      },140);
+      scrollIdleTimer=window.setTimeout(()=>setScrollState(false),110);
     };
     const onScroll=()=>{
       markScrolling();
@@ -96,7 +97,7 @@ export default function SitePolish(){
       if(pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
       if(scrollFrame.current) cancelAnimationFrame(scrollFrame.current);
       if(scrollIdleTimer) window.clearTimeout(scrollIdleTimer);
-      site.classList.remove('is-performance-scrolling');
+      setScrollState(false);
       quietObserver?.disconnect();
     };
   },[]);
