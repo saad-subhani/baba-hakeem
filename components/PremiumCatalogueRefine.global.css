@@ -95,3 +95,31 @@
     transform:scale(.9);
   }
 }
+
+/* Critical compatibility with the locked Men's Oil GSAP journey:
+   the premium showroom must never clip or trap the bottle while it travels into the next section. */
+.static-reference-site .ref-catalogue{
+  overflow:visible!important;
+  isolation:auto!important;
+}
+.static-reference-site .ref-product-grid article.ref-mens-source{
+  isolation:auto!important;
+  z-index:40!important;
+  transform:none!important;
+}
+.static-reference-site .ref-product-grid article.ref-mens-source:hover{
+  transform:none!important;
+}
+.static-reference-site .ref-product-grid article.ref-mens-source>div{
+  overflow:visible!important;
+  position:relative;
+  z-index:41!important;
+}
+.static-reference-site .ref-mens-moving{
+  position:relative;
+  z-index:42!important;
+}
+.static-reference-site .ref-feature{
+  position:relative;
+  z-index:1;
+}
