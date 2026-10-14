@@ -9,6 +9,7 @@ import '../components/PremiumEffects.global.css';
 import '../components/CartExperience.global.css';
 import '../components/CommerceCatalogue.global.css';
 import '../components/CommerceCatalogueEnhance.global.css';
+import '../components/StickyHeader.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
