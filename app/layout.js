@@ -6,9 +6,11 @@ import '../components/PremiumCatalogue.global.css';
 import '../components/PremiumCatalogueRefine.global.css';
 import '../components/ZafranCatalogueFix.global.css';
 import '../components/PremiumEffects.global.css';
+import '../components/CartExperience.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
+import CartExperience from '../components/CartExperience';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -18,7 +20,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}<HomeSequentialPages/><SitePolish/><MobileMotionStabilizer/></body>
+      <body>{children}<HomeSequentialPages/><CartExperience/><SitePolish/><MobileMotionStabilizer/></body>
     </html>
   );
 }
