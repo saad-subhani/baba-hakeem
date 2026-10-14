@@ -29,8 +29,9 @@ export default function SitePolish(){
 
     let siteTop=0;
     let scrollDistance=1;
-    let scrollIdleTimer=0;
-    let scrolling=false;
+    let resizeFrame=0;
+    let lastWidth=window.innerWidth;
+    let lastScrollAt=0;
 
     const measure=()=>{
       const rect=site.getBoundingClientRect();
@@ -43,25 +44,27 @@ export default function SitePolish(){
       const value=Math.min(1,Math.max(0,(window.scrollY-siteTop)/scrollDistance));
       progressRef.current.style.transform=`scaleX(${value})`;
     };
-    const setScrollingState=(active)=>{
-      scrolling=active;
-      site.classList.toggle('is-performance-scrolling',active);
-      document.documentElement.classList.toggle('is-performance-scrolling',active);
-      document.body.classList.toggle('is-performance-scrolling',active);
-      effectsRef.current?.classList.toggle(styles.scrolling,active);
-    };
-    const markScrolling=()=>{
-      if(!scrolling)setScrollingState(true);
-      if(scrollIdleTimer) window.clearTimeout(scrollIdleTimer);
-      scrollIdleTimer=window.setTimeout(()=>setScrollingState(false),110);
-    };
     const onScroll=()=>{
-      markScrolling();
+      /* Keep scroll handling read/write-light. The previous implementation toggled
+         classes on html, body, the site and the fixed effects layer for every scroll
+         burst, forcing broad style recalculation twice per burst. A timestamp gives
+         pointer effects the same quiet period without mutating the document tree. */
+      lastScrollAt=performance.now();
       if(!scrollFrame.current) scrollFrame.current=requestAnimationFrame(updateProgress);
     };
     const onResize=()=>{
-      measure();
-      if(!scrollFrame.current) scrollFrame.current=requestAnimationFrame(updateProgress);
+      /* Mobile browser chrome produces height-only resize events while scrolling.
+         Re-measuring the full site for those events caused avoidable synchronous
+         layout work, so only meaningful width changes rebuild progress geometry. */
+      const width=window.innerWidth;
+      if(Math.abs(width-lastWidth)<2) return;
+      lastWidth=width;
+      if(resizeFrame) return;
+      resizeFrame=requestAnimationFrame(()=>{
+        resizeFrame=0;
+        measure();
+        if(!scrollFrame.current) scrollFrame.current=requestAnimationFrame(updateProgress);
+      });
     };
     measure();
     updateProgress();
@@ -72,7 +75,7 @@ export default function SitePolish(){
     let onPointer;
     if(!coarse&&!reduced&&!lowPower){
       onPointer=(event)=>{
-        if(scrolling||signatureQuiet||document.hidden||pointerFrame.current) return;
+        if((performance.now()-lastScrollAt)<120||signatureQuiet||document.hidden||pointerFrame.current) return;
         const x=event.clientX;
         const y=event.clientY;
         pointerFrame.current=requestAnimationFrame(()=>{
@@ -97,8 +100,7 @@ export default function SitePolish(){
       if(onPointer) window.removeEventListener('pointermove',onPointer);
       if(pointerFrame.current) cancelAnimationFrame(pointerFrame.current);
       if(scrollFrame.current) cancelAnimationFrame(scrollFrame.current);
-      if(scrollIdleTimer) window.clearTimeout(scrollIdleTimer);
-      setScrollingState(false);
+      if(resizeFrame) cancelAnimationFrame(resizeFrame);
       quietObserver?.disconnect();
     };
   },[]);
