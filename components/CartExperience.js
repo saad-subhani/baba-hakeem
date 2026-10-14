@@ -13,7 +13,8 @@ const catalogueInfo={
   'Stomach Phakki':{price:1250,kicker:'Traditional Blend',desc:'A traditional herbal blend presented for familiar daily use.'},
   'Herbal Phakki':{price:1450,kicker:'Herbal Wellness',desc:'A familiar herbal blend from the Baba Hakeem collection.'},
   "Men's Oil":{price:2200,kicker:"Men's Care",desc:'Personal care oil presented with a simple daily ritual.'},
-  'Zafran':{price:null,kicker:'Premium Saffron',desc:'Premium saffron selected as part of the Baba Hakeem collection.'}
+  'Zafran':{price:null,kicker:'Premium Saffron',desc:'Premium saffron selected as part of the Baba Hakeem collection.'},
+  'Wedding Course':{price:3500,kicker:'Premium Personal Care',desc:'A premium personal care collection prepared as a considered gifting and daily-care set.'}
 };
 
 export default function CartExperience(){
