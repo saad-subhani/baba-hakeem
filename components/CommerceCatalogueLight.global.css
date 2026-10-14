@@ -45,3 +45,17 @@
 @media(max-width:1020px){.static-reference-site .ref-product-grid{width:min(760px,calc(100% - 36px));grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:22px!important}.static-reference-site .ref-product-grid>article>div:first-child{height:270px!important;min-height:270px!important}}
 @media(max-width:680px){.static-reference-site #reel-products{padding-bottom:72px!important}.static-reference-site .ref-product-grid{width:calc(100% - 28px);grid-template-columns:1fr!important;gap:18px!important}.static-reference-site .ref-product-grid>article{border-radius:16px!important}.static-reference-site .ref-product-grid>article>div:first-child{height:300px!important;min-height:300px!important}.static-reference-site .ref-product-grid>article>h3{padding:19px 18px 0!important;font-size:20px!important}.static-reference-site .ref-commerce-meta{padding:9px 18px 19px!important}.static-reference-site .ref-commerce-desc{min-height:0!important;margin-bottom:20px!important;font-size:12px!important}.static-reference-site .ref-commerce-price strong{font-size:21px!important}.static-reference-site .ref-cart-add,.static-reference-site .ref-card-stepper{height:45px!important}.static-reference-site .ref-card-whatsapp{height:45px!important;width:44px!important}}
 @media(prefers-reduced-motion:reduce){.static-reference-site .ref-product-grid>article,.static-reference-site .ref-product-grid img,.static-reference-site .ref-cart-add,.static-reference-site .ref-card-stepper button,.static-reference-site .ref-card-whatsapp{transition:none!important}}
+
+/* Compact desktop/tablet card proportions: keep the same design, remove excess vertical space. */
+@media(min-width:681px){
+ .static-reference-site .ref-product-grid>article>div:first-child{height:235px!important;min-height:235px!important}
+ .static-reference-site .ref-product-grid>article>div:first-child::before{bottom:20px;height:30px}
+ .static-reference-site .ref-product-grid>article>h3{padding:17px 20px 0!important;font-size:19px!important}
+ .static-reference-site .ref-commerce-meta{padding:8px 20px 18px!important}
+ .static-reference-site .ref-commerce-kicker{margin-bottom:9px!important}
+ .static-reference-site .ref-commerce-desc{min-height:34px!important;margin-bottom:15px!important;line-height:1.45!important}
+ .static-reference-site .ref-commerce-bottom{padding-top:13px!important;gap:11px!important}
+ .static-reference-site .ref-commerce-price strong{font-size:20px!important}
+ .static-reference-site .ref-cart-add,.static-reference-site .ref-card-stepper{height:42px!important}
+ .static-reference-site .ref-card-whatsapp{height:42px!important}
+}
