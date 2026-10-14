@@ -1,2 +1,2 @@
-deploy-batch: restore-light-product-card-hover-final
-scope: keep-premium-ivory-cards-light-on-hover-with-subtle-lift-only
+deploy-batch: fix-light-card-hover-readability
+scope: keep-ivory-cards-readable-and-disable-dark-or-dim-hover-states

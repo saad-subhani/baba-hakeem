@@ -1,32 +1,97 @@
-/* Keep premium ivory product cards light on hover. No black/dark hover state. */
+/* Final catalogue hover guard: cards stay ivory and readable at all times. */
 .static-reference-site .ref-product-grid>article,
 .static-reference-site .ref-product-grid>article:hover{
+  opacity:1!important;
+  filter:none!important;
   background:#f1ede4!important;
-  color:#15130f!important;
+  color:#17140f!important;
+  border-color:rgba(38,32,23,.13)!important;
 }
 
+/* Never dim sibling cards when the catalogue is hovered. */
+@media(hover:hover) and (pointer:fine){
+  .static-reference-site .ref-product-grid:hover>article,
+  .static-reference-site .ref-product-grid:hover>article:not(:hover){
+    opacity:1!important;
+    filter:none!important;
+  }
+}
+
+/* Keep the image stage light in both idle and hover states. */
 .static-reference-site .ref-product-grid>article>div:first-child,
 .static-reference-site .ref-product-grid>article:hover>div:first-child{
   background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
   border-bottom-color:rgba(43,35,25,.085)!important;
+  filter:none!important;
 }
 
-.static-reference-site .ref-product-grid>article:hover{
-  transform:translate3d(0,-4px,0)!important;
-  border-color:rgba(62,48,29,.24)!important;
-  box-shadow:0 18px 36px rgba(0,0,0,.16),0 1px 0 rgba(255,255,255,.56) inset!important;
+/* Neutralise old dark showroom overlays that were washing the light cards out. */
+.static-reference-site .ref-product-grid>article::before,
+.static-reference-site .ref-product-grid>article:hover::before{
+  background:linear-gradient(145deg,rgba(255,255,255,.30),transparent 30%,transparent 76%,rgba(79,61,35,.02))!important;
+  border-color:transparent!important;
+  opacity:1!important;
 }
+.static-reference-site .ref-product-grid>article::after,
+.static-reference-site .ref-product-grid>article:hover::after{content:none!important}
 
-.static-reference-site .ref-product-grid>article:hover>h3,
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-meta{color:#17140f!important}
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-kicker{color:#847c70!important}
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-desc{color:#625d54!important}
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-price small{color:#938a7d!important}
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-price strong{color:#8b6423!important}
+/* Lock readable dark typography in normal + hover states. */
+.static-reference-site .ref-product-grid>article>h3,
+.static-reference-site .ref-product-grid>article:hover>h3{
+  color:#17140f!important;
+  opacity:1!important;
+}
+.static-reference-site .ref-product-grid>article>h3::before,
+.static-reference-site .ref-product-grid>article:hover>h3::before{
+  color:#8a8174!important;
+  opacity:1!important;
+}
+.static-reference-site .ref-product-grid>article .ref-commerce-meta,
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-meta{
+  color:#17140f!important;
+  opacity:1!important;
+}
+.static-reference-site .ref-product-grid>article .ref-commerce-kicker,
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-kicker{color:#847c70!important;opacity:1!important}
+.static-reference-site .ref-product-grid>article .ref-commerce-desc,
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-desc{color:#625d54!important;opacity:1!important}
+.static-reference-site .ref-product-grid>article .ref-commerce-price small,
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-price small{color:#938a7d!important;opacity:1!important}
+.static-reference-site .ref-product-grid>article .ref-commerce-price strong,
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-price strong{color:#8b6423!important;opacity:1!important}
 
+/* Premium hover = movement/depth only, never a colour-theme swap. */
 @media(hover:hover) and (pointer:fine){
-  .static-reference-site .ref-product-grid>article:hover>div:first-child>img:not(.ref-mens-moving){transform:translate3d(0,-4px,0) scale(1.02)!important}
+  .static-reference-site .ref-product-grid>article:hover{
+    transform:translate3d(0,-4px,0)!important;
+    background:#f1ede4!important;
+    border-color:rgba(62,48,29,.24)!important;
+    box-shadow:0 18px 36px rgba(0,0,0,.16),0 1px 0 rgba(255,255,255,.56) inset!important;
+  }
+  .static-reference-site .ref-product-grid>article:hover>div:first-child>img:not(.ref-mens-moving){
+    transform:translate3d(0,-4px,0) scale(1.02)!important;
+  }
+  .static-reference-site .ref-cart-add:hover{
+    transform:translate3d(0,-1px,0)!important;
+    background:#8b6423!important;
+    border-color:#8b6423!important;
+    color:#fff!important;
+  }
+  .static-reference-site .ref-card-whatsapp:hover{
+    transform:translate3d(0,-1px,0)!important;
+    background:rgba(70,52,28,.06)!important;
+    border-color:rgba(70,52,28,.28)!important;
+    color:#17140f!important;
+  }
 }
+
+/* Preserve the approved Men's Oil GSAP travel path. */
+.static-reference-site .ref-product-grid>article.ref-mens-source,
+.static-reference-site .ref-product-grid>article.ref-mens-source:hover{
+  transform:none!important;
+  overflow:visible!important;
+}
+.static-reference-site .ref-product-grid>article.ref-mens-source>div:first-child{overflow:visible!important}
 
 @media(prefers-reduced-motion:reduce){
   .static-reference-site .ref-product-grid>article:hover{transform:none!important}
