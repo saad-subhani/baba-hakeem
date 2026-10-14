@@ -1,2 +1,2 @@
-deploy-batch: compact-product-card-proportions
-scope: reduce-card-height-without-changing-commerce-behavior
+deploy-batch: zafran-commerce-scope-fix
+scope: keep-zafran-image-effect-out-of-commerce-meta
