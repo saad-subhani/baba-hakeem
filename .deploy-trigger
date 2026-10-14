@@ -1,2 +1,2 @@
-deploy-batch: mens-oil-path-clipping-fix
-scope: keep-travelling-bottle-unclipped-to-hands
+deploy-batch: scroll-performance-restyle-fix
+scope: remove-global-scroll-class-churn-and-height-only-resize-work
