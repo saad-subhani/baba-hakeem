@@ -1,2 +1,2 @@
-deploy-batch: scroll-performance-restyle-fix
-scope: remove-global-scroll-class-churn-and-height-only-resize-work
+deploy-batch: premium-commerce-enhancement
+scope: premium-product-cards-cart-drawer-responsive-polish
