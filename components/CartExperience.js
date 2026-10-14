@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import styles from './CartExperience.module.css';
+import quick from './ProductQuickView.module.css';
 
 const STORAGE_KEY='baba-hakeem-cart-v1';
 const WHATSAPP='923239992203';
@@ -9,17 +10,18 @@ const money=value=>value==null?'Price on request':`Rs. ${Number(value).toLocaleS
 const slug=value=>String(value||'product').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const catalogueInfo={
   'Hair Oil':{price:1200,kicker:'Hair Care',desc:'Herbal hair care for a considered everyday routine.'},
-  'Joint Oil':{price:1800,kicker:'Topical Care',desc:'Focused massage oil for a simple everyday care ritual.'},
+  'Joint Oil':{price:1800,kicker:'Topical Care',desc:'Focused massage oil for a simple everyday care ritual.',image:'/joint-oil-4k.png'},
   'Stomach Phakki':{price:1250,kicker:'Traditional Blend',desc:'A traditional herbal blend presented for familiar daily use.'},
   'Herbal Phakki':{price:1450,kicker:'Herbal Wellness',desc:'A familiar herbal blend from the Baba Hakeem collection.'},
   "Men's Oil":{price:2200,kicker:"Men's Care",desc:'Personal care oil presented with a simple daily ritual.'},
   'Zafran':{price:null,kicker:'Premium Saffron',desc:'Premium saffron selected as part of the Baba Hakeem collection.'},
-  'Wedding Course':{price:3500,kicker:'Premium Personal Care',desc:'A premium personal care collection prepared as a considered gifting and daily-care set.'}
+  'Wedding Course':{price:3500,kicker:'Premium Personal Care',desc:'A premium personal care collection prepared as a considered gifting and daily-care set.',image:'/products/wedding-course.webp.png'}
 };
 
 export default function CartExperience(){
   const [items,setItems]=useState([]);
   const [open,setOpen]=useState(false);
+  const [selected,setSelected]=useState(null);
   const [hydrated,setHydrated]=useState(false);
   const [flash,setFlash]=useState(false);
 
@@ -47,15 +49,19 @@ export default function CartExperience(){
         const visual=article.querySelector(':scope > div:first-child')||article.querySelector(':scope > a > div:first-child');
         if(!name||!visual)return;
         article.querySelectorAll('[data-cart-add]').forEach(node=>node.remove());
-        const image=article.querySelector('img')?.getAttribute('src')||'';
         const info=catalogueInfo[name]||{price:null,kicker:'Baba Hakeem Collection',desc:'Explore this product from the Baba Hakeem herbal collection.'};
+        const image=article.querySelector('img')?.getAttribute('src')||info.image||'';
         const id=slug(name);
+        article.dataset.productCard=id;
+        article.style.cursor='pointer';
 
         const meta=document.createElement('div');
         meta.className='ref-commerce-meta';
         meta.dataset.cartId=id;
         meta.dataset.cartName=name;
         meta.dataset.cartImage=image;
+        meta.dataset.cartKicker=info.kicker;
+        meta.dataset.cartDesc=info.desc;
         if(info.price)meta.dataset.cartPrice=String(info.price);
 
         const kicker=document.createElement('p');
@@ -126,52 +132,71 @@ export default function CartExperience(){
   useEffect(()=>{
     const onClick=event=>{
       const control=event.target.closest?.('[data-cart-action]');
-      if(!control)return;
-      event.preventDefault();
-      event.stopPropagation();
-      const id=control.dataset.cartId;
-      const action=control.dataset.cartAction;
-      if(!id)return;
-      if(action==='increase'||action==='decrease'){
-        const delta=action==='increase'?1:-1;
-        setItems(current=>current.flatMap(item=>{
-          if(item.id!==id)return [item];
-          const quantity=item.quantity+delta;
-          return quantity>0?[{...item,quantity:Math.min(99,quantity)}]:[];
-        }));
+      if(control){
+        event.preventDefault();
+        event.stopPropagation();
+        const id=control.dataset.cartId;
+        const action=control.dataset.cartAction;
+        if(!id)return;
+        if(action==='increase'||action==='decrease'){
+          const delta=action==='increase'?1:-1;
+          setItems(current=>current.flatMap(item=>{
+            if(item.id!==id)return [item];
+            const quantity=item.quantity+delta;
+            return quantity>0?[{...item,quantity:Math.min(99,quantity)}]:[];
+          }));
+          return;
+        }
+        if(action!=='add')return;
+        const meta=control.closest('.ref-commerce-meta');
+        if(!meta)return;
+        const name=meta.dataset.cartName||'Baba Hakeem Product';
+        const rawPrice=Number(meta.dataset.cartPrice);
+        const price=Number.isFinite(rawPrice)&&rawPrice>0?rawPrice:null;
+        const image=meta.dataset.cartImage||'';
+        setItems(current=>{
+          const existing=current.find(item=>item.id===id);
+          if(existing)return current.map(item=>item.id===id?{...item,quantity:Math.min(99,item.quantity+1),name,price,image}:item);
+          return [...current,{id,name,price,image,quantity:1}];
+        });
+        setFlash(true);
+        window.setTimeout(()=>setFlash(false),420);
         return;
       }
-      if(action!=='add')return;
-      const meta=control.closest('.ref-commerce-meta');
+
+      if(event.target.closest?.('.ref-card-whatsapp'))return;
+      const article=event.target.closest?.('.static-reference-site .ref-product-grid>article');
+      if(!article)return;
+      const meta=article.querySelector('.ref-commerce-meta');
       if(!meta)return;
-      const name=meta.dataset.cartName||'Baba Hakeem Product';
+      if(event.target.closest('a'))event.preventDefault();
       const rawPrice=Number(meta.dataset.cartPrice);
-      const price=Number.isFinite(rawPrice)&&rawPrice>0?rawPrice:null;
-      const image=meta.dataset.cartImage||'';
-      setItems(current=>{
-        const existing=current.find(item=>item.id===id);
-        if(existing)return current.map(item=>item.id===id?{...item,quantity:Math.min(99,item.quantity+1),name,price,image}:item);
-        return [...current,{id,name,price,image,quantity:1}];
+      setSelected({
+        id:meta.dataset.cartId,
+        name:meta.dataset.cartName||'Baba Hakeem Product',
+        image:meta.dataset.cartImage||'',
+        kicker:meta.dataset.cartKicker||'Baba Hakeem Collection',
+        desc:meta.dataset.cartDesc||'Explore this product from the Baba Hakeem herbal collection.',
+        price:Number.isFinite(rawPrice)&&rawPrice>0?rawPrice:null
       });
-      setFlash(true);
-      window.setTimeout(()=>setFlash(false),420);
     };
     document.addEventListener('click',onClick);
     return()=>document.removeEventListener('click',onClick);
   },[]);
 
   useEffect(()=>{
-    if(!open)return;
+    if(!open&&!selected)return;
     const previous=document.body.style.overflow;
     document.body.style.overflow='hidden';
-    const onKey=event=>{if(event.key==='Escape')setOpen(false);};
+    const onKey=event=>{if(event.key==='Escape'){if(selected)setSelected(null);else setOpen(false);}};
     window.addEventListener('keydown',onKey);
     return()=>{document.body.style.overflow=previous;window.removeEventListener('keydown',onKey);};
-  },[open]);
+  },[open,selected]);
 
   const count=useMemo(()=>items.reduce((sum,item)=>sum+item.quantity,0),[items]);
   const subtotal=useMemo(()=>items.reduce((sum,item)=>sum+(item.price||0)*item.quantity,0),[items]);
   const hasUnpriced=items.some(item=>item.price==null);
+  const selectedCartItem=selected?items.find(item=>item.id===selected.id):null;
 
   const change=(id,delta)=>setItems(current=>current.flatMap(item=>{
     if(item.id!==id)return [item];
@@ -179,6 +204,16 @@ export default function CartExperience(){
     return quantity>0?[{...item,quantity:Math.min(99,quantity)}]:[];
   }));
   const remove=id=>setItems(current=>current.filter(item=>item.id!==id));
+  const addProduct=product=>{
+    if(!product)return;
+    setItems(current=>{
+      const existing=current.find(item=>item.id===product.id);
+      if(existing)return current.map(item=>item.id===product.id?{...item,quantity:Math.min(99,item.quantity+1),name:product.name,price:product.price,image:product.image}:item);
+      return [...current,{id:product.id,name:product.name,price:product.price,image:product.image,quantity:1}];
+    });
+    setFlash(true);
+    window.setTimeout(()=>setFlash(false),420);
+  };
 
   const orderWhatsApp=()=>{
     if(!items.length)return;
@@ -196,6 +231,20 @@ export default function CartExperience(){
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.25h11l-.8 11H7.3l-.8-11Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg>
       <span>Cart</span><b>{count}</b>
     </button>
+
+    <div className={`${quick.overlay} ${selected?quick.open:''}`} onMouseDown={event=>{if(event.target===event.currentTarget)setSelected(null)}} aria-hidden={!selected}>
+      {selected&&<section className={quick.modal} role="dialog" aria-modal="true" aria-label={`${selected.name} product details`}>
+        <button className={quick.close} type="button" onClick={()=>setSelected(null)} aria-label="Close product details">×</button>
+        <div className={quick.head}><p className={quick.eyebrow}>{selected.kicker}</p><h2>{selected.name}</h2><p>Premium Baba Hakeem product</p></div>
+        <div className={quick.visual}>{selected.image?<img src={selected.image} alt={selected.name} decoding="async"/>:<span>BH</span>}</div>
+        <div className={quick.body}>
+          <p className={quick.description}>{selected.desc}</p>
+          <div className={quick.priceRow}><div><small>Price</small><strong>{money(selected.price)}</strong></div><a className={quick.whatsapp} href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Assalam-o-Alaikum Baba Hakeem, I want to ask about ${selected.name}.`)}`} target="_blank" rel="noopener noreferrer">Ask on WhatsApp ↗</a></div>
+          <div className={quick.actions}>{selectedCartItem?<div className={quick.stepper}><button type="button" onClick={()=>change(selected.id,-1)} aria-label={`Decrease ${selected.name}`}>−</button><span>{selectedCartItem.quantity}</span><button type="button" onClick={()=>change(selected.id,1)} aria-label={`Increase ${selected.name}`}>+</button></div>:<button className={quick.add} type="button" onClick={()=>addProduct(selected)}>Add to cart</button>}</div>
+          <small className={quick.note}>Cash on Delivery • Pakistan delivery • Availability confirmed on WhatsApp</small>
+        </div>
+      </section>}
+    </div>
 
     <div className={`${styles.backdrop} ${open?styles.backdropOpen:''}`} onMouseDown={event=>{if(event.target===event.currentTarget)setOpen(false)}} aria-hidden={!open}>
       <aside className={`${styles.drawer} ${open?styles.drawerOpen:''}`} role="dialog" aria-modal="true" aria-label="Shopping cart">
