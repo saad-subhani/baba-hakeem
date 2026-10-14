@@ -1,2 +1,2 @@
-deploy-batch: professional-product-catalogue-refinement
-scope: clean-card-hierarchy-pricing-actions-responsive-commerce-ui
+deploy-batch: product-quick-view-modal
+scope: click-product-open-details-modal-cart-integration
