@@ -15,6 +15,7 @@ import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
 import CartExperience from '../components/CartExperience';
+import ZafranCommerceFix from '../components/ZafranCommerceFix';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -24,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}<HomeSequentialPages/><CartExperience/><SitePolish/><MobileMotionStabilizer/></body>
+      <body>{children}<HomeSequentialPages/><ZafranCommerceFix/><CartExperience/><SitePolish/><MobileMotionStabilizer/></body>
     </html>
   );
 }

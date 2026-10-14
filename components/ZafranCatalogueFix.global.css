@@ -59,10 +59,53 @@
 }
 .static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta::before,
 .static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta::after{content:none!important}
+
+/* Force the Zafran commerce rows to use the exact same sizing as the other compact cards. */
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-commerce-bottom{
+  margin-top:auto!important;
+  padding-top:13px!important;
+  border-top:1px solid rgba(17,17,17,.10)!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:11px!important;
+  align-items:stretch!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-commerce-price{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:flex-end!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-commerce-price strong{
+  font-size:20px!important;
+  white-space:nowrap!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-commerce-actions{
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 44px!important;
+  gap:9px!important;
+  align-items:center!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-cart-add,
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-card-stepper{
+  width:100%!important;
+  min-width:0!important;
+  height:42px!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-card-whatsapp{
+  width:44px!important;
+  height:42px!important;
+}
+
 @media(hover:hover) and (pointer:fine){
   .static-reference-site .ref-product-grid article:nth-child(6):hover>div:first-child{transform:none!important}
   .static-reference-site .ref-product-grid article:nth-child(6):hover>div:first-child img{transform:translate3d(0,-5px,0) scale(1.025)!important}
 }
 @media(max-width:680px){
   .static-reference-site .ref-product-grid article:nth-child(6)>div:first-child{height:300px!important;min-height:300px!important}
+  .static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-cart-add,
+  .static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-card-stepper,
+  .static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta .ref-card-whatsapp{height:45px!important}
 }

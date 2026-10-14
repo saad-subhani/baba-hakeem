@@ -1,2 +1,2 @@
-deploy-batch: normalize-zafran-product-card
-scope: match-zafran-card-structure-with-other-premium-ivory-products
+deploy-batch: finalize-zafran-card-price-and-actions
+scope: set-specific-zafran-price-and-match-commerce-card-controls
