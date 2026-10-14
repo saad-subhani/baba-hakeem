@@ -4,8 +4,17 @@ import { useEffect, useMemo, useState } from 'react';
 import styles from './CartExperience.module.css';
 
 const STORAGE_KEY='baba-hakeem-cart-v1';
+const WHATSAPP='923239992203';
 const money=value=>value==null?'Price on request':`Rs. ${Number(value).toLocaleString('en-PK')}`;
 const slug=value=>String(value||'product').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const catalogueInfo={
+  'Hair Oil':{price:1200,kicker:'Hair Care',desc:'Herbal hair care for a considered everyday routine.'},
+  'Joint Oil':{price:1800,kicker:'Topical Care',desc:'Focused massage oil for a simple everyday care ritual.'},
+  'Stomach Phakki':{price:1250,kicker:'Traditional Blend',desc:'A traditional herbal blend presented for familiar daily use.'},
+  'Herbal Phakki':{price:1450,kicker:'Herbal Wellness',desc:'A familiar herbal blend from the Baba Hakeem collection.'},
+  "Men's Oil":{price:2200,kicker:"Men's Care",desc:'Personal care oil presented with a simple daily ritual.'},
+  'Zafran':{price:null,kicker:'Premium Saffron',desc:'Premium saffron selected as part of the Baba Hakeem collection.'}
+};
 
 export default function CartExperience(){
   const [items,setItems]=useState([]);
@@ -29,51 +38,115 @@ export default function CartExperience(){
   useEffect(()=>{
     const catalogue=document.querySelector('.static-reference-site .ref-product-grid');
     if(!catalogue)return;
-    const knownPrices={
-      'Hair Oil':1200,
-      'Joint Oil':1800,
-      'Stomach Phakki':1250,
-      'Herbal Phakki':1450,
-      "Men's Oil":2200
-    };
+
     const enhance=()=>{
       catalogue.querySelectorAll(':scope > article').forEach(article=>{
-        if(article.querySelector('[data-cart-add]'))return;
+        if(article.querySelector(':scope > .ref-commerce-meta'))return;
         const name=article.querySelector('h3')?.textContent?.trim();
-        const visual=article.querySelector(':scope > div:first-child');
+        const visual=article.querySelector(':scope > div:first-child')||article.querySelector(':scope > a > div:first-child');
         if(!name||!visual)return;
+        article.querySelectorAll('[data-cart-add]').forEach(node=>node.remove());
         const image=article.querySelector('img')?.getAttribute('src')||'';
-        const button=document.createElement('button');
-        button.type='button';
-        button.className='ref-cart-add';
-        button.dataset.cartAdd='true';
-        button.dataset.cartId=slug(name);
-        button.dataset.cartName=name;
-        button.dataset.cartImage=image;
-        if(knownPrices[name])button.dataset.cartPrice=String(knownPrices[name]);
-        button.setAttribute('aria-label',`Add ${name} to cart`);
-        button.textContent='Add';
-        visual.appendChild(button);
+        const info=catalogueInfo[name]||{price:null,kicker:'Baba Hakeem Collection',desc:'Explore this product from the Baba Hakeem herbal collection.'};
+        const id=slug(name);
+
+        const meta=document.createElement('div');
+        meta.className='ref-commerce-meta';
+        meta.dataset.cartId=id;
+        meta.dataset.cartName=name;
+        meta.dataset.cartImage=image;
+        if(info.price)meta.dataset.cartPrice=String(info.price);
+
+        const kicker=document.createElement('p');
+        kicker.className='ref-commerce-kicker';
+        kicker.textContent=info.kicker;
+        const desc=document.createElement('p');
+        desc.className='ref-commerce-desc';
+        desc.textContent=info.desc;
+        const bottom=document.createElement('div');
+        bottom.className='ref-commerce-bottom';
+        const price=document.createElement('div');
+        price.className='ref-commerce-price';
+        const priceLabel=document.createElement('small');
+        priceLabel.textContent='Price';
+        const priceValue=document.createElement('strong');
+        priceValue.textContent=money(info.price);
+        price.append(priceLabel,priceValue);
+        const actions=document.createElement('div');
+        actions.className='ref-commerce-actions';
+        actions.dataset.cartActions=id;
+        const whatsapp=document.createElement('a');
+        whatsapp.className='ref-card-whatsapp';
+        whatsapp.href=`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Assalam-o-Alaikum Baba Hakeem, I want to ask about ${name}.`)}`;
+        whatsapp.target='_blank';
+        whatsapp.rel='noopener noreferrer';
+        whatsapp.setAttribute('aria-label',`Ask about ${name} on WhatsApp`);
+        whatsapp.textContent='↗';
+        actions.appendChild(whatsapp);
+        bottom.append(price,actions);
+        meta.append(kicker,desc,bottom);
+        article.appendChild(meta);
       });
     };
+
     enhance();
     const observer=new MutationObserver(()=>requestAnimationFrame(enhance));
-    observer.observe(catalogue,{childList:true});
+    observer.observe(catalogue,{childList:true,subtree:false});
     const stop=window.setTimeout(()=>observer.disconnect(),6000);
     return()=>{window.clearTimeout(stop);observer.disconnect();};
   },[]);
 
   useEffect(()=>{
+    document.querySelectorAll('.ref-commerce-meta').forEach(meta=>{
+      const id=meta.dataset.cartId;
+      const actions=meta.querySelector('.ref-commerce-actions');
+      if(!id||!actions)return;
+      const whatsapp=actions.querySelector('.ref-card-whatsapp');
+      actions.querySelectorAll('.ref-cart-add,.ref-card-stepper').forEach(node=>node.remove());
+      const item=items.find(entry=>entry.id===id);
+      if(item){
+        const stepper=document.createElement('div');
+        stepper.className='ref-card-stepper';
+        const minus=document.createElement('button');
+        minus.type='button';minus.dataset.cartAction='decrease';minus.dataset.cartId=id;minus.setAttribute('aria-label',`Decrease ${item.name}`);minus.textContent='−';
+        const qty=document.createElement('span');qty.textContent=String(item.quantity);
+        const plus=document.createElement('button');
+        plus.type='button';plus.dataset.cartAction='increase';plus.dataset.cartId=id;plus.setAttribute('aria-label',`Increase ${item.name}`);plus.textContent='+';
+        stepper.append(minus,qty,plus);
+        actions.insertBefore(stepper,whatsapp||null);
+      }else{
+        const add=document.createElement('button');
+        add.type='button';add.className='ref-cart-add';add.dataset.cartAction='add';add.dataset.cartId=id;add.textContent='Add to cart';add.setAttribute('aria-label',`Add ${meta.dataset.cartName||'product'} to cart`);
+        actions.insertBefore(add,whatsapp||null);
+      }
+    });
+  },[items]);
+
+  useEffect(()=>{
     const onClick=event=>{
-      const button=event.target.closest?.('[data-cart-add]');
-      if(!button)return;
+      const control=event.target.closest?.('[data-cart-action]');
+      if(!control)return;
       event.preventDefault();
       event.stopPropagation();
-      const name=button.dataset.cartName||'Baba Hakeem Product';
-      const rawPrice=Number(button.dataset.cartPrice);
+      const id=control.dataset.cartId;
+      const action=control.dataset.cartAction;
+      if(!id)return;
+      if(action==='increase'||action==='decrease'){
+        const delta=action==='increase'?1:-1;
+        setItems(current=>current.flatMap(item=>{
+          if(item.id!==id)return [item];
+          const quantity=item.quantity+delta;
+          return quantity>0?[{...item,quantity:Math.min(99,quantity)}]:[];
+        }));
+        return;
+      }
+      if(action!=='add')return;
+      const meta=control.closest('.ref-commerce-meta');
+      if(!meta)return;
+      const name=meta.dataset.cartName||'Baba Hakeem Product';
+      const rawPrice=Number(meta.dataset.cartPrice);
       const price=Number.isFinite(rawPrice)&&rawPrice>0?rawPrice:null;
-      const image=button.dataset.cartImage||'';
-      const id=button.dataset.cartId||slug(name);
+      const image=meta.dataset.cartImage||'';
       setItems(current=>{
         const existing=current.find(item=>item.id===id);
         if(existing)return current.map(item=>item.id===id?{...item,quantity:Math.min(99,item.quantity+1),name,price,image}:item);
@@ -81,8 +154,6 @@ export default function CartExperience(){
       });
       setFlash(true);
       window.setTimeout(()=>setFlash(false),420);
-      button.classList.add('is-added');
-      window.setTimeout(()=>button.classList.remove('is-added'),520);
     };
     document.addEventListener('click',onClick);
     return()=>document.removeEventListener('click',onClick);
@@ -116,7 +187,7 @@ export default function CartExperience(){
     if(subtotal)lines.push(`Subtotal: ${money(subtotal)}`);
     if(hasUnpriced)lines.push('Please confirm the final price for the item(s) marked price on request.');
     lines.push('Please confirm availability and Cash on Delivery details.');
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join('\n'))}`,'_blank','noopener,noreferrer');
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(lines.join('\n'))}`,'_blank','noopener,noreferrer');
   };
 
   return <>
