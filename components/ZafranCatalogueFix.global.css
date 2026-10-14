@@ -1,5 +1,5 @@
-/* Zafran-only catalogue refinement. No bottle, hands, GSAP, or other product selectors. */
-.static-reference-site .ref-product-grid article:nth-child(6)>div{
+/* Zafran-only image-stage refinement. Keep this scoped to the FIRST visual div only so commerce metadata is never transformed or restyled. */
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child{
   transform:translateY(24px) scale(.60)!important;
   transform-origin:50% 50%!important;
   border:0!important;
@@ -8,11 +8,11 @@
   background:#080808!important;
   box-shadow:0 20px 46px rgba(0,0,0,.34)!important;
 }
-.static-reference-site .ref-product-grid article:nth-child(6)>div::before{
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child::before{
   opacity:.28!important;
   background:radial-gradient(circle,rgba(255,255,255,.10) 0,rgba(255,255,255,.03) 38%,transparent 72%)!important;
 }
-.static-reference-site .ref-product-grid article:nth-child(6)>div::after{
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child::after{
   content:""!important;
   position:absolute!important;
   inset:0!important;
@@ -21,7 +21,7 @@
   opacity:1!important;
   background:linear-gradient(180deg,rgba(0,0,0,.04),transparent 30%,transparent 68%,rgba(0,0,0,.24)),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.30) 100%)!important;
 }
-.static-reference-site .ref-product-grid article:nth-child(6) img{
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child img{
   width:100%!important;
   height:100%!important;
   object-fit:cover!important;
@@ -31,19 +31,13 @@
   filter:saturate(.80) contrast(1.06) brightness(.90)!important;
 }
 @media(hover:hover) and (pointer:fine){
-  .static-reference-site .ref-product-grid article:nth-child(6):hover{
-    transform:none!important;
-  }
-  .static-reference-site .ref-product-grid article:nth-child(6):hover>div{
-    transform:translateY(24px) scale(.60)!important;
-  }
-  .static-reference-site .ref-product-grid article:nth-child(6):hover img{
-    transform:none!important;
-  }
+  .static-reference-site .ref-product-grid article:nth-child(6):hover{transform:none!important}
+  .static-reference-site .ref-product-grid article:nth-child(6):hover>div:first-child{transform:translateY(24px) scale(.60)!important}
+  .static-reference-site .ref-product-grid article:nth-child(6):hover>div:first-child img{transform:none!important}
 }
 @media(max-width:760px){
-  .static-reference-site .ref-product-grid article:nth-child(6)>div,
-  .static-reference-site .ref-product-grid article:nth-child(6):hover>div{
+  .static-reference-site .ref-product-grid article:nth-child(6)>div:first-child,
+  .static-reference-site .ref-product-grid article:nth-child(6):hover>div:first-child{
     transform:translateY(12px) scale(.68)!important;
     border-radius:16px!important;
   }
