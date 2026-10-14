@@ -1,0 +1,68 @@
+/* Zafran-only normalization: make the sixth product card use the exact same premium ivory commerce treatment as every other product. */
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child{
+  position:relative!important;
+  width:100%!important;
+  height:235px!important;
+  min-height:235px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  transform:none!important;
+  border:0!important;
+  border-radius:0!important;
+  border-bottom:1px solid rgba(15,15,15,.09)!important;
+  background:linear-gradient(180deg,#e9e5dc 0%,#f0ece4 56%,#e5e1d8 100%)!important;
+  box-shadow:none!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child::before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  bottom:20px!important;
+  width:56%!important;
+  height:30px!important;
+  transform:translateX(-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(ellipse,rgba(0,0,0,.10),rgba(0,0,0,.025) 45%,transparent 72%)!important;
+  filter:blur(7px)!important;
+  opacity:.45!important;
+  pointer-events:none!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:radial-gradient(circle at 50% 34%,rgba(255,255,255,.72),transparent 46%)!important;
+  opacity:.62!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>div:first-child img{
+  position:relative!important;
+  z-index:1!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:72%!important;
+  max-height:76%!important;
+  object-fit:contain!important;
+  object-position:50% 50%!important;
+  display:block!important;
+  transform:none!important;
+  filter:drop-shadow(0 14px 16px rgba(0,0,0,.12))!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta{
+  transform:none!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta::before,
+.static-reference-site .ref-product-grid article:nth-child(6)>.ref-commerce-meta::after{content:none!important}
+@media(hover:hover) and (pointer:fine){
+  .static-reference-site .ref-product-grid article:nth-child(6):hover>div:first-child{transform:none!important}
+  .static-reference-site .ref-product-grid article:nth-child(6):hover>div:first-child img{transform:translate3d(0,-5px,0) scale(1.025)!important}
+}
+@media(max-width:680px){
+  .static-reference-site .ref-product-grid article:nth-child(6)>div:first-child{height:300px!important;min-height:300px!important}
+}
