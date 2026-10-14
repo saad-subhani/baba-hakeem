@@ -1,2 +1,2 @@
-deploy-batch: product-quick-view-modal
-scope: click-product-open-details-modal-cart-integration
+deploy-batch: compact-product-card-proportions
+scope: reduce-card-height-without-changing-commerce-behavior
