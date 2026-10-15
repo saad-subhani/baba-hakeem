@@ -1,0 +1,52 @@
+/* Final Men's Oil travel guard — only fixes stacking and approved hands destination.
+   No product-card, header, hero-bottle, cart, footer or Best Product styling is changed here. */
+
+/* CatalogueHardAlign reintroduced a stacking context on #reel-products, which traps
+   the travelling Men's Oil bottle behind the following Featured Product section. */
+.static-reference-site #reel-products{
+  overflow:visible!important;
+  isolation:auto!important;
+}
+
+.static-reference-site #reel-products .ref-product-grid,
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source,
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source>div:first-child{
+  overflow:visible!important;
+}
+
+/* Raise only the Men's Oil source stacking chain so the travelling bottle can cross
+   the section boundary. Other catalogue cards keep their current visual stacking. */
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source{
+  position:relative!important;
+  isolation:auto!important;
+  z-index:120!important;
+  transform:none!important;
+}
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source:hover{
+  transform:none!important;
+}
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source>div:first-child{
+  position:relative!important;
+  z-index:121!important;
+}
+.static-reference-site #reel-products .ref-mens-source .ref-mens-moving{
+  position:relative!important;
+  z-index:122!important;
+  pointer-events:none!important;
+}
+
+/* Keep the Featured Product section below the travelling bottle itself. */
+.static-reference-site .ref-feature{
+  position:relative!important;
+  z-index:1!important;
+  overflow:visible!important;
+}
+
+/* Restore the already-approved final hands target. SitePolish still had an old
+   67% override, which pulled the destination away from the hand cradle. */
+.static-reference-site .ref-mens-hands-target{
+  top:51.5%!important;
+}
+@media(max-width:760px){
+  .static-reference-site .ref-mens-hands-target{top:53.5%!important}
+}
