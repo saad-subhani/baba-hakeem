@@ -1,0 +1,235 @@
+/* Final catalogue lock: identical card geometry + light hover treatment.
+   Imported last so older premium catalogue experiments cannot alter these cards. */
+
+.static-reference-site #reel-products .ref-product-grid{
+  align-items:stretch!important;
+}
+
+/* Every first-party product card uses one exact structure. */
+.static-reference-site #reel-products .ref-product-grid>article{
+  background:#f1ede4!important;
+  color:#17140f!important;
+  border:1px solid rgba(38,32,23,.13)!important;
+  border-radius:20px!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.13),0 1px 0 rgba(255,255,255,.5) inset!important;
+  transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s ease,border-color .22s ease!important;
+}
+
+/* Product photography slot — hard locked for ALL products, including Zafran. */
+.static-reference-site #reel-products .ref-product-grid>article>div:first-child{
+  height:240px!important;
+  min-height:240px!important;
+  max-height:240px!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
+  border-bottom:1px solid rgba(43,35,25,.085)!important;
+  border-radius:0!important;
+  transform:none!important;
+}
+
+.static-reference-site #reel-products .ref-product-grid>article>div:first-child>img{
+  max-width:72%!important;
+  max-height:76%!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+}
+
+/* Zafran must obey the exact same photography slot as every other product. */
+.static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card>div:first-child,
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child{
+  height:240px!important;
+  min-height:240px!important;
+  max-height:240px!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:0!important;
+  background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
+  transform:none!important;
+}
+.static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card>div:first-child>img,
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child>img{
+  max-width:72%!important;
+  max-height:76%!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+  transform:none!important;
+}
+
+/* Hard desktop/tablet geometry: same image, title, copy and purchase rows on every card. */
+@media(min-width:681px){
+  .static-reference-site #reel-products .ref-product-grid>article{
+    height:500px!important;
+    min-height:500px!important;
+    max-height:500px!important;
+    display:grid!important;
+    grid-template-rows:240px 46px minmax(0,1fr)!important;
+    align-content:stretch!important;
+  }
+
+  .static-reference-site #reel-products .ref-product-grid>article>h3{
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:16px 20px 0!important;
+    font:700 19px/1.08 Arial,sans-serif!important;
+    color:#17140f!important;
+    text-align:left!important;
+  }
+
+  .static-reference-site #reel-products .ref-commerce-meta{
+    height:214px!important;
+    min-height:214px!important;
+    max-height:214px!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    flex-direction:column!important;
+    padding:4px 20px 18px!important;
+    margin:0!important;
+    color:#17140f!important;
+  }
+
+  .static-reference-site #reel-products .ref-commerce-kicker{
+    flex:0 0 20px!important;
+    height:20px!important;
+    min-height:20px!important;
+    margin:0!important;
+    display:flex!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    color:#847c70!important;
+    font:700 8px/1 Arial,sans-serif!important;
+    letter-spacing:.17em!important;
+    text-transform:uppercase!important;
+  }
+
+  .static-reference-site #reel-products .ref-commerce-desc{
+    flex:0 0 48px!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:6px 0 0!important;
+    overflow:hidden!important;
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:2!important;
+    color:#625d54!important;
+    font:400 12px/1.45 Arial,sans-serif!important;
+    text-align:center!important;
+  }
+
+  .static-reference-site #reel-products .ref-commerce-bottom{
+    flex:0 0 118px!important;
+    height:118px!important;
+    min-height:118px!important;
+    max-height:118px!important;
+    box-sizing:border-box!important;
+    margin-top:auto!important;
+    padding-top:12px!important;
+    border-top:1px solid rgba(50,41,29,.105)!important;
+    display:grid!important;
+    grid-template-rows:30px 42px!important;
+    row-gap:10px!important;
+    align-content:end!important;
+  }
+
+  .static-reference-site #reel-products .ref-commerce-price{
+    height:30px!important;
+    min-height:30px!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:space-between!important;
+    gap:16px!important;
+  }
+  .static-reference-site #reel-products .ref-commerce-price small{
+    color:#938a7d!important;
+    font:700 8px/1 Arial,sans-serif!important;
+  }
+  .static-reference-site #reel-products .ref-commerce-price strong{
+    color:#8b6423!important;
+    font:800 20px/1 Arial,sans-serif!important;
+    white-space:nowrap!important;
+  }
+
+  .static-reference-site #reel-products .ref-commerce-actions{
+    height:42px!important;
+    min-height:42px!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 44px!important;
+    gap:9px!important;
+    align-items:stretch!important;
+  }
+  .static-reference-site #reel-products .ref-cart-add,
+  .static-reference-site #reel-products .ref-card-stepper,
+  .static-reference-site #reel-products .ref-card-whatsapp{
+    height:42px!important;
+    min-height:42px!important;
+    max-height:42px!important;
+  }
+}
+
+/* NEVER turn the product card dark on hover. Only add premium depth/lift. */
+@media(hover:hover) and (pointer:fine){
+  .static-reference-site #reel-products .ref-product-grid>article:hover{
+    background:#f1ede4!important;
+    color:#17140f!important;
+    border-color:rgba(76,57,31,.24)!important;
+    box-shadow:0 20px 42px rgba(0,0,0,.17),0 1px 0 rgba(255,255,255,.6) inset!important;
+    transform:translate3d(0,-4px,0)!important;
+  }
+  .static-reference-site #reel-products .ref-product-grid>article:hover>div:first-child,
+  .static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card:hover>div:first-child,
+  .static-reference-site #reel-products .ref-product-grid>article:nth-child(6):hover>div:first-child{
+    background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
+    transform:none!important;
+  }
+  .static-reference-site #reel-products .ref-product-grid>article:hover>h3,
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-meta{
+    color:#17140f!important;
+  }
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-kicker{color:#847c70!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-desc{color:#625d54!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-price small{color:#938a7d!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-price strong{color:#8b6423!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover>div:first-child>img:not(.ref-mens-moving){
+    transform:translate3d(0,-3px,0) scale(1.018)!important;
+  }
+  .static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card:hover>div:first-child>img,
+  .static-reference-site #reel-products .ref-product-grid>article:nth-child(6):hover>div:first-child>img{
+    transform:translate3d(0,-3px,0) scale(1.018)!important;
+  }
+}
+
+/* Approved travelling Men's Oil bottle must remain completely free. */
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source,
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source>div:first-child{
+  overflow:visible!important;
+}
+.static-reference-site #reel-products .ref-mens-source .ref-mens-moving{
+  z-index:60!important;
+  pointer-events:none!important;
+}
+
+/* Mobile keeps the same visual system without forcing a tall fixed card. */
+@media(max-width:680px){
+  .static-reference-site #reel-products .ref-product-grid>article{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+  .static-reference-site #reel-products .ref-product-grid>article>div:first-child,
+  .static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card>div:first-child,
+  .static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child{
+    height:270px!important;
+    min-height:270px!important;
+    max-height:270px!important;
+  }
+}
