@@ -1,2 +1,2 @@
-deploy-batch: hard-align-product-cards
-scope: lock-identical-card-geometry-remove-legacy-zafran-and-dark-hover-conflicts
+deploy-batch: six-product-catalogue-without-zafran
+scope: remove-zafran-card-and-retired-zafran-runtime-hook
