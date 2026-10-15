@@ -1,2 +1,2 @@
-deploy-batch: six-product-catalogue-without-zafran
-scope: remove-zafran-card-and-retired-zafran-runtime-hook
+deploy-batch: approved-product-page-replica
+scope: product-page-visual-match-with-current-cart-and-locked-motion
