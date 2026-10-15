@@ -1,0 +1,36 @@
+/* Final fix for the sixth card now being Wedding Course, not Zafran.
+   Older showroom CSS still treats article 6 as a special saffron card and
+   accidentally frames the injected commerce content. Neutralise only that leak. */
+
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>.ref-commerce-meta{
+  border:0!important;
+  border-radius:0!important;
+  overflow:visible!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>.ref-commerce-meta::before,
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>.ref-commerce-meta::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* The sixth card is Wedding Course now; keep its editorial label accurate. */
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>h3::before{
+  content:"06 / WEDDING COURSE"!important;
+}
+
+/* Remove the old sixth-card saffron darkening from the Wedding Course image. */
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child>img{
+  filter:drop-shadow(0 15px 13px rgba(0,0,0,.15)) saturate(.96) contrast(1.02)!important;
+}
+
+/* Keep the photography stage identical to the other cards. */
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child{
+  border:0!important;
+  border-radius:0!important;
+  border-bottom:1px solid rgba(57,47,34,.08)!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
