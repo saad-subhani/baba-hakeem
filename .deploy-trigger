@@ -1,2 +1,2 @@
-deploy-batch: wedding-course-card-fix
-scope: remove-stale-sixth-card-saffron-frame-and-deploy
+deploy-batch: centered-floating-header-fix
+scope: lock-header-insets-grid-layout-and-responsive-positioning
