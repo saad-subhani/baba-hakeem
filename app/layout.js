@@ -14,6 +14,7 @@ import '../components/CatalogueHardAlign.global.css';
 import '../components/WeddingCourseCardFix.global.css';
 import '../components/HeaderLayoutFix.global.css';
 import '../components/MensOilHandsLayerFix.global.css';
+import '../components/JointOilLayerFix.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
