@@ -1,2 +1,2 @@
-deploy-batch: mens-oil-hands-journey-fix
-scope: restore-approved-gsap-path-scale-and-hands-destination-only
+deploy-batch: mens-oil-hands-stacking-fix
+scope: remove-catalogue-stacking-trap-and-restore-approved-hands-target
