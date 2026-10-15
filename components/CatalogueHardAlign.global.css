@@ -1,235 +1,440 @@
-/* Final catalogue lock: identical card geometry + light hover treatment.
-   Imported last so older premium catalogue experiments cannot alter these cards. */
+/* PRODUCT PAGE REPLICA — final visual lock based on the approved mockup.
+   Imported last. Keeps all existing cart logic and GSAP choreography untouched. */
 
+/* ---------- PAGE / HEADER ---------- */
+.static-reference-site #reel-products{
+  position:relative!important;
+  isolation:isolate!important;
+  min-height:100vh!important;
+  padding:118px 0 110px!important;
+  overflow:visible!important;
+  background:
+    radial-gradient(ellipse at 50% 8%,rgba(123,91,42,.11),transparent 34%),
+    radial-gradient(ellipse at 12% 46%,rgba(255,255,255,.018),transparent 28%),
+    #050505!important;
+}
+
+.static-reference-site #reel-products::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 16%,transparent 88%,rgba(255,255,255,.012))!important;
+  opacity:1!important;
+}
+
+/* Floating ivory navigation bar from the approved concept. */
+.static-reference-site .ref-nav{
+  position:fixed!important;
+  top:16px!important;
+  left:50%!important;
+  right:auto!important;
+  width:min(1180px,calc(100% - 48px))!important;
+  min-height:58px!important;
+  padding:0 28px!important;
+  box-sizing:border-box!important;
+  transform:translate3d(-50%,0,0)!important;
+  border:1px solid rgba(21,18,14,.12)!important;
+  border-radius:18px!important;
+  background:rgba(244,240,232,.97)!important;
+  box-shadow:0 14px 40px rgba(0,0,0,.22)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.static-reference-site .ref-logo{font-weight:800!important;color:#17140f!important}
+.static-reference-site .ref-nav nav{gap:40px!important}
+.static-reference-site .ref-nav nav a{color:#17140f!important;letter-spacing:.12em!important;font-size:12px!important}
+.static-reference-site .ref-nav nav a[href="#reel-products"]::after{
+  content:"";position:absolute;left:18%;right:18%;bottom:-10px;height:1px;background:#9a6b25
+}
+.static-reference-site .ref-shop{
+  min-width:76px!important;
+  height:34px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  border:1px solid rgba(20,17,13,.58)!important;
+  border-radius:999px!important;
+  color:#17140f!important;
+  background:transparent!important;
+}
+
+/* ---------- PRODUCT PAGE HERO ---------- */
+.static-reference-site #reel-products>h2{
+  position:relative!important;
+  z-index:2!important;
+  width:min(1180px,calc(100% - 48px))!important;
+  margin:0 auto 54px!important;
+  padding:31px 0 31px!important;
+  color:#f2eee6!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-size:clamp(48px,5vw,72px)!important;
+  font-weight:600!important;
+  line-height:.98!important;
+  letter-spacing:-.045em!important;
+  text-align:center!important;
+}
+.static-reference-site #reel-products>h2::before{
+  content:"NATURAL WELLNESS, A BRIGHTER YOU"!important;
+  display:block!important;
+  margin:0 0 14px!important;
+  color:#a8762b!important;
+  font-family:Arial,sans-serif!important;
+  font-size:10px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  letter-spacing:.30em!important;
+}
+.static-reference-site #reel-products>h2::after{
+  content:"Traditional care. Everyday wellness. Naturally yours."!important;
+  display:block!important;
+  margin:18px 0 0!important;
+  color:#8e8a83!important;
+  font-family:Arial,sans-serif!important;
+  font-size:14px!important;
+  font-weight:400!important;
+  line-height:1.45!important;
+  letter-spacing:0!important;
+}
+
+/* ---------- GRID ---------- */
 .static-reference-site #reel-products .ref-product-grid{
+  position:relative!important;
+  z-index:2!important;
+  width:min(1180px,calc(100% - 48px))!important;
+  margin:0 auto!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:20px!important;
   align-items:stretch!important;
 }
 
-/* Every first-party product card uses one exact structure. */
-.static-reference-site #reel-products .ref-product-grid>article{
+/* ---------- CARD ---------- */
+.static-reference-site #reel-products .ref-product-grid>article,
+.static-reference-site #reel-products .ref-product-grid>article:hover{
+  position:relative!important;
+  min-width:0!important;
+  overflow:hidden!important;
   background:#f1ede4!important;
   color:#17140f!important;
-  border:1px solid rgba(38,32,23,.13)!important;
-  border-radius:20px!important;
-  box-shadow:0 12px 30px rgba(0,0,0,.13),0 1px 0 rgba(255,255,255,.5) inset!important;
-  transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s ease,border-color .22s ease!important;
+  border:1px solid rgba(56,47,35,.14)!important;
+  border-radius:18px!important;
+  box-shadow:0 14px 36px rgba(0,0,0,.18),0 1px 0 rgba(255,255,255,.60) inset!important;
+  filter:none!important;
+  opacity:1!important;
 }
 
-/* Product photography slot — hard locked for ALL products, including Zafran. */
-.static-reference-site #reel-products .ref-product-grid>article>div:first-child{
-  height:240px!important;
-  min-height:240px!important;
-  max-height:240px!important;
-  box-sizing:border-box!important;
+.static-reference-site #reel-products .ref-product-grid>article::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  z-index:0!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.20),transparent 28%,transparent 74%,rgba(100,70,28,.018))!important;
+}
+.static-reference-site #reel-products .ref-product-grid>article::after{content:none!important}
+
+/* Photography stage */
+.static-reference-site #reel-products .ref-product-grid>article>div:first-child,
+.static-reference-site #reel-products .ref-product-grid>article:hover>div:first-child{
+  position:relative!important;
+  z-index:1!important;
+  width:100%!important;
+  height:250px!important;
+  min-height:250px!important;
+  max-height:250px!important;
   display:grid!important;
   place-items:center!important;
-  background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
-  border-bottom:1px solid rgba(43,35,25,.085)!important;
-  border-radius:0!important;
-  transform:none!important;
-}
-
-.static-reference-site #reel-products .ref-product-grid>article>div:first-child>img{
-  max-width:72%!important;
-  max-height:76%!important;
-  width:auto!important;
-  height:auto!important;
-  object-fit:contain!important;
-}
-
-/* Zafran must obey the exact same photography slot as every other product. */
-.static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card>div:first-child,
-.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child{
-  height:240px!important;
-  min-height:240px!important;
-  max-height:240px!important;
-  width:100%!important;
   margin:0!important;
   padding:0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  border:0!important;
   border-radius:0!important;
-  background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
+  border-bottom:1px solid rgba(57,47,34,.08)!important;
+  background:linear-gradient(180deg,#eee7db 0%,#e7dfd2 62%,#ddd4c6 100%)!important;
   transform:none!important;
+  filter:none!important;
 }
-.static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card>div:first-child>img,
-.static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child>img{
-  max-width:72%!important;
-  max-height:76%!important;
+.static-reference-site #reel-products .ref-product-grid>article>div:first-child::before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  bottom:22px!important;
+  width:50%!important;
+  height:27px!important;
+  transform:translateX(-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(ellipse,rgba(40,31,20,.13),rgba(40,31,20,.035) 48%,transparent 72%)!important;
+  filter:blur(7px)!important;
+  opacity:.48!important;
+  pointer-events:none!important;
+}
+.static-reference-site #reel-products .ref-product-grid>article>div:first-child::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:radial-gradient(circle at 50% 32%,rgba(255,255,255,.50),transparent 48%)!important;
+  opacity:.68!important;
+}
+.static-reference-site #reel-products .ref-product-grid>article>div:first-child>img{
+  position:relative!important;
+  z-index:2!important;
   width:auto!important;
   height:auto!important;
+  max-width:72%!important;
+  max-height:74%!important;
   object-fit:contain!important;
-  transform:none!important;
+  filter:drop-shadow(0 14px 13px rgba(0,0,0,.13)) saturate(.98) contrast(1.02)!important;
+}
+/* Wedding Course should also sit as a contained object, exactly like the mockup. */
+.static-reference-site #reel-products .ref-product-grid>article>.ref-cover>img{
+  width:auto!important;
+  height:auto!important;
+  max-width:80%!important;
+  max-height:78%!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 15px 13px rgba(0,0,0,.15)) saturate(.96) contrast(1.02)!important;
 }
 
-/* Hard desktop/tablet geometry: same image, title, copy and purchase rows on every card. */
+/* ---------- CONTENT ---------- */
+.static-reference-site #reel-products .ref-product-grid>article>h3{
+  position:relative!important;
+  z-index:2!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:25px 24px 0!important;
+  box-sizing:border-box!important;
+  color:#17140f!important;
+  font-family:Arial,sans-serif!important;
+  font-size:20px!important;
+  font-weight:800!important;
+  line-height:1.08!important;
+  letter-spacing:-.035em!important;
+  text-align:left!important;
+}
+/* Number/category label supplied by existing catalogue CSS stays subtle and editorial. */
+.static-reference-site #reel-products .ref-product-grid>article>h3::before{
+  display:block!important;
+  margin:0 0 9px!important;
+  color:#827a6f!important;
+  opacity:1!important;
+  font-family:Arial,sans-serif!important;
+  font-size:8px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  letter-spacing:.20em!important;
+}
+
+.static-reference-site #reel-products .ref-commerce-meta{
+  position:relative!important;
+  z-index:2!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  display:flex!important;
+  flex:1!important;
+  flex-direction:column!important;
+  margin:0!important;
+  padding:5px 24px 22px!important;
+  box-sizing:border-box!important;
+  color:#17140f!important;
+}
+
+.static-reference-site #reel-products .ref-commerce-kicker{
+  position:absolute!important;
+  top:-23px!important;
+  right:24px!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  color:#777166!important;
+  opacity:1!important;
+  font:700 8px/1 Arial,sans-serif!important;
+  letter-spacing:.17em!important;
+  text-transform:uppercase!important;
+  text-align:right!important;
+}
+
+.static-reference-site #reel-products .ref-commerce-desc{
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+  margin:0!important;
+  padding:12px 0 0!important;
+  overflow:hidden!important;
+  color:#5c574f!important;
+  opacity:1!important;
+  font:400 12px/1.48 Arial,sans-serif!important;
+  text-align:left!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+}
+
+.static-reference-site #reel-products .ref-commerce-bottom{
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin-top:18px!important;
+  padding-top:14px!important;
+  border-top:1px solid rgba(55,46,34,.11)!important;
+  display:grid!important;
+  grid-template-rows:34px 44px!important;
+  row-gap:10px!important;
+  align-content:end!important;
+}
+.static-reference-site #reel-products .ref-commerce-price{
+  height:34px!important;
+  min-height:34px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:flex-end!important;
+  gap:22px!important;
+}
+.static-reference-site #reel-products .ref-commerce-price small{
+  margin-right:auto!important;
+  color:#8e8679!important;
+  font:700 8px/1 Arial,sans-serif!important;
+  letter-spacing:.16em!important;
+  text-transform:uppercase!important;
+}
+.static-reference-site #reel-products .ref-commerce-price strong{
+  color:#8b6423!important;
+  font:800 22px/1 Arial,sans-serif!important;
+  letter-spacing:-.045em!important;
+  white-space:nowrap!important;
+}
+
+.static-reference-site #reel-products .ref-commerce-actions{
+  height:44px!important;
+  min-height:44px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 48px!important;
+  gap:10px!important;
+  align-items:stretch!important;
+}
+.static-reference-site #reel-products .ref-cart-add{
+  position:static!important;
+  width:100%!important;
+  min-width:0!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  border:1px solid #17140f!important;
+  border-radius:10px!important;
+  background:#17140f!important;
+  color:#f4efe5!important;
+  box-shadow:none!important;
+  font:700 9px/1 Arial,sans-serif!important;
+  letter-spacing:.10em!important;
+  text-transform:uppercase!important;
+}
+.static-reference-site #reel-products .ref-card-whatsapp{
+  width:48px!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(48,40,29,.18)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.12)!important;
+  color:#17140f!important;
+}
+.static-reference-site #reel-products .ref-card-stepper{
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  border-radius:10px!important;
+  background:#e6dfd3!important;
+}
+
+/* ---------- DESKTOP GEOMETRY ---------- */
 @media(min-width:681px){
   .static-reference-site #reel-products .ref-product-grid>article{
-    height:500px!important;
-    min-height:500px!important;
-    max-height:500px!important;
-    display:grid!important;
-    grid-template-rows:240px 46px minmax(0,1fr)!important;
-    align-content:stretch!important;
-  }
-
-  .static-reference-site #reel-products .ref-product-grid>article>h3{
-    height:46px!important;
-    min-height:46px!important;
-    max-height:46px!important;
-    box-sizing:border-box!important;
-    margin:0!important;
-    padding:16px 20px 0!important;
-    font:700 19px/1.08 Arial,sans-serif!important;
-    color:#17140f!important;
-    text-align:left!important;
-  }
-
-  .static-reference-site #reel-products .ref-commerce-meta{
-    height:214px!important;
-    min-height:214px!important;
-    max-height:214px!important;
-    box-sizing:border-box!important;
+    min-height:505px!important;
+    height:auto!important;
+    max-height:none!important;
     display:flex!important;
     flex-direction:column!important;
-    padding:4px 20px 18px!important;
-    margin:0!important;
-    color:#17140f!important;
-  }
-
-  .static-reference-site #reel-products .ref-commerce-kicker{
-    flex:0 0 20px!important;
-    height:20px!important;
-    min-height:20px!important;
-    margin:0!important;
-    display:flex!important;
-    align-items:flex-start!important;
-    justify-content:center!important;
-    color:#847c70!important;
-    font:700 8px/1 Arial,sans-serif!important;
-    letter-spacing:.17em!important;
-    text-transform:uppercase!important;
-  }
-
-  .static-reference-site #reel-products .ref-commerce-desc{
-    flex:0 0 48px!important;
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
-    box-sizing:border-box!important;
-    margin:0!important;
-    padding:6px 0 0!important;
-    overflow:hidden!important;
-    display:-webkit-box!important;
-    -webkit-box-orient:vertical!important;
-    -webkit-line-clamp:2!important;
-    color:#625d54!important;
-    font:400 12px/1.45 Arial,sans-serif!important;
-    text-align:center!important;
-  }
-
-  .static-reference-site #reel-products .ref-commerce-bottom{
-    flex:0 0 118px!important;
-    height:118px!important;
-    min-height:118px!important;
-    max-height:118px!important;
-    box-sizing:border-box!important;
-    margin-top:auto!important;
-    padding-top:12px!important;
-    border-top:1px solid rgba(50,41,29,.105)!important;
-    display:grid!important;
-    grid-template-rows:30px 42px!important;
-    row-gap:10px!important;
-    align-content:end!important;
-  }
-
-  .static-reference-site #reel-products .ref-commerce-price{
-    height:30px!important;
-    min-height:30px!important;
-    display:flex!important;
-    align-items:flex-end!important;
-    justify-content:space-between!important;
-    gap:16px!important;
-  }
-  .static-reference-site #reel-products .ref-commerce-price small{
-    color:#938a7d!important;
-    font:700 8px/1 Arial,sans-serif!important;
-  }
-  .static-reference-site #reel-products .ref-commerce-price strong{
-    color:#8b6423!important;
-    font:800 20px/1 Arial,sans-serif!important;
-    white-space:nowrap!important;
-  }
-
-  .static-reference-site #reel-products .ref-commerce-actions{
-    height:42px!important;
-    min-height:42px!important;
-    display:grid!important;
-    grid-template-columns:minmax(0,1fr) 44px!important;
-    gap:9px!important;
-    align-items:stretch!important;
-  }
-  .static-reference-site #reel-products .ref-cart-add,
-  .static-reference-site #reel-products .ref-card-stepper,
-  .static-reference-site #reel-products .ref-card-whatsapp{
-    height:42px!important;
-    min-height:42px!important;
-    max-height:42px!important;
   }
 }
 
-/* NEVER turn the product card dark on hover. Only add premium depth/lift. */
+/* ---------- APPROVED HOVER ---------- */
 @media(hover:hover) and (pointer:fine){
+  .static-reference-site #reel-products .ref-product-grid:hover>article,
+  .static-reference-site #reel-products .ref-product-grid:hover>article:not(:hover){opacity:1!important;filter:none!important}
   .static-reference-site #reel-products .ref-product-grid>article:hover{
-    background:#f1ede4!important;
-    color:#17140f!important;
-    border-color:rgba(76,57,31,.24)!important;
-    box-shadow:0 20px 42px rgba(0,0,0,.17),0 1px 0 rgba(255,255,255,.6) inset!important;
     transform:translate3d(0,-4px,0)!important;
-  }
-  .static-reference-site #reel-products .ref-product-grid>article:hover>div:first-child,
-  .static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card:hover>div:first-child,
-  .static-reference-site #reel-products .ref-product-grid>article:nth-child(6):hover>div:first-child{
-    background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
-    transform:none!important;
+    background:#f1ede4!important;
+    border-color:rgba(76,57,31,.25)!important;
+    box-shadow:0 22px 44px rgba(0,0,0,.23),0 1px 0 rgba(255,255,255,.66) inset!important;
   }
   .static-reference-site #reel-products .ref-product-grid>article:hover>h3,
-  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-meta{
-    color:#17140f!important;
-  }
-  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-kicker{color:#847c70!important}
-  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-desc{color:#625d54!important}
-  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-price small{color:#938a7d!important}
-  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-price strong{color:#8b6423!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-meta{color:#17140f!important;opacity:1!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-kicker{color:#777166!important;opacity:1!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-desc{color:#5c574f!important;opacity:1!important}
+  .static-reference-site #reel-products .ref-product-grid>article:hover .ref-commerce-price strong{color:#8b6423!important;opacity:1!important}
   .static-reference-site #reel-products .ref-product-grid>article:hover>div:first-child>img:not(.ref-mens-moving){
     transform:translate3d(0,-3px,0) scale(1.018)!important;
   }
-  .static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card:hover>div:first-child>img,
-  .static-reference-site #reel-products .ref-product-grid>article:nth-child(6):hover>div:first-child>img{
-    transform:translate3d(0,-3px,0) scale(1.018)!important;
+  .static-reference-site #reel-products .ref-cart-add:hover{
+    transform:translate3d(0,-1px,0)!important;
+    background:#8b6423!important;
+    border-color:#8b6423!important;
+    color:#fff!important;
   }
 }
 
-/* Approved travelling Men's Oil bottle must remain completely free. */
+/* ---------- LOCKED MEN'S OIL CHOREOGRAPHY ---------- */
 .static-reference-site #reel-products .ref-product-grid>article.ref-mens-source,
-.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source>div:first-child{
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source:hover{
   overflow:visible!important;
 }
+.static-reference-site #reel-products .ref-product-grid>article.ref-mens-source>div:first-child{overflow:visible!important}
 .static-reference-site #reel-products .ref-mens-source .ref-mens-moving{
   z-index:60!important;
   pointer-events:none!important;
 }
+/* No hover transform is ever applied directly to .ref-mens-moving. */
 
-/* Mobile keeps the same visual system without forcing a tall fixed card. */
+/* ---------- TABLET ---------- */
+@media(max-width:1020px){
+  .static-reference-site .ref-nav{width:calc(100% - 28px)!important;top:12px!important;padding:0 20px!important}
+  .static-reference-site #reel-products{padding-top:108px!important}
+  .static-reference-site #reel-products .ref-product-grid{width:min(760px,calc(100% - 36px))!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+/* ---------- MOBILE ---------- */
 @media(max-width:680px){
-  .static-reference-site #reel-products .ref-product-grid>article{
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
+  .static-reference-site .ref-nav{
+    top:8px!important;
+    width:calc(100% - 16px)!important;
+    min-height:56px!important;
+    padding:0 14px!important;
+    border-radius:14px!important;
   }
-  .static-reference-site #reel-products .ref-product-grid>article>div:first-child,
-  .static-reference-site #reel-products .ref-product-grid>article.ref-zafran-card>div:first-child,
-  .static-reference-site #reel-products .ref-product-grid>article:nth-child(6)>div:first-child{
-    height:270px!important;
-    min-height:270px!important;
-    max-height:270px!important;
-  }
+  .static-reference-site .ref-nav nav{gap:14px!important}
+  .static-reference-site #reel-products{padding:98px 0 72px!important}
+  .static-reference-site #reel-products>h2{width:calc(100% - 28px)!important;margin-bottom:34px!important;padding:21px 0 24px!important;font-size:44px!important}
+  .static-reference-site #reel-products>h2::before{font-size:8px!important;letter-spacing:.22em!important}
+  .static-reference-site #reel-products>h2::after{font-size:12px!important;margin-top:14px!important}
+  .static-reference-site #reel-products .ref-product-grid{width:calc(100% - 28px)!important;grid-template-columns:1fr!important;gap:18px!important}
+  .static-reference-site #reel-products .ref-product-grid>article{height:auto!important;min-height:0!important;max-height:none!important;border-radius:16px!important}
+  .static-reference-site #reel-products .ref-product-grid>article>div:first-child{height:255px!important;min-height:255px!important;max-height:255px!important}
+  .static-reference-site #reel-products .ref-product-grid>article>h3{padding:22px 18px 0!important;font-size:20px!important}
+  .static-reference-site #reel-products .ref-commerce-meta{padding:5px 18px 18px!important}
+  .static-reference-site #reel-products .ref-commerce-kicker{right:18px!important}
+  .static-reference-site #reel-products .ref-commerce-desc{height:auto!important;min-height:0!important;max-height:none!important;-webkit-line-clamp:3!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .static-reference-site #reel-products .ref-product-grid>article,
+  .static-reference-site #reel-products .ref-product-grid img,
+  .static-reference-site #reel-products .ref-cart-add{transition:none!important}
 }
