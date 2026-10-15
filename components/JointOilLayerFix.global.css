@@ -1,0 +1,42 @@
+/* Joint Oil travel layer fix.
+   Keeps the approved GSAP path/timing intact and only restores the visual stacking
+   needed for the hero bottle to remain visible inside the Joint Oil product stage. */
+
+/* The hero must not trap the travelling bottle in its own stacking context. */
+.static-reference-site .ref-hero{
+  overflow:visible!important;
+  isolation:auto!important;
+  z-index:auto!important;
+}
+
+/* Keep the travelling Joint Oil bottle above the product-card photography stage,
+   while still below the floating navigation. */
+.static-reference-site .ref-hero-bottle{
+  z-index:180!important;
+  pointer-events:none!important;
+}
+
+/* CatalogueHardAlign gives the Products section/grid their own stacking layers.
+   Neutralise only those layers so the existing bottle can visually enter card #2. */
+.static-reference-site #reel-products,
+.static-reference-site #reel-products .ref-product-grid{
+  isolation:auto!important;
+  overflow:visible!important;
+}
+
+.static-reference-site #reel-products .ref-product-grid{
+  z-index:auto!important;
+}
+
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(2),
+.static-reference-site #reel-products .ref-product-grid>article:nth-child(2)>div:first-child,
+.static-reference-site #reel-products .ref-joint-target{
+  isolation:auto!important;
+  overflow:visible!important;
+}
+
+/* Keep the editorial heading above the bottle while it crosses the Products intro,
+   then let the bottle sit above the card stage at its final destination. */
+.static-reference-site #reel-products>h2{
+  z-index:190!important;
+}
