@@ -12,6 +12,7 @@ import '../components/StickyHeader.global.css';
 import '../components/CommerceHoverRestore.global.css';
 import '../components/CatalogueHardAlign.global.css';
 import '../components/WeddingCourseCardFix.global.css';
+import '../components/HeaderLayoutFix.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
