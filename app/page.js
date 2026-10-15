@@ -84,8 +84,8 @@ export default function Home(){
      trigger:hero,
      start:'bottom bottom',
      endTrigger:target,
-     end:'center center',
-     scrub:1.15,
+     end:'center 82%',
+     scrub:.25,
      invalidateOnRefresh:true
     }
    });
