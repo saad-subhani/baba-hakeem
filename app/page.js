@@ -128,7 +128,7 @@ export default function Home(){
    const targetRect=target.getBoundingClientRect();
    const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
    const dy=(targetRect.top+targetRect.height/2)-(bottleRect.top+bottleRect.height/2);
-   const targetScale=window.innerWidth<760?2.70:3.20;
+   const targetScale=window.innerWidth<760?2.15:2.72;
 
    tween=gsap.to(mensBottle,{
     x:dx,
