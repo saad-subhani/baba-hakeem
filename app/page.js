@@ -116,35 +116,12 @@ export default function Home(){
   const mensBottle=mensOilRef.current;
   const target=mensHandsTargetRef.current;
   const sourceCard=mensBottle?.closest('article');
-  const feature=root.current?.querySelector('.ref-feature');
-  const hands=root.current?.querySelector('.ref-feature-hands');
-  if(!mensBottle||!target||!sourceCard||!feature||!hands) return;
+  if(!mensBottle||!target||!sourceCard) return;
 
   let tween;
   let resizeFrame=0;
-  let finalX=0;
-
-  const measureRefinement=()=>{
-   const handsRect=hands.getBoundingClientRect();
-   const targetRect=target.getBoundingClientRect();
-   const opticalCenterNudge=window.innerWidth<760?0:handsRect.width*.085;
-   finalX=(handsRect.left+handsRect.width/2)-(targetRect.left+targetRect.width/2)+opticalCenterNudge;
-  };
-  const applyRefinement=(progress)=>{
-   const start=.68;
-   const raw=Math.max(0,Math.min(1,(progress-start)/(1-start)));
-   const eased=raw*raw*(3-2*raw);
-   const mobile=window.innerWidth<760;
-   const finalScale=mobile?.90:.86;
-   const finalLift=mobile?-12:-20;
-   mensBottle.style.scale=String(1+((finalScale-1)*eased));
-   mensBottle.style.translate=`${finalX*eased}px ${finalLift*eased}px`;
-  };
-
   const buildMensMovement=()=>{
    if(tween){tween.scrollTrigger?.kill();tween.kill();}
-   mensBottle.style.removeProperty('scale');
-   mensBottle.style.removeProperty('translate');
    gsap.set(mensBottle,{clearProps:'x,y,scale,rotation'});
 
    const bottleRect=mensBottle.getBoundingClientRect();
@@ -152,7 +129,6 @@ export default function Home(){
    const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
    const dy=(targetRect.top+targetRect.height/2)-(bottleRect.top+bottleRect.height/2);
    const targetScale=window.innerWidth<760?2.15:2.55;
-   measureRefinement();
 
    tween=gsap.to(mensBottle,{
     x:dx,
@@ -165,12 +141,10 @@ export default function Home(){
     scrollTrigger:{
      trigger:sourceCard,
      start:'center 58%',
-     endTrigger:feature,
+     endTrigger:'.ref-feature',
      end:'bottom bottom',
      scrub:1.2,
-     invalidateOnRefresh:true,
-     onUpdate:self=>applyRefinement(self.progress),
-     onRefresh:self=>{measureRefinement();applyRefinement(self.progress);}
+     invalidateOnRefresh:true
     }
    });
   };
@@ -190,8 +164,6 @@ export default function Home(){
    window.removeEventListener('resize',onResize);
    if(resizeFrame) cancelAnimationFrame(resizeFrame);
    if(tween){tween.scrollTrigger?.kill();tween.kill();}
-   mensBottle.style.removeProperty('scale');
-   mensBottle.style.removeProperty('translate');
   };
  },[]);
 
