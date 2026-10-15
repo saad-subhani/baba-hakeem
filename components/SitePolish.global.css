@@ -44,9 +44,9 @@ html.lenis,html.lenis body{height:auto}
 .static-reference-site .ref-feature-copy h2{transition:letter-spacing .68s cubic-bezier(.16,1,.3,1),text-shadow .68s ease}
 .static-reference-site .ref-feature:hover .ref-feature-copy h2{letter-spacing:-.025em;text-shadow:0 10px 30px rgba(0,0,0,.09)}
 
-/* Final Men's Oil landing refinement: keep the current scale, only lift the destination onto the palms. */
-.static-reference-site .ref-mens-hands-target{top:51.5%!important}
-@media(max-width:760px){.static-reference-site .ref-mens-hands-target{top:53.5%!important}}
+/* Final Men's Oil landing refinement: preserve size/x and move only the destination lower into the exact hand cradle. */
+.static-reference-site .ref-mens-hands-target{top:67%!important}
+@media(max-width:760px){.static-reference-site .ref-mens-hands-target{top:66%!important}}
 
 /* Transparent catalogue presentation: preserve every card's existing geometry so all locked GSAP destinations stay identical. */
 .static-reference-site .ref-product-grid article{background:transparent!important;box-shadow:none!important;border-color:transparent!important}
