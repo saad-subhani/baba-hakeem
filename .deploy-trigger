@@ -1,2 +1,2 @@
-deploy-batch: fix-light-card-hover-readability
-scope: keep-ivory-cards-readable-and-disable-dark-or-dim-hover-states
+deploy-batch: align-zafran-card-with-catalogue
+scope: remove-cover-exception-and-use-standard-product-media-stage
