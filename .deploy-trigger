@@ -1,2 +1,2 @@
-deploy-batch: viewport-header-host-fix
-scope: fix-header-clipping-only-all-approved-product-bottle-tilt-cart-and-layout-state-locked
+deploy-batch: stronger-product-card-tilt-6-5
+scope: increase-product-card-tilt-only-all-header-bottle-paths-cart-layout-and-approved-state-locked

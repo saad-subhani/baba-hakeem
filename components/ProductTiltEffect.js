@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const CARD_SELECTOR='.static-reference-site #reel-products .ref-product-grid>article:not(.ref-mens-source)';
 const GRID_SELECTOR='.static-reference-site #reel-products .ref-product-grid';
-const MAX_TILT=3.5;
+const MAX_TILT=6.5;
 const RESET_MS=180;
 
 const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
@@ -72,7 +72,7 @@ export default function ProductTiltEffect(){
           card.style.setProperty('transition','transform 70ms linear','important');
           card.style.setProperty(
             'transform',
-            `perspective(1400px) translate3d(0,-4px,0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+            `perspective(1400px) translate3d(0,-6px,0) scale(1.01) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
             'important'
           );
         });
