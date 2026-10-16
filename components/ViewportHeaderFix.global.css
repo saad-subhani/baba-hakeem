@@ -1,0 +1,24 @@
+/* Keep the visible floating header in the viewport itself, outside the clipped reel-site.
+   The original header remains the source of truth and is hidden only after the viewport clone mounts. */
+.viewport-nav-host.static-reference-site{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:0!important;
+  min-height:0!important;
+  overflow:visible!important;
+  background:transparent!important;
+  pointer-events:none!important;
+  z-index:500!important;
+  transform:none!important;
+  contain:none!important;
+}
+
+.viewport-nav-host .ref-nav{
+  pointer-events:auto!important;
+}
+
+.reel-site.static-reference-site .ref-nav[data-viewport-nav-source="true"]{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
