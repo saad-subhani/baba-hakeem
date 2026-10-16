@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-const CARD_SELECTOR='.static-reference-site #reel-products .ref-product-grid>article';
+const CARD_SELECTOR='.static-reference-site #reel-products .ref-product-grid>article:not(.ref-mens-source)';
 const GRID_SELECTOR='.static-reference-site #reel-products .ref-product-grid';
 const MAX_TILT=3.5;
 const RESET_MS=180;
