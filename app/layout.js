@@ -19,12 +19,14 @@ import '../components/ProductTiltEffect.global.css';
 import '../components/ViewportHeaderFix.global.css';
 import '../components/ProductHeroCopyFix.global.css';
 import '../components/PerformanceResponsive.global.css';
+import '../components/LanguageToggle.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
 import CartExperience from '../components/CartExperience';
 import ProductTiltEffect from '../components/ProductTiltEffect';
 import ViewportHeaderFix from '../components/ViewportHeaderFix';
+import LanguageToggle from '../components/LanguageToggle';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -34,7 +36,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}<ViewportHeaderFix/><HomeSequentialPages/><CartExperience/><SitePolish/><MobileMotionStabilizer/><ProductTiltEffect/></body>
+      <body>{children}<ViewportHeaderFix/><HomeSequentialPages/><CartExperience/><SitePolish/><MobileMotionStabilizer/><ProductTiltEffect/><LanguageToggle/></body>
     </html>
   );
 }
