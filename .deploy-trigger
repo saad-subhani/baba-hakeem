@@ -1,2 +1,2 @@
-deploy-batch: header-contact-route-fix
-scope: change-header-contact-link-to-contact-page-only-all-other-approved-home-products-best-product-header-styling-cart-bottles-tilt-and-content-locked
+deploy-batch: cart-drawer-layout-fix
+scope: fix-cart-header-overlap-and-close-control-only-all-approved-home-products-best-product-header-routing-bottles-tilt-content-and-commerce-locked

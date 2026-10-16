@@ -7,3 +7,24 @@
 html.is-performance-scrolling .static-reference-site .ref-cart-add{transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
 @media(max-width:760px){.static-reference-site .ref-cart-add{top:10px;right:10px;min-width:58px;height:28px;padding:0 9px;font-size:7px;backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media(prefers-reduced-motion:reduce){.static-reference-site .ref-cart-add{transition:none!important}}
+
+/* Cart drawer layout isolation.
+   The site has a global `header` rule for the cinematic pages; neutralize it only inside the cart
+   so the cart heading occupies real flex space instead of absolutely overlapping the first item. */
+aside[aria-label="Shopping cart"]>header{
+  position:relative!important;
+  inset:auto!important;
+  z-index:3!important;
+  width:100%!important;
+  flex:0 0 auto!important;
+  grid-template-columns:none!important;
+}
+aside[aria-label="Shopping cart"]>header>button{
+  display:grid!important;
+  place-items:center!important;
+  justify-self:auto!important;
+  padding:0!important;
+}
+aside[aria-label="Shopping cart"]>header+div{
+  min-height:0!important;
+}
