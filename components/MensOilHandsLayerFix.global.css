@@ -43,10 +43,10 @@
 }
 
 /* HARD-LOCKED FINAL HAND LANDING.
-   Desktop only: raise the existing destination so the bottle sits inside the palms.
+   Desktop only: raise the existing destination so the bottle sits properly inside the palms.
    Bottle scale, X position, GSAP timing/path, hands and every other approved element stay unchanged. */
 .static-reference-site .ref-mens-hands-target{
-  top:16%!important;
+  top:-6%!important;
 }
 @media(max-width:760px){
   .static-reference-site .ref-mens-hands-target{top:40%!important}
