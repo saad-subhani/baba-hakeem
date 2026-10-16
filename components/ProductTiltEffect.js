@@ -15,9 +15,14 @@ export default function ProductTiltEffect(){
     if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
 
     const bindings=new Map();
+    const activeCards=new Set();
     let observer=null;
+    let resetFrame=0;
 
     const clearInline=card=>{
+      activeCards.delete(card);
+      const binding=bindings.get(card);
+      if(binding)binding.rect=null;
       card.removeAttribute('data-product-tilt-active');
       card.style.removeProperty('transform');
       card.style.removeProperty('transform-origin');
@@ -31,6 +36,7 @@ export default function ProductTiltEffect(){
       if(!binding)return;
       if(binding.frame){cancelAnimationFrame(binding.frame);binding.frame=0;}
       if(binding.resetTimer){window.clearTimeout(binding.resetTimer);binding.resetTimer=0;}
+      binding.rect=null;
 
       if(!animate){clearInline(card);return;}
 
@@ -42,29 +48,41 @@ export default function ProductTiltEffect(){
       },RESET_MS);
     };
 
-    const resetAll=()=>bindings.forEach((_,card)=>resetCard(card,false));
+    const resetActive=()=>{
+      if(resetFrame)return;
+      resetFrame=requestAnimationFrame(()=>{
+        resetFrame=0;
+        [...activeCards].forEach(card=>resetCard(card,false));
+      });
+    };
 
     const bindCard=card=>{
       if(bindings.has(card))return;
-      const binding={frame:0,resetTimer:0,x:0,y:0,onMove:null,onLeave:null};
+      const binding={frame:0,resetTimer:0,x:0,y:0,rect:null,onEnter:null,onMove:null,onLeave:null};
+
+      binding.onEnter=()=>{
+        binding.rect=card.getBoundingClientRect();
+      };
 
       binding.onMove=event=>{
         if(event.pointerType&&event.pointerType!=='mouse')return;
         binding.x=event.clientX;
         binding.y=event.clientY;
+        if(!binding.rect)binding.rect=card.getBoundingClientRect();
         if(binding.resetTimer){window.clearTimeout(binding.resetTimer);binding.resetTimer=0;}
         if(binding.frame)return;
 
         binding.frame=requestAnimationFrame(()=>{
           binding.frame=0;
-          const rect=card.getBoundingClientRect();
-          if(!rect.width||!rect.height)return;
+          const rect=binding.rect;
+          if(!rect||!rect.width||!rect.height)return;
 
           const nx=clamp(((binding.x-rect.left)/rect.width)*2-1,-1,1);
           const ny=clamp(((binding.y-rect.top)/rect.height)*2-1,-1,1);
           const rotateX=(-ny*MAX_TILT).toFixed(3);
           const rotateY=(nx*MAX_TILT).toFixed(3);
 
+          activeCards.add(card);
           card.setAttribute('data-product-tilt-active','true');
           card.style.setProperty('transform-origin','50% 50%','important');
           card.style.setProperty('transform-style','preserve-3d','important');
@@ -79,6 +97,7 @@ export default function ProductTiltEffect(){
       };
 
       binding.onLeave=()=>resetCard(card,true);
+      card.addEventListener('pointerenter',binding.onEnter,{passive:true});
       card.addEventListener('pointermove',binding.onMove,{passive:true});
       card.addEventListener('pointerleave',binding.onLeave,{passive:true});
       bindings.set(card,binding);
@@ -93,22 +112,25 @@ export default function ProductTiltEffect(){
       observer.observe(grid,{childList:true});
     }
 
-    window.addEventListener('wheel',resetAll,{passive:true,capture:true});
-    window.addEventListener('scroll',resetAll,{passive:true});
-    window.addEventListener('resize',resetAll,{passive:true});
+    window.addEventListener('wheel',resetActive,{passive:true,capture:true});
+    window.addEventListener('scroll',resetActive,{passive:true});
+    window.addEventListener('resize',resetActive,{passive:true});
 
     return()=>{
       observer?.disconnect();
-      window.removeEventListener('wheel',resetAll,true);
-      window.removeEventListener('scroll',resetAll);
-      window.removeEventListener('resize',resetAll);
+      window.removeEventListener('wheel',resetActive,true);
+      window.removeEventListener('scroll',resetActive);
+      window.removeEventListener('resize',resetActive);
+      if(resetFrame)cancelAnimationFrame(resetFrame);
       bindings.forEach((binding,card)=>{
         if(binding.frame)cancelAnimationFrame(binding.frame);
         if(binding.resetTimer)window.clearTimeout(binding.resetTimer);
+        card.removeEventListener('pointerenter',binding.onEnter);
         card.removeEventListener('pointermove',binding.onMove);
         card.removeEventListener('pointerleave',binding.onLeave);
         clearInline(card);
       });
+      activeCards.clear();
       bindings.clear();
     };
   },[]);

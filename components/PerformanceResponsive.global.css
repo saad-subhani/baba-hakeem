@@ -1,0 +1,60 @@
+/* Additive performance/responsiveness guard.
+   No approved animation, GSAP path, card geometry, bottle destination, header, cart logic or visual styling is removed or redesigned here. */
+
+html{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+
+/* The long informational sequence is below the locked hero/products/featured experience.
+   Let the browser skip layout/paint work for sections that are far off screen while
+   preserving every section, animation and image when it approaches the viewport. */
+@supports (content-visibility:auto){
+  [data-seq-section]{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 100svh;
+  }
+}
+
+/* Prevent narrow devices from producing accidental horizontal overflow without
+   altering the established desktop/tablet composition. */
+@media (max-width:900px){
+  [data-seq-section],
+  [data-seq-section] > *,
+  [data-seq-section] article,
+  [data-seq-section] nav,
+  [data-seq-section] div{
+    min-inline-size:0;
+  }
+
+  [data-seq-section] img,
+  [data-seq-section] video,
+  [data-seq-section] canvas,
+  [data-seq-section] svg{
+    max-inline-size:100%;
+  }
+}
+
+/* Real-phone viewport/safe-area guard only. Existing component breakpoints keep
+   controlling the actual visual design. */
+@media (max-width:600px){
+  body{
+    min-width:0;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  [data-seq-section]{
+    max-width:100vw;
+  }
+}
+
+/* Keep compositor ownership on the already-approved transform-driven elements.
+   This does not change their transform values or motion. */
+.static-reference-site .ref-hero-bottle,
+.static-reference-site .ref-mens-moving,
+.static-reference-site .ref-feature-hands,
+.static-reference-site #reel-products .ref-product-grid>article[data-product-tilt-active="true"]{
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}

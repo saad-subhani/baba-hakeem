@@ -1,2 +1,2 @@
-deploy-batch: cart-drawer-layout-fix
-scope: fix-cart-header-overlap-and-close-control-only-all-approved-home-products-best-product-header-routing-bottles-tilt-content-and-commerce-locked
+deploy-batch: performance-responsive-lock
+scope: performance-and-responsive-optimizations-only-no-animation-gsap-layout-content-header-cart-product-bottle-destination-or-approved-visual-removal

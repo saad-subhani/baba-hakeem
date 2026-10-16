@@ -18,6 +18,7 @@ import '../components/JointOilLayerFix.global.css';
 import '../components/ProductTiltEffect.global.css';
 import '../components/ViewportHeaderFix.global.css';
 import '../components/ProductHeroCopyFix.global.css';
+import '../components/PerformanceResponsive.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
