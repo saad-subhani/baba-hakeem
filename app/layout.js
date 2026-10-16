@@ -15,10 +15,12 @@ import '../components/WeddingCourseCardFix.global.css';
 import '../components/HeaderLayoutFix.global.css';
 import '../components/MensOilHandsLayerFix.global.css';
 import '../components/JointOilLayerFix.global.css';
+import '../components/ProductTiltEffect.global.css';
 import SitePolish from '../components/SitePolish';
 import MobileMotionStabilizer from '../components/MobileMotionStabilizer';
 import HomeSequentialPages from '../components/HomeSequentialPages';
 import CartExperience from '../components/CartExperience';
+import ProductTiltEffect from '../components/ProductTiltEffect';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
@@ -28,7 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}<HomeSequentialPages/><CartExperience/><SitePolish/><MobileMotionStabilizer/></body>
+      <body>{children}<HomeSequentialPages/><CartExperience/><SitePolish/><MobileMotionStabilizer/><ProductTiltEffect/></body>
     </html>
   );
 }
