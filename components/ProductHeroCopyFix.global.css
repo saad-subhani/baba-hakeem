@@ -1,0 +1,8 @@
+/* Product hero copy-only adjustment. All product cards, animations, layout and locked sections stay untouched. */
+.static-reference-site #reel-products>h2::before{
+  color:#fff!important;
+}
+.static-reference-site #reel-products>h2::after{
+  content:none!important;
+  display:none!important;
+}
