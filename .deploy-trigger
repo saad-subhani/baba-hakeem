@@ -1,2 +1,2 @@
-deploy-batch: product-hero-copy-cleanup
-scope: remove-product-side-tagline-and-make-natural-wellness-kicker-white-only-all-other-locked-state-untouched
+deploy-batch: header-contact-route-fix
+scope: change-header-contact-link-to-contact-page-only-all-other-approved-home-products-best-product-header-styling-cart-bottles-tilt-and-content-locked
