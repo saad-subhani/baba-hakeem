@@ -24,7 +24,6 @@ export default function LanguageToggle(){
 
   useEffect(()=>{
     languageRef.current=language;
-    try{localStorage.setItem(STORAGE_KEY,language);}catch{}
     document.documentElement.lang=language==='ur'?'ur':'en';
     document.documentElement.dataset.siteLanguage=language;
 
@@ -91,6 +90,14 @@ export default function LanguageToggle(){
 
     applyTree(document.body);
 
+    /* Language changes can alter text widths/heights. Re-run the website's existing
+       resize-driven GSAP measurements so the already-approved bottle destinations
+       remain exactly aligned after ENG/Urdu switching. No animation values change. */
+    let layoutTimer=0;
+    let layoutFrame=0;
+    layoutFrame=requestAnimationFrame(()=>requestAnimationFrame(()=>window.dispatchEvent(new Event('resize'))));
+    layoutTimer=window.setTimeout(()=>window.dispatchEvent(new Event('resize')),180);
+
     let frame=0;
     const pending=new Set();
     const flush=()=>{
@@ -113,12 +120,19 @@ export default function LanguageToggle(){
     return()=>{
       observer.disconnect();
       if(frame)cancelAnimationFrame(frame);
+      if(layoutFrame)cancelAnimationFrame(layoutFrame);
+      if(layoutTimer)window.clearTimeout(layoutTimer);
     };
   },[language]);
 
+  const chooseLanguage=next=>{
+    try{localStorage.setItem(STORAGE_KEY,next);}catch{}
+    setLanguage(next);
+  };
+
   return <div className="bh-language-toggle" data-no-translate role="group" aria-label="Website language">
-    <button type="button" className={language==='en'?'is-active':''} onClick={()=>setLanguage('en')} aria-pressed={language==='en'}>ENG</button>
+    <button type="button" className={language==='en'?'is-active':''} onClick={()=>chooseLanguage('en')} aria-pressed={language==='en'}>ENG</button>
     <span aria-hidden="true"/>
-    <button type="button" className={language==='ur'?'is-active':''} onClick={()=>setLanguage('ur')} aria-pressed={language==='ur'}>اردو</button>
+    <button type="button" className={language==='ur'?'is-active':''} onClick={()=>chooseLanguage('ur')} aria-pressed={language==='ur'}>اردو</button>
   </div>;
 }

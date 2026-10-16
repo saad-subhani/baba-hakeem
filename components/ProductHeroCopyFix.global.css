@@ -1,8 +1,13 @@
-/* Product hero copy-only adjustment. All product cards, animations, layout and locked sections stay untouched. */
-.static-reference-site #reel-products>h2::before{
+/* FINAL product-hero copy lock.
+   This file is imported last so older catalogue pseudo-copy cannot reappear. */
+html body .static-reference-site #reel-products>h2::before{
   color:#fff!important;
 }
-.static-reference-site #reel-products>h2::after{
-  content:none!important;
+html body .static-reference-site #reel-products>h2::after{
+  content:""!important;
   display:none!important;
+  width:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
 }

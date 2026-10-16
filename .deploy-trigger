@@ -1,2 +1,2 @@
-deploy-batch: global-eng-urdu-toggle
-scope: add-global-persistent-english-urdu-language-switcher-and-translate-current-public-site-copy-only-all-approved-layout-gsap-animations-product-tilt-cart-header-bottles-and-performance-locked
+deploy-batch: language-regression-fix
+scope: keep-approved-layout-and-motion-while-refreshing-position-measurements-after-language-switch-and-restoring-product-heading-copy-styles
