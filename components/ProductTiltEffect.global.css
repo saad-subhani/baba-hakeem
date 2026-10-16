@@ -1,11 +1,14 @@
-/* Subtle mouse-tracked 3D tilt for catalogue product cards only.
-   Keeps the approved card lift, colours, shadows, layout and all GSAP bottle choreography unchanged. */
-@media(hover:hover) and (pointer:fine){
-  .static-reference-site #reel-products .ref-product-grid>article[data-product-tilt-active="true"]{
-    transform:perspective(1350px) translate3d(0,-4px,0) rotateX(var(--product-tilt-x,0deg)) rotateY(var(--product-tilt-y,0deg))!important;
-    transform-style:preserve-3d!important;
-    will-change:transform;
-  }
+/* Product-card tilt support only.
+   The actual transform is applied inline by ProductTiltEffect so it can reliably
+   override the catalogue's existing !important hover transform without changing
+   any locked layout, colour, cart or GSAP rules. */
+.static-reference-site #reel-products .ref-product-grid{
+  perspective:1400px;
+}
+
+.static-reference-site #reel-products .ref-product-grid>article[data-product-tilt-active="true"]{
+  transform-style:preserve-3d!important;
+  backface-visibility:hidden;
 }
 
 @media(prefers-reduced-motion:reduce){
