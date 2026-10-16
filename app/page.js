@@ -171,7 +171,7 @@ export default function Home(){
   <div className="reel-site static-reference-site">
    <header className="ref-nav">
     <a className="ref-logo" href="#">Baba Hakeem</a>
-    <nav><a href="#">Home</a><a href="#reel-products">Products</a><a href="#featured-product">Contact</a></nav>
+    <nav><a href="#">Home</a><a href="#reel-products">Products</a><a href="/contact">Contact</a></nav>
     <a className="ref-shop" href="#reel-products">Shop <span>↗</span></a>
    </header>
 
