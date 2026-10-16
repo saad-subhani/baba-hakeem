@@ -42,11 +42,12 @@
   overflow:visible!important;
 }
 
-/* Restore the already-approved final hands target. SitePolish still had an old
-   67% override, which pulled the destination away from the hand cradle. */
+/* HARD-LOCKED FINAL HAND LANDING.
+   Only the Men's Oil destination is changed: move the target upward so the bottle
+   sits on the palms, matching the approved reference composition. Everything else stays locked. */
 .static-reference-site .ref-mens-hands-target{
-  top:51.5%!important;
+  top:39%!important;
 }
 @media(max-width:760px){
-  .static-reference-site .ref-mens-hands-target{top:53.5%!important}
+  .static-reference-site .ref-mens-hands-target{top:43%!important}
 }
