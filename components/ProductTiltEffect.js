@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const CARD_SELECTOR='.static-reference-site #reel-products .ref-product-grid>article';
 const GRID_SELECTOR='.static-reference-site #reel-products .ref-product-grid';
-const MAX_TILT=1.35;
+const MAX_TILT=2.4;
 const RESET_MS=180;
 
 const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
