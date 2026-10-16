@@ -14,6 +14,14 @@ export default function PrivacyPage(){
    </div>
   </section>
   <section className={styles.section} data-reveal>
+   <div className={styles.sectionHead}><span className={styles.kicker}>MORE DETAIL</span><div><h2>MAKE EACH DATA FLOW EASY TO EXPLAIN.</h2><p>Before the policy is finalized, each connected service should have a clear purpose, a reason for the data it handles and a straightforward explanation for visitors.</p></div></div>
+   <div className={styles.grid3}>
+    <article className={styles.card} data-reveal><small>01 / COOKIES</small><h3>Browser storage</h3><p>If cookies or similar technologies are used, the final policy should explain their purpose and any controls available to visitors.</p></article>
+    <article className={styles.card} data-reveal><small>02 / RETENTION</small><h3>How long data stays</h3><p>The finished policy should describe retention periods or the criteria used to decide how long different information is kept.</p></article>
+    <article className={styles.card} data-reveal><small>03 / SECURITY</small><h3>Reasonable safeguards</h3><p>The site should use appropriate operational and technical measures for the services actually connected to it.</p></article>
+   </div>
+  </section>
+  <section className={styles.section} data-reveal>
    <div className={styles.sectionHead}><span className={styles.kicker}>FINAL POLICY</span><div><h2>READY FOR LEGAL DETAILS.</h2><p>Before public launch, this page should be updated with the business’s official contact identity, retention terms, cookie tools and any ecommerce processors actually in use.</p></div></div>
   </section>
  </PremiumPageShell>;
