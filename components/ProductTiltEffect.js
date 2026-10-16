@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const CARD_SELECTOR='.static-reference-site #reel-products .ref-product-grid>article';
 const GRID_SELECTOR='.static-reference-site #reel-products .ref-product-grid';
-const MAX_TILT=2.4;
+const MAX_TILT=3.5;
 const RESET_MS=180;
 
 const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
@@ -49,7 +49,6 @@ export default function ProductTiltEffect(){
       const binding={frame:0,resetTimer:0,x:0,y:0,onMove:null,onLeave:null};
 
       binding.onMove=event=>{
-        // Mouse only. Touch/pen interactions remain completely unchanged.
         if(event.pointerType&&event.pointerType!=='mouse')return;
         binding.x=event.clientX;
         binding.y=event.clientY;
@@ -66,8 +65,6 @@ export default function ProductTiltEffect(){
           const rotateX=(-ny*MAX_TILT).toFixed(3);
           const rotateY=(nx*MAX_TILT).toFixed(3);
 
-          // The cursor side recedes very slightly; the opposite side comes forward.
-          // Inline !important intentionally beats the catalogue's existing hover transform.
           card.setAttribute('data-product-tilt-active','true');
           card.style.setProperty('transform-origin','50% 50%','important');
           card.style.setProperty('transform-style','preserve-3d','important');
@@ -96,7 +93,6 @@ export default function ProductTiltEffect(){
       observer.observe(grid,{childList:true});
     }
 
-    // Never let hover tilt interfere with the locked scroll-driven bottle choreography.
     window.addEventListener('wheel',resetAll,{passive:true,capture:true});
     window.addEventListener('scroll',resetAll,{passive:true});
     window.addEventListener('resize',resetAll,{passive:true});
