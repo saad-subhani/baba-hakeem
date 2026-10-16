@@ -43,11 +43,11 @@
 }
 
 /* HARD-LOCKED FINAL HAND LANDING.
-   Only the Men's Oil destination is changed: move the target upward so the bottle
-   sits on the palms, matching the approved reference composition. Everything else stays locked. */
+   Only the Men's Oil destination is nudged slightly higher on the palms.
+   Everything else stays locked. */
 .static-reference-site .ref-mens-hands-target{
-  top:39%!important;
+  top:36%!important;
 }
 @media(max-width:760px){
-  .static-reference-site .ref-mens-hands-target{top:43%!important}
+  .static-reference-site .ref-mens-hands-target{top:40%!important}
 }
