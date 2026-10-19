@@ -127,13 +127,13 @@ export default function Home(){
    const bottleRect=mensBottle.getBoundingClientRect();
    const targetRect=target.getBoundingClientRect();
    const dx=(targetRect.left+targetRect.width/2)-(bottleRect.left+bottleRect.width/2);
-   const targetScale=window.innerWidth<760?1.95:2.45;
+   const targetScale=window.innerWidth<760?1.95:2.12;
    const bottleCenterY=bottleRect.top+bottleRect.height/2;
    // Align the scaled bottle BASE to the actual palms rather than a hidden CSS point.
    // Preserve the approved mobile path, horizontal landing, scale and scrub timing.
    const handsRect=root.current?.querySelector('.ref-feature-hands')?.getBoundingClientRect();
    const dy=window.innerWidth>=760&&handsRect
-    ? handsRect.top+handsRect.height*.65-(bottleRect.height*targetScale/2)-bottleCenterY
+    ? handsRect.top+handsRect.height*.83-(bottleRect.height*targetScale/2)-bottleCenterY
     : (targetRect.top+targetRect.height/2)-bottleCenterY;
 
    tween=gsap.to(mensBottle,{

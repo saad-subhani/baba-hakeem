@@ -1,2 +1,2 @@
-deploy-batch: mens-oil-palm-geometry-fix
-scope: align-desktop-mens-oil-bottle-base-to-actual-hands-image; preserve-other-visuals-mobile-and-gsap-motion
+deploy-batch: mens-oil-smaller-and-slightly-lower-in-palms
+scope: desktop-final-landing-scale-and-vertical-only; all-horizontal-layout-mobile-gsap-timing-and-other-sections-locked
