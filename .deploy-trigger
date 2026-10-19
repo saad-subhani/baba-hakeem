@@ -1,2 +1,2 @@
-deploy-batch: locked-internal-performance-audit
-scope: no-visual-or-gsap-changes; reduce-redundant-tilt-styles-dom-translation-work-and-cart-catalogue-scans
+deploy-batch: second-pass-adaptive-webgl-performance
+scope: locked-visuals-3d-gsap-bottle-cards-cart-and-routes; pace-only-overloaded-3d-devices-and-avoid-unnecessary-initial-language-reflow

@@ -14,6 +14,7 @@ export default function LanguageToggle(){
   const expectedText=useRef(new WeakMap());
   const originalAttrs=useRef(new WeakMap());
   const applying=useRef(false);
+  const appliedLanguage=useRef(null);
 
   useEffect(()=>{
     try{
@@ -23,6 +24,9 @@ export default function LanguageToggle(){
   },[]);
 
   useEffect(()=>{
+    const previousLanguage=appliedLanguage.current;
+    const needsLayoutRefresh=previousLanguage!==null&&previousLanguage!==language;
+    appliedLanguage.current=language;
     languageRef.current=language;
     document.documentElement.lang=language==='ur'?'ur':'en';
     document.documentElement.dataset.siteLanguage=language;
@@ -88,15 +92,17 @@ export default function LanguageToggle(){
       }finally{applying.current=false;}
     };
 
-    applyTree(document.body);
+    // The initial English HTML is already English: avoid a full document walk
+    // and synthetic resizes (which otherwise rebuild every GSAP scroll journey).
+    // On actual language transitions, retain the existing translation/reflow.
+    if(language==='ur'||previousLanguage==='ur')applyTree(document.body);
 
-    /* Language changes can alter text widths/heights. Re-run the website's existing
-       resize-driven GSAP measurements so the already-approved bottle destinations
-       remain exactly aligned after ENG/Urdu switching. No animation values change. */
     let layoutTimer=0;
     let layoutFrame=0;
-    layoutFrame=requestAnimationFrame(()=>requestAnimationFrame(()=>window.dispatchEvent(new Event('resize'))));
-    layoutTimer=window.setTimeout(()=>window.dispatchEvent(new Event('resize')),180);
+    if(needsLayoutRefresh){
+      layoutFrame=requestAnimationFrame(()=>requestAnimationFrame(()=>window.dispatchEvent(new Event('resize'))));
+      layoutTimer=window.setTimeout(()=>window.dispatchEvent(new Event('resize')),180);
+    }
 
     let frame=0;
     const pending=new Set();

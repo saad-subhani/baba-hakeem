@@ -253,9 +253,19 @@ export default function BestProductReveal(){
     resize();
 
     let raf=0;let resizeRaf=0;let previousTime=performance.now();let sectionVisible=false;let lastProgressPaint=-1;
+    // Pace expensive WebGL frames only when slower devices demonstrate a real frame backlog.
+    // The GSAP/ScrollTrigger progress and 3D target positions remain unchanged.
+    let lastDrawAt=0;let slowDraws=0;let paceUntil=0;
     const render=(now=performance.now())=>{
       raf=0;
       if(document.hidden||!sectionVisible) return;
+      if(performanceMode&&now<paceUntil&&lastDrawAt&&now-lastDrawAt<29){
+        raf=requestAnimationFrame(render);
+        return;
+      }
+      const betweenDraws=lastDrawAt?now-lastDrawAt:16.7;
+      lastDrawAt=now;
+      const paintStart=performance.now();
       const dt=Math.min(.04,Math.max(.001,(now-previousTime)/1000));previousTime=now;const t=now*.00035;
       scrollProgress=THREE.MathUtils.damp(scrollProgress,scrollTarget,7.2,dt);
       if(progressRef.current&&Math.abs(scrollProgress-lastProgressPaint)>.00035){lastProgressPaint=scrollProgress;progressRef.current.style.setProperty('--progress',String(scrollProgress));progressRef.current.style.setProperty('--open',String(gsap.utils.clamp(0,1,(scrollProgress-spinEnd)/(1-spinEnd))));}
@@ -267,6 +277,13 @@ export default function BestProductReveal(){
       if(!performanceMode){dust.rotation.y=t*.06;dust.position.y=Math.sin(t*.45)*.02;}const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.018+.085*opening;lightBeam.material.opacity=.006+.032*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=(performanceMode?.1:.2)*bottleReveal;revealDust.rotation.y=performanceMode?(-scrollProgress*1.2):(-t*.35);revealDust.position.y=.45+1.1*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
       product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.98*bottleReveal);product.scale.setScalar(bottleScale);product.position.y=(-.22)+(1.1*bottleReveal);product.position.z=.18+(.16*bottleReveal);}
       renderer.render(scene,camera);
+      if(performanceMode){
+        // Count slow frames only in normal pacing, so intentional paced frames
+        // never get misclassified as additional frame drops.
+        const overloaded=(performance.now()-paintStart)>16||(now>=paceUntil&&betweenDraws>27);
+        slowDraws=overloaded?Math.min(4,slowDraws+1):Math.max(0,slowDraws-1);
+        if(slowDraws>=3){paceUntil=now+1200;slowDraws=0;}
+      }
       const settling=Math.abs(scrollProgress-scrollTarget)>.00008||Math.abs(root.rotation.y-targetRotation)>.00008||Math.abs(lidPivot.rotation.x-targetLid)>.00008||Math.abs(bottleReveal-targetBottleReveal)>.00008||Math.abs(revealLight.intensity-targetRevealLight)>.001||Math.abs(productGlow.intensity-targetProductGlow)>.001||Math.abs(camera.position.z-targetCameraZ)>.0001||Math.abs(camera.position.y-targetCameraY)>.0001;
       if(sectionVisible&&!document.hidden&&settling) raf=requestAnimationFrame(render);
     };
