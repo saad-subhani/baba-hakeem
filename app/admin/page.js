@@ -161,7 +161,7 @@ export default function AdminPage(){
   return <main className="admin-shell">
     <aside className="admin-side">
       <div><span className="admin-mark">BH</span><h1>BABA HAKEEM</h1><small>HERBAL PRODUCTS / ADMIN</small></div>
-      <nav><a className="active" href="#dashboard">Dashboard</a><a href="#orders">Orders</a><a href="#add-product">Add Product</a><a href="#products">Products</a><a href="#security">Security</a></nav>
+      <nav><a className="active" href="#dashboard">Dashboard</a><a href="#orders">Orders</a><Link href="/admin/reports">Sales Reports ↗</Link><a href="#add-product">Add Product</a><a href="#products">Products</a><a href="#security">Security</a></nav>
       <div className="side-bottom"><button className="logout-btn" onClick={signOut}>↪ Sign out</button><Link href="/">← View storefront</Link></div>
     </aside>
 
