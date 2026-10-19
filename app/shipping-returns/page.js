@@ -1,7 +1,7 @@
 import PremiumPageShell from '../../components/PremiumPageShell';
 import styles from '../../components/PremiumPage.module.css';
 
-export const metadata={title:'Shipping & Returns | Baba Hakeem'};
+export const metadata={robots:{index:false,follow:false},title:'Shipping & Returns | Baba Hakeem'};
 
 export default function ShippingReturnsPage(){
  return <PremiumPageShell eyebrow="05 / ORDERS" title="DELIVERY, WITHOUT THE CONFUSION." intro="A simple place for shipping, damaged parcel and return guidance. Exact commercial terms can be finalized here once the brand confirms them.">

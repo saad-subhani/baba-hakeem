@@ -1,7 +1,7 @@
 import PremiumPageShell from '../../components/PremiumPageShell';
 import styles from '../../components/PremiumPage.module.css';
 
-export const metadata={title:'About | Baba Hakeem'};
+export const metadata={title:'About | Baba Hakeem',description:'Discover the Baba Hakeem approach to herbal oils, traditional blends, saffron and considered everyday product care.'};
 
 export default function AboutPage(){
  return <PremiumPageShell eyebrow="01 / OUR STORY" title="HERBAL CARE, MADE CONSIDERED." intro="A quieter approach to traditional herbal care — familiar rituals, thoughtful presentation and a modern Baba Hakeem identity.">

@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+      - name: Phase 5 source smoke tests
+        run: npm run test:smoke
+
       - name: Build and deploy latest main
         run: npm run deploy
         env:

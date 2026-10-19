@@ -1,13 +1,14 @@
 import PremiumPageShell from '../../components/PremiumPageShell';
 import styles from '../../components/PremiumPage.module.css';
+import ContactEnquiryForm from '../../components/ContactEnquiryForm';
 
-export const metadata={title:'Contact | Baba Hakeem'};
+export const metadata={title:'Contact | Baba Hakeem',description:'Contact Baba Hakeem for product questions, order support, retail enquiries and partnerships using our secure enquiry form.'};
 
 export default function ContactPage(){
  return <PremiumPageShell eyebrow="03 / CONTACT" title="LET’S TALK." intro="Product questions, order support, retail enquiries or collaboration — choose the route that fits best and include enough context for a useful reply.">
   <section className={styles.section} data-reveal>
    <div className={styles.contactGrid}>
-    <div className={styles.contactPanel} data-reveal><small className={styles.kicker}>BABA HAKEEM SUPPORT</small><h2>ONE CLEAR PLACE TO REACH US.</h2><p>This page is ready for the brand’s official WhatsApp, email, Instagram and business-location details. The visual system is already built; contact channels can be connected without changing the design.</p></div>
+    <div className={styles.contactPanel} data-reveal><small className={styles.kicker}>BABA HAKEEM SUPPORT</small><h2>ONE CLEAR PLACE TO REACH US.</h2><p>Send a product enquiry, request order assistance or discuss a retail partnership using our direct contact form. You can also reach us through WhatsApp.</p></div>
     <div className={styles.grid2}>
      <article className={styles.card} data-reveal><small>01 / PRODUCT HELP</small><h3>Product guidance</h3><p>Questions about a product, its place in a routine, packaging, directions or availability. Mention the exact product name so the enquiry is easier to route.</p></article>
      <article className={styles.card} data-reveal><small>02 / ORDER SUPPORT</small><h3>Order assistance</h3><p>Delivery updates, damaged parcels, order corrections and purchase-related support. Include the order reference and a short description of the issue.</p></article>
@@ -15,6 +16,10 @@ export default function ContactPage(){
      <article className={styles.card} data-reveal><small>04 / COLLABORATION</small><h3>Creative & brand</h3><p>Campaigns, content collaborations, packaging, design and partnership conversations. Include a short proposal plus any relevant links.</p></article>
     </div>
    </div>
+  </section>
+  <section className={styles.section} data-reveal>
+    <div className={styles.sectionHead}><span className={styles.kicker}>CONTACT / DIRECT MESSAGE</span><div><h2>SEND US AN ENQUIRY.</h2><p>Your message goes to the private Baba Hakeem admin inbox, where the team can track it. Email and domain activation are not needed to submit an enquiry.</p></div></div>
+    <ContactEnquiryForm/>
   </section>
   <section className={styles.section} data-reveal>
    <div className={styles.sectionHead}><span className={styles.kicker}>HELP US HELP FASTER</span><div><h2>ADD THE DETAILS THAT MATTER.</h2><p>A clear first message reduces back-and-forth. The exact information depends on the kind of enquiry.</p></div></div>

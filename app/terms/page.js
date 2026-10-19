@@ -1,6 +1,6 @@
 import PremiumPageShell,{styles} from '../../components/PremiumPageShell';
 
-export const metadata={title:'Terms | Baba Hakeem'};
+export const metadata={robots:{index:false,follow:false},title:'Terms | Baba Hakeem'};
 
 export default function TermsPage(){
  return <PremiumPageShell eyebrow="13 / TERMS" title="CLEAR TERMS. CLEANER EXPERIENCE." intro="A simple framework for website use, product information, orders and brand content, ready for the business’s final legal review.">

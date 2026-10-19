@@ -30,7 +30,9 @@ import LanguageToggle from '../components/LanguageToggle';
 
 export const metadata = {
   title: 'Baba Hakeem Herbal Products',
-  description: 'Baba Hakeem Herbal Products — herbal oils, traditional blends and premium saffron.'
+  description: 'Baba Hakeem Herbal Products — herbal oils, traditional blends and premium saffron.',
+  openGraph: {type:'website',locale:'en_PK',siteName:'Baba Hakeem Herbal Products',title:'Baba Hakeem Herbal Products',description:'Explore the Baba Hakeem collection of traditional herbal oils, blends and saffron.'},
+  twitter: {card:'summary',title:'Baba Hakeem Herbal Products'}
 };
 
 export default function RootLayout({ children }) {
