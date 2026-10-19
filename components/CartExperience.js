@@ -38,6 +38,16 @@ export default function CartExperience(){
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));}catch{}
   },[items,hydrated]);
 
+  // Keep the existing floating cart in sync with the new cart/checkout routes.
+  useEffect(()=>{
+    const sync=()=>{
+      try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');if(Array.isArray(saved))setItems(saved.filter(item=>item&&item.name&&item.quantity>0));}catch{}
+    };
+    window.addEventListener('baba-cart-sync',sync);
+    window.addEventListener('storage',sync);
+    return()=>{window.removeEventListener('baba-cart-sync',sync);window.removeEventListener('storage',sync);};
+  },[]);
+
   useEffect(()=>{
     const catalogue=document.querySelector('.static-reference-site .ref-product-grid');
     if(!catalogue)return;
@@ -277,6 +287,7 @@ export default function CartExperience(){
         {!!items.length&&<footer className={styles.footer}>
           <div className={styles.subtotal}><span>SUBTOTAL</span><strong>{subtotal?money(subtotal):'Confirm on WhatsApp'}</strong></div>
           {hasUnpriced&&<p>Final total will be confirmed for products without a listed price.</p>}
+          <a className={styles.checkout} style={{textDecoration:'none',marginBottom:10}} href="/cart" onClick={()=>setOpen(false)}>VIEW CART & CHECKOUT <span>→</span></a>
           <button className={styles.checkout} onClick={orderWhatsApp}>ORDER ON WHATSAPP <span>↗</span></button>
           <small>Cash on Delivery • Pakistan delivery • Final availability confirmed on WhatsApp</small>
         </footer>}
