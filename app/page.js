@@ -203,7 +203,7 @@ export default function Home(){
      <article><div><img src={HERBAL_PHAKKI} alt="Herbal Phakki" loading="lazy" decoding="async"/></div><h3>Herbal Phakki</h3></article>
      <article className="ref-mens-source"><div><img ref={mensOilRef} className="ref-mens-moving" src={MENS_OIL} alt="Men's Oil" decoding="async"/></div><h3>Men's Oil</h3></article>
      <article><div className="ref-cover"><img src={WEDDING_COURSE} alt="Wedding Course" loading="lazy" decoding="async"/></div><h3>Wedding Course</h3></article>
-     {adminProducts.map(p=><article key={p.id}><Link href={'/products/'+p.slug}><div>{p.image_url&&<img src={p.image_url} alt={p.name} loading="lazy" decoding="async"/>}</div><h3>{p.name}</h3></Link></article>)}
+     {adminProducts.filter(p=>!['hair oil','joint oil','stomach phakki','herbal phakki',"men's oil",'wedding course'].includes(p.name.toLowerCase())).map(p=><article key={p.id}><Link href={'/products/'+p.slug}><div>{p.image&&<img src={p.image} alt={p.name} loading="lazy" decoding="async"/>}</div><h3>{p.name}</h3></Link></article>)}
     </div>
    </section>
 

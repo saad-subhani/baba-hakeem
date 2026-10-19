@@ -1,2 +1,2 @@
-deploy-batch: secure-database-checkout-foundation
-scope: new-routes-and-checkout-functionality-only; lock-homepage-animations-GSAP-bottle-position-3D-rendering-header-existing-catalogue-and-other-approved-styles
+deploy-batch: verified-catalogue-drafts-and-checkout-availability
+scope: preserve-homepage-geometry-GSAP-bottle-animation-WebGL-header-card-tilt-and-all-approved-style; add-catalogue-validation-admin-inventory-guards-and-checkout-docs

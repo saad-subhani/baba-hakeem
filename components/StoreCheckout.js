@@ -2,11 +2,18 @@
 
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
+import {supabase} from '../lib/supabase';
 import styles from './StoreCheckout.module.css';
 
 const STORAGE_KEY='baba-hakeem-cart-v1';
 const RECEIPT_KEY='baba-hakeem-last-order';
 const money=n=>'Rs. '+Number(n||0).toLocaleString('en-PK',{maximumFractionDigits:2});
+
+// Product prices and availability are authoritative only once published by admin.
+const verifiedPrice=value=>{
+  const normalized=String(value||'').toLowerCase().replace(/rs\.?|pkr|,|\s/g,'');
+  return /^[0-9]+(\.[0-9]{1,2})?$/.test(normalized)&&Number(normalized)>0?Number(normalized):null;
+};
 
 function readCart(){
   if(typeof window==='undefined')return [];
@@ -42,8 +49,29 @@ function useCart(){
     }));
   };
   const remove=id=>writeCart(readCart().filter(item=>item.id!==id));
-  const subtotal=useMemo(()=>items.reduce((sum,i)=>sum+Number(i.price||0)*i.quantity,0),[items]);
-  return {items,ready,change,remove,subtotal};
+  const [catalogue,setCatalogue]=useState(null);
+  const [catalogueError,setCatalogueError]=useState('');
+  useEffect(()=>{
+    let alive=true;
+    supabase.from('products').select('id,name,price,stock_quantity,stock_status,image')
+      .eq('status','Published').then(({data,error})=>{
+        if(!alive)return;
+        if(error)setCatalogueError('Product availability could not be verified.');
+        setCatalogue(error?[]:data||[]);
+      });
+    return()=>{alive=false;};
+  },[]);
+  const verifiedItems=useMemo(()=>items.map(item=>{
+    const actual=catalogue?.find(p=>p.id===item.id||p.name.trim().toLowerCase()===item.name.trim().toLowerCase());
+    const price=actual?verifiedPrice(actual.price):null;
+    const available=!!actual&&price!==null&&actual.stock_status!=='Out of Stock'
+      &&Number(actual.stock_quantity)>=item.quantity;
+    return {...item,price,available,image:actual?.image||item.image};
+  }),[items,catalogue]);
+  const subtotal=useMemo(()=>verifiedItems.reduce((sum,i)=>sum+Number(i.price||0)*i.quantity,0),[verifiedItems]);
+  const catalogueReady=catalogue!==null;
+  const canCheckout=catalogueReady&&verifiedItems.length>0&&verifiedItems.every(i=>i.available);
+  return {items:verifiedItems,ready,change,remove,subtotal,catalogueReady,catalogueError,canCheckout};
 }
 
 function SiteFrame({number,title,description,children}){
@@ -62,7 +90,7 @@ function LineItems({items,change,remove,editable=false}){
   return <div className={styles.lines}>{items.map(item=>
     <article key={item.id} className={styles.line}>
       <div className={styles.thumb}>{item.image?<img src={item.image} alt={item.name} loading="lazy" decoding="async"/>:<span>BH</span>}</div>
-      <div className={styles.lineInfo}><h3>{item.name}</h3><small>{item.price?money(item.price):'Price to be confirmed'}</small>
+      <div className={styles.lineInfo}><h3>{item.name}</h3><small>{item.price?money(item.price):'Price to be confirmed'}</small>{!item.available&&<p>Not yet available for online checkout</p>}
         {editable?<div className={styles.quantity}>
           <button type="button" onClick={()=>change(item.id,-1)} aria-label={'Decrease '+item.name}>−</button>
           <span>{item.quantity}</span>
@@ -77,28 +105,31 @@ function LineItems({items,change,remove,editable=false}){
 }
 
 export function CartPage(){
-  const {items,ready,change,remove,subtotal}=useCart();
+  const {items,ready,change,remove,subtotal,catalogueReady,catalogueError,canCheckout}=useCart();
   return <SiteFrame number="01" title="YOUR CART." description="Review your selection before entering your delivery details.">
-    {!ready?<p className={styles.notice}>Loading cart…</p>:items.length===0?
+    {!ready||!catalogueReady?<p className={styles.notice}>Verifying product availability…</p>:items.length===0?
       <section className={styles.empty}><h2>Your cart is empty.</h2><p>Explore the Baba Hakeem collection to get started.</p><Link className={styles.primary} href="/#reel-products">EXPLORE PRODUCTS →</Link></section>
       :<div className={styles.columns}><section className={styles.panel}><h2>Selected products</h2><LineItems items={items} change={change} remove={remove} editable/></section><aside className={styles.panel}>
         <h2>Order summary</h2><div className={styles.summaryRow}><span>Estimated subtotal</span><b>{money(subtotal)}</b></div>
-        <p className={styles.muted}>Final prices and availability are verified against the live product catalogue during checkout. Delivery and payment details are confirmed by the store.</p>
-        <Link href="/checkout" className={styles.primary}>CONTINUE TO CHECKOUT →</Link>
+        <p className={styles.muted}>Prices and availability come from approved products in our live catalogue. Payment and delivery details are confirmed by the store.</p>
+        {catalogueError&&<p className={styles.muted}>{catalogueError}</p>}
+        {canCheckout?<Link href="/checkout" className={styles.primary}>CONTINUE TO CHECKOUT →</Link>:
+          <p className={styles.muted}>Online ordering for this selection is not available yet. Please contact the store to confirm price and stock.</p>}
+        {!canCheckout&&<a className={styles.primary} href="https://wa.me/923239992203" target="_blank" rel="noopener noreferrer">ASK ON WHATSAPP ↗</a>}
         <Link href="/#reel-products" className={styles.secondary}>CONTINUE SHOPPING</Link>
       </aside></div>}
   </SiteFrame>;
 }
 
 export function CheckoutPage(){
-  const {items,ready,subtotal}=useCart();
+  const {items,ready,subtotal,catalogueReady,canCheckout}=useCart();
   const [customer,setCustomer]=useState({name:'',email:'',phone:'',city:'',address:'',notes:''});
   const [sending,setSending]=useState(false);
   const [error,setError]=useState('');
   const set=(key,value)=>setCustomer(prev=>({...prev,[key]:value}));
   const submit=async e=>{
     e.preventDefault();
-    if(sending||!items.length)return;
+    if(sending||!canCheckout)return;
     setSending(true);setError('');
     try{
       const response=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -117,8 +148,9 @@ export function CheckoutPage(){
     }
   };
   return <SiteFrame number="02" title="CHECKOUT." description="Share your delivery details to request an order. No online payment will be collected.">
-    {!ready?<p className={styles.notice}>Loading checkout…</p>:items.length===0?
-      <section className={styles.empty}><h2>Nothing to check out yet.</h2><Link href="/cart" className={styles.primary}>BACK TO CART →</Link></section>:
+    {!ready||!catalogueReady?<p className={styles.notice}>Verifying checkout…</p>:items.length===0?
+      <section className={styles.empty}><h2>Nothing to check out yet.</h2><Link href="/cart" className={styles.primary}>BACK TO CART →</Link></section>:!canCheckout?
+      <section className={styles.empty}><h2>Online checkout isn't ready for these products.</h2><p>Please confirm prices and stock with the store. No order has been placed.</p><Link href="/cart" className={styles.primary}>REVIEW YOUR CART →</Link></section>:
       <div className={styles.columns}><section className={styles.panel}>
         <h2>Delivery information</h2>
         <form className={styles.form} onSubmit={submit}>

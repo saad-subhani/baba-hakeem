@@ -5,7 +5,7 @@ import Link from 'next/link';
 import './admin.css';
 import { supabase } from '../../lib/supabase';
 
-const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Published',image:'',stock_status:'In Stock',stock_quantity:0,featured:false,sort_order:0,whatsapp_number:''};
+const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Draft',image:'',stock_status:'Out of Stock',stock_quantity:0,featured:false,sort_order:0,whatsapp_number:''};
 
 export default function AdminPage(){
   const [products,setProducts]=useState([]);
@@ -62,7 +62,7 @@ export default function AdminPage(){
   }).sort((a,b)=>orderSort==='Oldest'?new Date(a.created_at)-new Date(b.created_at):orderSort==='Amount'?Number(b.total_amount||0)-Number(a.total_amount||0):new Date(b.created_at)-new Date(a.created_at)),[orders,orderFilter,orderQuery,orderSort]);
   const refreshOrders=async()=>{const {data,error}=await supabase.from('orders').select('*').order('created_at',{ascending:false});if(error){setNotice(error.message);return;}setOrders(data||[]);};
   const updateOrderStatus=async(order,status)=>{const previous=order.status;const {error}=await supabase.from('orders').update({status,updated_at:new Date().toISOString()}).eq('id',order.id);if(error){setNotice(error.message);return;}if(status==='Confirmed'&&previous==='Pending'&&!order.stock_reserved&&order.product_id){const p=products.find(x=>x.id===order.product_id);if(p&&Number(p.stock_quantity)>0){const qty=Math.max(0,Number(p.stock_quantity)-Number(order.quantity));await supabase.from('products').update({stock_quantity:qty,stock_status:qty===0?'Out of Stock':qty<=5?'Low Stock':'In Stock',updated_at:new Date().toISOString()}).eq('id',p.id);await refreshProducts();}}await refreshOrders();};
-  const deleteOrder=async(id)=>{if(!confirm('Delete this order record?'))return;const {error}=await supabase.from('orders').delete().eq('id',id);if(error)setNotice(error.message);else refreshOrders();};
+  const deleteOrder=async(id)=>{const existing=orders.find(o=>o.id===id);if(existing?.stock_reserved&&existing.status!=='Cancelled'){setNotice('Cancel this order before deleting it to safely restore reserved stock.');return;}if(!confirm('Delete this order record?'))return;const {error}=await supabase.from('orders').delete().eq('id',id);if(error)setNotice(error.message);else refreshOrders();};
 
   const confirmedOrders=useMemo(()=>orders.filter(o=>o.status==='Confirmed').length,[orders]);
   const shippedOrders=useMemo(()=>orders.filter(o=>o.status==='Shipped').length,[orders]);
@@ -106,6 +106,7 @@ export default function AdminPage(){
   const submit=async(e)=>{
     e.preventDefault();
     if(!form.name.trim()||!form.image){setNotice('Product name and image are required.');return;}
+    if(form.status==='Published'){const verified=String(form.price||'').toLowerCase().replace(/rs\.?|pkr|,|\s/g,'');if(!/^[0-9]+(\.[0-9]{1,2})?$/.test(verified)||Number(verified)<=0){setNotice('Please confirm a valid official price before publishing.');return;}}
     try{
       setNotice(editingId?'Saving changes...':'Uploading product...');
       const uploaded=await uploadImage(form.image);
