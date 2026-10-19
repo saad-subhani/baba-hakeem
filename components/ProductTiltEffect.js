@@ -22,7 +22,7 @@ export default function ProductTiltEffect(){
     const clearInline=card=>{
       activeCards.delete(card);
       const binding=bindings.get(card);
-      if(binding)binding.rect=null;
+      if(binding){binding.rect=null;binding.lastTransform='';binding.inReset=false;}
       card.removeAttribute('data-product-tilt-active');
       card.style.removeProperty('transform');
       card.style.removeProperty('transform-origin');
@@ -37,6 +37,8 @@ export default function ProductTiltEffect(){
       if(binding.frame){cancelAnimationFrame(binding.frame);binding.frame=0;}
       if(binding.resetTimer){window.clearTimeout(binding.resetTimer);binding.resetTimer=0;}
       binding.rect=null;
+      binding.inReset=true;
+      binding.lastTransform='';
 
       if(!animate){clearInline(card);return;}
 
@@ -58,7 +60,7 @@ export default function ProductTiltEffect(){
 
     const bindCard=card=>{
       if(bindings.has(card))return;
-      const binding={frame:0,resetTimer:0,x:0,y:0,rect:null,onEnter:null,onMove:null,onLeave:null};
+      const binding={frame:0,resetTimer:0,x:0,y:0,rect:null,lastTransform:'',inReset:false,onEnter:null,onMove:null,onLeave:null};
 
       binding.onEnter=()=>{
         binding.rect=card.getBoundingClientRect();
@@ -82,17 +84,21 @@ export default function ProductTiltEffect(){
           const rotateX=(-ny*MAX_TILT).toFixed(3);
           const rotateY=(nx*MAX_TILT).toFixed(3);
 
-          activeCards.add(card);
-          card.setAttribute('data-product-tilt-active','true');
-          card.style.setProperty('transform-origin','50% 50%','important');
-          card.style.setProperty('transform-style','preserve-3d','important');
-          card.style.setProperty('will-change','transform','important');
-          card.style.setProperty('transition','transform 70ms linear','important');
-          card.style.setProperty(
-            'transform',
-            `perspective(1400px) translate3d(0,-6px,0) scale(1.01) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-            'important'
-          );
+          // Invariant compositor properties are set once per hover, not on every mouse frame.
+          if(!activeCards.has(card)||binding.inReset){
+            activeCards.add(card);
+            card.setAttribute('data-product-tilt-active','true');
+            card.style.setProperty('transform-origin','50% 50%','important');
+            card.style.setProperty('transform-style','preserve-3d','important');
+            card.style.setProperty('will-change','transform','important');
+            card.style.setProperty('transition','transform 70ms linear','important');
+            binding.inReset=false;
+          }
+          const transform=`perspective(1400px) translate3d(0,-6px,0) scale(1.01) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          if(binding.lastTransform!==transform){
+            card.style.setProperty('transform',transform,'important');
+            binding.lastTransform=transform;
+          }
         });
       };
 

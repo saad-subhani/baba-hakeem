@@ -97,10 +97,22 @@ export default function CartExperience(){
     };
 
     enhance();
-    const observer=new MutationObserver(()=>requestAnimationFrame(enhance));
+    let enhanceFrame=0;
+    const scheduleEnhance=()=>{
+      if(enhanceFrame)return;
+      enhanceFrame=requestAnimationFrame(()=>{
+        enhanceFrame=0;
+        enhance();
+      });
+    };
+    const observer=new MutationObserver(scheduleEnhance);
     observer.observe(catalogue,{childList:true,subtree:false});
     const stop=window.setTimeout(()=>observer.disconnect(),6000);
-    return()=>{window.clearTimeout(stop);observer.disconnect();};
+    return()=>{
+      window.clearTimeout(stop);
+      observer.disconnect();
+      if(enhanceFrame)cancelAnimationFrame(enhanceFrame);
+    };
   },[]);
 
   useEffect(()=>{

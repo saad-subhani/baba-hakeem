@@ -1,2 +1,2 @@
-deploy-batch: mens-oil-smaller-and-slightly-lower-in-palms
-scope: desktop-final-landing-scale-and-vertical-only; all-horizontal-layout-mobile-gsap-timing-and-other-sections-locked
+deploy-batch: locked-internal-performance-audit
+scope: no-visual-or-gsap-changes; reduce-redundant-tilt-styles-dom-translation-work-and-cart-catalogue-scans

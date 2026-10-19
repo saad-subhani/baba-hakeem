@@ -108,12 +108,17 @@ export default function LanguageToggle(){
     const observer=new MutationObserver(mutations=>{
       if(applying.current)return;
       mutations.forEach(mutation=>{
-        if(mutation.type==='characterData')pending.add(mutation.target);
+        if(mutation.type==='characterData'){
+          // Ignore our own translated text writes; they do not need another tree walk.
+          if(expectedText.current.get(mutation.target)!==(mutation.target.nodeValue||''))pending.add(mutation.target);
+          return;
+        }
         mutation.addedNodes?.forEach(node=>pending.add(node));
       });
       if(pending.size&&!frame)frame=requestAnimationFrame(flush);
     });
-    observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+    // English is the source markup. Live translation is only needed for Urdu DOM additions.
+    if(language==='ur')observer.observe(document.body,{subtree:true,childList:true,characterData:true});
 
     window.dispatchEvent(new CustomEvent('baba-language-change',{detail:{language}}));
 
