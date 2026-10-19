@@ -3,6 +3,7 @@
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
+import AdminSectionNav from './AdminSectionNav';
 import styles from './AdminOperations.module.css';
 
 const money=n=>'Rs. '+(Number(n)||0).toLocaleString('en-PK',{maximumFractionDigits:2});
@@ -64,7 +65,7 @@ export default function AdminOperations(){
           readAll('inventory_movements','id,product_id,product_name,previous_quantity,new_quantity,quantity_change,reason,created_at,changed_by'),
           readAll('order_status_events','id,order_id,order_number,previous_status,new_status,note,created_at,changed_by')
         ]);
-        if(live){setOrders(o);setLines(l);setProducts(p);setStockEvents(s);setOrderEvents(h);}
+        if(live){setOrders(o);setLines(l);setProducts(p);setStockEvents(s);setOrderEvents(h);setExpanded(current=>current&&o.some(item=>item.id===current)?current:(o[0]?.id||null));}
       }catch(err){if(live){setError(err?.message||'Could not load operations.');setAccess(current=>current==='checking'?'error':current);}}
       finally{if(live)setLoading(false);}
     })();
@@ -143,7 +144,7 @@ export default function AdminOperations(){
   return <main className={styles.page}><div className={styles.wrap}>
     <header className={styles.header}>
       <div className={styles.brand}><span className={styles.bh}>BH</span><span><b>BABA HAKEEM</b><small>HERBAL PRODUCTS / ADMIN</small></span></div>
-      <nav><Link href="/admin">← Dashboard</Link><Link href="/admin/reports">Sales Reports ↗</Link><Link href="/">Storefront ↗</Link></nav>
+      <AdminSectionNav/>
     </header>
 
     <section className={styles.hero}>

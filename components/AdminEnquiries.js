@@ -3,6 +3,7 @@
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
+import AdminSectionNav from './AdminSectionNav';
 import styles from './AdminEmailQueue.module.css';
 
 const moment=value=>new Date(value).toLocaleString('en-PK',{dateStyle:'medium',timeStyle:'short'});
@@ -58,7 +59,7 @@ export default function AdminEnquiries(){
 
   return <main className={styles.screen}><div className={styles.wrap}>
     <header className={styles.nav}><div className={styles.brand}><span>BH</span><div><b>BABA HAKEEM</b><small>HERBAL PRODUCTS / ADMIN</small></div></div>
-      <div className={styles.navLinks}><Link href="/admin">← Dashboard</Link><Link href="/admin/emails">Order Emails</Link><Link href="/admin/operations">Order Operations</Link></div>
+      <AdminSectionNav/>
     </header>
     <section className={styles.intro}><div><small>05 / CONTACT ENQUIRIES</small><h1>YOUR <em>INBOX.</em></h1><p>Product questions, order support and business enquiries from the live Contact page.</p></div>
       <button type="button" onClick={()=>setRefresh(n=>n+1)}>↻ Refresh</button></section>

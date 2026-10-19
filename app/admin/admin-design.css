@@ -1,0 +1,72 @@
+/* BABA HAKEEM / ADMIN DESIGN SYSTEM.
+   Scoped to /admin only. Locked cinematic storefront remains untouched. */
+#baba-admin-root{
+  --ad-bg:#f1f3eb;--ad-card:#fffef9;--ad-ink:#183a2a;--ad-muted:#596e62;
+  --ad-border:#d7e0d4;--ad-accent:#c9e08e;--ad-radius:20px;
+  color:var(--ad-ink);min-height:100vh;
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background:var(--ad-bg);
+}
+#baba-admin-root,
+#baba-admin-root *{box-sizing:border-box}
+#baba-admin-root :is(a,button,select,input,textarea):focus-visible{
+  outline:3px solid #83a654!important;outline-offset:3px!important;
+}
+#baba-admin-root button{touch-action:manipulation}
+#baba-admin-root button:disabled{cursor:not-allowed;opacity:.65}
+#baba-admin-root :is(input,select,textarea){max-width:100%}
+#baba-admin-root :is(input,select,textarea)::placeholder{color:#728779;opacity:1}
+#baba-admin-root .admin-design-links{
+  display:flex!important;align-items:center!important;justify-content:flex-end!important;
+  gap:5px!important;min-width:0!important;width:auto!important;max-width:100%!important;
+  flex-wrap:wrap!important;position:relative!important;top:auto!important;
+  height:auto!important;inset:auto!important;transform:none!important;padding:0!important;
+  margin:0!important;background:transparent!important;border:none!important;
+}
+#baba-admin-root .admin-design-links a{
+  padding:12px 15px!important;color:var(--ad-ink)!important;
+  font:700 12px/1.2 Inter,Arial,sans-serif!important;letter-spacing:0!important;
+  border-radius:12px!important;text-decoration:none!important;
+  white-space:nowrap!important;transition:background .2s,color .2s;
+  border:1px solid transparent!important;
+}
+#baba-admin-root .admin-design-links a:hover{background:#dfe9d9!important}
+#baba-admin-root .admin-design-links .admin-design-link-current{
+  background:var(--ad-ink)!important;color:#fff!important;
+}
+#baba-admin-root .admin-design-links .admin-design-external{
+  border-color:#bed1c0!important;
+}
+#baba-admin-root .admin-design-links .admin-design-external:hover{background:#fefef9!important}
+#baba-admin-root .admin-design-links a:focus-visible{outline-offset:0!important}
+body:has(#baba-admin-root) [class*="CartExperience_floatingCart"],
+body:has(#baba-admin-root) [class*="CartExperience_backdrop"],
+body:has(#baba-admin-root) [class*="CartExperience_drawer"],
+body:has(#baba-admin-root) .bh-language-toggle{
+  display:none!important;
+}
+body:has(#baba-admin-root){background:var(--ad-bg,#f1f3eb)!important;overflow-x:hidden!important}
+/* Shared readability floor across ALL private admin modules, not marketing. */
+#baba-admin-root [class*="AdminOperations_"],
+#baba-admin-root [class*="AdminSalesReports_"],
+#baba-admin-root [class*="AdminEmailQueue_"]{
+  text-rendering:optimizeLegibility;
+}
+@media(max-width:1120px){
+  #baba-admin-root .admin-design-links{gap:3px!important}
+  #baba-admin-root .admin-design-links a{padding:11px 10px!important;font-size:11px!important}
+}
+@media(max-width:760px){
+  #baba-admin-root .admin-design-links{
+    width:100%!important;max-width:100%!important;justify-content:flex-start!important;
+    overflow-x:auto!important;flex-wrap:nowrap!important;scrollbar-width:thin!important;
+    -webkit-overflow-scrolling:touch;padding:4px 0 9px!important;
+  }
+  #baba-admin-root .admin-design-links a{flex:none!important;font-size:12px!important;padding:11px 12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #baba-admin-root *,
+  #baba-admin-root *::before,
+  #baba-admin-root *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}

@@ -3,6 +3,7 @@
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
+import AdminSectionNav from './AdminSectionNav';
 import styles from './AdminSalesReports.module.css';
 
 const STATUSES=['All','Pending','Confirmed','Shipped','Delivered','Cancelled'];
@@ -192,7 +193,7 @@ export default function AdminSalesReports(){
   return <main className={styles.screen}><div className={styles.wrap}>
     <header className={styles.header}>
       <div className={styles.brand}><span className={styles.mark}>BH</span><span><b>BABA HAKEEM</b><small>HERBAL PRODUCTS / ADMIN</small></span></div>
-      <nav><Link href="/admin">← Dashboard</Link><span>SALES REPORTS</span><Link href="/">Storefront ↗</Link></nav>
+      <AdminSectionNav/>
     </header>
     <section className={styles.intro}>
       <div><small>ADMIN / REAL SUPABASE ORDER DATA</small><h1>SALES <em>OVERVIEW.</em></h1><p>Revenue intelligence, product performance and filtered order records.</p></div>

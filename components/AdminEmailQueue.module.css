@@ -32,3 +32,64 @@
 .gate h1{font:400 40px Georgia!important;margin:6px 0!important;color:#173226!important}.gate p{font:12px Arial;color:#68816e}.gate a{background:#173226;color:#f8f5ed;text-decoration:none;padding:13px 18px;font:11px monospace}
 @media(max-width:920px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.panelTop{align-items:start;flex-direction:column}}
 @media(max-width:600px){.screen{padding:0 12px 30px!important}.nav{min-height:78px!important;height:auto!important;padding:16px 0!important;flex-wrap:wrap!important}.navLinks{gap:12px}.intro{padding:34px 0 23px!important;align-items:start!important;flex-direction:column!important}.intro h1{font-size:clamp(42px,11vw,70px)!important}.stats{gap:8px!important}.stats article{padding:15px}.stats strong{font-size:30px}.panel{padding:16px!important}.panelTop h2{font-size:26px!important}.footer{flex-direction:column}}
+
+
+/* 2026 private admin workspace — Emails AND Enquiries. */
+.screen{padding:0 clamp(16px,2.8vw,44px) 65px!important;background:#f1f3eb!important;color:#183a2a!important;font:500 15px/1.55 Inter,Arial,sans-serif!important}
+.wrap{max-width:1520px!important}
+.nav{min-height:100px!important;height:auto!important;flex-wrap:wrap!important;padding:17px 0!important;gap:18px!important;border-color:#d3dfd1!important}
+.brand b{font:700 19px Georgia,serif!important}.brand small{font:700 10px Inter,Arial,sans-serif!important;letter-spacing:.08em!important}
+.brand>span{width:54px!important;height:54px!important;background:#e7efdf!important;border-color:#bfd3bd!important;font-size:15px!important}
+.intro{padding:46px 0 32px!important;align-items:center!important;flex-wrap:wrap!important}
+.intro small,.panelTop small{font:800 11px/1.5 Inter,Arial,sans-serif!important;color:#587d61!important}
+.intro h1{font:400 clamp(52px,6vw,86px)/.98 Georgia,serif!important;letter-spacing:-.055em!important;margin:10px 0 14px!important}
+.intro p{font:500 16px/1.6 Inter,Arial,sans-serif!important;color:#526d5c!important}
+.intro>button{min-height:48px!important;border-radius:14px!important;border-color:#c7d8c4!important;padding:12px 20px!important;background:#fffef9!important;font:700 13px Inter,Arial,sans-serif!important}
+.notice{border:1px solid #cbdcca!important;background:#e8f0e1!important;border-radius:16px!important;padding:21px 25px!important;margin-bottom:21px!important}
+.notice strong{font:700 18px Georgia,serif!important}
+.notice p{font:500 14px/1.65 Inter,Arial,sans-serif!important;color:#4f6b59!important}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:15px!important;margin:0 0 21px!important}
+.stats article{background:#fffef9!important;border:1px solid #d7e3d5!important;border-radius:18px!important;box-shadow:0 9px 24px #163a270b!important;min-height:145px!important;padding:23px!important}
+.stats article:first-child{background:linear-gradient(135deg,#164632,#1b342a)!important;color:#fff!important}
+.stats small{font:800 11px Inter,Arial,sans-serif!important;letter-spacing:.07em!important}
+.stats strong{font:500 clamp(33px,3.4vw,51px) Georgia,serif!important;line-height:1.15!important}
+.panel{background:#fffef9!important;border:1px solid #d7e3d5!important;border-radius:20px!important;padding:clamp(20px,2vw,30px)!important;box-shadow:0 10px 34px #163a270d!important}
+.panelTop{padding-bottom:21px!important;gap:17px!important;border-color:#d7e2d4!important}
+.panelTop h2{font:500 33px/1.1 Georgia,serif!important;letter-spacing:-.025em!important}
+.panelTop p{font:500 14px/1.65 Inter,Arial,sans-serif!important;color:#607a67!important}
+.actions select{border-color:#d2dfcf!important;border-radius:10px!important;min-height:47px!important;background:#f4f7f0!important;padding:11px 13px!important;font:600 14px Inter,Arial,sans-serif!important;color:#173826!important}
+.actions button{min-height:47px!important;border-radius:11px!important;font:750 12px Inter,Arial,sans-serif!important;padding:12px 17px!important}
+.tableOuter table{font:500 14px/1.55 Inter,Arial,sans-serif!important;min-width:800px!important}
+.tableOuter th{font:800 11px Inter,Arial,sans-serif!important;letter-spacing:.07em!important;color:#56745c!important;padding:19px 14px!important}
+.tableOuter td{padding:20px 14px!important;vertical-align:middle!important;overflow-wrap:anywhere!important}
+.tableOuter td b{font:700 14px/1.5 Inter,Arial,sans-serif!important}
+.tableOuter td small{font:500 13px/1.5 Inter,Arial,sans-serif!important;color:#627f68!important}
+.tableOuter td a{color:#205639!important;text-decoration:underline;text-underline-offset:3px}
+.tableOuter td select{min-height:44px!important;border:1px solid #c4d9c2!important;border-radius:10px!important;background:#f4f7f0!important;padding:10px!important;font:650 13px Inter,Arial,sans-serif!important;color:#19422c!important}
+.tag{border-radius:9px!important;background:#e6efe1!important;border-color:#cfdfc8!important;font:700 12px Inter,Arial,sans-serif!important;padding:9px 12px!important}
+.footer{font:600 12px/1.6 Inter,Arial,sans-serif!important;color:#637d6b!important}
+.gate h1{font:500 clamp(32px,4vw,49px) Georgia,serif!important}
+.gate p{font-size:15px!important}
+.error,.message{border-radius:12px!important;font:600 14px/1.55 Inter,Arial,sans-serif!important}
+@media(max-width:1250px){
+ .nav{align-items:flex-start!important}
+ .nav>.admin-design-links{flex-basis:100%!important}
+}
+@media(max-width:950px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:650px){
+ .screen{padding:0 13px 45px!important}
+ .nav{padding:14px 0!important;gap:12px!important}
+ .intro{padding:28px 0 24px!important;align-items:flex-start!important}
+ .intro h1{font-size:clamp(43px,10vw,65px)!important}
+ .intro p{font-size:14px!important}
+ .stats{gap:10px!important}
+ .stats article{padding:18px!important;min-height:132px!important}
+ .stats strong{font-size:37px!important}
+ .panel{padding:18px!important;border-radius:16px!important}
+ .panelTop{align-items:flex-start!important;flex-direction:column!important}
+ .panelTop h2{font-size:29px!important}
+ .actions{width:100%!important}
+ .actions select,.actions button{flex:1!important;min-width:130px!important}
+ .footer{flex-direction:column!important}
+}
+@media(max-width:360px){.stats{grid-template-columns:1fr!important}}

@@ -76,3 +76,86 @@
 @media(prefers-reduced-motion:reduce){.barTrack i,.spinner{transition:none;animation:none}}
 
 .action{display:inline-block;background:#173226;color:#f4f0e5;padding:14px 20px;text-decoration:none;font:10px monospace;margin-top:15px}
+
+
+/* Unified 2026 admin dashboard restyle — Sales Reports. */
+.screen{background:#f1f3eb!important;padding:0 clamp(16px,2.8vw,44px) 65px!important;color:#183a2a!important;font:500 15px/1.55 Inter,Arial,sans-serif!important}
+.wrap{max-width:1520px!important}
+.header{min-height:100px!important;height:auto!important;padding:17px 0!important;gap:18px!important;flex-wrap:wrap!important;border-color:#d3dfd1!important}
+.brand b{font:700 19px Georgia,serif!important}.brand small{font:700 10px Inter,Arial,sans-serif!important;letter-spacing:.1em!important}
+.mark{width:54px!important;height:54px!important;background:#e7efdf!important;border-color:#bfd3bd!important;font-size:15px!important}
+.intro{padding:45px 0 31px!important;align-items:center!important;flex-wrap:wrap!important}
+.intro small,.panel header small,.report>header small{font:800 11px/1.5 Inter,Arial,sans-serif!important;letter-spacing:.1em!important;color:#5a7b61!important}
+.intro h1{font:400 clamp(52px,6vw,86px)/.98 Georgia,serif!important;letter-spacing:-.055em!important;margin:10px 0 13px!important}
+.intro p{font:500 16px/1.6 Inter,Arial,sans-serif!important;color:#516f5f!important}
+.intro>button{min-height:48px!important;border:1px solid #c7d8c4!important;border-radius:14px!important;background:#fffef9!important;padding:12px 19px!important;font:700 13px Inter,Arial,sans-serif!important}
+.filters,.panel,.report{background:#fffef9!important;border:1px solid #d7e3d5!important;border-radius:20px!important;box-shadow:0 9px 34px #153d280c!important;padding:clamp(21px,2vw,30px)!important}
+.filters{margin-bottom:18px!important}
+.filterTitle h2{font:500 30px Georgia,serif!important;letter-spacing:-.025em!important}
+.filterTitle p,.report>header p{font:500 14px/1.6 Inter,Arial,sans-serif!important;color:#657a68!important}
+.filterTitle button{padding:10px!important;border-radius:10px!important;font:700 13px Inter,Arial,sans-serif!important}
+.fields{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important}
+.fields label,.dates label{font:800 11px Inter,Arial,sans-serif!important;letter-spacing:.08em!important;color:#567561!important;gap:9px!important}
+.fields select,.fields input,.dates input{min-height:49px!important;height:49px!important;border-radius:10px!important;padding:0 13px!important;background:#f4f7f0!important;border-color:#d5e0d2!important;font:500 14px Inter,Arial,sans-serif!important;color:#183a2a!important}
+.stats{gap:15px!important;margin:18px 0!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.stat{border-radius:18px!important;min-height:153px!important;background:#fffef9!important;border-color:#d7e3d5!important;box-shadow:0 9px 26px #153d280b!important;padding:23px!important}
+.stat:first-child{background:linear-gradient(135deg,#164632,#1b342a)!important;color:white!important}
+.stat small{font:800 11px Inter,Arial,sans-serif!important;letter-spacing:.075em!important;color:#607f65!important}
+.stat:first-child small{color:#d6e9cf!important}
+.stat strong{font:500 clamp(29px,3vw,43px)/1.15 Georgia,serif!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.stat p{font:500 13px/1.5 Inter,Arial,sans-serif!important;opacity:1!important;color:#607b67!important}
+.stat:first-child p{color:#d7ead5!important}
+.charts{gap:18px!important;margin:20px 0!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)!important}
+.panel{min-height:410px!important}
+.panel header,.report>header{border-color:#d9e2d5!important}
+.panel header h2,.report header h2{font:500 32px Georgia,serif!important;letter-spacing:-.03em!important}
+.panel header>span{font:700 12px Inter,Arial,sans-serif!important;color:#67826c!important}
+.chart{height:240px!important;gap:12px!important;padding-top:22px!important}
+.barTrack{height:177px!important;border-color:#c8d9c7!important}
+.chartItem>small{font:700 11px Inter,Arial,sans-serif!important;color:#617d65!important;white-space:nowrap!important}
+.topProducts{gap:20px!important;padding-top:24px!important}
+.topProduct>div:first-child{font:600 14px Inter,Arial,sans-serif!important}
+.topProduct strong{font:700 13px Inter,Arial,sans-serif!important}
+.topProduct>small{font:500 12px Inter,Arial,sans-serif!important}
+.panelHint{font:500 12px Inter,Arial,sans-serif!important;color:#657f68!important}
+.empty{font:500 15px Inter,Arial,sans-serif!important;color:#69816b!important}
+.report>header{padding-bottom:22px!important;gap:20px!important}
+.download button{border-radius:11px!important;min-height:46px!important;padding:12px 17px!important;font:700 12px Inter,Arial,sans-serif!important;letter-spacing:0!important}
+.tableScroll table{font:500 14px/1.5 Inter,Arial,sans-serif!important;min-width:860px!important}
+.tableScroll th{font:800 11px Inter,Arial,sans-serif!important;letter-spacing:.07em!important;color:#54735b!important;padding:19px 13px!important}
+.tableScroll td{padding:18px 13px!important}
+.tableScroll td small{font:500 12px Inter,Arial,sans-serif!important}
+.tableScroll .orderNo,.tableScroll .amount{font:700 14px Inter,Arial,sans-serif!important}
+.status{font:700 11px Inter,Arial,sans-serif!important;background:#e8f1e4!important;padding:7px 11px!important}
+.report footer,.pageFooter{font:600 12px/1.6 Inter,Arial,sans-serif!important;color:#627a68!important}
+.gate h1{font-size:clamp(32px,4vw,48px)!important}
+.gate p{font-size:15px!important}
+@media(max-width:1280px){
+ .header{align-items:flex-start!important}
+ .header>nav{flex-basis:100%!important}
+ .fields{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:1000px){
+ .charts{grid-template-columns:1fr!important}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:650px){
+ .screen{padding:0 13px 46px!important}
+ .header{padding:14px 0!important}
+ .intro{padding:27px 0 24px!important;gap:15px!important}
+ .intro h1{font-size:clamp(42px,10vw,65px)!important}
+ .intro p{font-size:14px!important}
+ .fields{grid-template-columns:1fr!important}
+ .filters,.panel,.report{padding:19px!important;border-radius:16px!important}
+ .stats{gap:10px!important}
+ .stat{padding:18px!important;min-height:135px!important}
+ .stat strong{font-size:clamp(24px,6vw,37px)!important}
+ .stat p{font-size:12px!important}
+ .panel header h2,.report header h2{font-size:27px!important}
+ .chart{gap:5px!important;height:223px!important}
+ .chartItem>small{font-size:9px!important;transform:rotate(-35deg);transform-origin:center top}
+ .download{width:100%!important}
+ .download button{flex:1!important;min-width:132px!important}
+ .filterTitle{align-items:flex-start!important}
+}
+@media(max-width:380px){.stats{grid-template-columns:1fr!important}}

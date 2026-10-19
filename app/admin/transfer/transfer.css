@@ -4,3 +4,44 @@
 .accept-form{margin-top:16px!important;padding-top:16px!important;border-top:1px solid #17322622!important}
 .password-intro{display:grid;gap:5px;margin-bottom:4px;padding:14px;background:#eeeadf}.password-intro small{font:9px monospace;letter-spacing:.13em;color:#597143}.password-intro b{font:400 18px Georgia}.password-intro span{font-size:11px;line-height:1.45;color:#1732269c}
 .accept-form .accept-owner{margin-top:4px!important;width:100%!important}
+
+
+/* Consistent admin ownership / transfer experience */
+#baba-admin-root .transfer-screen{
+  background:#f1f3eb!important;padding:clamp(18px,5vw,48px)!important;
+  font:500 15px/1.6 Inter,Arial,sans-serif!important;
+}
+#baba-admin-root .transfer-screen section{
+  width:min(720px,100%)!important;padding:clamp(24px,5vw,55px)!important;
+  background:#fffef9!important;border:1px solid #d7e3d6!important;
+  border-radius:22px!important;box-shadow:0 20px 70px #173a2812!important;
+}
+#baba-admin-root .transfer-screen small,
+#baba-admin-root .transfer-screen label span,
+#baba-admin-root .invite-email span{
+  font:800 12px/1.5 Inter,Arial,sans-serif!important;letter-spacing:.07em!important;
+  color:#5f7e66!important;
+}
+#baba-admin-root .transfer-screen h1{font:500 clamp(39px,5.5vw,64px)/1 Georgia,serif!important;letter-spacing:-.04em!important}
+#baba-admin-root .transfer-screen p{font:500 15px/1.7 Inter,Arial,sans-serif!important;color:#577362!important}
+#baba-admin-root .invite-email,#baba-admin-root .password-intro{border-radius:13px!important;background:#f1f5eb!important;padding:20px!important}
+#baba-admin-root .invite-email b,#baba-admin-root .password-intro b{font-size:23px!important}
+#baba-admin-root .transfer-screen input{
+  border-radius:10px!important;min-height:52px!important;background:#f4f7f0!important;
+  border-color:#cbdace!important;font:500 15px Inter,Arial,sans-serif!important;
+}
+#baba-admin-root .transfer-screen button{
+  min-height:52px!important;border-radius:11px!important;
+  font:800 13px Inter,Arial,sans-serif!important;letter-spacing:.02em!important;
+  padding:12px 18px!important;
+}
+#baba-admin-root .transfer-help,#baba-admin-root .transfer-screen .transfer-help{
+  font:500 13px/1.6 Inter,Arial,sans-serif!important;
+}
+#baba-admin-root .transfer-error,#baba-admin-root .transfer-success,
+#baba-admin-root .signed-user{border-radius:10px!important;font:500 14px/1.5 Inter,Arial,sans-serif!important}
+#baba-admin-root .back-site{font:700 13px Inter,Arial,sans-serif!important}
+@media(max-width:600px){
+ #baba-admin-root .transfer-screen{padding:14px!important}
+ #baba-admin-root .transfer-screen section{padding:26px 19px!important;border-radius:16px!important}
+}
