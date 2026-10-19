@@ -1,2 +1,2 @@
-deploy-batch: phase-2-admin-sales-dashboard-and-reports
-scope: add-owner-only-admin-report-route-filtered-sales-KPIs-CSV-exports-and-navigation-link; lock-storefront-homepage-GSAP-WebGL-bottle-layout-styles-performance-and-existing-admin-management
+deploy-batch: phase-3-admin-order-inventory-operations
+scope: owner-only-order-fulfillment-line-items-status-history-auditable-stock-and-safety; preserve-all-storefront-animations-GSAP-WebGL-bottle-placements-styling-performance-and-existing-customer-routes
