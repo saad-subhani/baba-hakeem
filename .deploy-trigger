@@ -1,2 +1,2 @@
-deploy-batch: mens-oil-palm-cradle-final
-scope: raise-desktop-mens-oil-final-target-only-no-scale-x-position-hands-layout-header-products-cart-language-or-other-approved-code-changes
+deploy-batch: mens-oil-palm-geometry-fix
+scope: align-desktop-mens-oil-bottle-base-to-actual-hands-image; preserve-other-visuals-mobile-and-gsap-motion
