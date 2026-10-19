@@ -253,6 +253,7 @@ export default function BestProductReveal(){
     resize();
 
     let raf=0;let resizeRaf=0;let previousTime=performance.now();let sectionVisible=false;let lastProgressPaint=-1;
+    let warmedUp=false;let disposing=false;let idleWarmup=0;let fallbackWarmup=0;
     // Pace expensive WebGL frames only when slower devices demonstrate a real frame backlog.
     // The GSAP/ScrollTrigger progress and 3D target positions remain unchanged.
     let lastDrawAt=0;let slowDraws=0;let paceUntil=0;
@@ -277,6 +278,7 @@ export default function BestProductReveal(){
       if(!performanceMode){dust.rotation.y=t*.06;dust.position.y=Math.sin(t*.45)*.02;}const opening=Math.min(1,revealLight.intensity/10);glowSprite.material.opacity=.018+.085*opening;lightBeam.material.opacity=.006+.032*opening;lightBeam.scale.x=lightBeam.scale.z=.82+.2*opening;revealDust.material.opacity=(performanceMode?.1:.2)*bottleReveal;revealDust.rotation.y=performanceMode?(-scrollProgress*1.2):(-t*.35);revealDust.position.y=.45+1.1*bottleReveal;revealDust.scale.setScalar(.84+.28*bottleReveal);
       product.visible=bottleReveal>.004||targetBottleReveal>.004;if(product.visible){const bottleScale=.02+(.98*bottleReveal);product.scale.setScalar(bottleScale);product.position.y=(-.22)+(1.1*bottleReveal);product.position.z=.18+(.16*bottleReveal);}
       renderer.render(scene,camera);
+      warmedUp=true;
       if(performanceMode){
         // Count slow frames only in normal pacing, so intentional paced frames
         // never get misclassified as additional frame drops.
@@ -290,6 +292,25 @@ export default function BestProductReveal(){
     const requestRender=()=>{if(!raf&&sectionVisible&&!document.hidden){previousTime=performance.now();raf=requestAnimationFrame(render);}};
     const stopRender=()=>{if(raf){cancelAnimationFrame(raf);raf=0;}};
 
+    // The first WebGL draw compiles shaders and uploads geometry/textures. Doing
+    // that on the first visible scroll frame causes a noticeable hitch, especially
+    // on integrated GPUs. Prime exactly one identical frame while the page is idle
+    // and the section is safely off-screen. Animation targets and render quality
+    // are unchanged; the visible frame loop still runs only when needed.
+    const warmup=()=>{
+      idleWarmup=0;
+      fallbackWarmup=0;
+      if(disposing||warmedUp||sectionVisible||document.hidden)return;
+      if(section.getBoundingClientRect().top<=window.innerHeight+240)return;
+      renderer.render(scene,camera);
+      warmedUp=true;
+    };
+    if(typeof window.requestIdleCallback==='function'){
+      idleWarmup=window.requestIdleCallback(warmup);
+    }else{
+      fallbackWarmup=window.setTimeout(warmup,700);
+    }
+
     const observer=new IntersectionObserver(entries=>{sectionVisible=entries[0]?.isIntersecting??false;if(sectionVisible)requestRender();else stopRender();},{rootMargin:'120px 0px'});observer.observe(section);
     const onVisibility=()=>{if(document.hidden)stopRender();else requestRender();};
     document.addEventListener('visibilitychange',onVisibility);
@@ -299,7 +320,7 @@ export default function BestProductReveal(){
     const intro=gsap.fromTo(root.scale,{x:.93,y:.93,z:.93},{x:1,y:1,z:1,duration:1.25,ease:'power3.out',onUpdate:requestRender,onComplete:requestRender});
     const onResize=()=>{if(resizeRaf)return;resizeRaf=requestAnimationFrame(()=>{resizeRaf=0;resize();requestRender();});};
     window.addEventListener('resize',onResize,{passive:true});const delayed=window.setTimeout(()=>{ScrollTrigger.refresh();requestRender();},120);
-    return()=>{window.clearTimeout(delayed);window.removeEventListener('resize',onResize);document.removeEventListener('visibilitychange',onVisibility);observer.disconnect();if(resizeRaf)cancelAnimationFrame(resizeRaf);stopRender();scrollControl.kill();intro.kill();renderer.dispose();outerBrandTexture.dispose();innerBrandTexture.dispose();productTexture.dispose();glowTexture.dispose();dustGeometry.dispose();revealDustGeometry.dispose();delete section.dataset.renderMode;scene.traverse(obj=>{if(obj.geometry)obj.geometry.dispose?.();if(obj.material){const mats=Array.isArray(obj.material)?obj.material:[obj.material];mats.forEach(m=>m.dispose?.());}});};
+    return()=>{disposing=true;if(idleWarmup&&window.cancelIdleCallback)window.cancelIdleCallback(idleWarmup);if(fallbackWarmup)window.clearTimeout(fallbackWarmup);window.clearTimeout(delayed);window.removeEventListener('resize',onResize);document.removeEventListener('visibilitychange',onVisibility);observer.disconnect();if(resizeRaf)cancelAnimationFrame(resizeRaf);stopRender();scrollControl.kill();intro.kill();renderer.dispose();outerBrandTexture.dispose();innerBrandTexture.dispose();productTexture.dispose();glowTexture.dispose();dustGeometry.dispose();revealDustGeometry.dispose();delete section.dataset.renderMode;scene.traverse(obj=>{if(obj.geometry)obj.geometry.dispose?.();if(obj.material){const mats=Array.isArray(obj.material)?obj.material:[obj.material];mats.forEach(m=>m.dispose?.());}});};
   },[]);
 
   return (
