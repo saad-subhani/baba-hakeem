@@ -1,2 +1,2 @@
-deploy-batch: live-admin-to-storefront-catalogue-synchronization-20261019
-scope: existing-product-cards-approved-Supabase-images-prices-stock-cart-availability-and-regression-tests; preserve-app-page-GSAP-WebGL-3D-animations-bottle-landings-header-layout-responsive-and-admin-database
+deploy-batch: storefront-catalogue-synchronization-parser-correction
+scope: correct-JavaScript-Rs-price-normalization-matching-SQL-parser; no-layout-motion-commerce-flow-or-database-changes
