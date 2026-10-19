@@ -1,0 +1,34 @@
+.screen{min-height:100vh!important;background:#f1eee5!important;color:#173226!important;padding:0 22px 44px!important;font:13px/1.5 Arial,Helvetica,sans-serif!important;position:relative!important;overflow:visible!important;transform:none!important;max-width:none!important}
+.screen *{box-sizing:border-box}
+.wrap{max-width:1350px!important;width:100%!important;margin:0 auto!important}
+.nav{height:90px!important;width:100%!important;display:flex!important;justify-content:space-between!important;align-items:center!important;position:relative!important;inset:auto!important;gap:18px!important;background:none!important;border-bottom:1px solid #1732262a!important;padding:0!important;color:#173226!important;transform:none!important}
+.brand{display:flex;align-items:center;gap:12px}.brand>span{width:45px;height:45px;border:1px solid #1732267a;border-radius:50%;display:grid;place-items:center;font:12px Georgia}.brand>div{display:flex;flex-direction:column;gap:3px}.brand b{font:16px Georgia}.brand small{font:8px monospace;letter-spacing:.12em}
+.navLinks{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.navLinks a{color:#173226;text-decoration:none;font:10px monospace}.navLinks a:hover{text-decoration:underline}
+.intro{display:flex!important;justify-content:space-between!important;align-items:end!important;gap:20px!important;margin:0!important;padding:47px 0 32px!important;min-height:0!important;position:relative!important;inset:auto!important;transform:none!important;background:none!important;color:#173226!important;overflow:visible!important}
+.intro>div{position:static!important;transform:none!important;opacity:1!important}.intro small,.panelTop small{font:9px monospace!important;color:#668473!important;letter-spacing:.14em}
+.intro h1{color:#173226!important;position:static!important;transform:none!important;opacity:1!important;text-align:left!important;margin:10px 0 14px!important;padding:0!important;font:400 clamp(46px,7vw,90px)/.96 Georgia,serif!important;letter-spacing:-.06em!important;max-width:none!important}
+.intro h1 em{color:#648e6e}.intro p{font-size:13px!important;color:#637d6b!important;margin:0!important}
+.intro>button{border:1px solid #1732266a;background:transparent;color:#173226;border-radius:40px;padding:13px 19px;font:10px monospace;white-space:nowrap;cursor:pointer}.intro>button:disabled{opacity:.6;cursor:wait}
+.notice{background:#e2eadd;border:1px solid #bccdbb;padding:19px 24px;margin-bottom:18px}.notice strong{font:14px Georgia}.notice p{color:#496550;margin:8px 0 0;font:12px/1.65 Arial}
+.error,.message{padding:13px 17px;margin:0 0 14px;font:12px Arial;border:1px solid #ae6f69;background:#f8e7e1;color:#813831}.message{border-color:#9aac8e;background:#e3eddd;color:#315e38}
+.stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;padding:0!important;margin:0 0 18px!important;position:static!important;transform:none!important;background:transparent!important}
+.stats article{padding:21px 23px;background:#e5e6db;display:flex;flex-direction:column;gap:12px;min-width:0;border:1px solid #17322612}.stats article:first-child{background:#173226;color:#f4f0e7}.stats small{font:9px monospace;letter-spacing:.1em}.stats strong{font:400 46px Georgia}
+.panel{background:#f9f7ef!important;border:1px solid #17322624!important;position:relative!important;inset:auto!important;transform:none!important;overflow:visible!important;padding:25px!important;margin:0!important;color:#173226!important;min-height:0!important}
+.panelTop{display:flex;justify-content:space-between;align-items:end;gap:20px;padding-bottom:23px;border-bottom:1px solid #17322626}
+.panelTop h2{font:400 30px Georgia,serif!important;color:#173226!important;margin:6px 0!important;position:static!important;opacity:1!important;transform:none!important}
+.panelTop p{font:11px/1.6 Arial;color:#718574;margin:5px 0 0}
+.actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.actions select{border:1px solid #17322653;background:#eeeede;color:#173226;font:11px Arial;padding:13px}
+.actions button{border:1px solid #173226;background:#173226;color:#f6f3e7;font:10px monospace;padding:14px 16px;cursor:pointer}.actions button:disabled{opacity:.65;cursor:wait}
+.tableOuter{width:100%;overflow:auto}.tableOuter table{width:100%;border-collapse:collapse;min-width:780px;text-align:left;color:#173226;font:12px Arial}
+.tableOuter th{padding:18px 11px;border-bottom:1px solid #17322626;text-align:left;font:9px monospace;color:#738875;letter-spacing:.1em}
+.tableOuter td{border-bottom:1px solid #17322614;padding:20px 11px;vertical-align:top;line-height:1.5}
+.tableOuter td b{font:600 12px Arial}.tableOuter td small{display:block;color:#748574;font:10px Arial;margin-top:5px;max-width:260px;overflow-wrap:anywhere}
+.tableOuter td .problem{color:#a5544d}
+.tag{display:inline-block;padding:5px 9px;border:1px solid #17322642;border-radius:18px;font:10px monospace;white-space:nowrap}
+.tableOuter td.empty{text-align:center;padding:55px!important;color:#738675}
+.footer{display:flex;justify-content:space-between;gap:16px;color:#819184;border-top:1px solid #17322623;margin-top:25px;padding-top:24px;font:9px monospace}
+.gate{min-height:100vh!important;background:#f1eee5!important;color:#173226!important;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:13px;text-align:center;padding:26px}
+.gate h1{font:400 40px Georgia!important;margin:6px 0!important;color:#173226!important}.gate p{font:12px Arial;color:#68816e}.gate a{background:#173226;color:#f8f5ed;text-decoration:none;padding:13px 18px;font:11px monospace}
+@media(max-width:920px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.panelTop{align-items:start;flex-direction:column}}
+@media(max-width:600px){.screen{padding:0 12px 30px!important}.nav{min-height:78px!important;height:auto!important;padding:16px 0!important;flex-wrap:wrap!important}.navLinks{gap:12px}.intro{padding:34px 0 23px!important;align-items:start!important;flex-direction:column!important}.intro h1{font-size:clamp(42px,11vw,70px)!important}.stats{gap:8px!important}.stats article{padding:15px}.stats strong{font-size:30px}.panel{padding:16px!important}.panelTop h2{font-size:26px!important}.footer{flex-direction:column}}

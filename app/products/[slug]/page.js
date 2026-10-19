@@ -11,7 +11,7 @@ export default function ProductPage(){
   const [product,setProduct]=useState(null);
   const [loading,setLoading]=useState(true);
   const [showOrder,setShowOrder]=useState(false);
-  const [orderForm,setOrderForm]=useState({name:'',phone:'',city:'',address:'',quantity:1,notes:''});
+  const [orderForm,setOrderForm]=useState({name:'',email:'',phone:'',city:'',address:'',quantity:1,notes:''});
   const [orderState,setOrderState]=useState({busy:false,error:'',success:null});
   useEffect(()=>{let alive=true;(async()=>{const {data}=await supabase.from('products').select('*').eq('slug',slug).eq('status','Published').maybeSingle();if(alive){setProduct(data||null);setLoading(false)}})();return()=>{alive=false}},[slug]);
   if(loading)return <main className="product-page"><div className="product-loading">LOADING COLLECTION...</div></main>;
@@ -25,7 +25,29 @@ export default function ProductPage(){
   const trackedStock=Number(product.stock_quantity||0);
   const maxQty=trackedStock>0?trackedStock:99;
   const soldOut=product.stock_status==='Out of Stock'||(trackedStock===0&&product.stock_status!=='In Stock');
-  const submitOrder=async(e)=>{e.preventDefault();if(soldOut){setOrderState({busy:false,error:'This product is currently out of stock.',success:null});return;}const requested=Number(orderForm.quantity)||1;if(requested<1||requested>maxQty){setOrderState({busy:false,error:`Please choose a quantity between 1 and ${maxQty}.`,success:null});return;}setOrderState({busy:true,error:'',success:null});const qty=requested;const payload={product_id:product.id,product_name:product.name,unit_price:priceNumber,quantity:qty,total_amount:priceNumber*qty,customer_name:orderForm.name.trim(),phone:orderForm.phone.trim(),city:orderForm.city.trim(),address:orderForm.address.trim(),notes:orderForm.notes.trim()||null,status:'Pending'};const {data,error}=await supabase.rpc('place_store_order',{p_customer:{name:payload.customer_name,email:'',phone:payload.phone,city:payload.city,address:payload.address,notes:payload.notes||''},p_items:[{id:product.id,name:product.name,quantity:qty}]});const placed=Array.isArray(data)?data[0]:data;if(error){setOrderState({busy:false,error:error.code==='PGRST202'?'Checkout is being configured. Please contact the store.':error.message,success:null});return;}setOrderState({busy:false,error:'',success:placed?.order_number||null});};
+  const submitOrder=async(e)=>{
+    e.preventDefault();
+    if(soldOut){setOrderState({busy:false,error:'This product is currently out of stock.',success:null});return;}
+    const requested=Number(orderForm.quantity)||1;
+    if(requested<1||requested>maxQty){setOrderState({busy:false,error:`Please choose a quantity between 1 and ${maxQty}.`,success:null});return;}
+    setOrderState({busy:true,error:'',success:null});
+    try{
+      const response=await fetch('/api/orders',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          customer:{name:orderForm.name.trim(),email:orderForm.email.trim(),
+            phone:orderForm.phone.trim(),city:orderForm.city.trim(),
+            address:orderForm.address.trim(),notes:orderForm.notes.trim()},
+          items:[{id:product.id,name:product.name,quantity:requested}]
+        })
+      });
+      const result=await response.json();
+      if(!response.ok||!result.success)throw new Error(result.error||'Unable to place the order.');
+      setOrderState({busy:false,error:'',success:result.order_number});
+    }catch(err){
+      setOrderState({busy:false,error:err?.message||'Unable to place the order.',success:null});
+    }
+  }
   return <main className="product-page">
     <header className="product-nav"><Link href="/" className="product-logo">BABA HAKEEM <span>HERBAL PRODUCTS</span></Link><Link href="/#shop">← COLLECTION</Link></header>
     <section className="product-detail">
@@ -36,7 +58,7 @@ export default function ProductPage(){
         <p className="product-disclaimer">Product information is presented as supplied in the catalogue. No medical claims are implied.</p>
       </div>
     </section>
-    {showOrder&&<div className="order-modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setShowOrder(false)}}><section className="order-modal" role="dialog" aria-modal="true" aria-label={'Order '+product.name}><button className="order-close" aria-label="Close order form" onClick={()=>setShowOrder(false)}>×</button>{orderState.success?<div className="order-success"><small>ORDER RECEIVED</small><h2>Thank you.</h2><p>Your order <b>{orderState.success}</b> has been saved. Baba Hakeem can now manage it from the admin dashboard.</p><a href={`https://wa.me/${contactNumber}?text=${encodeURIComponent('Hello Baba Hakeem, I just placed order '+orderState.success+' for '+product.name+'.')}`} target="_blank" rel="noopener noreferrer">SEND WHATSAPP CONFIRMATION ↗</a></div>:<><small>SECURE ORDER REQUEST</small><h2>Order {product.name}</h2><p>Enter your delivery details. Your request will appear instantly in the Baba Hakeem admin dashboard.</p><form onSubmit={submitOrder}><div className="order-form-row"><label><span>NAME *</span><input required value={orderForm.name} onChange={e=>setOrderForm({...orderForm,name:e.target.value})}/></label><label><span>PHONE *</span><input required value={orderForm.phone} onChange={e=>setOrderForm({...orderForm,phone:e.target.value})}/></label></div><div className="order-form-row"><label><span>CITY *</span><input required value={orderForm.city} onChange={e=>setOrderForm({...orderForm,city:e.target.value})}/></label><label><span>QUANTITY *</span><input type="number" min="1" max={maxQty} required value={orderForm.quantity} onChange={e=>setOrderForm({...orderForm,quantity:e.target.value})}/></label></div><label><span>DELIVERY ADDRESS *</span><textarea required rows="3" value={orderForm.address} onChange={e=>setOrderForm({...orderForm,address:e.target.value})}/></label><label><span>NOTES</span><textarea rows="2" value={orderForm.notes} onChange={e=>setOrderForm({...orderForm,notes:e.target.value})}/></label>{trackedStock>0&&<div className="checkout-stock">{trackedStock} units currently available</div>}<div className="order-total"><span>ORDER TOTAL</span><b>{priceNumber?String(priceNumber*(Number(orderForm.quantity)||1)):'Confirm on WhatsApp'}</b></div>{orderState.error&&<div className="order-error">{orderState.error}</div>}<button className="place-order" disabled={orderState.busy}>{orderState.busy?'PLACING ORDER...':'PLACE ORDER'} <b>→</b></button></form></>}</section></div>}
+    {showOrder&&<div className="order-modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setShowOrder(false)}}><section className="order-modal" role="dialog" aria-modal="true" aria-label={'Order '+product.name}><button className="order-close" aria-label="Close order form" onClick={()=>setShowOrder(false)}>×</button>{orderState.success?<div className="order-success"><small>ORDER RECEIVED</small><h2>Thank you.</h2><p>Your order <b>{orderState.success}</b> has been saved. Baba Hakeem can now manage it from the admin dashboard.</p><a href={`https://wa.me/${contactNumber}?text=${encodeURIComponent('Hello Baba Hakeem, I just placed order '+orderState.success+' for '+product.name+'.')}`} target="_blank" rel="noopener noreferrer">SEND WHATSAPP CONFIRMATION ↗</a></div>:<><small>SECURE ORDER REQUEST</small><h2>Order {product.name}</h2><p>Enter your delivery details. Your request will appear instantly in the Baba Hakeem admin dashboard.</p><form onSubmit={submitOrder}><div className="order-form-row"><label><span>NAME *</span><input required value={orderForm.name} onChange={e=>setOrderForm({...orderForm,name:e.target.value})}/></label><label><span>PHONE *</span><input required value={orderForm.phone} onChange={e=>setOrderForm({...orderForm,phone:e.target.value})}/></label></div><div className="order-form-row"><label><span>CITY *</span><input required value={orderForm.city} onChange={e=>setOrderForm({...orderForm,city:e.target.value})}/></label><label><span>QUANTITY *</span><input type="number" min="1" max={maxQty} required value={orderForm.quantity} onChange={e=>setOrderForm({...orderForm,quantity:e.target.value})}/></label></div><label><span>DELIVERY ADDRESS *</span><textarea required rows="3" value={orderForm.address} onChange={e=>setOrderForm({...orderForm,address:e.target.value})}/></label><label><span>EMAIL (OPTIONAL — FOR CONFIRMATION)</span><input type="email" value={orderForm.email} onChange={e=>setOrderForm({...orderForm,email:e.target.value})}/></label><label><span>NOTES</span><textarea rows="2" value={orderForm.notes} onChange={e=>setOrderForm({...orderForm,notes:e.target.value})}/></label>{trackedStock>0&&<div className="checkout-stock">{trackedStock} units currently available</div>}<div className="order-total"><span>ORDER TOTAL</span><b>{priceNumber?String(priceNumber*(Number(orderForm.quantity)||1)):'Confirm on WhatsApp'}</b></div>{orderState.error&&<div className="order-error">{orderState.error}</div>}<button className="place-order" disabled={orderState.busy}>{orderState.busy?'PLACING ORDER...':'PLACE ORDER'} <b>→</b></button></form></>}</section></div>}
     <footer className="product-footer"><span>BABA HAKEEM HERBAL PRODUCTS © 2026</span><Link href="/#shop">EXPLORE MORE PRODUCTS →</Link></footer>
   </main>
 }

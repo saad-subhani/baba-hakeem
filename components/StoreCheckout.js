@@ -186,7 +186,7 @@ export function ThankYouPage(){
       {receipt?<><div className={styles.successMark}>✓</div><h2>Your order request was received.</h2>
         <p>Your reference number is <b>{receipt.order_number}</b>. Keep this number for order-related enquiries.</p>
         <div className={styles.summaryRow}><span>Confirmed product subtotal</span><b>{money(receipt.total_amount)}</b></div>
-        <p className={styles.muted}>Payment and delivery will be confirmed by the store. Email notifications are not active yet.</p>
+        <p className={styles.muted}>Payment and delivery will be confirmed by the store. If you entered an email address, confirmation may arrive separately. Your order remains valid even if email delivery is unavailable.</p>
       </>:<><h2>Looking for an order?</h2><p>Order confirmation is shown here after a successful checkout on this device. Check your saved order reference or contact the store.</p></>}
       <Link className={styles.primary} href="/">RETURN TO HOME →</Link>
     </section>

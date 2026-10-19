@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '../../../lib/supabase';
+import {dispatchOrderEmails} from '../../../lib/orderEmailDispatch';
 
 export const runtime = 'nodejs';
 
@@ -53,7 +54,10 @@ export async function POST(request){
     }
     const order=Array.isArray(data)?data[0]:data;
     if(!order?.order_number)return fail('The order could not be confirmed.',500);
-    return NextResponse.json({success:true,order_number:order.order_number,total_amount:Number(order.total_amount||0)},{
+    // The order remains successful even if email delivery is delayed or unavailable.
+    // Emails are queued transactionally in Supabase and dispatch is server-only.
+    const notification=await dispatchOrderEmails({orderNumber:order.order_number,limit:2});
+    return NextResponse.json({success:true,order_number:order.order_number,total_amount:Number(order.total_amount||0),email_status:notification.status},{
       headers:{'Cache-Control':'no-store'}
     });
   }catch(error){

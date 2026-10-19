@@ -1,2 +1,2 @@
-deploy-batch: phase-3-admin-order-inventory-operations
-scope: owner-only-order-fulfillment-line-items-status-history-auditable-stock-and-safety; preserve-all-storefront-animations-GSAP-WebGL-bottle-placements-styling-performance-and-existing-customer-routes
+deploy-batch: phase-4-safe-order-email-queue-and-templates
+scope: customer-order-confirmations-store-alerts-owner-delivery-queue-and-secure-email-sender-setup; lock-homepage-GSAP-WebGL-bottle-positions-smoothness-header-and-approved-customer-facing-design
