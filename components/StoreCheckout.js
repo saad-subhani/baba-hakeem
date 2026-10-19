@@ -110,8 +110,8 @@ export function CartPage(){
     {!ready||!catalogueReady?<p className={styles.notice}>Verifying product availability…</p>:items.length===0?
       <section className={styles.empty}><h2>Your cart is empty.</h2><p>Explore the Baba Hakeem collection to get started.</p><Link className={styles.primary} href="/#reel-products">EXPLORE PRODUCTS →</Link></section>
       :<div className={styles.columns}><section className={styles.panel}><h2>Selected products</h2><LineItems items={items} change={change} remove={remove} editable/></section><aside className={styles.panel}>
-        <h2>Order summary</h2><div className={styles.summaryRow}><span>Estimated subtotal</span><b>{money(subtotal)}</b></div>
-        <p className={styles.muted}>Prices and availability come from approved products in our live catalogue. Payment and delivery details are confirmed by the store.</p>
+        <h2>Order summary</h2><div className={styles.summaryRow}><span>Product subtotal</span><b>{canCheckout?money(subtotal):'Price pending'}</b></div>
+        <p className={styles.muted}>Payment: <strong>Cash on Delivery (COD)</strong>. Product prices and stock are confirmed from our approved catalogue. Any delivery charges will be communicated before dispatch.</p>
         {catalogueError&&<p className={styles.muted}>{catalogueError}</p>}
         {canCheckout?<Link href="/checkout" className={styles.primary}>CONTINUE TO CHECKOUT →</Link>:
           <p className={styles.muted}>Online ordering for this selection is not available yet. Please contact the store to confirm price and stock.</p>}
@@ -147,7 +147,7 @@ export function CheckoutPage(){
       setSending(false);
     }
   };
-  return <SiteFrame number="02" title="CHECKOUT." description="Share your delivery details to request an order. No online payment will be collected.">
+  return <SiteFrame number="02" title="CHECKOUT." description="Enter your delivery details and choose Cash on Delivery. No advance online payment is required.">
     {!ready||!catalogueReady?<p className={styles.notice}>Verifying checkout…</p>:items.length===0?
       <section className={styles.empty}><h2>Nothing to check out yet.</h2><Link href="/cart" className={styles.primary}>BACK TO CART →</Link></section>:!canCheckout?
       <section className={styles.empty}><h2>Online checkout isn't ready for these products.</h2><p>Please confirm prices and stock with the store. No order has been placed.</p><Link href="/cart" className={styles.primary}>REVIEW YOUR CART →</Link></section>:
@@ -162,12 +162,12 @@ export function CheckoutPage(){
           </div>
           <label>COMPLETE DELIVERY ADDRESS *<textarea autoComplete="street-address" required minLength={8} maxLength={500} rows={3} value={customer.address} onChange={e=>set('address',e.target.value)}/></label>
           <label>ORDER NOTES (OPTIONAL)<textarea maxLength={1000} rows={2} value={customer.notes} onChange={e=>set('notes',e.target.value)}/></label>
-          <div className={styles.payment}><strong>Payment method</strong><p>To be confirmed by Baba Hakeem before fulfillment. Cash on Delivery or online payment has not yet been finalized.</p></div>
+          <div className={styles.payment}><strong>Cash on Delivery (COD)</strong><p>Pay in cash when your order is delivered. Your request is reviewed by Baba Hakeem before dispatch. Any delivery charges will be confirmed by the store beforehand; no online payment is collected.</p></div>
           {error&&<div className={styles.error} role="alert">{error} <Link href="/cart">Review cart</Link></div>}
-          <button className={styles.primary} disabled={sending} type="submit">{sending?'PLACING ORDER…':'PLACE ORDER REQUEST →'}</button>
+          <button className={styles.primary} disabled={sending} type="submit">{sending?'PLACING ORDER…' :'PLACE COD ORDER →'}</button>
         </form>
       </section><aside className={styles.panel}><h2>Your order</h2><LineItems items={items}/><div className={styles.summaryRow}><span>Estimated subtotal</span><b>{money(subtotal)}</b></div>
-        <p className={styles.muted}>Official prices, stock and final total are validated by the database before an order is accepted.</p><Link className={styles.secondary} href="/cart">← EDIT CART</Link>
+        <p className={styles.muted}>Payment: <strong>Cash on Delivery</strong>. The product subtotal is validated by the database. Any delivery charges are confirmed before dispatch.</p><Link className={styles.secondary} href="/cart">← EDIT CART</Link>
       </aside></div>}
   </SiteFrame>;
 }
@@ -183,10 +183,10 @@ export function ThankYouPage(){
   },[]);
   return <SiteFrame number="03" title="THANK YOU." description="Baba Hakeem Herbal Products">
     <section className={styles.empty}>
-      {receipt?<><div className={styles.successMark}>✓</div><h2>Your order request was received.</h2>
+      {receipt?<><div className={styles.successMark}>✓</div><h2>Your COD order request was received.</h2>
         <p>Your reference number is <b>{receipt.order_number}</b>. Keep this number for order-related enquiries.</p>
         <div className={styles.summaryRow}><span>Confirmed product subtotal</span><b>{money(receipt.total_amount)}</b></div>
-        <p className={styles.muted}>Payment and delivery will be confirmed by the store. If you entered an email address, confirmation may arrive separately. Your order remains valid even if email delivery is unavailable.</p>
+        <p className={styles.muted}><strong>Payment: Cash on Delivery.</strong> Pay cash when your order arrives. Baba Hakeem will confirm delivery details and any delivery charges before dispatch. Your order is currently awaiting confirmation. If you entered an email address, an order notification may arrive separately.</p>
       </>:<><h2>Looking for an order?</h2><p>Order confirmation is shown here after a successful checkout on this device. Check your saved order reference or contact the store.</p></>}
       <Link className={styles.primary} href="/">RETURN TO HOME →</Link>
     </section>

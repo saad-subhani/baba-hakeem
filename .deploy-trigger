@@ -1,2 +1,2 @@
-deploy-batch: admin-responsive-premium-design-20261019
-scope: admin-only-root-dashboard-operations-reports-email-inbox-owner-transfer-navigation-and-8-regression-tests; lock-all-public-storefront-GSAP-WebGL-bottle-card-animations-Supabase-data-workflows
+deploy-batch: cod-payment-checkout-20261019
+scope: COD-on-new-orders-plus-customer-checkout-copy-single-product-form-and-regression-tests; all-existing-storefront-animations-GSAP-WebGL-bottle-position-header-product-visuals-and-admin-operations-locked

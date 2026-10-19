@@ -95,3 +95,31 @@ test('Admin order detail is immediately useful, and admin quick actions are real
   assert.ok(styles.includes('#baba-admin-root .admin-shortcuts'));
   assert.ok(styles.includes('@media(max-width:620px)'));
 });
+
+
+test('COD checkout is the verified server-side default for all new customer orders',()=>{
+  const migration=source('supabase/migrations/20261019_cod_checkout.sql');
+  const api=source('app/api/orders/route.js');
+  assert.ok(migration.includes("alter column payment_method set default 'Cash on Delivery'"));
+  assert.ok(migration.includes("v_address,v_notes,'Cash on Delivery','Pending',true)"));
+  assert.ok(migration.includes("v_price_raw := regexp_replace"));
+  assert.ok(migration.includes("stock_quantity=stock_quantity-"));
+  assert.ok(!migration.includes("update public.orders set payment_method"));
+  assert.ok(api.includes("supabase.rpc('place_store_order'"));
+  assert.ok(!api.includes("payment_method:body"));
+});
+
+test('COD messaging is consistent on cart, address checkout, receipt and single-product order',()=>{
+  const checkout=source('components/StoreCheckout.js');
+  const product=source('app/products/[slug]/page.js');
+  assert.ok(checkout.includes("Cash on Delivery (COD)"));
+  assert.ok(checkout.includes("PLACE COD ORDER"));
+  assert.ok(checkout.includes("Price pending"));
+  assert.ok(checkout.includes("COMPLETE DELIVERY ADDRESS *"));
+  assert.ok(checkout.includes("Your COD order request was received."));
+  assert.ok(checkout.includes("Any delivery charges"));
+  assert.ok(product.includes("CASH ON DELIVERY / NO ADVANCE PAYMENT"));
+  assert.ok(product.includes("DELIVERY ADDRESS *"));
+  assert.ok(product.includes("PLACE COD ORDER"));
+  assert.ok(product.includes("PRODUCT SUBTOTAL (COD)"));
+});
