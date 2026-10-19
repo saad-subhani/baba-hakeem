@@ -1,2 +1,2 @@
-deploy-batch: cod-payment-checkout-20261019
-scope: COD-on-new-orders-plus-customer-checkout-copy-single-product-form-and-regression-tests; all-existing-storefront-animations-GSAP-WebGL-bottle-position-header-product-visuals-and-admin-operations-locked
+deploy-batch: live-admin-to-storefront-catalogue-synchronization-20261019
+scope: existing-product-cards-approved-Supabase-images-prices-stock-cart-availability-and-regression-tests; preserve-app-page-GSAP-WebGL-3D-animations-bottle-landings-header-layout-responsive-and-admin-database

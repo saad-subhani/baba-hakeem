@@ -54,7 +54,7 @@ function useCart(){
   useEffect(()=>{
     let alive=true;
     supabase.from('products').select('id,name,price,stock_quantity,stock_status,image')
-      .eq('status','Published').then(({data,error})=>{
+      .eq('status','Published').order('created_at',{ascending:false}).then(({data,error})=>{
         if(!alive)return;
         if(error)setCatalogueError('Product availability could not be verified.');
         setCatalogue(error?[]:data||[]);

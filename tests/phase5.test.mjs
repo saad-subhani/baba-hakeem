@@ -123,3 +123,57 @@ test('COD messaging is consistent on cart, address checkout, receipt and single-
   assert.ok(product.includes("PLACE COD ORDER"));
   assert.ok(product.includes("PRODUCT SUBTOTAL (COD)"));
 });
+
+
+test('Published Admin product overrides matching static collection card, never an old draft',async()=>{
+  const catalogue=await import('../lib/storefrontCatalogue.mjs');
+  const products=[
+    {id:'draft-old',name:'Hair Oil',status:'Draft',created_at:'2026-10-19T08:00:00Z',price:null,stock_quantity:0,stock_status:'Out of Stock'},
+    {id:'new-hair',name:'Hair oil',status:'Published',created_at:'2026-10-19T11:00:00Z',price:'2000',stock_quantity:1,stock_status:'In Stock',
+      image:'https://example.org/storage/hair-green.png'},
+    {id:'older-hair',name:'HAIR OIL',status:'Published',created_at:'2026-10-19T09:00:00Z',price:'1200',stock_quantity:6,stock_status:'In Stock'},
+    {id:'other',name:'Joint Oil',status:'Draft',created_at:'2026-10-19T09:00:00Z',price:'1800',stock_quantity:2,stock_status:'In Stock'}
+  ];
+  const actual=catalogue.publishedProductByName(products,' HAIR   OIL ');
+  assert.equal(actual.id,'new-hair');
+  assert.equal(actual.image,'https://example.org/storage/hair-green.png');
+  assert.equal(catalogue.verifiedProductPrice(actual.price),2000);
+  assert.equal(catalogue.productStock(actual),1);
+  assert.equal(catalogue.productCanOrder(actual),true);
+  assert.equal(catalogue.productCanOrder(actual,2),false);
+  assert.equal(catalogue.publishedProductByName(products,'Joint Oil'),null);
+});
+
+test('No draft or out-of-stock product can be added at a demo price',async()=>{
+  const catalogue=await import('../lib/storefrontCatalogue.mjs');
+  assert.equal(catalogue.verifiedProductPrice(null),null);
+  assert.equal(catalogue.verifiedProductPrice('Rs. 2,000'),2000);
+  assert.equal(catalogue.verifiedProductPrice('not approved'),null);
+  assert.equal(catalogue.productStock({stock_status:'Out of Stock',stock_quantity:1}),0);
+  assert.equal(catalogue.productCanOrder({status:'Published',price:'2000',stock_status:'Out of Stock',stock_quantity:0}),false);
+  const cart=source('components/CartExperience.js');
+  assert.ok(!cart.includes('price:1200'));
+  assert.ok(!cart.includes('price:1800'));
+  assert.ok(cart.includes(".eq('status','Published')"));
+  assert.ok(cart.includes('publishedProductByName(publishedProducts,name)'));
+  assert.ok(cart.includes("meta.dataset.cartAvailable==='true'"));
+  assert.ok(cart.includes('Out of stock'));
+  assert.ok(cart.includes('baba-catalogue-cards-changed'));
+  assert.ok(cart.includes("imageTag.dataset.originalCatalogueSrc"));
+  assert.ok(cart.includes("visual.classList.contains('ref-joint-target')"));
+  assert.ok(cart.includes("imageTag?.classList.contains('ref-mens-moving')"));
+  const checkout=source('components/StoreCheckout.js');
+  assert.ok(checkout.includes(".eq('status','Published').order('created_at',{ascending:false})"));
+});
+
+test('Locked GSAP and six fixed product anchors remain in their original homepage',()=>{
+  const home=source('app/page.js');
+  assert.ok(home.includes("const HAIR_OIL='/products/hair%20oil%20mockup%20png.png'"));
+  assert.ok(home.includes('<article className="ref-mens-source">'));
+  assert.ok(home.includes('ref={jointTargetRef}'));
+  assert.ok(home.includes('ref={mensOilRef}'));
+  assert.ok(home.includes('scrub:1.15'));
+  assert.ok(home.includes('scrub:1.2'));
+  assert.ok(home.includes('targetScale=window.innerWidth<760?1.95:2.12'));
+  assert.ok(home.includes('handsRect.height*.83'));
+});
