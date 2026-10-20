@@ -116,7 +116,8 @@ test('COD messaging is consistent on cart, address checkout, receipt and single-
   assert.ok(checkout.includes("PLACE COD ORDER"));
   assert.ok(checkout.includes("Price pending"));
   assert.ok(checkout.includes("COMPLETE DELIVERY ADDRESS *"));
-  assert.ok(checkout.includes("Your COD order request was received."));
+  assert.ok(checkout.includes('Your order is in <em>good hands.</em>'));
+  assert.ok(checkout.includes('Cash on Delivery order request'));
   assert.ok(checkout.includes("Any delivery charges"));
   assert.ok(product.includes("CASH ON DELIVERY / NO ADVANCE PAYMENT"));
   assert.ok(product.includes("DELIVERY ADDRESS *"));

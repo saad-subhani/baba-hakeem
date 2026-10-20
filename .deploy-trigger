@@ -1,2 +1,2 @@
-deploy-batch: premium-thank-you-success-experience-20261020
-scope: thank-you-only-motion-receipt-timeline-responsive-layout-accessible-copy-feedback; locked-homepage-GSAP-WebGL-bottle-position-cart-checkout-admin-and-database-not-changed
+deploy-batch: premium-thank-you-test-assertion-correction-20261020
+scope: replace outdated COD thank-you text assertion with new premium confirmation copy; no production changes beyond previous commit
