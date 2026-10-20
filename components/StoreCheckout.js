@@ -74,8 +74,8 @@ function useCart(){
   return {items:verifiedItems,ready,change,remove,subtotal,catalogueReady,catalogueError,canCheckout};
 }
 
-function SiteFrame({number,title,description,children}){
-  return <main className={styles.screen}>
+function SiteFrame({number,title,description,children,variant}){
+  return <main className={variant==='thank-you'?`${styles.screen} ${styles.thankYouScreen}`:styles.screen}>
     <div className={styles.wrap}>
       <header className={styles.header}><Link href="/" className={styles.logo}>BABA HAKEEM <small>HERBAL PRODUCTS</small></Link><Link href="/#reel-products" className={styles.return}>← CONTINUE SHOPPING</Link></header>
       <div className={styles.eyebrow}>{number} / BABA HAKEEM SHOP</div>
@@ -174,21 +174,109 @@ export function CheckoutPage(){
 
 export function ThankYouPage(){
   const [receipt,setReceipt]=useState(null);
+  const [checked,setChecked]=useState(false);
+  const [copyState,setCopyState]=useState('idle');
+
   useEffect(()=>{
     try{
       const order=new URLSearchParams(window.location.search).get('order');
       const saved=JSON.parse(sessionStorage.getItem(RECEIPT_KEY)||'null');
       if(saved?.order_number&&saved.order_number===order)setReceipt(saved);
     }catch{}
+    finally{setChecked(true);}
   },[]);
-  return <SiteFrame number="03" title="THANK YOU." description="Baba Hakeem Herbal Products">
-    <section className={styles.empty}>
-      {receipt?<><div className={styles.successMark}>✓</div><h2>Your COD order request was received.</h2>
-        <p>Your reference number is <b>{receipt.order_number}</b>. Keep this number for order-related enquiries.</p>
-        <div className={styles.summaryRow}><span>Confirmed product subtotal</span><b>{money(receipt.total_amount)}</b></div>
-        <p className={styles.muted}><strong>Payment: Cash on Delivery.</strong> Pay cash when your order arrives. Baba Hakeem will confirm delivery details and any delivery charges before dispatch. Your order is currently awaiting confirmation. If you entered an email address, an order notification may arrive separately.</p>
-      </>:<><h2>Looking for an order?</h2><p>Order confirmation is shown here after a successful checkout on this device. Check your saved order reference or contact the store.</p></>}
-      <Link className={styles.primary} href="/">RETURN TO HOME →</Link>
-    </section>
+
+  const copyReference=async()=>{
+    if(!receipt?.order_number)return;
+    try{
+      await navigator.clipboard.writeText(receipt.order_number);
+      setCopyState('copied');
+    }catch{
+      setCopyState('unavailable');
+    }
+  };
+
+  return <SiteFrame variant="thank-you" number="03"
+    title={<>THANK <em>YOU.</em></>}
+    description="A little care goes a long way. Thank you for choosing Baba Hakeem.">
+    {!checked?<section className={styles.receiptLoading} aria-live="polite">Preparing your confirmation…</section>:
+    receipt?<div className={styles.thankYouGrid}>
+      <section className={styles.receiptCard} aria-labelledby="order-received-heading">
+        <div className={styles.receiptTop}>
+          <span className={styles.receiptBrand}>BH <span>BABA HAKEEM <small>HERBAL PRODUCTS</small></span></span>
+          <span className={styles.receiptStatus}><span className={styles.statusDot}/> REQUEST RECEIVED</span>
+        </div>
+        <div className={styles.successVisual} aria-hidden="true">
+          <span className={styles.successHalo}/>
+          <span className={styles.successOrbit}/>
+          <span className={styles.successSeal}>
+            <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <path d="M15 33L27 45L49 20" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+          <span className={styles.successSparkOne}/>
+          <span className={styles.successSparkTwo}/>
+        </div>
+        <p className={styles.receiptKicker}>01 / ORDER REQUEST SAVED</p>
+        <h2 id="order-received-heading" className={styles.receiptHeading}>Your order is in <em>good hands.</em></h2>
+        <p className={styles.receiptIntro}>We've received your Cash on Delivery order request. Our team will review the details and confirm availability and delivery before dispatch.</p>
+        <div className={styles.orderReference}>
+          <span>YOUR ORDER REFERENCE</span>
+          <div>
+            <strong>{receipt.order_number}</strong>
+            <button type="button" onClick={copyReference} className={styles.copyReference}
+              aria-label="Copy order reference" title="Copy order reference">
+              {copyState==='copied'?'COPIED ✓':copyState==='unavailable'?'COPY UNAVAILABLE':'COPY ↗'}
+            </button>
+          </div>
+          <small role="status" aria-live="polite">
+            {copyState==='copied'?'Reference copied to clipboard.':copyState==='unavailable'?'Please select and copy the reference above.':'Keep this number for order-related enquiries.'}
+          </small>
+        </div>
+        <div className={styles.receiptDetails}>
+          <div><span>PRODUCT SUBTOTAL</span><strong>{money(receipt.total_amount)}</strong></div>
+          <div><span>PAYMENT METHOD</span><strong>Cash on Delivery</strong></div>
+          {Number(receipt.item_count)>0&&<div><span>ITEMS ORDERED</span><strong>{receipt.item_count}</strong></div>}
+        </div>
+        <div className={styles.paymentReminder}>
+          <span aria-hidden="true">✓</span>
+          <p><b>No payment taken online.</b> Pay cash on delivery. Any delivery charges will be confirmed by the store before dispatch.</p>
+        </div>
+      </section>
+      <aside className={styles.nextStepsCard} aria-label="What happens next">
+        <div className={styles.nextStepsHead}><span>THE NEXT CHAPTER</span><span>03 / 03</span></div>
+        <h3>From our store <em>to your door.</em></h3>
+        <p className={styles.nextStepsIntro}>Your request is on its way through our order process. Here is what comes next.</p>
+        <ol className={styles.orderJourney}>
+          <li className={styles.journeyDone}>
+            <span className={styles.journeyNumber}>01</span>
+            <div><strong>Request received</strong><p>Saved securely with your order reference.</p><small>COMPLETED ✓</small></div>
+          </li>
+          <li>
+            <span className={styles.journeyNumber}>02</span>
+            <div><strong>Store confirmation</strong><p>Our team reviews your details, stock and delivery.</p><small>AWAITING CONFIRMATION</small></div>
+          </li>
+          <li>
+            <span className={styles.journeyNumber}>03</span>
+            <div><strong>Delivery &amp; payment</strong><p>Pay cash when your parcel arrives.</p><small>UPCOMING</small></div>
+          </li>
+        </ol>
+        <div className={styles.thankYouActions}>
+          <Link href="/#reel-products" className={styles.exploreAgain}>CONTINUE EXPLORING <span aria-hidden="true">↗</span></Link>
+          <a href="https://wa.me/923239992203" target="_blank" rel="noopener noreferrer"
+            className={styles.supportLink}>NEED HELP? WHATSAPP <span aria-hidden="true">↗</span></a>
+        </div>
+      </aside>
+    </div>:
+    <section className={styles.receiptMissing}>
+      <span className={styles.receiptMissingIcon} aria-hidden="true">BH</span>
+      <p className={styles.receiptKicker}>ORDER LOOKUP</p>
+      <h2>Looking for an order?</h2>
+      <p>A confirmation appears here after checkout on this device. If you have an order reference, keep it ready when contacting the store.</p>
+      <div className={styles.missingActions}>
+        <Link className={styles.exploreAgain} href="/#reel-products">BROWSE PRODUCTS <span aria-hidden="true">↗</span></Link>
+        <a className={styles.supportLink} href="https://wa.me/923239992203" target="_blank" rel="noopener noreferrer">CONTACT ON WHATSAPP ↗</a>
+      </div>
+    </section>}
   </SiteFrame>;
 }

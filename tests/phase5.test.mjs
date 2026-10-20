@@ -192,3 +192,41 @@ test('Cart, checkout and thank-you headers stay above page titles without overla
   assert.ok(jsx.indexOf('<header className={styles.header}')<jsx.indexOf('<h1 className={styles.title}'), 'Shop brand header precedes heading');
   assert.ok(css.includes('@media(max-width:530px)'), 'Keep existing mobile spacing');
 });
+
+
+test('Premium Thank You presentation is scoped and never changes stored order status',()=>{
+  const page=source('components/StoreCheckout.js');
+  const css=source('components/StoreCheckout.module.css');
+  const publicLayout=source('app/layout.js');
+  assert.ok(page.includes("variant==='thank-you'?"), 'Thank You page styling must be opt-in');
+  assert.ok(page.includes('variant="thank-you"'), 'Only the confirmation uses the premium variant');
+  assert.ok(page.includes("saved.order_number===order"), 'Reference only shown for matching session receipt');
+  assert.ok(page.includes('receipt?<div className={styles.thankYouGrid}>'), 'Successful receipt is distinct from missing receipt');
+  assert.ok(page.includes('!checked?<section'), 'No flash of false confirmation before session is checked');
+  assert.ok(page.includes('Cash on Delivery'), 'Confirmed payment method remains COD');
+  assert.ok(page.includes('AWAITING CONFIRMATION'), 'Order status must not be shown as paid or fulfilled');
+  assert.ok(page.includes('Any delivery charges will be confirmed'), 'No invented shipping rates');
+  assert.ok(page.includes('navigator.clipboard.writeText(receipt.order_number)'), 'Order reference can be copied');
+  assert.ok(page.includes('aria-live="polite"'), 'Copy feedback is announced accessibly');
+  assert.ok(css.includes('.thankYouScreen'), 'All premium styles opt into the Thank You screen');
+  assert.ok(css.includes('.thankYouGrid'), 'Premium two-column layout exists');
+  assert.ok(css.includes('@media(max-width:600px)'), 'Confirmation stacks on small screens');
+  assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'), 'Animations respect reduced motion');
+  assert.ok(css.includes('stroke-dashoffset:0!important'), 'Checkmark remains visible in reduced motion');
+  assert.ok(publicLayout.includes('<CartExperience/>'), 'Storefront cart is untouched');
+});
+
+test('Existing Cart and Checkout remain on the original shared styles and order flow',()=>{
+  const page=source('components/StoreCheckout.js');
+  const css=source('components/StoreCheckout.module.css');
+  const beforeThankYou=page.split('export function ThankYouPage(){')[0];
+  assert.ok(beforeThankYou.includes('export function CartPage(){'));
+  assert.ok(beforeThankYou.includes('export function CheckoutPage(){'));
+  assert.ok(beforeThankYou.includes("supabase.from('products').select"));
+  assert.ok(beforeThankYou.includes("fetch('/api/orders'"));
+  assert.ok(beforeThankYou.includes("window.location.assign('/thank-you?order='"));
+  assert.ok(beforeThankYou.includes('PLACE COD ORDER'));
+  assert.ok(beforeThankYou.includes(':styles.screen}>'), 'Ordinary cart/checkout still use base style');
+  assert.ok(css.includes('.header{height:100px;position:relative;inset:auto;'), 'Previously fixed nonoverlapping header is retained');
+  assert.ok(css.includes('.formRow{display:grid;grid-template-columns:1fr 1fr;'), 'Checkout layout preserved');
+});

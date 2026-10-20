@@ -1,2 +1,2 @@
-deploy-batch: fix-cart-checkout-header-title-overlap-20261020
-scope: only scoped StoreCheckout CSS header flow and regression test; preserve existing checkout, cart, homepage, animation, admin and database behavior
+deploy-batch: premium-thank-you-success-experience-20261020
+scope: thank-you-only-motion-receipt-timeline-responsive-layout-accessible-copy-feedback; locked-homepage-GSAP-WebGL-bottle-position-cart-checkout-admin-and-database-not-changed
