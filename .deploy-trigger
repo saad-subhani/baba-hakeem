@@ -1,2 +1,2 @@
-deploy-batch: storefront-catalogue-synchronization-parser-correction
-scope: correct-JavaScript-Rs-price-normalization-matching-SQL-parser; no-layout-motion-commerce-flow-or-database-changes
+deploy-batch: fix-cart-checkout-header-title-overlap-20261020
+scope: only scoped StoreCheckout CSS header flow and regression test; preserve existing checkout, cart, homepage, animation, admin and database behavior

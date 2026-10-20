@@ -1,6 +1,6 @@
 .screen{min-height:100vh;background:#ecebe6;color:#111;font-family:Arial,Helvetica,sans-serif;padding:0 22px 24px}
 .wrap{max-width:1160px;margin:0 auto}
-.header{height:100px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.15);gap:20px}
+.header{height:100px;position:relative;inset:auto;z-index:1;padding:0;width:100%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.15);gap:20px}
 .logo{text-decoration:none;color:#101010;font-size:20px;letter-spacing:-.055em;font-weight:800;white-space:nowrap}
 .logo small{display:block;font-size:8px;letter-spacing:.19em;margin-top:3px}
 .return{font-size:11px;font-weight:700;letter-spacing:.12em;text-decoration:none;color:#161616}

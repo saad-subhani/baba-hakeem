@@ -177,3 +177,18 @@ test('Locked GSAP and six fixed product anchors remain in their original homepag
   assert.ok(home.includes('targetScale=window.innerWidth<760?1.95:2.12'));
   assert.ok(home.includes('handsRect.height*.83'));
 });
+
+
+test('Cart, checkout and thank-you headers stay above page titles without overlap',()=>{
+  const css=source('components/StoreCheckout.module.css');
+  const jsx=source('components/StoreCheckout.js');
+  const global=source('app/globals.css');
+  assert.ok(global.includes('header{position:absolute;'), 'Regression fixture: global cinematic header is positioned');
+  const headerRule=css.split('.header{')[1]?.split('}')[0]||'';
+  assert.ok(headerRule.includes('position:relative'), 'Shop header should stay in document flow');
+  assert.ok(headerRule.includes('inset:auto'), 'Reset inherited global header offsets');
+  assert.ok(headerRule.includes('padding:0'), 'Reset cinematic header padding');
+  assert.ok(headerRule.includes('display:flex'), 'Preserve cart header navigation layout');
+  assert.ok(jsx.indexOf('<header className={styles.header}')<jsx.indexOf('<h1 className={styles.title}'), 'Shop brand header precedes heading');
+  assert.ok(css.includes('@media(max-width:530px)'), 'Keep existing mobile spacing');
+});
