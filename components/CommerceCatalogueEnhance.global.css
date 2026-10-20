@@ -79,7 +79,7 @@
   z-index:1;
   margin:0!important;
   padding:22px 22px 0!important;
-  color:#f4f4f0!important;
+  color:#f4f4f4!important;
   font:700 21px/1.1 Arial,sans-serif!important;
   letter-spacing:-.035em!important;
   text-align:left!important;
@@ -91,7 +91,7 @@
   flex:1;
   flex-direction:column;
   padding:10px 22px 22px!important;
-  color:#f4f4f0;
+  color:#f4f4f4;
 }
 .static-reference-site .ref-commerce-kicker{
   order:-1;
@@ -132,7 +132,7 @@
   text-transform:uppercase;
 }
 .static-reference-site .ref-commerce-price strong{
-  color:#f5f5f1!important;
+  color:#f5f5f5!important;
   font:700 22px/1 Arial,sans-serif!important;
   letter-spacing:-.045em!important;
   white-space:nowrap;
@@ -151,9 +151,9 @@
   min-width:0!important;
   height:46px!important;
   padding:0 18px!important;
-  border:1px solid #efefe9!important;
+  border:1px solid #efefef!important;
   border-radius:9px!important;
-  background:#efefe9!important;
+  background:#efefef!important;
   color:#090909!important;
   box-shadow:none!important;
   backdrop-filter:none!important;
@@ -175,17 +175,17 @@
   border:1px solid rgba(255,255,255,.18)!important;
   border-radius:9px!important;
   overflow:hidden!important;
-  background:#111!important;
+  background:#111111!important;
 }
 .static-reference-site .ref-card-stepper button{
   height:100%!important;
   border:0!important;
   background:transparent!important;
-  color:#f3f3ef!important;
+  color:#f3f3f3!important;
   font:500 17px/1 Arial,sans-serif!important;
   cursor:pointer;
 }
-.static-reference-site .ref-card-stepper span{color:#fff!important;text-align:center;font:700 11px/1 Arial,sans-serif!important}
+.static-reference-site .ref-card-stepper span{color:#ffffff!important;text-align:center;font:700 11px/1 Arial,sans-serif!important}
 .static-reference-site .ref-card-whatsapp{
   width:44px!important;
   height:46px!important;
@@ -194,7 +194,7 @@
   border:1px solid rgba(255,255,255,.15)!important;
   border-radius:9px!important;
   background:transparent!important;
-  color:#f3f3ef!important;
+  color:#f3f3f3!important;
   text-decoration:none!important;
   font:700 13px/1 Arial,sans-serif!important;
   transition:background .18s ease,border-color .18s ease,transform .18s ease!important;
@@ -213,7 +213,7 @@
     box-shadow:none!important;
   }
   .static-reference-site .ref-product-grid>article:hover>div:first-child>img:not(.ref-mens-moving){transform:translate3d(0,-5px,0) scale(1.025)!important}
-  .static-reference-site .ref-cart-add:hover{transform:translate3d(0,-1px,0)!important;background:#fff!important;color:#050505!important}
+  .static-reference-site .ref-cart-add:hover{transform:translate3d(0,-1px,0)!important;background:#ffffff!important;color:#050505!important}
   .static-reference-site .ref-card-whatsapp:hover{transform:translate3d(0,-1px,0)!important;background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.28)!important}
   .static-reference-site .ref-card-stepper button:hover{background:rgba(255,255,255,.06)!important}
 }

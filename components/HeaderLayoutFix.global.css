@@ -20,9 +20,9 @@
   z-index:240!important;
   isolation:isolate!important;
   backface-visibility:hidden!important;
-  border:1px solid rgba(21,18,14,.12)!important;
+  border:1px solid rgba(18,18,18,.12)!important;
   border-radius:18px!important;
-  background:rgba(244,240,232,.97)!important;
+  background:rgba(240,240,240,.97)!important;
   box-shadow:0 14px 40px rgba(0,0,0,.22)!important;
 }
 

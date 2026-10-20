@@ -1,8 +1,8 @@
 /* BABA HAKEEM / ADMIN DESIGN SYSTEM.
    Scoped to /admin only. Locked cinematic storefront remains untouched. */
 #baba-admin-root{
-  --ad-bg:#f1f3eb;--ad-card:#fffef9;--ad-ink:#183a2a;--ad-muted:#596e62;
-  --ad-border:#d7e0d4;--ad-accent:#c9e08e;--ad-radius:20px;
+  --ad-bg:#f2f2f2;--ad-card:#fefefe;--ad-ink:#323232;--ad-muted:#696969;
+  --ad-border:#dddddd;--ad-accent:#d5d5d5;--ad-radius:20px;
   color:var(--ad-ink);min-height:100vh;
   font-family:Inter,Arial,Helvetica,sans-serif;
   -webkit-font-smoothing:antialiased;
@@ -11,12 +11,12 @@
 #baba-admin-root,
 #baba-admin-root *{box-sizing:border-box}
 #baba-admin-root :is(a,button,select,input,textarea):focus-visible{
-  outline:3px solid #83a654!important;outline-offset:3px!important;
+  outline:3px solid #999999!important;outline-offset:3px!important;
 }
 #baba-admin-root button{touch-action:manipulation}
 #baba-admin-root button:disabled{cursor:not-allowed;opacity:.65}
 #baba-admin-root :is(input,select,textarea){max-width:100%}
-#baba-admin-root :is(input,select,textarea)::placeholder{color:#728779;opacity:1}
+#baba-admin-root :is(input,select,textarea)::placeholder{color:#828282;opacity:1}
 #baba-admin-root .admin-design-links{
   display:flex!important;align-items:center!important;justify-content:flex-end!important;
   gap:5px!important;min-width:0!important;width:auto!important;max-width:100%!important;
@@ -31,14 +31,14 @@
   white-space:nowrap!important;transition:background .2s,color .2s;
   border:1px solid transparent!important;
 }
-#baba-admin-root .admin-design-links a:hover{background:#dfe9d9!important}
+#baba-admin-root .admin-design-links a:hover{background:#e6e6e6!important}
 #baba-admin-root .admin-design-links .admin-design-link-current{
-  background:var(--ad-ink)!important;color:#fff!important;
+  background:var(--ad-ink)!important;color:#ffffff!important;
 }
 #baba-admin-root .admin-design-links .admin-design-external{
-  border-color:#bed1c0!important;
+  border-color:#cccccc!important;
 }
-#baba-admin-root .admin-design-links .admin-design-external:hover{background:#fefef9!important}
+#baba-admin-root .admin-design-links .admin-design-external:hover{background:#fefefe!important}
 #baba-admin-root .admin-design-links a:focus-visible{outline-offset:0!important}
 body:has(#baba-admin-root) [class*="CartExperience_floatingCart"],
 body:has(#baba-admin-root) [class*="CartExperience_backdrop"],
@@ -46,7 +46,7 @@ body:has(#baba-admin-root) [class*="CartExperience_drawer"],
 body:has(#baba-admin-root) .bh-language-toggle{
   display:none!important;
 }
-body:has(#baba-admin-root){background:var(--ad-bg,#f1f3eb)!important;overflow-x:hidden!important}
+body:has(#baba-admin-root){background:var(--ad-bg,#f2f2f2)!important;overflow-x:hidden!important}
 /* Shared readability floor across ALL private admin modules, not marketing. */
 #baba-admin-root [class*="AdminOperations_"],
 #baba-admin-root [class*="AdminSalesReports_"],

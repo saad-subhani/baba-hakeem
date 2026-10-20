@@ -1,7 +1,7 @@
 /* FINAL product-hero copy lock.
    This file is imported last so older catalogue pseudo-copy cannot reappear. */
 html body .static-reference-site #reel-products>h2::before{
-  color:#fff!important;
+  color:#ffffff!important;
 }
 html body .static-reference-site #reel-products>h2::after{
   content:""!important;

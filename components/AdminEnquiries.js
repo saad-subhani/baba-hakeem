@@ -80,7 +80,7 @@ export default function AdminEnquiries(){
           </td>
           <td><b>{item.category}</b>{item.order_reference&&<small>Order: {item.order_reference}</small>}</td>
           <td style={{minWidth:240,whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{item.message}</td>
-          <td><select style={{maxWidth:145,padding:8,border:'1px solid #17322655',background:'#eeeede'}}
+          <td><select style={{maxWidth:145,padding:8,border:'1px solid #2b2b2b55',background:'#ededed'}}
             value={item.status} disabled={busy===item.id} onChange={e=>update(item,e.target.value)}>
             {states.map(s=><option key={s}>{s}</option>)}</select></td>
         </tr>)}

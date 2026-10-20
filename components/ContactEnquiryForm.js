@@ -35,7 +35,7 @@ export default function ContactEnquiryForm(){
       <h2>START A CONVERSATION.</h2>
       <p>Send a product question, order-support request or business enquiry directly to the Baba Hakeem admin inbox. We’ll review it and contact you using the details you provide.</p>
       <p style={{marginTop:22}}><a href={whatsApp} target="_blank" rel="noopener noreferrer"
-        style={{display:'inline-block',color:'#f3f3ef',borderBottom:'1px solid currentColor',textDecoration:'none',paddingBottom:5}}>MESSAGE ON WHATSAPP ↗</a></p>
+        style={{display:'inline-block',color:'#f3f3f3',borderBottom:'1px solid currentColor',textDecoration:'none',paddingBottom:5}}>MESSAGE ON WHATSAPP ↗</a></p>
     </div>
     <form className={styles.form} onSubmit={send} aria-label="Send an enquiry">
       <div className={styles.field}><label htmlFor="bh-enquiry-name">YOUR NAME *</label>
@@ -56,8 +56,8 @@ export default function ContactEnquiryForm(){
       <div style={{position:'absolute',width:1,height:1,overflow:'hidden',clipPath:'inset(50%)'}} aria-hidden="true">
         <label htmlFor="bh-enquiry-website">Website</label><input id="bh-enquiry-website" tabIndex={-1} autoComplete="off" value={form.website} onChange={e=>change('website',e.target.value)}/>
       </div>
-      {state.error&&<p role="alert" style={{color:'#8c2519',fontSize:12}}>{state.error}</p>}
-      {state.success&&<p role="status" style={{color:'#285d36',fontSize:12}}>Enquiry received. Our team can review it in the admin inbox.</p>}
+      {state.error&&<p role="alert" style={{color:'#3a3a3a',fontSize:12}}>{state.error}</p>}
+      {state.success&&<p role="status" style={{color:'#4f4f4f',fontSize:12}}>Enquiry received. Our team can review it in the admin inbox.</p>}
       <button type="submit" className={styles.button} disabled={state.busy}>{state.busy?'SENDING…':'SEND ENQUIRY →'}</button>
     </form>
   </div>;

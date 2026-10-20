@@ -277,3 +277,32 @@ test('Commerce visual refresh retains cart edits, verified prices, COD and exist
   assert.ok(thankyou.includes('copyReference'));
   assert.ok(api.includes("supabase.rpc('place_store_order'"));
 });
+
+
+test('Website UI palette stays strictly black, white and grayscale',async()=>{
+  const {readdirSync}=await import('node:fs');
+  const cssFiles=['app','components'].flatMap(dir=>
+    readdirSync(new URL('../'+dir+'/',import.meta.url),{recursive:true})
+      .filter(name=>typeof name==='string'&&name.endsWith('.css'))
+      .map(name=>dir+'/'+name));
+  assert.ok(cssFiles.length>=30,'Expected every storefront and admin stylesheet');
+  for(const path of cssFiles){
+    // Exclude historical comments and quoted content before checking CSS colors.
+    let css=source(path).replace(/\/\*[\s\S]*?\*\//g,'');
+    css=css.replace(/(["'])(?:\\.|(?!\1)[^\\])*\1/g,'');
+    for(const match of css.matchAll(/#(?:[\da-fA-F]{8}|[\da-fA-F]{6}|[\da-fA-F]{4}|[\da-fA-F]{3})(?![\w-])/g)){
+      const value=match[0].slice(1).toLowerCase();
+      const rgb=value.length<=4?[value[0],value[1],value[2]]:
+        [value.slice(0,2),value.slice(2,4),value.slice(4,6)];
+      assert.ok(rgb[0]===rgb[1]&&rgb[1]===rgb[2],path+' contains a colored UI hex token: '+match[0]);
+    }
+    for(const match of css.matchAll(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/gi)){
+      const channels=match.slice(1,4).map(Number);
+      assert.ok(channels.every(v=>v===channels[0]),path+' contains a colored UI rgb token');
+    }
+  }
+  assert.ok(source('components/CommerceJourney.module.css').includes('.commerceScreen'));
+  assert.ok(source('components/StoreCheckout.module.css').includes('.thankYouScreen'));
+  assert.ok(source('app/admin/admin-design.css').includes('#baba-admin-root'));
+  assert.ok(source('app/page.js').includes('handsRect.height*.83'),'Locked homepage animations stay untouched');
+});

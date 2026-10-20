@@ -11,7 +11,7 @@
   border:0!important;
   border-radius:0!important;
   border-bottom:1px solid rgba(15,15,15,.09)!important;
-  background:linear-gradient(180deg,#e9e5dc 0%,#f0ece4 56%,#e5e1d8 100%)!important;
+  background:linear-gradient(180deg,#e5e5e5 0%,#ececec 56%,#e1e1e1 100%)!important;
   box-shadow:none!important;
 }
 .static-reference-site .ref-product-grid article:nth-child(6)>div:first-child::before{

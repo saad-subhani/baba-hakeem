@@ -3,9 +3,9 @@
 .static-reference-site .ref-product-grid>article:hover{
   opacity:1!important;
   filter:none!important;
-  background:#f1ede4!important;
-  color:#17140f!important;
-  border-color:rgba(38,32,23,.13)!important;
+  background:#ededed!important;
+  color:#141414!important;
+  border-color:rgba(33,33,33,.13)!important;
 }
 
 /* Never dim sibling cards when the catalogue is hovered. */
@@ -20,15 +20,15 @@
 /* Keep the image stage light in both idle and hover states. */
 .static-reference-site .ref-product-grid>article>div:first-child,
 .static-reference-site .ref-product-grid>article:hover>div:first-child{
-  background:linear-gradient(180deg,#e8e3d9 0%,#ece7dd 58%,#e2ddd2 100%)!important;
-  border-bottom-color:rgba(43,35,25,.085)!important;
+  background:linear-gradient(180deg,#e3e3e3 0%,#e7e7e7 58%,#dddddd 100%)!important;
+  border-bottom-color:rgba(36,36,36,.085)!important;
   filter:none!important;
 }
 
 /* Neutralise old dark showroom overlays that were washing the light cards out. */
 .static-reference-site .ref-product-grid>article::before,
 .static-reference-site .ref-product-grid>article:hover::before{
-  background:linear-gradient(145deg,rgba(255,255,255,.30),transparent 30%,transparent 76%,rgba(79,61,35,.02))!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.30),transparent 30%,transparent 76%,rgba(63,63,63,.02))!important;
   border-color:transparent!important;
   opacity:1!important;
 }
@@ -38,34 +38,34 @@
 /* Lock readable dark typography in normal + hover states. */
 .static-reference-site .ref-product-grid>article>h3,
 .static-reference-site .ref-product-grid>article:hover>h3{
-  color:#17140f!important;
+  color:#141414!important;
   opacity:1!important;
 }
 .static-reference-site .ref-product-grid>article>h3::before,
 .static-reference-site .ref-product-grid>article:hover>h3::before{
-  color:#8a8174!important;
+  color:#828282!important;
   opacity:1!important;
 }
 .static-reference-site .ref-product-grid>article .ref-commerce-meta,
 .static-reference-site .ref-product-grid>article:hover .ref-commerce-meta{
-  color:#17140f!important;
+  color:#141414!important;
   opacity:1!important;
 }
 .static-reference-site .ref-product-grid>article .ref-commerce-kicker,
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-kicker{color:#847c70!important;opacity:1!important}
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-kicker{color:#7d7d7d!important;opacity:1!important}
 .static-reference-site .ref-product-grid>article .ref-commerce-desc,
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-desc{color:#625d54!important;opacity:1!important}
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-desc{color:#5d5d5d!important;opacity:1!important}
 .static-reference-site .ref-product-grid>article .ref-commerce-price small,
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-price small{color:#938a7d!important;opacity:1!important}
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-price small{color:#8b8b8b!important;opacity:1!important}
 .static-reference-site .ref-product-grid>article .ref-commerce-price strong,
-.static-reference-site .ref-product-grid>article:hover .ref-commerce-price strong{color:#8b6423!important;opacity:1!important}
+.static-reference-site .ref-product-grid>article:hover .ref-commerce-price strong{color:#686868!important;opacity:1!important}
 
 /* Premium hover = movement/depth only, never a colour-theme swap. */
 @media(hover:hover) and (pointer:fine){
   .static-reference-site .ref-product-grid>article:hover{
     transform:translate3d(0,-4px,0)!important;
-    background:#f1ede4!important;
-    border-color:rgba(62,48,29,.24)!important;
+    background:#ededed!important;
+    border-color:rgba(50,50,50,.24)!important;
     box-shadow:0 18px 36px rgba(0,0,0,.16),0 1px 0 rgba(255,255,255,.56) inset!important;
   }
   .static-reference-site .ref-product-grid>article:hover>div:first-child>img:not(.ref-mens-moving){
@@ -73,15 +73,15 @@
   }
   .static-reference-site .ref-cart-add:hover{
     transform:translate3d(0,-1px,0)!important;
-    background:#8b6423!important;
-    border-color:#8b6423!important;
-    color:#fff!important;
+    background:#686868!important;
+    border-color:#686868!important;
+    color:#ffffff!important;
   }
   .static-reference-site .ref-card-whatsapp:hover{
     transform:translate3d(0,-1px,0)!important;
-    background:rgba(70,52,28,.06)!important;
-    border-color:rgba(70,52,28,.28)!important;
-    color:#17140f!important;
+    background:rgba(54,54,54,.06)!important;
+    border-color:rgba(54,54,54,.28)!important;
+    color:#141414!important;
   }
 }
 
