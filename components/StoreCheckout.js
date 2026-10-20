@@ -4,6 +4,7 @@ import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
 import styles from './StoreCheckout.module.css';
+import flow from './CommerceJourney.module.css';
 
 const STORAGE_KEY='baba-hakeem-cart-v1';
 const RECEIPT_KEY='baba-hakeem-last-order';
@@ -74,30 +75,60 @@ function useCart(){
   return {items:verifiedItems,ready,change,remove,subtotal,catalogueReady,catalogueError,canCheckout};
 }
 
+function CommerceProgress({step}){
+  const steps=[{name:'Cart',detail:'Your selection'},{name:'Delivery & COD',detail:'Shipping details'},{name:'Order received',detail:'After submission'}];
+  return <nav className={flow.progress} aria-label="Checkout progress">
+    <span className={flow.progressLabel}>SECURE SHOPPING JOURNEY</span>
+    <ol className={flow.progressSteps}>
+      {steps.map((item,index)=>{
+        const number=index+1;
+        const active=number===step;
+        const complete=number<step;
+        return <li key={item.name} className={active?flow.activeStep:complete?flow.completeStep:flow.pendingStep}
+          aria-current={active?'step':undefined}>
+          <span className={flow.progressNumber}>{complete?'✓':String(number).padStart(2,'0')}</span>
+          <span className={flow.progressCopy}><strong>{item.name}</strong><small>{item.detail}</small></span>
+          {number!==steps.length&&<span className={flow.progressConnector} aria-hidden="true"/>}
+        </li>;
+      })}
+    </ol>
+    <span className={flow.secureFlag}><span aria-hidden="true">◇</span> SECURE COD CHECKOUT</span>
+  </nav>;
+}
+
+function TrustStrip(){
+  return <div className={flow.trustStrip} aria-label="Shopping assurances">
+    <span><b aria-hidden="true">✓</b> Secure order request</span>
+    <span><b aria-hidden="true">✦</b> Carefully prepared</span>
+    <span><b aria-hidden="true">↗</b> WhatsApp assistance</span>
+  </div>;
+}
+
 function SiteFrame({number,title,description,children,variant}){
-  return <main className={variant==='thank-you'?`${styles.screen} ${styles.thankYouScreen}`:styles.screen}>
-    <div className={styles.wrap}>
-      <header className={styles.header}><Link href="/" className={styles.logo}>BABA HAKEEM <small>HERBAL PRODUCTS</small></Link><Link href="/#reel-products" className={styles.return}>← CONTINUE SHOPPING</Link></header>
-      <div className={styles.eyebrow}>{number} / BABA HAKEEM SHOP</div>
-      <h1 className={styles.title}>{title}</h1>
-      <p className={styles.description}>{description}</p>
+  return <main className={variant==='thank-you'?`${styles.screen} ${styles.thankYouScreen}`:variant==='cart'||variant==='checkout'?`${styles.screen} ${flow.commerceScreen}`:styles.screen}>
+    <div className={variant==='cart'||variant==='checkout'?`${styles.wrap} ${flow.commerceWrap}`:styles.wrap}>
+      <header className={variant==='cart'||variant==='checkout'?`${styles.header} ${flow.commerceHeader}`:styles.header}><Link href="/" className={styles.logo}>BABA HAKEEM <small>HERBAL PRODUCTS</small></Link><Link href="/#reel-products" className={styles.return}>← CONTINUE SHOPPING</Link></header>
+      {(variant==='cart'||variant==='checkout')&&<CommerceProgress step={variant==='cart'?1:2}/>}
+      <div className={variant==='cart'||variant==='checkout'?`${styles.eyebrow} ${flow.commerceEyebrow}`:styles.eyebrow}>{number} / BABA HAKEEM SHOP</div>
+      <h1 className={variant==='cart'||variant==='checkout'?`${styles.title} ${flow.commerceTitle}`:styles.title}>{title}</h1>
+      <p className={variant==='cart'||variant==='checkout'?`${styles.description} ${flow.commerceDescription}`:styles.description}>{description}</p>
       {children}
       <footer className={styles.footer}>BABA HAKEEM HERBAL PRODUCTS <span>SECURE ORDER REQUEST / PAKISTAN</span></footer>
     </div>
   </main>;
 }
-function LineItems({items,change,remove,editable=false}){
-  return <div className={styles.lines}>{items.map(item=>
-    <article key={item.id} className={styles.line}>
-      <div className={styles.thumb}>{item.image?<img src={item.image} alt={item.name} loading="lazy" decoding="async"/>:<span>BH</span>}</div>
-      <div className={styles.lineInfo}><h3>{item.name}</h3><small>{item.price?money(item.price):'Price to be confirmed'}</small>{!item.available&&<p>Not yet available for online checkout</p>}
+function LineItems({items,change,remove,editable=false,modern=false}){
+  return <div className={modern?`${styles.lines} ${flow.modernLines}`:styles.lines}>{items.map(item=>
+    <article key={item.id} className={modern?`${styles.line} ${flow.modernLine}`:styles.line}>
+      <div className={modern?`${styles.thumb} ${flow.productThumb}`:styles.thumb}>{item.image?<img src={item.image} alt={item.name} loading="lazy" decoding="async"/>:<span>BH</span>}</div>
+      <div className={modern?`${styles.lineInfo} ${flow.productInfo}`:styles.lineInfo}><h3>{item.name}</h3><small>{item.price?money(item.price):'Price to be confirmed'}</small>{!item.available&&<p>Not yet available for online checkout</p>}
         {editable?<div className={styles.quantity}>
           <button type="button" onClick={()=>change(item.id,-1)} aria-label={'Decrease '+item.name}>−</button>
           <span>{item.quantity}</span>
           <button type="button" onClick={()=>change(item.id,1)} aria-label={'Increase '+item.name}>+</button>
         </div>:<p>Quantity: {item.quantity}</p>}
       </div>
-      <div className={styles.lineEnd}><strong>{item.price?money(Number(item.price)*item.quantity):'On request'}</strong>
+      <div className={modern?`${styles.lineEnd} ${flow.productEnd}`:styles.lineEnd}><strong>{item.price?money(Number(item.price)*item.quantity):'On request'}</strong>
         {editable&&<button className={styles.remove} type="button" onClick={()=>remove(item.id)}>REMOVE</button>}
       </div>
     </article>
@@ -106,18 +137,35 @@ function LineItems({items,change,remove,editable=false}){
 
 export function CartPage(){
   const {items,ready,change,remove,subtotal,catalogueReady,catalogueError,canCheckout}=useCart();
-  return <SiteFrame number="01" title="YOUR CART." description="Review your selection before entering your delivery details.">
+  return <SiteFrame variant="cart" number="01" title={<>YOUR <em>CART.</em></>} description="Your favourites, all in one place. Review your selection before we arrange delivery.">
     {!ready||!catalogueReady?<p className={styles.notice}>Verifying product availability…</p>:items.length===0?
       <section className={styles.empty}><h2>Your cart is empty.</h2><p>Explore the Baba Hakeem collection to get started.</p><Link className={styles.primary} href="/#reel-products">EXPLORE PRODUCTS →</Link></section>
-      :<div className={styles.columns}><section className={styles.panel}><h2>Selected products</h2><LineItems items={items} change={change} remove={remove} editable/></section><aside className={styles.panel}>
-        <h2>Order summary</h2><div className={styles.summaryRow}><span>Product subtotal</span><b>{canCheckout?money(subtotal):'Price pending'}</b></div>
-        <p className={styles.muted}>Payment: <strong>Cash on Delivery (COD)</strong>. Product prices and stock are confirmed from our approved catalogue. Any delivery charges will be communicated before dispatch.</p>
-        {catalogueError&&<p className={styles.muted}>{catalogueError}</p>}
-        {canCheckout?<Link href="/checkout" className={styles.primary}>CONTINUE TO CHECKOUT →</Link>:
-          <p className={styles.muted}>Online ordering for this selection is not available yet. Please contact the store to confirm price and stock.</p>}
-        {!canCheckout&&<a className={styles.primary} href="https://wa.me/923239992203" target="_blank" rel="noopener noreferrer">ASK ON WHATSAPP ↗</a>}
-        <Link href="/#reel-products" className={styles.secondary}>CONTINUE SHOPPING</Link>
-      </aside></div>}
+      :<div className={`${styles.columns} ${flow.commerceColumns}`}>
+        <section className={`${styles.panel} ${flow.mainPanel}`}>
+          <div className={flow.sectionHeading}>
+            <div><span className={flow.sectionOverline}>01 / YOUR SELECTION</span><h2>Shopping bag <small>({items.reduce((n,item)=>n+item.quantity,0)} items)</small></h2></div>
+            <Link className={flow.continueLink} href="/#reel-products">KEEP SHOPPING ↗</Link>
+          </div>
+          <LineItems items={items} change={change} remove={remove} editable modern/>
+          <div className={flow.cartNote}><span aria-hidden="true">✧</span><p>Every Baba Hakeem order is carefully reviewed before dispatch. You can update your quantities here.</p></div>
+        </section>
+        <aside className={`${styles.panel} ${flow.summaryPanel}`}>
+          <span className={flow.sectionOverline}>02 / YOUR TOTAL</span>
+          <h2>Order summary</h2>
+          <div className={flow.summaryProducts}>
+            {items.map(item=><div key={item.id}><span>{item.name} <small>× {item.quantity}</small></span><strong>{item.price?money(item.price*item.quantity):'On request'}</strong></div>)}
+          </div>
+          <div className={styles.summaryRow}><span>Product subtotal</span><b>{canCheckout?money(subtotal):'Price pending'}</b></div>
+          <div className={flow.codBox}><span className={flow.codIcon} aria-hidden="true">✓</span><div><strong>Cash on Delivery</strong><p>Pay cash when your order arrives. No card details or advance payment required.</p></div></div>
+          <p className={styles.muted}>Prices and available stock are verified from the approved catalogue. Any delivery charges will be confirmed before dispatch.</p>
+          {catalogueError&&<p className={styles.muted}>{catalogueError}</p>}
+          {canCheckout?<Link href="/checkout" className={styles.primary}>CONTINUE TO CHECKOUT <span aria-hidden="true">→</span></Link>:
+            <p className={styles.muted}>Online ordering for this selection is not available yet. Please contact the store to confirm price and stock.</p>}
+          {!canCheckout&&<a className={styles.primary} href="https://wa.me/923239992203" target="_blank" rel="noopener noreferrer">ASK ON WHATSAPP ↗</a>}
+          <Link href="/#reel-products" className={styles.secondary}>CONTINUE SHOPPING</Link>
+          <TrustStrip/>
+        </aside>
+      </div>}
   </SiteFrame>;
 }
 
@@ -147,28 +195,43 @@ export function CheckoutPage(){
       setSending(false);
     }
   };
-  return <SiteFrame number="02" title="CHECKOUT." description="Enter your delivery details and choose Cash on Delivery. No advance online payment is required.">
+  return <SiteFrame variant="checkout" number="02" title={<>DELIVERY <em>DETAILS.</em></>} description="Just a few details between you and your order. Checkout is secure and payment is Cash on Delivery.">
     {!ready||!catalogueReady?<p className={styles.notice}>Verifying checkout…</p>:items.length===0?
       <section className={styles.empty}><h2>Nothing to check out yet.</h2><Link href="/cart" className={styles.primary}>BACK TO CART →</Link></section>:!canCheckout?
       <section className={styles.empty}><h2>Online checkout isn't ready for these products.</h2><p>Please confirm prices and stock with the store. No order has been placed.</p><Link href="/cart" className={styles.primary}>REVIEW YOUR CART →</Link></section>:
-      <div className={styles.columns}><section className={styles.panel}>
-        <h2>Delivery information</h2>
-        <form className={styles.form} onSubmit={submit}>
-          <label>FULL NAME *<input autoComplete="name" required minLength={2} maxLength={120} value={customer.name} onChange={e=>set('name',e.target.value)}/></label>
-          <label>EMAIL (FOR ORDER UPDATES)<input type="email" autoComplete="email" maxLength={254} value={customer.email} onChange={e=>set('email',e.target.value)}/></label>
-          <div className={styles.formRow}>
-            <label>PHONE NUMBER *<input autoComplete="tel" inputMode="tel" required minLength={7} maxLength={24} value={customer.phone} onChange={e=>set('phone',e.target.value)}/></label>
-            <label>CITY *<input autoComplete="address-level2" required minLength={2} maxLength={120} value={customer.city} onChange={e=>set('city',e.target.value)}/></label>
-          </div>
-          <label>COMPLETE DELIVERY ADDRESS *<textarea autoComplete="street-address" required minLength={8} maxLength={500} rows={3} value={customer.address} onChange={e=>set('address',e.target.value)}/></label>
-          <label>ORDER NOTES (OPTIONAL)<textarea maxLength={1000} rows={2} value={customer.notes} onChange={e=>set('notes',e.target.value)}/></label>
-          <div className={styles.payment}><strong>Cash on Delivery (COD)</strong><p>Pay in cash when your order is delivered. Your request is reviewed by Baba Hakeem before dispatch. Any delivery charges will be confirmed by the store beforehand; no online payment is collected.</p></div>
-          {error&&<div className={styles.error} role="alert">{error} <Link href="/cart">Review cart</Link></div>}
-          <button className={styles.primary} disabled={sending} type="submit">{sending?'PLACING ORDER…' :'PLACE COD ORDER →'}</button>
-        </form>
-      </section><aside className={styles.panel}><h2>Your order</h2><LineItems items={items}/><div className={styles.summaryRow}><span>Estimated subtotal</span><b>{money(subtotal)}</b></div>
-        <p className={styles.muted}>Payment: <strong>Cash on Delivery</strong>. The product subtotal is validated by the database. Any delivery charges are confirmed before dispatch.</p><Link className={styles.secondary} href="/cart">← EDIT CART</Link>
-      </aside></div>}
+      <div className={`${styles.columns} ${flow.commerceColumns}`}>
+        <section className={`${styles.panel} ${flow.mainPanel}`}>
+          <div className={flow.sectionHeading}><div><span className={flow.sectionOverline}>01 / SHIPPING INFORMATION</span><h2>Delivery information</h2><p>Where should we send your Baba Hakeem order?</p></div></div>
+          <form className={`${styles.form} ${flow.deliveryForm}`} onSubmit={submit}>
+            <label>FULL NAME *<input autoComplete="name" required minLength={2} maxLength={120} value={customer.name} onChange={e=>set('name',e.target.value)}/></label>
+            <label>EMAIL (FOR ORDER UPDATES)<input type="email" autoComplete="email" maxLength={254} value={customer.email} onChange={e=>set('email',e.target.value)}/></label>
+            <div className={styles.formRow}>
+              <label>PHONE NUMBER *<input autoComplete="tel" inputMode="tel" required minLength={7} maxLength={24} value={customer.phone} onChange={e=>set('phone',e.target.value)}/></label>
+              <label>CITY *<input autoComplete="address-level2" required minLength={2} maxLength={120} value={customer.city} onChange={e=>set('city',e.target.value)}/></label>
+            </div>
+            <label>COMPLETE DELIVERY ADDRESS *<textarea autoComplete="street-address" required minLength={8} maxLength={500} rows={3} value={customer.address} onChange={e=>set('address',e.target.value)}/></label>
+            <label>ORDER NOTES (OPTIONAL)<textarea maxLength={1000} rows={2} value={customer.notes} onChange={e=>set('notes',e.target.value)}/></label>
+            <div className={flow.formSubheading}><span className={flow.sectionOverline}>02 / PAYMENT OPTION</span><h3>How you'll pay</h3></div>
+            <div className={`${styles.payment} ${flow.paymentChoice}`}>
+              <span className={flow.paymentCheck} aria-hidden="true">✓</span>
+              <div><strong>Cash on Delivery (COD)</strong><p>Pay in cash when your order is delivered. Your request is reviewed by Baba Hakeem before dispatch. Any delivery charges will be confirmed by the store beforehand; no online payment is collected.</p></div>
+              <span className={flow.paymentTag}>SELECTED</span>
+            </div>
+            {error&&<div className={styles.error} role="alert">{error} <Link href="/cart">Review cart</Link></div>}
+            <button className={styles.primary} disabled={sending} type="submit">{sending?'PLACING ORDER…' :'PLACE COD ORDER →'}</button>
+            <p className={flow.formDisclaimer}>By placing the order you submit a COD order request. The store will confirm delivery and any charges before dispatch.</p>
+          </form>
+        </section>
+        <aside className={`${styles.panel} ${flow.summaryPanel}`}>
+          <span className={flow.sectionOverline}>03 / REVIEW YOUR ORDER</span>
+          <h2>Your order</h2>
+          <LineItems items={items} modern/>
+          <div className={styles.summaryRow}><span>Product subtotal</span><b>{money(subtotal)}</b></div>
+          <div className={flow.codBox}><span className={flow.codIcon} aria-hidden="true">✓</span><div><strong>Cash on Delivery</strong><p>Pay when your parcel reaches you. Delivery charges, if any, are confirmed before dispatch.</p></div></div>
+          <Link className={styles.secondary} href="/cart">← EDIT CART</Link>
+          <TrustStrip/>
+        </aside>
+      </div>}
   </SiteFrame>;
 }
 

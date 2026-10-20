@@ -190,7 +190,7 @@ test('Cart, checkout and thank-you headers stay above page titles without overla
   assert.ok(headerRule.includes('inset:auto'), 'Reset inherited global header offsets');
   assert.ok(headerRule.includes('padding:0'), 'Reset cinematic header padding');
   assert.ok(headerRule.includes('display:flex'), 'Preserve cart header navigation layout');
-  assert.ok(jsx.indexOf('<header className={styles.header}')<jsx.indexOf('<h1 className={styles.title}'), 'Shop brand header precedes heading');
+  assert.ok(jsx.indexOf('<header className=')>=0&&jsx.indexOf('<header className=')<jsx.indexOf('<h1 className='), 'Shop brand header precedes heading');
   assert.ok(css.includes('@media(max-width:530px)'), 'Keep existing mobile spacing');
 });
 
@@ -230,4 +230,50 @@ test('Existing Cart and Checkout remain on the original shared styles and order 
   assert.ok(beforeThankYou.includes(':styles.screen}>'), 'Ordinary cart/checkout still use base style');
   assert.ok(css.includes('.header{height:100px;position:relative;inset:auto;'), 'Previously fixed nonoverlapping header is retained');
   assert.ok(css.includes('.formRow{display:grid;grid-template-columns:1fr 1fr;'), 'Checkout layout preserved');
+});
+
+
+test('Cart and Checkout adopt reference-inspired progress and two-column premium layout',()=>{
+  const jsx=source('components/StoreCheckout.js');
+  const css=source('components/CommerceJourney.module.css');
+  assert.ok(jsx.includes("import flow from './CommerceJourney.module.css'"));
+  assert.ok(jsx.includes('function CommerceProgress({step})'));
+  assert.ok(jsx.includes("name:'Cart'"));
+  assert.ok(jsx.includes("name:'Delivery & COD'"));
+  assert.ok(jsx.includes("name:'Order received'"));
+  assert.ok(jsx.includes('variant="cart"'));
+  assert.ok(jsx.includes('variant="checkout"'));
+  assert.ok(jsx.includes('<CommerceProgress step={variant==='));
+  assert.ok(jsx.includes('flow.commerceColumns'));
+  assert.ok(jsx.includes('flow.summaryPanel'));
+  assert.ok(jsx.includes('flow.deliveryForm'));
+  assert.ok(jsx.includes('<TrustStrip/>'));
+  assert.ok(css.includes('position:sticky'));
+  assert.ok(css.includes('@media(max-width:850px)'));
+  assert.ok(css.includes('@media(max-width:560px)'));
+  assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'));
+  assert.ok(!jsx.includes('Card number'));
+  assert.ok(!jsx.includes('Security code'));
+});
+
+test('Commerce visual refresh retains cart edits, verified prices, COD and existing Thank You design',()=>{
+  const jsx=source('components/StoreCheckout.js');
+  const api=source('app/api/orders/route.js');
+  const thankyou=jsx.split('export function ThankYouPage(){')[1];
+  assert.ok(jsx.includes('const {items,ready,change,remove,subtotal,catalogueReady,catalogueError,canCheckout}=useCart();'));
+  assert.ok(jsx.includes('<LineItems items={items} change={change} remove={remove} editable modern/>'));
+  assert.ok(jsx.includes("supabase.from('products').select"));
+  assert.ok(jsx.includes(".eq('status','Published').order('created_at',{ascending:false})"));
+  assert.ok(jsx.includes("fetch('/api/orders'"));
+  assert.ok(jsx.includes('if(sending||!canCheckout)return;'));
+  assert.ok(jsx.includes('PLACE COD ORDER'));
+  assert.ok(jsx.includes('COMPLETE DELIVERY ADDRESS *'));
+  assert.ok(jsx.includes('Cash on Delivery (COD)'));
+  assert.ok(jsx.includes('flow.paymentChoice'));
+  assert.ok(jsx.includes('Any delivery charges'));
+  assert.ok(jsx.includes('Price pending'));
+  assert.ok(jsx.includes("window.location.assign('/thank-you?order='"));
+  assert.ok(thankyou.includes('Your order is in <em>good hands.</em>'));
+  assert.ok(thankyou.includes('copyReference'));
+  assert.ok(api.includes("supabase.rpc('place_store_order'"));
 });

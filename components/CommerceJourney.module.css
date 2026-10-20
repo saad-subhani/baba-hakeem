@@ -1,0 +1,238 @@
+/* Baba Hakeem Commerce Journey · CART and CHECKOUT ONLY.
+   No global overrides and no changes to the approved Thank You / homepage. */
+.commerceScreen{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 58% 45% at 0% 0%,rgba(212,226,203,.33),transparent 78%),
+    linear-gradient(155deg,#f8f8f4 0%,#f0f1ea 57%,#e9ede4 100%);
+  color:#18372a;
+  padding:0 clamp(15px,3.6vw,56px) 25px;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.commerceWrap{max-width:1320px;margin:0 auto}
+.commerceHeader{
+  height:90px;min-height:90px;border-bottom:1px solid #dce4d7;
+  padding:0;align-items:center;position:relative;inset:auto;
+}
+.commerceHeader a:first-child{color:#17392b;font-size:21px;letter-spacing:-.06em}
+.commerceHeader a:last-child{color:#516a56;font-size:11px;letter-spacing:.11em}
+.progress{
+  display:grid;grid-template-columns:1fr auto;
+  margin:29px 0 30px;padding:19px 25px 20px;
+  border:1px solid #dbe4d7;border-radius:17px;
+  background:#fbfcf8;box-shadow:0 8px 30px rgba(31,65,37,.038);
+  gap:13px 22px;align-items:center;
+}
+.progressLabel{
+  grid-column:1/-1;color:#6b806f;letter-spacing:.17em;
+  font-size:10px;font-weight:800;
+}
+.progressSteps{padding:0;margin:0;list-style:none;display:flex;align-items:center;gap:0}
+.progressSteps li{display:flex;align-items:center;gap:11px;min-width:0}
+.progressNumber{
+  flex:none;width:38px;height:38px;border-radius:50%;
+  border:1px solid #d2dfce;background:#f6f8f3;
+  color:#8fa18b;font-size:11px;font-weight:800;
+  display:grid;place-items:center;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.progressCopy{display:flex;flex-direction:column;gap:3px;white-space:nowrap}
+.progressCopy strong{font-size:13px;color:#879488;font-weight:700}
+.progressCopy small{font-size:10px;color:#9ba79b}
+.pendingStep{opacity:.88}
+.activeStep .progressNumber{background:#254c34;border-color:#254c34;color:#fff;box-shadow:0 0 0 5px #eaf0e6}
+.activeStep .progressCopy strong{color:#22492f}
+.activeStep .progressCopy small{color:#527457}
+.completeStep .progressNumber{background:#e3edd8;border-color:#b7ceaa;color:#375a39}
+.completeStep .progressCopy strong{color:#416346}
+.progressConnector{width:clamp(24px,5vw,72px);height:1px;background:#d3ddcc;margin:0 17px}
+.completeStep .progressConnector{background:#a7c49d}
+.secureFlag{
+  font-size:10px;letter-spacing:.12em;font-weight:800;
+  color:#577257;padding:12px 13px;
+  background:#eaf1e7;border:1px solid #d4e2ce;border-radius:10px;white-space:nowrap;
+}
+.secureFlag span{font-size:16px;vertical-align:-1px;margin-right:6px;color:#64875b}
+.commerceEyebrow{font-size:10px!important;color:#6d8a71!important;letter-spacing:.19em!important;margin:8px 0 12px!important}
+.commerceTitle{
+  color:#1c3b2a!important;
+  font-size:clamp(55px,6.9vw,88px)!important;
+  line-height:.97!important;letter-spacing:-.07em!important;
+  font-weight:800!important;margin:0 0 13px!important;
+}
+.commerceTitle em{font:italic 400 .94em Georgia,'Times New Roman',serif;letter-spacing:-.06em;color:#8ca488}
+.commerceDescription{color:#657968!important;font-size:15px!important;margin:0 0 35px!important;line-height:1.65!important}
+.commerceColumns{
+  display:grid;grid-template-columns:minmax(0,1.46fr) minmax(330px,.9fr);
+  gap:24px;align-items:start;
+}
+.mainPanel{
+  padding:clamp(24px,3.2vw,43px)!important;
+  background:#fffefb!important;border-radius:19px!important;
+  border:1px solid #e0e4da!important;
+  box-shadow:0 15px 40px rgba(34,61,37,.045);
+}
+.summaryPanel{
+  position:sticky;top:24px;
+  padding:clamp(24px,2.8vw,36px)!important;
+  background:#fffdf8!important;border-radius:19px!important;
+  border:1px solid #e2e4d9!important;
+  box-shadow:0 16px 45px rgba(30,55,35,.075);
+}
+.sectionOverline{
+  display:block;font:800 10px/1.5 Arial,sans-serif;
+  letter-spacing:.16em;color:#7c916c;margin:0 0 12px;
+}
+.sectionHeading{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:20px;padding-bottom:23px;margin-bottom:18px;border-bottom:1px solid #e0e7db;
+}
+.sectionHeading h2{
+  color:#1c3b2b!important;
+  font:400 clamp(27px,3.1vw,38px)/1.16 Georgia,'Times New Roman',serif!important;
+  margin:0!important;letter-spacing:-.05em!important;
+}
+.sectionHeading h2 small{font:600 12px Arial,sans-serif;letter-spacing:0;color:#849780;vertical-align:middle}
+.sectionHeading p{font-size:13px;color:#718275;margin:8px 0 0}
+.continueLink{
+  flex:none;margin-top:23px;color:#4c744d;font-weight:800;
+  font-size:10px;letter-spacing:.1em;text-decoration:none;
+  border-bottom:1px solid #b2cbb0;padding-bottom:6px;white-space:nowrap;
+}
+.continueLink:hover{color:#1b4731;border-color:#1b4731}
+.summaryPanel>h2{
+  color:#203c2e!important;
+  font:400 clamp(28px,3vw,36px)/1.17 Georgia,'Times New Roman',serif!important;
+  margin:0 0 22px!important;letter-spacing:-.045em!important;
+}
+.summaryProducts{display:flex;flex-direction:column;border-top:1px solid #e0e5d9}
+.summaryProducts>div{
+  display:flex;justify-content:space-between;align-items:baseline;gap:15px;
+  border-bottom:1px solid #e0e5d9;padding:15px 0;
+  color:#425844;font-size:13px;
+}
+.summaryProducts span{min-width:0}
+.summaryProducts small{color:#809083;font-size:11px}
+.summaryProducts strong{font-size:13px;color:#254032;font-weight:800;white-space:nowrap}
+.codBox{
+  display:flex;gap:13px;align-items:flex-start;margin:19px 0 18px;
+  padding:18px;border-radius:12px;border:1px solid #d1e0c6;
+  background:linear-gradient(135deg,#edf4e7,#f7f8f1);
+}
+.codIcon{
+  width:27px;height:27px;flex:none;border-radius:50%;background:#254b33;
+  color:#f1f5e4;display:grid;place-items:center;font-size:14px;
+}
+.codBox strong{display:block;font-size:14px;color:#21452e}
+.codBox p{margin:6px 0 0;color:#657969;font-size:12px;line-height:1.7}
+.summaryPanel>a{border-radius:10px;transition:transform .2s,box-shadow .2s}
+.summaryPanel>a:hover{transform:translateY(-2px)}
+.summaryPanel>a:focus-visible{outline:3px solid #8eae7c;outline-offset:3px}
+.summaryPanel>a:first-of-type{background:#234c35}
+.trustStrip{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-top:1px solid #e0e7db;margin-top:22px;padding-top:21px;
+  color:#7b8b7d;font-size:10px;line-height:1.55;
+}
+.trustStrip span{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;flex:1}
+.trustStrip b{
+  width:29px;height:29px;border:1px solid #bed2b8;color:#557959;
+  border-radius:50%;display:grid;place-items:center;
+  font-family:Georgia,serif;font-size:16px;
+}
+.cartNote{
+  margin-top:17px;display:flex;align-items:flex-start;gap:12px;
+  background:#f4f6ee;border-radius:11px;padding:14px 16px;
+  color:#667866;
+}
+.cartNote>span{font-size:20px;color:#72936b;line-height:1}
+.cartNote p{margin:0;font-size:12px;line-height:1.75}
+.modernLines{display:flex;flex-direction:column}
+.modernLine{padding:20px 0!important;gap:18px!important;border-color:#e3e8de!important}
+.modernLine:first-child{padding-top:5px!important}
+.modernLine:last-child{padding-bottom:10px!important}
+.productThumb{width:96px!important;height:104px!important;flex:none;background:#eef1e9!important;border-radius:12px!important}
+.productThumb img{height:89%;width:89%;object-fit:contain}
+.productInfo h3{font-weight:750;color:#243d2d;font-size:16px!important;margin-bottom:8px!important}
+.productInfo>small{color:#567058!important;font-size:13px!important}
+.productInfo p{font-size:12px!important;color:#8b7466!important}
+.productEnd strong{color:#223c2b;font-size:14px}
+.formSubheading{border-top:1px solid #e0e7dc;padding-top:22px;margin-top:11px}
+.formSubheading h3{color:#214432;margin:0;font:400 29px Georgia,serif;letter-spacing:-.05em}
+.deliveryForm{gap:21px!important}
+.deliveryForm>label,.deliveryForm>div>label{font-size:11px!important;color:#4a5e4f!important;font-weight:800!important;letter-spacing:.07em!important;gap:9px!important}
+.deliveryForm input,.deliveryForm textarea{
+  min-height:52px;border:1px solid #dce4d8!important;border-radius:9px!important;
+  background:#fbfbf8!important;color:#193b29!important;font-size:15px!important;
+  padding:15px 16px!important;transition:border-color .2s,box-shadow .2s;
+}
+.deliveryForm textarea{resize:vertical;min-height:94px}
+.deliveryForm input:hover,.deliveryForm textarea:hover{border-color:#aabc9d!important}
+.deliveryForm input:focus,.deliveryForm textarea:focus{
+  outline:0!important;border-color:#668b61!important;
+  box-shadow:0 0 0 3px rgba(102,139,97,.13)!important;
+}
+.paymentChoice{display:flex;align-items:flex-start;gap:14px;background:#f2f6ed!important;border-color:#bed5b5!important;border-radius:12px!important;padding:18px!important}
+.paymentCheck{width:26px;height:26px;border-radius:50%;flex:none;color:#fff;background:#244f34;display:grid;place-items:center;font-size:14px}
+.paymentChoice>div{min-width:0;flex:1}
+.paymentChoice strong{color:#254d34!important;font-size:14px!important}
+.paymentChoice p{color:#566f5b!important;font-size:12px!important;line-height:1.7!important}
+.paymentTag{font-size:9px;font-weight:800;color:#4f8054;letter-spacing:.1em}
+.formDisclaimer{font-size:11px;color:#718375;line-height:1.7;margin:-4px 0 0}
+.deliveryForm>button{background:#234d35!important;border-radius:10px!important;min-height:53px!important;font-size:12px!important;transition:background .2s,transform .2s,box-shadow .2s!important}
+.deliveryForm>button:hover:not(:disabled){background:#396a49!important;transform:translateY(-2px);box-shadow:0 8px 20px #143c291c}
+.commerceScreen .footer{color:#8a9789;margin-top:65px}
+@media(max-width:1030px){
+ .commerceColumns{grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:17px}
+ .progressConnector{width:25px;margin:0 12px}
+ .secureFlag{display:none}
+ .progress{grid-template-columns:1fr}
+}
+@media(max-width:850px){
+ .commerceColumns{grid-template-columns:1fr!important;gap:18px}
+ .summaryPanel{position:relative;top:auto}
+ .progressSteps{justify-content:space-between}
+ .commerceTitle{font-size:clamp(52px,9vw,76px)!important}
+ .commerceDescription{margin-bottom:27px!important}
+}
+@media(max-width:560px){
+ .commerceScreen{padding:0 14px 20px}
+ .commerceHeader{height:75px;min-height:75px}
+ .commerceHeader a:first-child{font-size:18px}
+ .commerceHeader a:last-child{font-size:9px;letter-spacing:.04em}
+ .progress{margin:16px 0 22px;padding:15px 12px;border-radius:13px}
+ .progressLabel{font-size:9px}
+ .progressSteps{gap:3px}
+ .progressSteps li{gap:6px}
+ .progressNumber{width:30px;height:30px;font-size:10px}
+ .progressCopy strong{font-size:10px}
+ .progressCopy small{display:none}
+ .progressConnector{width:clamp(8px,2vw,18px);margin:0 3px}
+ .commerceEyebrow{font-size:9px!important;margin:4px 0 12px!important}
+ .commerceTitle{font-size:clamp(43px,11vw,63px)!important;margin-bottom:12px!important}
+ .commerceDescription{font-size:13px!important;margin-bottom:23px!important}
+ .mainPanel,.summaryPanel{padding:20px 17px!important;border-radius:15px!important}
+ .sectionHeading{padding-bottom:16px;margin-bottom:11px;gap:10px}
+ .sectionHeading h2{font-size:27px!important}
+ .continueLink{font-size:9px;margin-top:17px}
+ .modernLine{gap:10px!important;padding:16px 0!important;flex-wrap:wrap}
+ .productThumb{width:70px!important;height:83px!important}
+ .productInfo h3{font-size:14px!important}
+ .productInfo>small{font-size:11px!important}
+ .productEnd{width:100%;align-items:flex-end}
+ .trustStrip{gap:7px}
+ .trustStrip span{font-size:9px}
+ .deliveryForm input,.deliveryForm textarea{font-size:16px!important}
+ .paymentChoice{flex-wrap:wrap}
+ .paymentTag{margin-left:40px}
+ .commerceScreen .footer{margin-top:39px}
+}
+@media(max-width:380px){
+ .progressCopy strong{font-size:9px}
+ .progressConnector{width:7px;margin:0 2px}
+ .sectionHeading{flex-wrap:wrap}
+ .continueLink{margin:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .commerceScreen *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
