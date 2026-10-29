@@ -1,29 +1,34 @@
 {
-  "name": "baba-hakeem-herbal-products",
+  "name": "babahakeem-storefront",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20 <25"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "test:smoke": "node --test tests/phase5.test.mjs",
+    "db:migrate:reviews": "node scripts/migrate_product_reviews.cjs",
+    "db:seed:reviews": "node scripts/seed_product_reviews.cjs",
+    "db:remove:sample-reviews": "node scripts/remove_sample_reviews.cjs",
+    "db:migrate:product-faqs": "node scripts/migrate_product_faqs.cjs",
+    "db:seed:product-faqs": "node scripts/seed_product_faqs.cjs",
+    "db:migrate:blogs": "node scripts/migrate_blogs.cjs",
+    "db:migrate:video-testimonials": "node scripts/migrate_video_testimonials.cjs",
+    "db:migrate:bank-transfer": "node scripts/migrate_bank_transfer.cjs",
+    "db:migrate:store-contact": "node scripts/migrate_store_contact.cjs",
+    "db:seed:store-contact": "node scripts/seed_store_contact.cjs",
+    "prestart": "node scripts/bootstrap-admin.cjs",
     "start": "next start",
-    "preview": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && opennextjs-cloudflare deploy",
-    "upload": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "cf:build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion"
+    "email:verify": "node scripts/verify_mail.mjs"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.42",
-    "gsap": "^3.12.5",
+    "jspdf": "^4.2.1",
+    "mysql2": "^3.24.6",
     "next": "14.2.15",
+    "nodemailer": "^6.9.16",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@supabase/supabase-js": "^2.58.0",
-    "three": "^0.169.0"
-  },
-  "devDependencies": {
-    "@opennextjs/cloudflare": "latest",
-    "wrangler": "latest"
+    "react-dom": "^18.3.1"
   }
 }

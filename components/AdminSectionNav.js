@@ -14,6 +14,6 @@ export default function AdminSectionNav(){
   return <nav className="admin-design-links" aria-label="Admin navigation">
     {sections.map(([href,label])=><Link key={href} href={href} aria-current={pathname===href?'page':undefined}
       className={pathname===href?'admin-design-link-current':''}>{label}</Link>)}
-    <Link className="admin-design-external" href="/">Storefront ↗</Link>
+    <Link className="admin-design-external" href="/admin">ADMIN →</Link>
   </nav>;
 }

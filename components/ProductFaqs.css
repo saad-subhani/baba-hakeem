@@ -1,0 +1,43 @@
+.product-faqs {
+  width: 100%;
+  color: #092b0d;
+  background: #fff;
+}
+
+.product-faqs__inner {
+  width: min(100% - 48px, 1430px);
+  margin-inline: auto;
+  padding: 66px 0 72px;
+}
+
+.product-faqs__heading { margin-bottom: 42px; }
+.product-faqs__heading p { margin: 0 0 18px; color: #092b0d; font: 500 15px/1.5 "Work Sans", sans-serif; letter-spacing: 5px; }
+.product-faqs__heading h2 { margin: 0; color: #092b0d; font: 500 clamp(30px, 3.5vw, 46px)/1.15 "Raleway", sans-serif; text-transform: uppercase; }
+.product-faqs__content { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); align-items: stretch; gap: clamp(36px, 5vw, 72px); }
+.product-faqs__image-wrap { min-height: 480px; overflow: hidden; border-radius: 15px; background: #edf3ec; }
+.product-faqs__image-wrap img { display: block; width: 100%; height: 100%; min-height: inherit; object-fit: cover; }
+.product-faqs__image-placeholder { display: grid; min-height: 480px; place-items: center; padding: 30px; color: #52743d; background: linear-gradient(135deg, #eef4e9, #d9e7d5); font: 500 24px "Raleway", sans-serif; text-align: center; }
+.product-faqs__list { align-self: center; }
+.product-faq { border-bottom: 1px solid #dfe3dd; }
+.product-faq h3 { margin: 0; }
+.product-faq h3 button { display: flex; width: 100%; min-height: 82px; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 0; border: 0; color: #102b16; background: transparent; font: 400 20px/1.45 "Raleway", sans-serif; text-align: left; cursor: pointer; }
+.product-faq h3 button i { position: relative; width: 14px; height: 14px; flex: 0 0 14px; }
+.product-faq h3 button i::before,.product-faq h3 button i::after { position: absolute; top: 6px; left: 1px; width: 12px; height: 1.5px; background: #143717; content: ""; transition: transform .2s ease; }
+.product-faq h3 button i::after { transform: rotate(90deg); }
+.product-faq.is-open h3 button i::after { transform: rotate(0); }
+.product-faq__answer { padding: 0 34px 20px 0; animation: product-faq-reveal .2s ease both; }
+.product-faq__answer p { margin: 0; color: #697267; font: 400 15px/1.75 "Work Sans", sans-serif; }
+.product-faq button:focus-visible { outline: 2px solid #7aa950; outline-offset: 3px; }
+@keyframes product-faq-reveal { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 760px) {
+  .product-faqs__inner { width: min(100% - 32px, 560px); padding-block: 44px 48px; }
+  .product-faqs__heading { margin-bottom: 24px; }
+  .product-faqs__heading p { margin-bottom: 10px; font-size: 11px; letter-spacing: 3.5px; }
+  .product-faqs__heading h2 { font-size: clamp(25px, 7vw, 34px); }
+  .product-faqs__content { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .product-faqs__image-wrap,.product-faqs__image-placeholder { min-height: 0; aspect-ratio: 1.15; }
+  .product-faq h3 button { min-height: 68px; gap: 16px; padding: 15px 0; font-size: 17px; }
+  .product-faq__answer { padding: 0 24px 17px 0; }
+  .product-faq__answer p { font-size: 14px; line-height: 1.65; }
+}

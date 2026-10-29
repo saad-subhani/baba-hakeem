@@ -1,33 +1,32 @@
-import PremiumPageShell from '../../components/PremiumPageShell';
-import styles from '../../components/PremiumPage.module.css';
-import ContactEnquiryForm from '../../components/ContactEnquiryForm';
+'use client';
 
-export const metadata={title:'Contact | Baba Hakeem',description:'Contact Baba Hakeem for product questions, order support, retail enquiries and partnerships using our secure enquiry form.'};
+import { useState } from 'react';
+import Link from 'next/link';
+import CommerceHeader from '../../components/CommerceHeader';
+import CommerceFooter from '../../components/CommerceFooter';
+import useStoreContactSettings, { buildWhatsAppUrl } from '../../components/useStoreContactSettings';
+import { MailIcon, PhoneIcon, WhatsAppIcon } from '../../components/Icons';
+import './contact.css';
 
-export default function ContactPage(){
- return <PremiumPageShell eyebrow="03 / CONTACT" title="LET’S TALK." intro="Product questions, order support, retail enquiries or collaboration — choose the route that fits best and include enough context for a useful reply.">
-  <section className={styles.section} data-reveal>
-   <div className={styles.contactGrid}>
-    <div className={styles.contactPanel} data-reveal><small className={styles.kicker}>BABA HAKEEM SUPPORT</small><h2>ONE CLEAR PLACE TO REACH US.</h2><p>Send a product enquiry, request order assistance or discuss a retail partnership using our direct contact form. You can also reach us through WhatsApp.</p></div>
-    <div className={styles.grid2}>
-     <article className={styles.card} data-reveal><small>01 / PRODUCT HELP</small><h3>Product guidance</h3><p>Questions about a product, its place in a routine, packaging, directions or availability. Mention the exact product name so the enquiry is easier to route.</p></article>
-     <article className={styles.card} data-reveal><small>02 / ORDER SUPPORT</small><h3>Order assistance</h3><p>Delivery updates, damaged parcels, order corrections and purchase-related support. Include the order reference and a short description of the issue.</p></article>
-     <article className={styles.card} data-reveal><small>03 / RETAIL</small><h3>Stockist enquiries</h3><p>For retail partners, stores and businesses interested in carrying Baba Hakeem products. Include your store name, location and the categories you are interested in.</p></article>
-     <article className={styles.card} data-reveal><small>04 / COLLABORATION</small><h3>Creative & brand</h3><p>Campaigns, content collaborations, packaging, design and partnership conversations. Include a short proposal plus any relevant links.</p></article>
-    </div>
-   </div>
-  </section>
-  <section className={styles.section} data-reveal>
-    <div className={styles.sectionHead}><span className={styles.kicker}>CONTACT / DIRECT MESSAGE</span><div><h2>SEND US AN ENQUIRY.</h2><p>Your message goes to the private Baba Hakeem admin inbox, where the team can track it. Email and domain activation are not needed to submit an enquiry.</p></div></div>
-    <ContactEnquiryForm/>
-  </section>
-  <section className={styles.section} data-reveal>
-   <div className={styles.sectionHead}><span className={styles.kicker}>HELP US HELP FASTER</span><div><h2>ADD THE DETAILS THAT MATTER.</h2><p>A clear first message reduces back-and-forth. The exact information depends on the kind of enquiry.</p></div></div>
-   <div className={styles.grid3}>
-    <article className={styles.card} data-reveal><small>01 / PRODUCT</small><h3>Name the product</h3><p>Include the exact product name and the specific information you need, such as availability, packaging or routine guidance.</p></article>
-    <article className={styles.card} data-reveal><small>02 / ORDER</small><h3>Keep the reference</h3><p>For delivery or parcel issues, include the order reference and keep the packaging. Photos are useful when reporting visible damage.</p></article>
-    <article className={styles.card} data-reveal><small>03 / BUSINESS</small><h3>Introduce the enquiry</h3><p>Share your business or project name, the type of partnership you have in mind and the best way to continue the conversation.</p></article>
-   </div>
-  </section>
- </PremiumPageShell>;
+const initialForm = { name:'', email:'', phone:'', category:'Product question', reference:'', message:'', website:'' };
+
+export default function ContactPage() {
+  const contact = useStoreContactSettings();
+  const [form, setForm] = useState(initialForm);
+  const [state, setState] = useState({ busy:false, message:'', error:false });
+  const update = (event) => setForm((current) => ({ ...current, [event.target.name]:event.target.value }));
+  const submit = async (event) => {
+    event.preventDefault(); setState({ busy:true, message:'', error:false });
+    try {
+      const response = await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(form) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Unable to send your message. Please try again.');
+      setForm(initialForm); setState({ busy:false, message:'Thank you. Your message has been received and our team will get back to you.', error:false });
+    } catch (error) { setState({ busy:false, message:error.message || 'Please try again or contact us on WhatsApp.', error:true }); }
+  };
+  return <main className="bh-commerce-page"><CommerceHeader />
+    <section className="bh-commerce-hero"><div className="bh-commerce-wrap"><nav className="bh-commerce-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span>Contact</span></nav><p className="bh-commerce-eyebrow">WE’RE HERE TO HELP</p><h1>Contact Baba Hakeem</h1><p>Ask us about a product, an order, or delivery anywhere in Pakistan.</p></div></section>
+    <section className="bh-contact-layout"><div className="bh-contact-info"><p className="bh-commerce-eyebrow">CUSTOMER SUPPORT</p><h2>How can we help?</h2><p>Send us a message and include your order number if your question is about an existing order.</p><div className="bh-contact-methods">{contact.phone_number&&<a className="bh-contact-method" href={`tel:${contact.phone_number.replace(/[^+\d]/g,'')}`}><span className="bh-contact-method-icon"><PhoneIcon size={18}/></span><span className="bh-contact-method-label">Phone</span><strong>{contact.phone_number}</strong></a>}{contact.whatsapp_number&&<a className="bh-contact-method" href={buildWhatsAppUrl(contact.whatsapp_number)} target="_blank" rel="noreferrer"><span className="bh-contact-method-icon"><WhatsAppIcon size={18}/></span><span className="bh-contact-method-label">WhatsApp</span><strong>{contact.whatsapp_number}</strong></a>}{contact.email&&<a className="bh-contact-method" href={`mailto:${contact.email}`}><span className="bh-contact-method-icon"><MailIcon size={18}/></span><span className="bh-contact-method-label">Email</span><strong>{contact.email}</strong></a>}</div>{contact.address&&<p className="bh-contact-address">{contact.address}</p>}</div>
+      <form className="bh-contact-form" onSubmit={submit}><h2>Send us a message</h2><div className="bh-contact-fields"><label>Your name *<input name="name" value={form.name} onChange={update} required minLength={2} maxLength={120} autoComplete="name" /></label><label>Email address *<input name="email" type="email" value={form.email} onChange={update} required maxLength={254} autoComplete="email" /></label><label>Phone number<input name="phone" type="tel" value={form.phone} onChange={update} maxLength={24} autoComplete="tel" /></label><label>What is this about? *<select name="category" value={form.category} onChange={update}><option>Product question</option><option>Order support</option><option>Retail enquiry</option><option>Collaboration</option><option>Other</option></select></label><label className="bh-contact-wide">Order or product reference<input name="reference" value={form.reference} onChange={update} maxLength={50} /></label><label className="bh-contact-wide">Your message *<textarea name="message" value={form.message} onChange={update} required minLength={15} maxLength={2500} rows={5} /></label><label className="bh-contact-honeypot" aria-hidden="true">Website<input name="website" value={form.website} onChange={update} tabIndex={-1} autoComplete="off" /></label></div>{state.message&&<p className={`bh-contact-status${state.error?' is-error':''}`} role="status">{state.message}</p>}<button className="bh-contact-submit" type="submit" disabled={state.busy}>{state.busy?'Sending…':'Send message'}</button></form>
+    </section><CommerceFooter /></main>;
 }

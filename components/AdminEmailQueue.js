@@ -3,7 +3,6 @@
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
-import AdminSectionNav from './AdminSectionNav';
 import styles from './AdminEmailQueue.module.css';
 
 const stamp=value=>value?new Date(value).toLocaleString('en-PK',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'}):'—';
@@ -88,7 +87,7 @@ export default function AdminEmailQueue(){
   return <main className={styles.screen}><div className={styles.wrap}>
     <header className={styles.nav}>
       <div className={styles.brand}><span>BH</span><div><b>BABA HAKEEM</b><small>HERBAL PRODUCTS / ADMIN</small></div></div>
-      <AdminSectionNav/>
+      
     </header>
 
     <section className={styles.intro}>
@@ -135,3 +134,4 @@ export default function AdminEmailQueue(){
     <footer className={styles.footer}>BABA HAKEEM / ORDER COMMUNICATIONS <span>Private administrative delivery log · Provider acceptance is not proof of inbox delivery</span></footer>
   </div></main>;
 }
+

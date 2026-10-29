@@ -4,7 +4,6 @@ create extension if not exists pgcrypto;
 create table if not exists public.products (
   id uuid primary key default gen_random_uuid(),
   name text not null,
-  category text not null default 'Other',
   type text,
   description text,
   price text,
@@ -83,6 +82,8 @@ alter table public.products add column if not exists stock_status text not null 
 alter table public.products add column if not exists featured boolean not null default false;
 alter table public.products add column if not exists sort_order integer not null default 0;
 alter table public.products add column if not exists whatsapp_number text;
+alter table public.products add column if not exists overview text;
+alter table public.products add column if not exists usage text;
 
 update public.products
 set slug = lower(regexp_replace(regexp_replace(trim(name),'[^a-zA-Z0-9]+','-','g'),'(^-|-$)','','g')) || '-' || left(id::text,8)

@@ -4,10 +4,13 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import './admin.css';
 import { supabase } from '../../lib/supabase';
+import AdminBankSettings from '../../components/AdminBankSettings';
 
 const orderTransitions={Pending:['Confirmed','Cancelled'],Confirmed:['Shipped','Cancelled'],Shipped:['Delivered'],Delivered:[],Cancelled:[]};
 
-const empty={name:'',category:'Hair Care',type:'OIL',description:'',price:'',status:'Draft',image:'',stock_status:'Out of Stock',stock_quantity:0,featured:false,sort_order:0,whatsapp_number:''};
+const empty={name:'',slug:'',slugTouched:false,type:'OIL',product_type:'simple',description:'',overview:'',usage:'',faqs:[{question:'',answer:''}],regular_price:'',sell_price:'',image:'',image_path:'',stock_status:'Out of Stock',stock_quantity:0,featured:false,sort_order:0,whatsapp_number:'',meta_title:'',meta_description:''};
+const slugify=v=>String(v||'').toLowerCase().replace(/&/g,'and').replace(/['"]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+const initialVariation={label:'',regular_price:'',sell_price:'',stock_quantity:0,image:'',image_path:'',localImage:null};
 
 export default function AdminPage(){
   const [products,setProducts]=useState([]);
@@ -39,6 +42,7 @@ export default function AdminPage(){
   const [transferEmail,setTransferEmail]=useState('');
   const [transferNotice,setTransferNotice]=useState('');
   const [pendingTransfer,setPendingTransfer]=useState(null);
+  const [variations,setVariations]=useState([]);
 
   useEffect(()=>{
     let mounted=true;
@@ -74,7 +78,7 @@ export default function AdminPage(){
   const published=useMemo(()=>products.filter(p=>p.status==='Published').length,[products]);
   const filtered=useMemo(()=>products.filter(p=>{
     const q=query.trim().toLowerCase();
-    const matchesText=!q||[p.name,p.category,p.type,p.description].some(v=>String(v||'').toLowerCase().includes(q));
+    const matchesText=!q||[p.name,p.type,p.description].some(v=>String(v||'').toLowerCase().includes(q));
     return matchesText&&(filter==='All'||p.status===filter);
   }).sort((a,b)=>{
     if(sort==='Name')return String(a.name).localeCompare(String(b.name));
@@ -105,27 +109,61 @@ export default function AdminPage(){
     return {url:supabase.storage.from('product-images').getPublicUrl(path).data.publicUrl,path};
   };
 
+  const readVariationImage=(index,file)=>{
+    if(!file)return;
+    if(!file.type.startsWith('image/')){setNotice('Variation image must be an image file.');return;}
+    if(file.size>4*1024*1024){setNotice('Variation image must be smaller than 4 MB.');return;}
+    setVariations(list=>list.map((v,i)=>i===index?{...v,image:'',localImage:file}:v));
+  };
+
   const submit=async(e)=>{
     e.preventDefault();
-    if(!form.name.trim()||!form.image){setNotice('Product name and image are required.');return;}
-    if(form.status==='Published'){const verified=String(form.price||'').toLowerCase().replace(/rs\.?|pkr|,|\s/g,'');if(!/^[0-9]+(\.[0-9]{1,2})?$/.test(verified)||Number(verified)<=0){setNotice('Please confirm a valid official price before publishing.');return;}}
+    if(!form.name.trim()){setNotice('Product name is required.');return;}
+    if(!form.image&&editingId==null){setNotice('Please upload a featured image.');return;}
+    if(form.product_type==='simple'){
+      const verified=Number(String(form.sell_price||'').replace(/[^0-9.]/g,''));
+      if(!Number.isFinite(verified)||verified<=0){setNotice('Please enter a valid sell price before publishing.');return;}
+      if(form.regular_price&&Number(String(form.regular_price).replace(/[^0-9.]/g,''))<verified){setNotice('Regular price cannot be lower than the sell price.');return;}
+    }
+    if(form.product_type==='variable'){
+      if(!variations.some(v=>String(v.label||'').trim())){setNotice('Variable products need at least one variation with a label.');return;}
+      for(const v of variations.filter(v=>String(v.label||'').trim())){
+        if(Number(String(v.sell_price||'').replace(/[^0-9.]/g,''))<=0){setNotice('Each variation needs a valid sell price.');return;}
+      }
+    }
+    if(form.product_type==='simple'&&form.status==='Published'){
+      const verified=String(form.sell_price||'').toLowerCase().replace(/rs\.?|pkr|,|\s/g,'');
+      if(!/^[0-9]+(\.[0-9]{1,2})?$/.test(verified)||Number(verified)<=0){setNotice('Please confirm a valid sell price before publishing.');return;}
+    }
     try{
       setNotice(editingId?'Saving changes...':'Uploading product...');
       const uploaded=await uploadImage(form.image);
-      const slug=(form.name.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'product')+'-'+(editingId?String(editingId).slice(0,8):(crypto.randomUUID?.()||Date.now()).toString().slice(0,8));
-      const payload={name:form.name.trim(),slug,category:form.category,type:form.type,description:form.description,price:form.price,status:form.status,image:uploaded.url,stock_status:form.stock_status,featured:!!form.featured,sort_order:Number(form.sort_order||0),whatsapp_number:form.whatsapp_number.trim(),stock_quantity:Math.max(0,Number(form.stock_quantity||0)),updated_at:new Date().toISOString()};
-      if(uploaded.path)payload.image_path=uploaded.path;
-      if(editingId){
-        const old=products.find(p=>p.id===editingId);
-        const {error}=await supabase.from('products').update(payload).eq('id',editingId);
-        if(error)throw error;
-        if(uploaded.path&&old?.image_path)await supabase.storage.from('product-images').remove([old.image_path]);
-        setEditingId(null);setForm(empty);await refreshProducts();setNotice('Product updated successfully on the live database.');return;
+      const variationRows=[];
+      for(const v of variations.filter(v=>String(v.label||'').trim())){
+        let vImage=v.image,vPath=v.image_path;
+        if(v.localImage){
+          const vUpload=await uploadImage(v.localImage);
+          vImage=vUpload.url;vPath=vUpload.path;
+        }
+        variationRows.push({label:v.label,regular_price:v.regular_price,sell_price:v.sell_price,stock_quantity:Number(v.stock_quantity||0)||0,image:vImage,image_path:vPath});
       }
-      const {error}=await supabase.from('products').insert(payload);
+      const payload={...form,image:uploaded.url,image_path:uploaded.path};
+      if(typeof uploaded==='string')payload.image=uploaded;
+      const {data,error}=await supabase.rpc('save_product',{
+        p_product:payload,
+        p_variations:form.product_type==='variable'?variationRows:[],
+        p_id:editingId
+      });
       if(error)throw error;
-      setForm(empty);await refreshProducts();setNotice('Product added successfully to the live storefront.');
-    }catch(err){setNotice(err?.message||'Could not save product.');}
+      const saved=Array.isArray(data)?data[0]:data;
+      const old=editingId?products.find(p=>p.id===editingId):null;
+      if(old?.image_path&&uploaded.path&&old.image_path!==uploaded.path)await supabase.storage.from('product-images').remove([old.image_path]);
+      const refreshedNotice=editingId?'Product updated successfully.':'Product added successfully ('+(saved?.slug||'')+(form.product_type==='variable'?' / variable':'')+')';
+      setEditingId(null);setForm(empty);setVariations([]);
+      await Promise.all([refreshProducts()]);
+      setNotice(refreshedNotice);
+      document.getElementById('products')?.scrollIntoView({behavior:'smooth'});
+    }catch(err){setNotice(err?.message||'Could not save the product.');}
   };
 
   const remove=async(id)=>{
@@ -141,7 +179,23 @@ export default function AdminPage(){
     const {error}=await supabase.from('products').update({status:p.status==='Published'?'Draft':'Published',updated_at:new Date().toISOString()}).eq('id',id);
     if(error){setNotice(error.message);return;}await refreshProducts();
   };
-  const edit=(p)=>{setForm({name:p.name||'',category:p.category||'Other',type:p.type||'',description:p.description||'',price:p.price||'',status:p.status||'Draft',image:p.image||'',stock_status:p.stock_status||'In Stock',featured:!!p.featured,sort_order:p.sort_order||0,whatsapp_number:p.whatsapp_number||'',stock_quantity:p.stock_quantity||0});setEditingId(p.id);setNotice('Editing '+p.name);document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});};
+  const setField=(key,value)=>{
+    setForm(prev=>{
+      if(key==='name'&&!prev.slugTouched)return {...prev,name:value,slug:slugify(value)};
+      return {...prev,[key]:value};
+    });
+  };
+  const edit=async(p)=>{
+    let savedFaqs=p.faqs;
+    if(typeof savedFaqs==='string'){try{savedFaqs=JSON.parse(savedFaqs);}catch{savedFaqs=[];}}
+    setForm({name:p.name||'',slug:p.slug||'',slugTouched:true,type:p.type||'',product_type:p.product_type||'simple',description:p.description||'',overview:p.overview||'',usage:p.usage||'',faqs:Array.isArray(savedFaqs)&&savedFaqs.length?savedFaqs:[{question:'',answer:''}],regular_price:p.regular_price!=null?String(p.regular_price):'',sell_price:p.sell_price!=null?String(p.sell_price):'',image:p.image||'',image_path:p.image_path||'',status:p.status||'Draft',featured:!!p.featured,sort_order:p.sort_order||0,whatsapp_number:p.whatsapp_number||'',stock_quantity:p.stock_quantity||0,meta_title:p.meta_title||'',meta_description:p.meta_description||''});
+    setEditingId(p.id);
+    setVariations([]);
+    const {data}=await supabase.from('product_variations').select('*').eq('product_id',p.id).order('sort_order',{ascending:true});
+    setVariations((data||[]).map(v=>({label:v.label||'',regular_price:v.regular_price!=null?String(v.regular_price):'',sell_price:v.sell_price!=null?String(v.sell_price):'',stock_quantity:v.stock_quantity||0,image:v.image||'',image_path:v.image_path||'',localImage:null})));
+    setNotice('Editing '+p.name);
+    document.getElementById('add-product')?.scrollIntoView({behavior:'smooth'});
+  };
   const cancelEdit=()=>{setEditingId(null);setForm(empty);setNotice('');};
   const signIn=async(e)=>{e.preventDefault();setLoginError('');const {error}=await supabase.auth.signInWithPassword({email:login.email.trim(),password:login.password});if(error)setLoginError(error.message);};
   const claimOwnership=async()=>{setRegisterState(v=>({...v,busy:true,error:'',message:''}));const {data,error}=await supabase.rpc('claim_admin_ownership');if(error){setRegisterState({busy:false,error:error.message,message:''});return;}if(!data){setRegisterState({busy:false,error:'This website already has an owner.',message:''});return;}window.location.reload();};
@@ -160,15 +214,8 @@ export default function AdminPage(){
 
   if(authenticated&&owner.checked&&!owner.isOwner)return <main className="admin-auth-screen owner-gate"><section className="login-panel reset-panel"><div className="login-card"><div className="login-card-top"><span className="secure-icon">⌾</span><small>SINGLE OWNER SECURITY</small></div><h2>{owner.hasOwner?'Access restricted.':'Claim ownership.'}</h2><p>{owner.hasOwner?'This account is registered, but this website already has one administrator. Only the current owner can transfer control to another registered account.':'No administrator currently owns this website. Claim ownership to become its one and only administrator.'}</p>{!owner.hasOwner&&<button className="login-submit" onClick={claimOwnership} disabled={registerState.busy}><span>{registerState.busy?'CLAIMING...':'BECOME WEBSITE OWNER'}</span><b>→</b></button>}{registerState.error&&<div className="login-error">{registerState.error}</div>}<button className="forgot-password" onClick={signOut}>SIGN OUT</button></div></section></main>;
 
-  return <main className="admin-shell">
-    <aside className="admin-side">
-      <div><span className="admin-mark">BH</span><h1>BABA HAKEEM</h1><small>HERBAL PRODUCTS / ADMIN</small></div>
-      <nav><a className="active" href="#dashboard">Dashboard</a><a href="#orders">Orders</a><Link href="/admin/operations">Order Operations ↗</Link><Link href="/admin/reports">Sales Reports ↗</Link><Link href="/admin/emails">Order Emails ↗</Link><Link href="/admin/inquiries">Contact Enquiries ↗</Link><a href="#add-product">Add Product</a><a href="#products">Products</a><a href="#security">Security</a></nav>
-      <div className="side-bottom"><button className="logout-btn" onClick={signOut}>↪ Sign out</button><Link href="/">← View storefront</Link></div>
-    </aside>
-
-    <section className="admin-main" id="dashboard">
-      <header className="admin-top"><div><small>ADMIN CONSOLE / BABA HAKEEM</small><h2>Product Management</h2><p>Manage your catalogue, product visuals and publishing status from one place.</p></div><div className="top-actions"><span className="live-pill"><i/> STOREFRONT LIVE</span><Link href="/">Open website ↗</Link></div></header>
+  return <section className="admin-main" id="dashboard">
+    <header className="admin-top"><div><small>ADMIN CONSOLE / BABA HAKEEM</small><h2>Product Management</h2><p>Manage your catalogue, product visuals and publishing status from one place.</p></div><div className="top-actions"><span className="live-pill"><i/> CMS READY</span><Link href="/admin/seo">Page SEO ↗</Link></div></header>
 
       <div className="admin-stats commerce-stats">
         <article><div className="stat-icon">◇</div><small>TOTAL PRODUCTS</small><strong>{products.length}</strong><span>{published} published</span></article>
@@ -182,32 +229,81 @@ export default function AdminPage(){
         <Link href="/admin/inquiries"><span className="shortcut-icon">✉</span><span><b>Customer inbox</b><small>Messages &amp; support</small></span><span aria-hidden="true">→</span></Link>
       </nav>
 
-      <section className="admin-panel orders-panel" id="orders"><div className="panel-heading"><div><small>ORDERS / LIVE</small><h3>Customer orders</h3><p>Track incoming orders from request to delivery.</p></div><span>{orders.length} orders</span></div><div className="order-summary"><span><b>{pendingOrders}</b> Pending</span><span><b>{confirmedOrders}</b> Confirmed</span><span><b>{shippedOrders}</b> Shipped</span><span><b>{deliveredOrders}</b> Delivered</span><span><b>{unitsSold}</b> Units sold</span></div><div className="orders-toolbar"><label className="order-search"><span>⌕</span><input value={orderQuery} onChange={e=>setOrderQuery(e.target.value)} placeholder="Search order, customer, phone, city..."/></label><select value={orderSort} onChange={e=>setOrderSort(e.target.value)}><option>Newest</option><option>Oldest</option><option>Amount</option></select></div><div className="order-filter-tabs">{['All','Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><button key={x} className={orderFilter===x?'active':''} onClick={()=>setOrderFilter(x)}>{x}</button>)}</div>{visibleOrders.length===0?<div className="empty-state"><b>◎</b><h4>No orders here</h4><p>No orders match the current search/filter.</p></div>:<div className="orders-list">{visibleOrders.map(o=><article key={o.id}><div className="order-id"><small>{o.order_number}</small><b>{o.product_name}</b><span>{new Date(o.created_at).toLocaleString()}</span></div><div className="order-customer"><b>{o.customer_name}</b><span><a href={'tel:'+o.phone}>{o.phone}</a> · {o.city}</span><p>{o.address}</p>{o.notes&&<em>{o.notes}</em>}</div><div className="order-money"><span>{o.quantity} × {Number(o.unit_price||0).toLocaleString()}</span><b>{Number(o.total_amount||0).toLocaleString()}</b></div><div className="order-actions"><a className="order-wa" href={'https://wa.me/'+String(o.phone||'').replace(/\D/g,'').replace(/^0/,'92')+'?text='+encodeURIComponent('Hello '+o.customer_name+', regarding your Baba Hakeem order '+o.order_number+'.')} target="_blank" rel="noopener noreferrer">WHATSAPP ↗</a><select value={o.status} onChange={e=>updateOrderStatus(o,e.target.value)}>{[o.status,...(orderTransitions[o.status]||[])].map(x=><option key={x}>{x}</option>)}</select><button onClick={()=>deleteOrder(o.id)}>DELETE</button></div></article>)}</div>}</section>
+      <AdminBankSettings />
+      <section className="admin-panel orders-panel" id="orders"><div className="panel-heading"><div><small>ORDERS / LIVE</small><h3>Customer orders</h3><p>Track incoming orders from request to delivery.</p></div><span>{orders.length} orders</span></div><div className="order-summary"><span><b>{pendingOrders}</b> Pending</span><span><b>{confirmedOrders}</b> Confirmed</span><span><b>{shippedOrders}</b> Shipped</span><span><b>{deliveredOrders}</b> Delivered</span><span><b>{unitsSold}</b> Units sold</span></div><div className="orders-toolbar"><label className="order-search"><span>⌕</span><input value={orderQuery} onChange={e=>setOrderQuery(e.target.value)} placeholder="Search order, customer, phone, city..."/></label><select value={orderSort} onChange={e=>setOrderSort(e.target.value)}><option>Newest</option><option>Oldest</option><option>Amount</option></select></div><div className="order-filter-tabs">{['All','Pending','Confirmed','Shipped','Delivered','Cancelled'].map(x=><button key={x} className={orderFilter===x?'active':''} onClick={()=>setOrderFilter(x)}>{x}</button>)}</div>{visibleOrders.length===0?<div className="empty-state"><b>◎</b><h4>No orders here</h4><p>No orders match the current search/filter.</p></div>:<div className="orders-list">{visibleOrders.map(o=><article key={o.id}><div className="order-id"><small>{o.order_number}</small><b>{o.product_name}</b><span>{new Date(o.created_at).toLocaleString()}</span></div><div className="order-customer"><b>{o.customer_name}</b><span><a href={'tel:'+o.phone}>{o.phone}</a> · {o.city}</span><p>{o.address}</p>{o.notes&&<em>{o.notes}</em>}</div><div className="order-money"><span>{o.quantity} × {Number(o.unit_price||0).toLocaleString()}</span><b>{Number(o.total_amount||0).toLocaleString()}</b>{o.payment_method&&<small>Payment: {o.payment_method}</small>}{o.transaction_id&&<small>Transaction ID: {o.transaction_id}</small>}</div><div className="order-actions"><a className="order-wa" href={'https://wa.me/'+String(o.phone||'').replace(/\D/g,'').replace(/^0/,'92')+'?text='+encodeURIComponent('Hello '+o.customer_name+', regarding your Baba Hakeem order '+o.order_number+'.')} target="_blank" rel="noopener noreferrer">WHATSAPP ↗</a><select value={o.status} onChange={e=>updateOrderStatus(o,e.target.value)}>{[o.status,...(orderTransitions[o.status]||[])].map(x=><option key={x}>{x}</option>)}</select><button onClick={()=>deleteOrder(o.id)}>DELETE</button></div></article>)}</div>}</section>
 
       <section className="admin-panel" id="add-product">
-        <div className="panel-heading"><div><small>{editingId?'PRODUCT / EDIT':'NEW PRODUCT / CREATE'}</small><h3>{editingId?'Edit product':'Add to collection'}</h3><p>{editingId?'Update the selected product and save your changes.':'Build a polished storefront product card in a few fields.'}</p></div><div className="heading-actions">{editingId&&<button type="button" onClick={cancelEdit}>Cancel edit</button>}<span>Required fields are marked *</span></div></div>
+        <div className="panel-heading"><div><small>{editingId?'PRODUCT / EDIT':'NEW PRODUCT / CREATE'}</small><h3>{editingId?'Edit product':'Add to collection'}</h3><p>{editingId?'Update the product including its variations and SEO fields.':'Build a product with pricing, variations and SEO in one place.'}</p></div><div className="heading-actions">{editingId&&<button type="button" onClick={()=>{setEditingId(null);setForm(empty);setVariations([]);}}>Cancel edit</button>}<span>Required fields are marked *</span></div></div>
         <form className="product-form" onSubmit={submit}>
           <div className="form-fields">
-            <label><span>PRODUCT NAME *</span><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="e.g. Herbal Hair Oil" required/></label>
+            <label><span>PRODUCT NAME *</span><input value={form.name} onChange={e=>setField('name',e.target.value)} placeholder="e.g. Herbal Hair Oil" required/></label>
             <div className="form-row">
-              <label><span>CATEGORY</span><select value={form.category} onChange={e=>setForm({...form,category:e.target.value})}><option>Hair Care</option><option>Joint Care</option><option>Men's Care</option><option>Herbal Blend</option><option>Saffron</option><option>Other</option></select></label>
-              <label><span>TYPE</span><input value={form.type} onChange={e=>setForm({...form,type:e.target.value})} placeholder="OIL / POWDER / SAFFRON"/></label>
-            </div>
-            <label><span>DESCRIPTION</span><textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="Short product description" rows="4"/></label>
-            <div className="form-row">
-              <label><span>PRICE (OPTIONAL)</span><input value={form.price} onChange={e=>setForm({...form,price:e.target.value})} placeholder="e.g. Rs 1,250"/></label>
-              <label><span>STATUS</span><select value={form.status} onChange={e=>setForm({...form,status:e.target.value})}><option>Published</option><option>Draft</option></select></label>
+              <label><span>SLUG (URL) — AUTO FROM TITLE</span><div className="slug-row"><input value={form.slug} onChange={e=>setForm({...form,slug:e.target.value,slugTouched:true})} placeholder="auto-generated"/><button type="button" title="Regenerate from title" onClick={()=>setForm({...form,slug:slugify(form.name)})}>↻</button></div></label>
+              <label><span>PRODUCT TYPE *</span><select value={form.product_type} onChange={e=>setForm({...form,product_type:e.target.value})}><option value="simple">Simple product</option><option value="variable">Variable product</option></select></label>
             </div>
             <div className="form-row">
-              <label><span>STOCK</span><select value={form.stock_status} onChange={e=>setForm({...form,stock_status:e.target.value})}><option>In Stock</option><option>Low Stock</option><option>Out of Stock</option></select></label>
+              <label><span>TYPE TAG</span><input value={form.type} onChange={e=>setForm({...form,type:e.target.value})} placeholder="OIL / POWDER / SAFFRON"/></label>
+            </div>
+            <label><span>DESCRIPTION (AUTO-GENERATED IF LEFT EMPTY)</span><textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="Leave empty to auto-generate, or write your own" rows="4"/></label>
+            <div className="seo-block">
+              <b>PRODUCT OVERVIEW &amp; BENEFITS</b>
+              <p className="hint">Shown in the “Product Overview &amp; Benefits” accordion on the single product page.</p>
+              <label><span>OVERVIEW / BENEFITS</span><textarea value={form.overview} onChange={e=>setForm({...form,overview:e.target.value})} placeholder="Describe the product overview and its key benefits" rows="4"/></label>
+            </div>
+            <div className="seo-block">
+              <b>HOW TO USE / DAILY RITUAL</b>
+              <p className="hint">Shown in the “How to Use / Daily Ritual” accordion on the single product page.</p>
+              <label><span>USAGE INSTRUCTIONS</span><textarea value={form.usage} onChange={e=>setForm({...form,usage:e.target.value})} placeholder="e.g. Take 5 drops with warm milk every morning" rows="4"/></label>
+            </div>
+            <div className="seo-block product-faq-editor">
+              <div className="variations-head"><div><b>PRODUCT FAQs</b><p className="hint">Answers appear in this product page FAQ section. Add product-specific questions and answers.</p></div><button type="button" onClick={()=>setForm(prev=>({...prev,faqs:[...(prev.faqs||[]),{question:'',answer:''}]}))}>+ Add question</button></div>
+              {(form.faqs||[]).map((faq,index)=><div className="product-faq-editor__row" key={index}>
+                <label><span>QUESTION {index+1}</span><input maxLength="500" value={faq.question} onChange={e=>setForm(prev=>({...prev,faqs:prev.faqs.map((item,i)=>i===index?{...item,question:e.target.value}:item)}))} placeholder="e.g. How do I use this product?"/></label>
+                <label><span>ANSWER</span><textarea maxLength="3000" rows="3" value={faq.answer} onChange={e=>setForm(prev=>({...prev,faqs:prev.faqs.map((item,i)=>i===index?{...item,answer:e.target.value}:item)}))} placeholder="Write a clear answer for customers"/></label>
+                <button type="button" aria-label={`Remove FAQ ${index+1}`} onClick={()=>setForm(prev=>({...prev,faqs:prev.faqs.filter((_,i)=>i!==index)}))}>Remove</button>
+              </div>)}
+            </div>
+            {form.product_type==='variable'?(
+              <div className="variations-block">
+                <div className="variations-head"><b>VARIATIONS</b><button type="button" onClick={()=>setVariations(list=>[...list,{...initialVariation}])}>+ Add variation</button></div>
+                {variations.length===0&&<p className="hint">A variable product lets customers choose among options (e.g. 10ml / 30ml) with their own price, image and stock.</p>}
+                {variations.map((v,index)=><div className="variation-row" key={index}>
+                  <label><span>LABEL *</span><input value={v.label} onChange={e=>{const value=e.target.value;setVariations(list=>list.map((x,i)=>i===index?{...x,label:value}:x))}} placeholder="e.g. 10 ml" required/></label>
+                  <label><span>REGULAR PRICE</span><input type="number" min="0" step="any" value={v.regular_price} onChange={e=>{const value=e.target.value;setVariations(list=>list.map((x,i)=>i===index?{...x,regular_price:value}:x))}} placeholder="Raw price"/></label>
+                  <label><span>SELL PRICE *</span><input type="number" min="0" step="any" value={v.sell_price} onChange={e=>{const value=e.target.value;setVariations(list=>list.map((x,i)=>i===index?{...x,sell_price:value}:x))}} required/></label>
+                  <label><span>STOCK</span><input type="number" min="0" value={v.stock_quantity} onChange={e=>{const value=e.target.value;setVariations(list=>list.map((x,i)=>i===index?{...x,stock_quantity:value}:x))}}/></label>
+                  <div className="variation-image">
+                    {v.image?<img src={typeof v.image==='string'?v.image:URL.createObjectURL(v.localImage)} alt=""/>:<span>no image</span>}
+                    <input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>readVariationImage(index,e.target.files?.[0])} title="Optional variation image"/>
+                    <button type="button" onClick={()=>setVariations(list=>list.filter((_,i)=>i!==index))}>×</button>
+                  </div>
+                </div>)}
+              </div>
+            ):(
+              <div className="form-row">
+                <label><span>SELL PRICE *</span><input type="number" min="0" step="any" value={form.sell_price} onChange={e=>setForm({...form,sell_price:e.target.value})} placeholder="e.g. 1300"/></label>
+                <label><span>REGULAR PRICE (SHOWS AS CROSSED OUT)</span><input type="number" min="0" step="any" value={form.regular_price} onChange={e=>setForm({...form,regular_price:e.target.value})} placeholder="e.g. 1500"/></label>
+              </div>
+            )}
+            <div className="form-row">
+              <label><span>PUBLISH STATUS *</span><select value={form.status} onChange={e=>setForm({...form,status:e.target.value})}><option>Published</option><option>Draft</option></select></label>
+              <label><span>{form.product_type==='variable'?'VARIATION STOCK COUNTED ON ROWS ABOVE':'STOCK QUANTITY'}</span><input type="number" min="0" disabled={form.product_type==='variable'} value={form.product_type==='variable'?'':form.stock_quantity} onChange={e=>setForm({...form,stock_quantity:e.target.value})}/></label>
+            </div>
+            <div className="form-row">
+              <label><span>WHATSAPP NUMBER (OPTIONAL)</span><input value={form.whatsapp_number} onChange={e=>setForm({...form,whatsapp_number:e.target.value})} placeholder="e.g. 923001234567"/></label>
               <label><span>DISPLAY ORDER</span><input type="number" value={form.sort_order} onChange={e=>setForm({...form,sort_order:e.target.value})} placeholder="0"/></label>
             </div>
-            <div className="form-row"><label><span>STOCK QUANTITY</span><input type="number" min="0" value={form.stock_quantity} onChange={e=>setForm({...form,stock_quantity:e.target.value})}/></label><label><span>WHATSAPP NUMBER (OPTIONAL)</span><input value={form.whatsapp_number} onChange={e=>setForm({...form,whatsapp_number:e.target.value})} placeholder="e.g. 923001234567"/></label></div>
+            <div className="seo-block">
+              <b>PRODUCT PAGE SEO</b>
+              <p className="hint">Used as the product page title &amp; meta description on the storefront. Auto-generated from the name/description when left empty.</p>
+              <label><span>META TITLE</span><input value={form.meta_title} onChange={e=>setForm({...form,meta_title:e.target.value})} placeholder={'Auto: '+((form.name||'Product')+' | Baba Hakeem')}/></label>
+              <label><span>META DESCRIPTION</span><textarea rows="2" maxLength="320" value={form.meta_description} onChange={e=>setForm({...form,meta_description:e.target.value})} placeholder="Auto-generated from the description when left empty"/></label>
+            </div>
             <label className="feature-check"><input type="checkbox" checked={form.featured} onChange={e=>setForm({...form,featured:e.target.checked})}/><span>FEATURE THIS PRODUCT</span></label>
           </div>
           <div className="upload-column">
             <label className={'upload-box '+(dragging?'dragging':'')} onDragOver={e=>{e.preventDefault();setDragging(true)}} onDragLeave={()=>setDragging(false)} onDrop={e=>{e.preventDefault();setDragging(false);readImage(e.dataTransfer.files[0])}}>
-              {form.image?<img src={typeof form.image==='string'?form.image:URL.createObjectURL(form.image)} alt="Product preview"/>:<><b>＋</b><strong>UPLOAD PRODUCT IMAGE</strong><span>Drop image here or click to browse<br/>PNG / JPG / WEBP · max 4 MB</span></>}
+              {form.image?<img src={typeof form.image==='string'?form.image:URL.createObjectURL(form.image)} alt="Product preview"/>:<><b>＋</b><strong>UPLOAD FEATURED IMAGE</strong><span>Drop image here or click to browse<br/>PNG / JPG / WEBP · max 4 MB</span></>}
               <input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>readImage(e.target.files?.[0])}/>
             </label>
             {form.image&&<button className="replace-image" type="button" onClick={()=>setForm({...form,image:''})}>Remove image</button>}
@@ -222,8 +318,8 @@ export default function AdminPage(){
         {products.length===0?<div className="empty-state"><b>＋</b><h4>No admin products yet</h4><p>Use the form above to upload the first product.</p></div>:
         <div className="admin-product-list">{filtered.length===0?<div className="no-results">No products match your search.</div>:filtered.map(p=><article key={p.id}>
           <div className="admin-thumb"><img src={p.image} alt=""/></div>
-          <div className="admin-product-copy"><small>{p.category} / {p.type} / {p.stock_status||'In Stock'}{p.featured?' / FEATURED':''}</small><h4>{p.name}</h4><p>{p.description||'No description added.'}</p></div>
-          <div className="admin-product-meta">{p.price&&<b>{p.price}</b>}<span className={(Number(p.stock_quantity)<=5?'stock-alert ':'')+'stock-count'}>{Number(p.stock_quantity||0)} in stock</span><button className={p.status==='Published'?'published':'draft'} onClick={()=>toggle(p.id)}>{p.status}</button></div>
+          <div className="admin-product-copy"><small>{p.type||'—'} / {p.stock_status||'In Stock'}{p.featured?' / FEATURED':''}</small><h4>{p.name} {p.product_type==='variable'&&<span className="admin-type-badge">VARIABLE</span>}</h4><p>{p.description||'No description added.'}</p></div>
+          <div className="admin-product-meta">{Number(p.sell_price)>0&&<b className="admin-price-new">{Number(p.sell_price).toLocaleString()}</b>}{Number(p.regular_price)>0&&Number(p.regular_price)!==Number(p.sell_price)&&<span className="admin-price-was">{Number(p.regular_price).toLocaleString()}</span>}<span className={(Number(p.stock_quantity)<=5?'stock-alert ':'')+'stock-count'}>{Number(p.stock_quantity||0)} in stock</span><button className={p.status==='Published'?'published':'draft'} onClick={()=>toggle(p.id)}>{p.status}</button></div>
           <div className="row-actions"><button className="edit-product" onClick={()=>edit(p)} aria-label={'Edit '+p.name}>EDIT</button><button className="delete-product" onClick={()=>remove(p.id)} aria-label={'Delete '+p.name}>×</button></div>
         </article>)}</div>}
       </section>
@@ -232,7 +328,6 @@ export default function AdminPage(){
 
       <section className="admin-panel security-panel" id="security"><div className="panel-heading"><div><small>ACCOUNT / SECURITY</small><h3>Change password</h3><p>Update the password for the currently signed-in Supabase administrator.</p></div></div><form className="security-form" onSubmit={changePassword}><label><span>CURRENT PASSWORD</span><input type="password" value={passwordForm.current} onChange={e=>setPasswordForm({...passwordForm,current:e.target.value})} required/></label><label><span>NEW PASSWORD</span><input type="password" value={passwordForm.next} onChange={e=>setPasswordForm({...passwordForm,next:e.target.value})} minLength="8" required/></label><label><span>CONFIRM NEW PASSWORD</span><input type="password" value={passwordForm.confirm} onChange={e=>setPasswordForm({...passwordForm,confirm:e.target.value})} minLength="8" required/></label><button className="publish-btn" type="submit">CHANGE PASSWORD <span>→</span></button>{securityNotice&&<p className="admin-notice">{securityNotice}</p>}</form></section>
 
-      <p className="storage-note"><b>Live storage:</b> products are stored in Supabase Database and product images in Supabase Storage. Changes made here are shared across devices and the live storefront.</p>
+      <p className="storage-note"><b>Live storage:</b> products, variations and page SEO are stored in the local MySQL database. Changes made here are shared across devices once a storefront is connected.</p>
     </section>
-  </main>
-}
+  }

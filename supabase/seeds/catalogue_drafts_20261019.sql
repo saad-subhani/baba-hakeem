@@ -6,7 +6,6 @@ select seed.name,seed.slug,seed.category,seed.type,seed.description,seed.image,s
 from (values
   ('Hair Oil', 'hair-oil', 'Hair Care', 'Oil', 'Herbal hair care for a considered everyday routine.', '/products/hair%20oil%20mockup%20png.png', 10),
   ('Joint Oil', 'joint-oil', 'Topical Care', 'Oil', 'Focused massage oil for a simple everyday care ritual.', '/joint-oil-4k.png', 20),
-  ('Stomach Phakki', 'stomach-phakki', 'Traditional Blend', 'Powder', 'Traditional blended product; verify official label and usage details before publication.', '/products/stomach%20phakki-03.png', 30),
   ('Herbal Phakki', 'herbal-phakki', 'Herbal Wellness', 'Powder', 'A familiar herbal blend from the Baba Hakeem collection.', '/products/phakii.png', 40),
   ('Men''s Oil', 'mens-oil', 'Men''s Care', 'Oil', 'Personal care oil presented with a simple daily ritual.', '/products/mens-oil-new.png', 50),
   ('Wedding Course', 'wedding-course', 'Premium Personal Care', 'Collection', 'A premium personal-care collection prepared for gifting and everyday routines.', '/products/wedding-course.webp.png', 60),

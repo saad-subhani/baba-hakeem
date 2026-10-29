@@ -1,0 +1,7 @@
+.bh-shop-catalog { width:min(92%,1320px); margin:0 auto; padding:34px 0 72px; }
+.bh-shop-tabs { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:30px; }
+.bh-shop-tabs button { min-height:42px; padding:9px 18px; border:1px solid #dbe7d4; border-radius:999px; background:#fff; color:#173d18; font:500 14px/1.3 "Work Sans",sans-serif; cursor:pointer; transition:background .2s,color .2s,border-color .2s; }
+.bh-shop-tabs button:hover,.bh-shop-tabs button.is-active { border-color:#092d0b; background:#092d0b; color:#fff; }
+.bh-shop-empty { padding:64px 20px; text-align:center; }
+.bh-shop-empty button { border:0; border-radius:6px; padding:12px 20px; background:#092d0b; color:#fff; cursor:pointer; }
+@media(max-width:640px){.bh-shop-catalog{width:calc(100% - 32px);padding:24px 0 48px}.bh-shop-tabs{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;margin-bottom:20px;scrollbar-width:none}.bh-shop-tabs::-webkit-scrollbar{display:none}.bh-shop-tabs button{flex:0 0 auto;min-height:38px;padding:8px 13px;font-size:12px}}

@@ -3,7 +3,7 @@
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
-import AdminSectionNav from './AdminSectionNav';
+import { RefreshIcon, DownloadIcon } from './Icons';
 import styles from './AdminSalesReports.module.css';
 
 const STATUSES=['All','Pending','Confirmed','Shipped','Delivered','Cancelled'];
@@ -193,11 +193,11 @@ export default function AdminSalesReports(){
   return <main className={styles.screen}><div className={styles.wrap}>
     <header className={styles.header}>
       <div className={styles.brand}><span className={styles.mark}>BH</span><span><b>BABA HAKEEM</b><small>HERBAL PRODUCTS / ADMIN</small></span></div>
-      <AdminSectionNav/>
+      
     </header>
     <section className={styles.intro}>
       <div><small>ADMIN / REAL SUPABASE ORDER DATA</small><h1>SALES <em>OVERVIEW.</em></h1><p>Revenue intelligence, product performance and filtered order records.</p></div>
-      <button type="button" onClick={()=>setRefresh(r=>r+1)} disabled={loading}>{loading?'Refreshing…':'↻ Refresh data'}</button>
+      <button type="button" onClick={()=>setRefresh(r=>r+1)} disabled={loading}>{loading?'Refreshing…':<><RefreshIcon size={13} style={{marginRight:'5px'}}/> Refresh data</>}</button>
     </section>
     {error&&<div className={styles.error} role="alert">{error} <button type="button" onClick={()=>setRefresh(r=>r+1)}>Retry</button></div>}
     <section className={styles.filters}>
@@ -248,7 +248,7 @@ export default function AdminSalesReports(){
     </div>
     <section className={styles.report}>
       <header><div><small>03 / FILTERED SALES RECORDS</small><h2>Order report</h2><p>{filtered.length} matching orders · export uses the same filters and product-level amounts.</p></div>
-        <div className={styles.download}><button type="button" disabled={!filtered.length||loading} onClick={()=>download('orders')}>↓ Orders CSV</button><button type="button" disabled={!filtered.length||loading} onClick={()=>download('summary')}>↓ Summary CSV</button></div>
+        <div className={styles.download}><button type="button" disabled={!filtered.length||loading} onClick={()=>download('orders')}><DownloadIcon size={13} style={{marginRight:'4px'}}/> Orders CSV</button><button type="button" disabled={!filtered.length||loading} onClick={()=>download('summary')}><DownloadIcon size={13} style={{marginRight:'4px'}}/> Summary CSV</button></div>
       </header>
       <div className={styles.tableScroll}><table><thead><tr><th>ORDER</th><th>DATE</th><th>CUSTOMER</th><th>PRODUCTS</th><th>STATUS</th><th>UNITS</th><th>AMOUNT</th></tr></thead><tbody>
         {filtered.map(o=><tr key={o.id}>
@@ -265,3 +265,4 @@ export default function AdminSalesReports(){
     <footer className={styles.pageFooter}>BABA HAKEEM / OWNER-ONLY REPORTING <span>Existing single-product and newer multi-product orders supported · PKR</span></footer>
   </div></main>;
 }
+

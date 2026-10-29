@@ -1,33 +1,18 @@
-import PremiumPageShell from '../../components/PremiumPageShell';
-import styles from '../../components/PremiumPage.module.css';
+import Link from 'next/link';
+import CommerceHeader from '../../components/CommerceHeader';
+import CommerceFooter from '../../components/CommerceFooter';
+import './about.css';
 
-export const metadata={title:'About | Baba Hakeem',description:'Discover the Baba Hakeem approach to herbal oils, traditional blends, saffron and considered everyday product care.'};
+export const metadata = { title: 'About Baba Hakeem | Herbal Products', description: 'Learn about Baba Hakeem and our approach to traditional herbal care, carefully prepared in Pakistan.' };
 
-export default function AboutPage(){
- return <PremiumPageShell eyebrow="01 / OUR STORY" title="HERBAL CARE, MADE CONSIDERED." intro="A quieter approach to traditional herbal care — familiar rituals, thoughtful presentation and a modern Baba Hakeem identity.">
-  <section className={styles.section} data-reveal>
-   <div className={styles.sectionHead}><span className={styles.kicker}>ROOTED IN TRADITION</span><div><h2>OLD WISDOM. CLEANER EXPRESSION.</h2><p>Baba Hakeem brings traditional herbal products into a more refined everyday experience without losing the familiarity at the heart of the brand.</p></div></div>
-   <div className={styles.grid3}>
-    <article className={styles.card} data-reveal><small>01 / ROOTS</small><h3>Traditional</h3><p>Inspired by herbal routines that have remained part of everyday care across generations.</p></article>
-    <article className={styles.card} data-reveal><small>02 / APPROACH</small><h3>Considered</h3><p>Focused products, restrained design and a clearer way to explore the collection.</p></article>
-    <article className={styles.card} data-reveal><small>03 / FUTURE</small><h3>Modern</h3><p>A digital-first presentation built to make the brand feel premium, useful and memorable.</p></article>
-   </div>
-  </section>
-  <section className={styles.section} data-reveal>
-   <div className={styles.sectionHead}><span className={styles.kicker}>THE PRODUCT WORLD</span><div><h2>DIFFERENT FORMATS. ONE BABA HAKEEM SYSTEM.</h2><p>Oils, traditional blends, saffron and future categories can feel connected without being identical. The goal is a product family that stays easy to recognize and easy to navigate.</p></div></div>
-   <div className={styles.grid3}>
-    <article className={styles.card} data-reveal><small>01 / OILS</small><h3>Focused routines</h3><p>Hair, topical and personal-care oils are presented around clear categories, practical information and product-first imagery.</p></article>
-    <article className={styles.card} data-reveal><small>02 / BLENDS</small><h3>Familiar formats</h3><p>Traditional powdered products keep their recognizable character while gaining clearer naming, presentation and supporting information.</p></article>
-    <article className={styles.card} data-reveal><small>03 / PREMIUM</small><h3>Elevated presentation</h3><p>Saffron, gifting and future premium products can use the same brand language with a more elevated presentation where appropriate.</p></article>
-   </div>
-  </section>
-  <section className={styles.section} data-reveal>
-   <div className={styles.sectionHead}><span className={styles.kicker}>THE PRINCIPLE</span><div><h2>LESS NOISE. MORE INTENT.</h2><p>The visual language stays deliberately simple: concrete gray, deep black, strong typography and product-first storytelling.</p></div></div>
-   <div className={styles.grid3}>
-    <article className={styles.card} data-reveal><small>01 / CLARITY</small><h3>Easy to understand</h3><p>Product names, categories and supporting information should help customers understand the range without unnecessary complexity.</p></article>
-    <article className={styles.card} data-reveal><small>02 / CONSISTENCY</small><h3>Recognizable everywhere</h3><p>Packaging, product imagery and digital pages should feel like parts of one system rather than separate experiences.</p></article>
-    <article className={styles.card} data-reveal><small>03 / FLEXIBILITY</small><h3>Built to grow</h3><p>The system should support future launches and new formats without requiring the brand to reinvent itself every time.</p></article>
-   </div>
-  </section>
- </PremiumPageShell>;
+export default function AboutPage() {
+  return <main className="bh-commerce-page"><CommerceHeader />
+    <section className="bh-commerce-hero"><div className="bh-commerce-wrap"><nav className="bh-commerce-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span>About</span></nav><p className="bh-commerce-eyebrow">OUR STORY</p><h1>About Baba Hakeem</h1><p>Traditional herbal care, thoughtfully brought into everyday life.</p></div></section>
+    <section className="bh-about-content">
+      <div className="bh-about-copy"><p className="bh-commerce-eyebrow">ROOTED IN HERBAL WISDOM</p><h2>Care inspired by nature and tradition</h2><p>Baba Hakeem is a Pakistan-based herbal care brand shaped by traditional knowledge and a respect for botanical ingredients. We bring together familiar herbs, oils, and time-honoured routines in products made for everyday personal care.</p><p>Our collection includes hair and scalp care, massage oils, digestive blends, and wellness courses. Each product comes with directions and ingredient information to help you understand how it fits into your routine.</p><Link href="/shop" className="bh-about-button">Explore our products</Link></div>
+      <div className="bh-about-image"><img src="/verdura-reference.webp.png" alt="Botanical ingredients that inspire Baba Hakeem products" /></div>
+    </section>
+    <section className="bh-about-values"><p className="bh-commerce-eyebrow">OUR APPROACH</p><h2>Herbal care with clarity</h2><div><article><span>01</span><h3>Thoughtful ingredients</h3><p>We highlight the ingredients and directions for each product so you can make an informed choice.</p></article><article><span>02</span><h3>Made for daily rituals</h3><p>We create familiar, practical formats that can fit naturally into a personal care routine.</p></article><article><span>03</span><h3>Here to help</h3><p>Our team can help with product questions, orders, and delivery support across Pakistan.</p></article></div></section>
+    <CommerceFooter />
+  </main>;
 }

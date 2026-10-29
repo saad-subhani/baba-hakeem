@@ -668,3 +668,36 @@ body:has(.admin-auth-screen)>main.admin-auth-screen{
 @media(max-width:1250px){#baba-admin-root .admin-shortcuts{grid-template-columns:1fr!important}}
 @media(max-width:900px){#baba-admin-root .admin-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:700px){#baba-admin-root .admin-shortcuts{grid-template-columns:1fr!important;gap:10px!important}}
+
+/* ===== CMS EXTENSIONS: sidebar shell, slug, variations, seo ===== */
+.admin-shell-main{min-width:0}
+.slug-row{display:flex;gap:6px}
+.slug-row input{flex:1;font:11px monospace;color:#6c6c6c}
+.slug-row button{border:1px solid #2b2b2b30;background:#e8e8e8;cursor:pointer;border-radius:4px;padding:0 12px}
+.hint{font-size:10px!important;color:#2b2b2b9a!important;margin:4px 0 0!important}
+.variations-block{border:1px solid #2b2b2b26;background:#ececec;padding:18px;display:grid;gap:12px}
+.variations-head{display:flex;justify-content:space-between;align-items:center}
+.variations-head b{font:400 17px Georgia}
+.variations-head button{border:1px solid #2b2b2b;background:transparent;padding:9px 13px;border-radius:5px;font:8px monospace;letter-spacing:.13em;cursor:pointer}
+.variation-row{display:grid;grid-template-columns:1.4fr 1fr 1fr .7fr 1.2fr;gap:10px;align-items:end;background:#f0f0f0;padding:12px}
+.variation-row label>span{display:block;font:7px monospace;letter-spacing:.14em;margin-bottom:5px}
+.variation-row input,.variation-row select{width:100%;border:1px solid #2b2b2b40;padding:9px;background:#ffffff;border-radius:4px}
+.variation-image{display:grid;gap:5px;justify-items:center}
+.variation-image span{font-size:10px;color:#2b2b2b7a}
+.variation-image img{width:52px;height:52px;object-fit:cover;border:1px solid #2b2b2b30}
+.variation-image button{border:1px solid #2b2b2b20;background:transparent;border-radius:4px;padding:3px 9px;cursor:pointer}
+.seo-block{border:1px solid #2b2b2b26;background:#eaeaea;padding:18px;display:grid;gap:10px}
+.seo-block b{font:400 17px Georgia}
+.product-faq-editor .variations-head{align-items:flex-start;gap:16px}
+.product-faq-editor .variations-head .hint{margin:7px 0 0}
+.product-faq-editor__row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) auto;align-items:end;gap:12px;padding:14px;background:#f7f7f5;border:1px solid #2b2b2b18;border-radius:5px}
+.product-faq-editor__row label>span{display:block;margin-bottom:6px;font:8px monospace;letter-spacing:.13em}
+.product-faq-editor__row :is(input,textarea){width:100%;padding:10px;border:1px solid #2b2b2b30;border-radius:4px;background:#fff;font:13px Arial,sans-serif}
+.product-faq-editor__row>button{padding:9px 12px;border:1px solid #2b2b2b40;border-radius:4px;background:#fff;color:#333;font:11px Arial,sans-serif;cursor:pointer}
+@media(max-width:700px){.product-faq-editor__row{grid-template-columns:1fr}.product-faq-editor .variations-head{flex-direction:column}}
+.admin-type-badge{font:7px monospace;letter-spacing:.12em;border:1px solid #2b2b2b30;border-radius:999px;padding:2px 7px;background:#e3e3e3}
+.admin-price-new{font-weight:700}
+.admin-price-was{color:#2b2b2b;text-decoration:line-through;opacity:.65}
+/* Use the provided brand artwork as the complete sidebar logo. */
+.admin-side .side-brand-logo{display:block;padding:8px;border-radius:8px;background:#fff}
+.admin-side .admin-brand-logo{display:block;width:100%;height:auto;object-fit:contain}

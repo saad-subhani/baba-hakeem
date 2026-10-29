@@ -1,5 +1,6 @@
 import {NextResponse} from 'next/server';
-import {supabase} from '../../../lib/supabase';
+import {runRpc} from '../../../lib/store';
+import {sendContactEmails} from '../../../lib/emailTemplates';
 
 export const runtime='nodejs';
 const reply=(data,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
@@ -29,12 +30,12 @@ export async function POST(request){
   const v=Object.fromEntries(fields.map(k=>[k,String(input[k]||'').trim()]));
   if(v.name.length<2||v.name.length>120||v.message.length<15||v.message.length>2500||
      v.email.length>254||v.phone.length>24||v.reference.length>50||
-     !CATEGORIES.has(v.category)||(!v.email&&!v.phone))
-    return reply({success:false,error:'Enter your name, message, and an email or phone number.'},422);
+     !CATEGORIES.has(v.category)||!v.email)
+    return reply({success:false,error:'Enter your name, email address, and message.'},422);
   if(v.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email))
     return reply({success:false,error:'Please check your email address.'},422);
   try{
-    const {error}=await supabase.rpc('submit_contact_enquiry',{
+    const {error}=await runRpc('submit_contact_enquiry',{
       p_name:v.name,p_email:v.email,p_phone:v.phone,
       p_category:v.category,p_reference:v.reference,p_message:v.message
     });
@@ -45,7 +46,8 @@ export async function POST(request){
       console.error('Enquiry submission failed',error.code||'unknown');
       return reply({success:false,error:'Unable to receive the enquiry right now. Please contact us via WhatsApp.'},503);
     }
-    return reply({success:true,message:'Your enquiry has been received.'});
+    const mail = await sendContactEmails(v);
+    return reply({success:true,message:'Your enquiry has been received.',email_status:mail.status});
   }catch{
     return reply({success:false,error:'Enquiries are temporarily unavailable. Please use WhatsApp.'},503);
   }

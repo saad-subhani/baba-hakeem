@@ -3,8 +3,8 @@
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
-import AdminSectionNav from './AdminSectionNav';
 import styles from './AdminEmailQueue.module.css';
+import { RefreshIcon } from './Icons';
 
 const moment=value=>new Date(value).toLocaleString('en-PK',{dateStyle:'medium',timeStyle:'short'});
 const states=['New','In progress','Resolved'];
@@ -59,10 +59,10 @@ export default function AdminEnquiries(){
 
   return <main className={styles.screen}><div className={styles.wrap}>
     <header className={styles.nav}><div className={styles.brand}><span>BH</span><div><b>BABA HAKEEM</b><small>HERBAL PRODUCTS / ADMIN</small></div></div>
-      <AdminSectionNav/>
+      
     </header>
     <section className={styles.intro}><div><small>05 / CONTACT ENQUIRIES</small><h1>YOUR <em>INBOX.</em></h1><p>Product questions, order support and business enquiries from the live Contact page.</p></div>
-      <button type="button" onClick={()=>setRefresh(n=>n+1)}>↻ Refresh</button></section>
+      <button type="button" onClick={()=>setRefresh(n=>n+1)}><RefreshIcon size={13} style={{marginRight:'5px'}}/> Refresh</button></section>
     {error&&<div className={styles.error} role="alert">{error}</div>}
     <div className={styles.stats}>{[
       ['TOTAL',rows.length],['NEW',counts['New']],['IN PROGRESS',counts['In progress']],['RESOLVED',counts['Resolved']]
@@ -90,3 +90,4 @@ export default function AdminEnquiries(){
     <footer className={styles.footer}>BABA HAKEEM / PRIVATE CONTACT INBOX <span>New enquiries are saved securely; email/domain setup may follow later.</span></footer>
   </div></main>;
 }
+

@@ -1,9 +1,9 @@
 'use client';
+import { RefreshIcon } from './Icons';
 
 import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {supabase} from '../lib/supabase';
-import AdminSectionNav from './AdminSectionNav';
 import styles from './AdminOperations.module.css';
 
 const money=n=>'Rs. '+(Number(n)||0).toLocaleString('en-PK',{maximumFractionDigits:2});
@@ -144,12 +144,12 @@ export default function AdminOperations(){
   return <main className={styles.page}><div className={styles.wrap}>
     <header className={styles.header}>
       <div className={styles.brand}><span className={styles.bh}>BH</span><span><b>BABA HAKEEM</b><small>HERBAL PRODUCTS / ADMIN</small></span></div>
-      <AdminSectionNav/>
+      
     </header>
 
     <section className={styles.hero}>
       <div><small>ADMIN / FULFILLMENT & STOCK CONTROL</small><h1>ORDER <em>OPERATIONS.</em></h1><p>Process orders, inspect every line item and track stock movement history.</p></div>
-      <button type="button" disabled={loading||!!busy} onClick={()=>setRevision(n=>n+1)}>{loading?'Refreshing…':'↻ Refresh records'}</button>
+      <button type="button" disabled={loading||!!busy} onClick={()=>setRevision(n=>n+1)}>{loading?'Refreshing…':<><RefreshIcon size={13} style={{marginRight:'5px'}}/> Refresh records</>}</button>
     </section>
 
     {error&&<div className={styles.error} role="alert">{error}<button type="button" onClick={()=>setError('')}>Dismiss</button></div>}
@@ -262,3 +262,4 @@ export default function AdminOperations(){
     <footer className={styles.footer}>BABA HAKEEM / OWNER-ONLY OPERATIONS <span>Historical orders are preserved · All inventory changes are recorded</span></footer>
   </div></main>;
 }
+

@@ -1,11 +1,7 @@
 node_modules
 .next
-.open-next
-.wrangler
-.dev.vars
-.env
-.env.local
-.env.*.local
-cloudflare-env.d.ts
+.next-dev
+.env*
+!.env.example
 .DS_Store
 npm-debug.log*

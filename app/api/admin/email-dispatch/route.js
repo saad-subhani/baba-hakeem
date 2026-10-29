@@ -11,9 +11,8 @@ export async function POST(request){
   const origin=request.headers.get('origin');
   if(origin&&origin!==new URL(request.url).origin)
     return reply({success:false,error:'Invalid request origin.'},403);
-  const header=request.headers.get('authorization')||'';
-  const token=header.startsWith('Bearer ')?header.slice(7).trim():'';
-  const auth=await verifyEmailAdminAccess(token);
+  // In local MySQL mode the owner session lives in an HTTP-only cookie.
+  const auth=await verifyEmailAdminAccess();
   if(!auth.ok)return reply({success:false,error:auth.reason},auth.status);
   const result=await dispatchOrderEmails({limit:4});
   if(result.status==='not_configured')
